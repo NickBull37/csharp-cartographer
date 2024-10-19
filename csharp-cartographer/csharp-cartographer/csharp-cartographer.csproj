@@ -31,7 +31,6 @@
   <ItemGroup>
     <Folder Include="02.Utilities\" />
     <Folder Include="04.DataAccess\" />
-    <Folder Include="06.Controllers\" />
     <Folder Include="07.FrontEnd\" />
   </ItemGroup>
 
