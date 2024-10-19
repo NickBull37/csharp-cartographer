@@ -12,12 +12,15 @@ namespace csharp_cartographer._05.Services.Artifacts
         private readonly IFileProcessor _fileProcessor;
         private readonly ITokenGenerator _tokenGenerator;
         private readonly ITokenTagGenerator _tokenTagGenerator;
+        private readonly ITokenTagWizard _tokenTagWizard;
 
-        public ArtifactGenerator(IFileProcessor fileProcessor, ITokenGenerator tokenGenerator, ITokenTagGenerator tokenTagGenerator)
+        public ArtifactGenerator(IFileProcessor fileProcessor, ITokenGenerator tokenGenerator, ITokenTagGenerator tokenTagGenerator, ITokenTagWizard tokenTagWizard)
         {
             _fileProcessor = fileProcessor;
             _tokenGenerator = tokenGenerator;
             _tokenTagGenerator = tokenTagGenerator;
+            _tokenTagWizard = tokenTagWizard;
+
         }
 
         public Artifact GenerateDemoArtifact()
@@ -33,18 +36,15 @@ namespace csharp_cartographer._05.Services.Artifacts
 
             _tokenTagGenerator.GenerateTokenTags(navTokens);
 
-            _tokenWizard.UpdateTokenTags(navTokens);
+            _tokenTagWizard.UpdateNavTokenTags(navTokens);
 
-            _tokenWizard.AddTokenTagData(navTokens);
-
-            _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
+            //_syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
 
             Artifact artifact = new()
             {
                 CreatedDate = DateTime.Now,
                 ArtifactType = "Model Class",
                 Title = fileData.FileName,
-                Language = "C#",
                 NavTokens = navTokens,
             };
 
