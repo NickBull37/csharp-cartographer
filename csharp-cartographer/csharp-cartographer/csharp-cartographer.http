@@ -1,0 +1,6 @@
+@csharp_cartographer_HostAddress = http://localhost:5122
+
+GET {{csharp_cartographer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
