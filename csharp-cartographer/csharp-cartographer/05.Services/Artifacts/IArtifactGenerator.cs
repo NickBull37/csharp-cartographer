@@ -4,6 +4,6 @@ namespace csharp_cartographer._05.Services.Artifacts
 {
     public interface IArtifactGenerator
     {
-        Artifact GenerateDemoArtifact();
+        Artifact GenerateDemoArtifact(string fileName);
     }
 }

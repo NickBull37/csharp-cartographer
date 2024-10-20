@@ -32,13 +32,27 @@ namespace csharp_cartographer._03.Models.Tokens
             Index = index;
             Text = roslynToken.Text;
             RoslynKind = roslynToken.Kind().ToString();
-            //Label = roslynToken.Kind().ToString();
             RoslynToken = roslynToken;
             if (roslynToken.HasLeadingTrivia)
             {
                 foreach (var trivia in roslynToken.LeadingTrivia)
                 {
-                    LeadingTrivia.Add(trivia.ToString());
+                    var triviaString = trivia.ToString();
+
+                    if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+                    {
+                        triviaString = "///" + triviaString;
+                    }
+
+                    LeadingTrivia.Add(triviaString);
+
+                    if (trivia.IsKind(SyntaxKind.SingleLineCommentTrivia)
+                        || trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia)
+                        || trivia.IsKind(SyntaxKind.RegionDirectiveTrivia)
+                        || trivia.IsKind(SyntaxKind.EndRegionDirectiveTrivia))
+                    {
+                        LeadingTrivia.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
+                    }
                 }
             }
             if (roslynToken.HasTrailingTrivia)

@@ -543,6 +543,90 @@
                 Label = "InheritedClass",
                 HighlightColor = _green,
             },
+            new CSharpElement
+            {
+                Label = "AttributeIdentifier",
+                Facts =
+                [
+                    "Attributes are metadata annotations that provide additional information to classes, methods, properties, and other elements.",
+                    "Attributes are placed above the element they apply to, enclosed in square brackets [].",
+                ],
+                Insights =
+                [
+                    "An attribute in C# is any class that derives from System.Attribute."
+                ],
+            },
+            new CSharpElement
+            {
+                Label = "ApiController Attribute",
+                Facts =
+                [
+                    "Marks the controller as an API controller, which enables features like automatic model validation and parameter binding.",
+                ],
+                Insights =
+                [
+                    ""
+                ],
+            },
+            new CSharpElement
+            {
+                Label = "Route Attribute",
+                Facts =
+                [
+                    "Used to map requsets to different controller endpoints based on their URL.",
+                ],
+                Insights =
+                [
+                    "The Route attribute allows you to define parameters in the URL, which can be passed to the action method as arguments.",
+                    "Routes can be customized using placeholders, defaults, and optional parameters."
+                ],
+            },
+            new CSharpElement
+            {
+                Label = "HttpGet Attribute",
+                Facts =
+                [
+                    "Specifies that the method handles HTTP GET requests, typically for reading or retrieving data.",
+                ],
+                Insights =
+                [
+                    "GET endpoints should only ever receive data through query parameters. GET requests should never contain data in the request body."
+                ],
+            },
+            new CSharpElement
+            {
+                Label = "HttpPost Attribute",
+                Facts =
+                [
+                    "Specifies that the method handles HTTP POST requests, typically for creating or submitting data.",
+                ],
+                Insights =
+                [
+                    "POST requests often carry the bulk of their data in the request body as serialized JSON."
+                ],
+            },
+            new CSharpElement
+            {
+                Label = "FromQuery Attribute",
+                Facts =
+                [
+                    "",
+                ],
+                Insights =
+                [
+                    ""
+                ],
+            },
+            new CSharpElement
+            {
+                Label = "FromBody Attribute",
+                Facts =
+                [
+                ],
+                Insights =
+                [
+                ],
+            },
         };
     }
 }

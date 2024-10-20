@@ -6,7 +6,18 @@ namespace csharp_cartographer._05.Services.TokenTags
     public class TokenTagWizard : ITokenTagWizard
     {
         private static readonly string _newMethodInvocationLabel = "MethodIdentifier";
+        private static readonly string _newFieldReferenceLabel = "FieldReferenceIdentifier";
+        private static readonly string _newPropertyReferenceLabel = "PropertyReferenceIdentifier";
+        private static readonly string _newVariableReferenceLabel = "VariableReferenceIdentifier";
+        private static readonly string _newParameterReferenceLabel = "ParameterReferenceIdentifier";
+        private static readonly string _newClassReferenceLabel = "ClassReferenceIdentifier";
+
+
         private static readonly string _newMethodInvocationColor = "color-yellow";
+        private static readonly string _newFieldReferenceColor = "color-white";
+        private static readonly string _newPropertyReferenceColor = "color-white";
+        private static readonly string _newVariableReferenceColor = "color-light-blue";
+        private static readonly string _newParameterReferenceColor = "color-light-blue";
 
         public TokenTagWizard()
         {
@@ -29,10 +40,22 @@ namespace csharp_cartographer._05.Services.TokenTags
                 MakeMethodReturnTypeUpdatesIfNeeded(token);
                 MakeParameterDataTypeUpdatesIfNeeded(token);
                 MakeFieldDeclarationUpdatesIfNeeded(token);
-                MakePropertyDeclarationUpdatesIfNeeded(token);
+                MakePropertyTypeUpdatesIfNeeded(token);
                 MakeVariableDeclarationUpdatesIfNeeded(token);
                 MakeTypeArgumentUpdatesIfNeeded(token);
                 MakeBaseTypeUpdatesIfNeeded(token);
+                MakeAttributeUpdatesIfNeeded(token);
+                MakeArgumentPrefixUpdatesIfNeeded(token);
+                MakeCatchDeclarationUpdatesIfNeeded(token);
+            }
+
+            // remove all remaining IdentifierToken tags
+            foreach (var token in navTokens)
+            {
+                if (token.Tags.Count > 0 && token.Tags[0].Label == "IdentifierToken")
+                {
+                    token.Tags.RemoveAt(0);
+                }
             }
         }
 
@@ -75,8 +98,8 @@ namespace csharp_cartographer._05.Services.TokenTags
                 && token.Text.StartsWith('_')
                 && navTokens[index + 1].Text == ".")
             {
-                token.Tags[1].Label = "FieldReferenceIdentifier";
-                token.HighlightColor = "color-white";
+                token.Tags[1].Label = _newFieldReferenceLabel;
+                token.HighlightColor = _newFieldReferenceColor;
             }
 
             AddFactsAndInsights(token);
@@ -91,7 +114,7 @@ namespace csharp_cartographer._05.Services.TokenTags
                 && char.IsUpper(token.Text[0])
                 && navTokens[index + 1].Text == ".")
             {
-                token.Tags[1].Label = "ClassReferenceIdentifier";
+                token.Tags[1].Label = _newClassReferenceLabel;
                 token.HighlightColor = "color-green";
             }
 
@@ -106,8 +129,8 @@ namespace csharp_cartographer._05.Services.TokenTags
                 && char.IsUpper(token.Text[0])
                 && navTokens[index - 1].Text == ".")
             {
-                token.Tags[1].Label = "PropertyReferenceIdentifier";
-                token.HighlightColor = "color-white";
+                token.Tags[1].Label = _newPropertyReferenceLabel;
+                token.HighlightColor = _newPropertyReferenceColor;
             }
 
             AddFactsAndInsights(token);
@@ -123,8 +146,8 @@ namespace csharp_cartographer._05.Services.TokenTags
                 && !token.Text.StartsWith('_')
                 && navTokens[index + 1].Text == ".")
             {
-                token.Tags[1].Label = "VariableReferenceIdentifier";
-                token.HighlightColor = "color-light-blue";
+                token.Tags[1].Label = _newVariableReferenceLabel;
+                token.HighlightColor = _newVariableReferenceColor;
             }
 
             AddFactsAndInsights(token);
@@ -189,11 +212,13 @@ namespace csharp_cartographer._05.Services.TokenTags
         private static void MakeFieldDeclarationUpdatesIfNeeded(NavToken token)
         {
             if (token.Tags.Count >= 4
+                && token.Tags[0].Label == "IdentifierToken"
+                && token.Tags[1].Label == "VariableDeclarator"
+                && token.Tags[2].Label == "VariableDeclaration"
                 && token.Tags[3].Label == "FieldDeclaration")
             {
                 if (token.Tags[1].Label == "IdentifierName")
                 {
-                    token.Tags[1].Label = "DataType";
                     token.Tags[1].Label = "DataType";
                     token.Tags.RemoveAt(2);
                 }
@@ -208,15 +233,16 @@ namespace csharp_cartographer._05.Services.TokenTags
             AddFactsAndInsights(token);
         }
 
-        private static void MakePropertyDeclarationUpdatesIfNeeded(NavToken token)
+        private static void MakePropertyTypeUpdatesIfNeeded(NavToken token)
         {
             if (token.Tags.Count >= 3
+                && token.Tags[0].Label == "IdentifierToken"
+                && token.Tags[1].Label == "IdentifierName"
                 && token.Tags[2].Label == "PropertyDeclaration")
             {
                 if (token.Tags[1].Label == "IdentifierName")
                 {
-                    token.Tags[1].Label = "DataType";
-                    token.Tags[1].Label = "DataType";
+                    token.Tags[1].Label = "PropertyDataType";
                 }
             }
 
@@ -236,8 +262,7 @@ namespace csharp_cartographer._05.Services.TokenTags
 
                 if (token.Tags[1].Label == "IdentifierName")
                 {
-                    token.Tags[1].Label = "DataType";
-                    token.Tags[1].Label = "DataType";
+                    token.Tags[1].Label = "VariableDataType";
                     token.HighlightColor = GetClassOrInterfaceColor(token.Text);
                 }
             }
@@ -251,7 +276,6 @@ namespace csharp_cartographer._05.Services.TokenTags
                 && token.Tags[1].Label == "IdentifierName"
                 && token.Tags[2].Label == "TypeArgumentList")
             {
-                token.Tags[1].Label = "GenericType";
                 token.Tags[1].Label = "GenericType";
                 token.Tags.RemoveAt(3);
                 token.HighlightColor = GetClassOrInterfaceColor(token.Text);
@@ -267,9 +291,93 @@ namespace csharp_cartographer._05.Services.TokenTags
                 && token.Tags[2].Label == "SimpleBaseType")
             {
                 token.Tags[2].Label = "InheritedBaseType";
-                token.Tags[2].Label = "InheritedBaseType";
                 token.Tags.RemoveAt(1);
                 token.HighlightColor = GetClassOrInterfaceColor(token.Text);
+            }
+
+            AddFactsAndInsights(token);
+        }
+
+        private static void MakeAttributeUpdatesIfNeeded(NavToken token)
+        {
+            if (token.Tags.Count >= 2
+                && token.Tags[0].Label == "IdentifierToken"
+                && token.Tags[1].Label == "IdentifierName"
+                && token.Tags[2].Label == "Attribute")
+            {
+                // extend list for additional attributes
+                if (token.Text == "ApiController")
+                {
+                    token.Tags[2].Label = "ApiController Attribute";
+                }
+                else if (token.Text == "Route")
+                {
+                    token.Tags[2].Label = "Route Attribute";
+                }
+                else if (token.Text == "HttpGet")
+                {
+                    token.Tags[2].Label = "HttpGet Attribute";
+                }
+                else if (token.Text == "HttpPost")
+                {
+                    token.Tags[2].Label = "HttpPost Attribute";
+                }
+                else if (token.Text == "FromQuery")
+                {
+                    token.Tags[2].Label = "FromQuery Attribute";
+                }
+                else if (token.Text == "FromBody")
+                {
+                    token.Tags[2].Label = "FromBody Attribute";
+                }
+                else
+                {
+                    token.Tags[2].Label = "AttributeIdentifier";
+                }
+
+                token.Tags.RemoveAt(1);
+                token.HighlightColor = "color-green";
+            }
+
+            AddFactsAndInsights(token);
+        }
+
+        private static void MakeArgumentPrefixUpdatesIfNeeded(NavToken token)
+        {
+            if (token.Tags.Count >= 3
+                && token.Tags[0].Label == "IdentifierToken"
+                && token.Tags[1].Label == "IdentifierName"
+                && token.Tags[2].Label == "NameColon"
+                && token.Tags[3].Label == "Argument")
+            {
+                token.Tags[2].Label = "ArgumentPrefix";
+                token.Tags.RemoveAt(1);
+                token.HighlightColor = "color-light-blue";
+            }
+
+            AddFactsAndInsights(token);
+        }
+
+        private static void MakeCatchDeclarationUpdatesIfNeeded(NavToken token)
+        {
+            if (token.Tags.Count >= 4
+                && token.Tags[0].Label == "IdentifierToken"
+                && token.Tags[1].Label == "IdentifierName"
+                && token.Tags[2].Label == "CatchDeclaration"
+                && token.Tags[3].Label == "CatchClause")
+            {
+                token.Tags[2].Label = "CatchClauseDataType";
+                token.Tags.RemoveAt(1);
+                token.HighlightColor = GetClassOrInterfaceColor(token.Text);
+            }
+
+            if (token.Tags.Count >= 3
+                && token.Tags[0].Label == "IdentifierToken"
+                && token.Tags[1].Label == "CatchDeclaration"
+                && token.Tags[2].Label == "CatchClause")
+            {
+                token.Tags[1].Label = "CatchClauseIdentifier";
+                token.HighlightColor = "color-light-blue";
             }
 
             AddFactsAndInsights(token);

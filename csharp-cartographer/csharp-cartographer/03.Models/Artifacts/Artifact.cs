@@ -1,4 +1,6 @@
-﻿namespace csharp_cartographer._03.Models.Artifacts
+﻿using csharp_cartographer._03.Models.Tokens;
+
+namespace csharp_cartographer._03.Models.Artifacts
 {
     public class Artifact
     {
@@ -12,7 +14,7 @@
 
         public string? Description { get; set; }
 
-        public List<NavToken> NavTokens { get; set; }
+        public List<NavToken> NavTokens { get; set; } = [];
 
         public DateTime CreatedDate { get; init; }
     }

@@ -8,6 +8,7 @@ namespace csharp_cartographer._06.Controllers.Artifacts
     public class ArtifactController : ControllerBase
     {
         private readonly IArtifactGenerator _artifactGenerator;
+
         public ArtifactController(IArtifactGenerator artifactGenerator)
         {
             _artifactGenerator = artifactGenerator;
@@ -17,12 +18,12 @@ namespace csharp_cartographer._06.Controllers.Artifacts
         /// <summary>Gets the demo artifact.</summary>
         [HttpGet]
         [Route("get-demo-artifact")]
-        public async Task<IActionResult> GetDemoArtifact()
+        public async Task<IActionResult> GetDemoArtifact([FromQuery] string fileName)
         {
             try
             {
-                var mapFile = _artifactGenerator.GenerateDemoArtifact();
-                return Ok(mapFile);
+                var artifact = _artifactGenerator.GenerateDemoArtifact(fileName);
+                return Ok(artifact);
             }
             catch (Exception ex)
             {
