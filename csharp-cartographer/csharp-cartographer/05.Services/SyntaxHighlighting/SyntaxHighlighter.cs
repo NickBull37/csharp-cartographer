@@ -87,7 +87,7 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                 // using directive identifier
                 if (token.Tags.Count > 1)
                 {
-                    if (token.Tags[1].Label == "UsingDirective")
+                    if (token.Tags[1].Label == "Using Directive")
                     {
                         token.HighlightColor = "color-white";
                         continue;
@@ -97,7 +97,7 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                 // interface delclaration identifier
                 if (token.Tags.Count > 0)
                 {
-                    if (token.Tags[0].Label == "InterfaceDeclaration")
+                    if (token.Tags[0].Label == "Interface Declaration")
                     {
                         token.HighlightColor = "color-light-green";
                         continue;
@@ -107,7 +107,7 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                 // class delclaration identifier
                 if (token.Tags.Count > 0)
                 {
-                    if (token.Tags[0].Label == "ClassDeclaration")
+                    if (token.Tags[0].Label == "Class Declaration")
                     {
                         token.HighlightColor = "color-green";
                         continue;
@@ -117,7 +117,7 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                 // constructor delclaration identifier
                 if (token.Tags.Count > 0)
                 {
-                    if (token.Tags[0].Label == "ConstructorDeclaration")
+                    if (token.Tags[0].Label == "Constructor Declaration")
                     {
                         token.HighlightColor = "color-green";
                         continue;
@@ -127,7 +127,7 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                 // method delclaration identifier
                 if (token.Tags.Count > 0)
                 {
-                    if (token.Tags[0].Label == "MethodDeclaration" && token.TrailingTrivia.Count == 0)
+                    if (token.Tags[0].Label == "Method Declaration" && token.TrailingTrivia.Count == 0)
                     {
                         token.HighlightColor = "color-yellow";
                         continue;
@@ -137,7 +137,7 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                 // variable delclaration identifier
                 if (token.Tags.Count > 0)
                 {
-                    if (token.Tags[0].Label == "VariableDeclaration")
+                    if (token.Tags[0].Label == "Variable Declaration")
                     {
                         token.HighlightColor = "color-light-blue";
                         continue;
@@ -157,7 +157,7 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                 // field identifier
                 if (token.Tags.Count > 0)
                 {
-                    if (token.Tags[0].Label == "FieldDeclaration")
+                    if (token.Tags[0].Label == "Field Declaration")
                     {
                         token.HighlightColor = "color-white";
                         continue;
@@ -167,7 +167,7 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                 // property identifier
                 if (token.Tags.Count > 0)
                 {
-                    if (token.Tags[0].Label == "PropertyDeclaration")
+                    if (token.Tags[0].Label == "Property Declaration")
                     {
                         token.HighlightColor = "color-white";
                         continue;
@@ -177,7 +177,7 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                 // namespace delclaration identifier
                 if (token.Tags.Count > 1)
                 {
-                    if (token.Tags[1].Label == "NamespaceDeclaration")
+                    if (token.Tags[1].Label == "Namespace Declaration")
                     {
                         token.HighlightColor = "color-white";
                         continue;
@@ -208,14 +208,14 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
 
                 // variable refs
                 if (token.Tags.Count >= 1
-                    && token.Tags[0].Label == "VariableDeclaration")
+                    && token.Tags[0].Label == "Variable Declaration")
                 {
                     UpdateVariableReferences(navTokens, token.Index);
                 }
 
                 // foreach var refs
                 if (token.Tags.Count >= 1
-                    && token.Tags[0].Label == "ForEachStatement")
+                    && token.Tags[0].Label == "ForEach Statement")
                 {
                     //token.Tags[1].RoslynKind = "ForEachVariableIdentifier";
                     //token.Tags[1].Label = "ForEachVariableIdentifier";

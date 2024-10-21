@@ -23,11 +23,6 @@ namespace csharp_cartographer._05.Services.Tokens
 
             foreach (var token in roslynTokens)
             {
-                if (token.Text == "artifactGenerator")
-                {
-
-                }
-
                 navTokens.Add(new NavToken(token, index));
                 index++;
             }

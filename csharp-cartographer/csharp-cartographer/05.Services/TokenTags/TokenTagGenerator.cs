@@ -1,4 +1,5 @@
 ﻿using csharp_cartographer._03.Models.Tokens;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace csharp_cartographer._05.Services.TokenTags
@@ -34,6 +35,14 @@ namespace csharp_cartographer._05.Services.TokenTags
                     //    currentNode = currentNode.Parent;
                     //    continue;
                     //}
+
+                    if (currentNode.IsKind(SyntaxKind.CompilationUnit)
+                        || currentNode.IsKind(SyntaxKind.QualifiedName)
+                        || currentNode.IsKind(SyntaxKind.PredefinedType))
+                    {
+                        currentNode = currentNode.Parent;
+                        continue;
+                    }
 
                     AddTokenTag(navToken, currentNode.Kind().ToString(), level);
 

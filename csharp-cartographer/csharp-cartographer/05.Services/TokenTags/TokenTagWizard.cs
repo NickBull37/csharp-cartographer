@@ -1,5 +1,6 @@
 ﻿using csharp_cartographer._01.Configuration.CSharpElements;
 using csharp_cartographer._03.Models.Tokens;
+using System.Text.RegularExpressions;
 
 namespace csharp_cartographer._05.Services.TokenTags
 {
@@ -47,16 +48,12 @@ namespace csharp_cartographer._05.Services.TokenTags
                 MakeAttributeUpdatesIfNeeded(token);
                 MakeArgumentPrefixUpdatesIfNeeded(token);
                 MakeCatchDeclarationUpdatesIfNeeded(token);
+                MakeNamespaceDeclarationUpdatesIfNeeded(token);
+                MakeUsingDirectiveUpdatesIfNeeded(token);
             }
 
-            // remove all remaining IdentifierToken tags
-            foreach (var token in navTokens)
-            {
-                if (token.Tags.Count > 0 && token.Tags[0].Label == "IdentifierToken")
-                {
-                    token.Tags.RemoveAt(0);
-                }
-            }
+            RemoveRemainingIdentifierTags(navTokens);
+            AddSpacesToTagLabels(navTokens);
         }
 
         private static void MakeMethodInvocationUpdatesIfNeeded(NavToken token, List<NavToken> navTokens, int index)
@@ -185,8 +182,6 @@ namespace csharp_cartographer._05.Services.TokenTags
                 && token.Tags[2].Label == "MethodDeclaration")
             {
                 token.Tags[1].Label = "MethodReturnType";
-                token.Tags[1].Facts = ["MethodReturnType fact"];
-                token.Tags[1].Insights = ["MethodReturnType insight"];
                 token.HighlightColor = GetClassOrInterfaceColor(token.Text);
             }
 
@@ -383,6 +378,34 @@ namespace csharp_cartographer._05.Services.TokenTags
             AddFactsAndInsights(token);
         }
 
+        private static void MakeNamespaceDeclarationUpdatesIfNeeded(NavToken token)
+        {
+            if (token.Tags.Count >= 3
+                && token.Tags[0].Label == "IdentifierToken"
+                && token.Tags[1].Label == "IdentifierName"
+                && token.Tags[2].Label == "NamespaceDeclaration")
+            {
+                token.Tags[1].Label = "NamespaceIdentifier";
+                token.HighlightColor = "color-white";
+            }
+
+            AddFactsAndInsights(token);
+        }
+
+        private static void MakeUsingDirectiveUpdatesIfNeeded(NavToken token)
+        {
+            if (token.Tags.Count >= 3
+                && token.Tags[0].Label == "IdentifierToken"
+                && token.Tags[1].Label == "IdentifierName"
+                && token.Tags[2].Label == "UsingDirective")
+            {
+                token.Tags[1].Label = "UsingDirectiveIdentifier";
+                token.HighlightColor = "color-white";
+            }
+
+            AddFactsAndInsights(token);
+        }
+
         private static void AddFactsAndInsights(NavToken token)
         {
             foreach (var tag in token.Tags)
@@ -394,6 +417,33 @@ namespace csharp_cartographer._05.Services.TokenTags
                         tag.Facts = element.Facts;
                         tag.Insights = element.Insights;
                     }
+                }
+            }
+        }
+
+        private static void RemoveRemainingIdentifierTags(List<NavToken> navTokens)
+        {
+            foreach (var token in navTokens)
+            {
+                if (token.Tags.Count > 0 && token.Tags[0].Label == "IdentifierToken")
+                {
+                    token.Tags.RemoveAt(0);
+                }
+            }
+        }
+
+        // TODO: stop adding spaces between words like DataType or ForEach
+        private static void AddSpacesToTagLabels(List<NavToken> navTokens)
+        {
+            foreach (var token in navTokens)
+            {
+                foreach (var tag in token.Tags)
+                {
+                    if (tag.Label.Contains(' '))
+                    {
+                        continue;
+                    }
+                    tag.Label = Regex.Replace(tag.Label, "(?<!^)([A-Z])", " $1");
                 }
             }
         }
