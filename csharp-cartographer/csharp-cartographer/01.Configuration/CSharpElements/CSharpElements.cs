@@ -334,6 +334,36 @@
             },
             new CSharpElement
             {
+                Label = "ForEachKeyword",
+                Facts =
+                [
+                    "The 'foreach' keyword is used to iterate through elements in a collection.",
+                    "It automatically retrieves elements in the order they appear in the collection.",
+                    "The 'foreach' loop simplifies traversal by eliminating the need for an explicit index or enumerator."
+                ],
+                Insights =
+                [
+                    "Use 'foreach' for concise and readable iteration through collections.",
+                    "It is particularly useful for iterating through collections that implement IEnumerable or arrays.",
+                    "If you need access to elements other than the current element in the loop, consider a 'for' loop instead."
+                ],
+            },
+            new CSharpElement
+            {
+                Label = "ParameterType",
+                Facts =
+                [
+                    "The data type that the following parameter can accept during method invocation.",
+                    "ParameterType is required for all non-dynamic method parameters in C#."
+                ],
+                Insights =
+                [
+                    "Use flexible types like interfaces or base classes when accepting various implementations.",
+                    "For optional parameters, consider combining ParameterType with nullable types or default values for greater flexibility."
+                ],
+            },
+            new CSharpElement
+            {
                 Label = "ForEachStatement",
                 Facts =
                 [
@@ -492,7 +522,8 @@
             new CSharpElement
             {
                 Label = "UsingKeyword",
-                Facts = [
+                Facts =
+                [
                     "A reserved keyword that can be used to import namespaces.",
                     "A reserved keyword that can be used to manage the lifespan of certain resources."
                 ],
@@ -660,30 +691,30 @@
                     "Class references enable inheritance and method overriding in derived classes."
                 ],
             },
-            new CSharpElement
-            {
-                Label = "ParameterDataType - Interface",
-                Facts =
-                [
-                    "",
-                ],
-                Insights =
-                [
-                    "",
-                ],
-            },
-            new CSharpElement
-            {
-                Label = "ParameterDataType - Class",
-                Facts =
-                [
-                    "",
-                ],
-                Insights =
-                [
-                    "",
-                ],
-            },
+            //new CSharpElement
+            //{
+            //    Label = "ParameterDataType - Interface",
+            //    Facts =
+            //    [
+            //        "",
+            //    ],
+            //    Insights =
+            //    [
+            //        "",
+            //    ],
+            //},
+            //new CSharpElement
+            //{
+            //    Label = "ParameterDataType - Class",
+            //    Facts =
+            //    [
+            //        "",
+            //    ],
+            //    Insights =
+            //    [
+            //        "",
+            //    ],
+            //},
             new CSharpElement
             {
                 Label = "FieldDataType - Interface",
@@ -1201,191 +1232,270 @@
                 Label = "InterfaceKeyword",
                 Facts =
                 [
-                    "",
+                    "The 'interface' keyword is used to declare an interface in C#.",
+                    "Interfaces define a contract that classes or structs can implement.",
+                    "An interface can contain methods, properties, events, or indexer signatures but no implementations."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use interfaces to achieve polymorphism and define reusable abstractions in your code.",
+                    "They are especially useful for dependency injection and unit testing by decoupling implementations from contracts.",
+                    "Explicit interface implementation can hide methods from public access."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "BaseList",
                 Facts =
                 [
-                    "",
+                    "A BaseList specifies the base class and implemented interfaces for a class or struct.",
+                    "It appears after a colon (:) in a class or struct declaration.",
+                    "The first item in the BaseList is the base class, followed by interfaces."
                 ],
                 Insights =
                 [
-                    ""
+                    "Using BaseList improves code reusability by allowing inheritance and interface implementation.",
+                    "A class can inherit from only one base class but can implement multiple interfaces.",
+                    "Ensure meaningful class hierarchies to avoid the pitfalls of deep inheritance."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "EqualsToken",
                 Facts =
                 [
-                    "",
+                    "The '=' token is used for assignment in C#.",
+                    "It can also appear in named arguments to assign values to specific parameters.",
+                    "The token is part of many constructs, such as variable initialization and property setters."
                 ],
                 Insights =
                 [
-                    ""
+                    "Using '=' for assignments is fundamental to imperative programming in C#.",
+                    "Be cautious of unintentional assignments in conditional expressions.",
+                    "Named arguments with '=' improve code readability in method calls."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "EqualsValueClause",
                 Facts =
                 [
-                    "",
+                    "An EqualsValueClause represents an assignment of a value to a variable or property.",
+                    "It appears in variable initializations and default parameter values.",
+                    "The clause follows the '=' token and specifies the assigned value."
                 ],
                 Insights =
                 [
-                    ""
+                    "EqualsValueClause ensures variables are initialized with a meaningful value at the point of declaration.",
+                    "Using default parameter values with EqualsValueClause simplifies method signatures.",
+                    "Avoid excessive use of default values to maintain method clarity."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "VariableDeclarator",
                 Facts =
                 [
-                    "",
+                    "A VariableDeclarator represents a declared variable in C#.",
+                    "It contains the variable's name and an optional initializer.",
+                    "VariableDeclarators are part of a VariableDeclaration."
                 ],
                 Insights =
                 [
-                    ""
+                    "VariableDeclarators are the foundation of variable declarations in methods, classes, and structs.",
+                    "Initialize variables during declaration to prevent uninitialized value errors.",
+                    "Group related VariableDeclarators for cleaner code organization."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "StringLiteralExpression",
                 Facts =
                 [
-                    "",
+                    "A StringLiteralExpression represents a string value enclosed in double quotes.",
+                    "String literals support escape sequences like '\\n' and '\\t'.",
+                    "Verbatim string literals start with '@' and can span multiple lines."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use StringLiteralExpression to represent textual data in your code.",
+                    "Verbatim string literals are useful for file paths and multiline text.",
+                    "Consider string interpolation or formatting for more dynamic string construction."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "CollectionExpression",
                 Facts =
                 [
-                    "",
+                    "A CollectionExpression represents a collection initializer in C#.",
+                    "It uses curly braces to add elements directly to a collection.",
+                    "It works with arrays, lists, and other collection types that implement IEnumerable."
                 ],
                 Insights =
                 [
-                    ""
+                    "CollectionExpression simplifies collection initialization with inline elements.",
+                    "Use CollectionExpression with object initializers for clean and concise code.",
+                    "Ensure the collection type supports the elements being initialized."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "CommaToken",
                 Facts =
                 [
-                    "",
+                    "The ',' token separates elements in lists, such as method arguments and array initializers.",
+                    "It is used in loops, like 'for', to separate multiple expressions.",
+                    "The ',' token is also used in tuple declarations and deconstruction."
                 ],
                 Insights =
                 [
-                    ""
+                    "CommaToken improves readability and organization in grouped expressions.",
+                    "Be cautious of trailing commas, which can cause syntax errors in some contexts.",
+                    "Tuples with CommaToken simplify multiple return values from methods."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "EqualsGreaterThanToken",
                 Facts =
                 [
-                    "",
+                    "The '=>' token is used in lambda expressions and switch expressions.",
+                    "In lambdas, it separates the parameter list from the expression or statement block.",
+                    "In switch expressions, it separates patterns from their result expressions."
                 ],
                 Insights =
                 [
-                    ""
+                    "EqualsGreaterThanToken simplifies function expressions with concise syntax.",
+                    "It is a key component of functional programming constructs in C#.",
+                    "Switch expressions using '=>' improve pattern matching readability."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "ArrowExpressionClause",
                 Facts =
                 [
-                    "",
+                    "An ArrowExpressionClause represents a concise body for a member using '=>'.",
+                    "It is commonly used in properties, methods, and operators for single-line definitions.",
+                    "ArrowExpressionClause simplifies syntax by omitting braces and 'return' keywords."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use ArrowExpressionClause for short and readable member definitions.",
+                    "Avoid overusing ArrowExpressionClause for complex logic to maintain clarity.",
+                    "They are especially useful for calculated properties and lightweight methods."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "QuestionToken",
                 Facts =
                 [
-                    "",
+                    "The '?' token is used in nullable types, the null-coalescing operator, and conditional expressions.",
+                    "As a nullable type marker, it allows value types to accept 'null'.",
+                    "In conditional expressions, it separates the condition from the true branch."
                 ],
                 Insights =
                 [
-                    ""
+                    "QuestionToken is versatile in expressing nullability and conditions.",
+                    "Use nullable types ('T?') to handle optional values in a type-safe manner.",
+                    "Conditional expressions with '?' and ':' improve inline decision-making readability."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "NullableType",
                 Facts =
                 [
-                    "",
+                    "A NullableType allows value types to represent 'null'.",
+                    "It is declared using the '?' token after a value type.",
+                    "NullableType is often used in databases and optional configurations."
                 ],
                 Insights =
                 [
-                    ""
+                    "NullableType improves flexibility by allowing value types to represent missing values.",
+                    "Avoid excessive nullables; prefer well-defined default values when possible.",
+                    "NullableType works seamlessly with nullable reference type annotations."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "Parameter",
                 Facts =
                 [
-                    "",
+                    "A Parameter represents an input to a method, constructor, or delegate.",
+                    "Parameters can have default values and modifiers like 'ref', 'out', or 'params'.",
+                    "They are declared in parentheses after the method or function name."
                 ],
                 Insights =
                 [
-                    ""
+                    "Well-named parameters improve method readability and usage.",
+                    "Default parameter values simplify method overloads for common cases.",
+                    "Modifiers like 'ref' and 'out' provide more control over data flow in methods."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "SimpleMemberAccessExpression",
                 Facts =
                 [
-                    "",
+                    "A SimpleMemberAccessExpression represents member access using the '.' operator.",
+                    "It is used to access fields, properties, methods, and nested types.",
+                    "The left side is the object or type, and the right side is the member being accessed."
                 ],
                 Insights =
                 [
-                    ""
+                    "SimpleMemberAccessExpression is fundamental to object-oriented programming in C#.",
+                    "Use it for accessing members while respecting encapsulation principles.",
+                    "Chained member access can lead to null reference exceptions; consider using null-conditional operators."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "MethodIdentifier",
                 Facts =
                 [
-                    "",
+                    "A MethodIdentifier represents the name of a method.",
+                    "It is part of a method declaration or invocation.",
+                    "MethodIdentifier must follow C# naming conventions for identifiers."
                 ],
                 Insights =
                 [
-                    ""
+                    "Choose descriptive and consistent MethodIdentifiers for better code understanding.",
+                    "Overloaded methods can share the same identifier with different parameter lists.",
+                    "Avoid ambiguous names to prevent confusion in larger codebases."
                 ],
             },
+
             new CSharpElement
             {
                 Label = "ReturnStatement",
                 Facts =
                 [
-                    "",
+                    "A ReturnStatement is used to exit a method and optionally return a value.",
+                    "It is declared using the 'return' keyword followed by a value or nothing (void methods).",
+                    "Every non-void method must include a ReturnStatement for all execution paths."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use ReturnStatement to ensure method results are clear and intentional.",
+                    "Avoid overusing multiple return statements in methods to maintain readability.",
+                    "Returning early in methods can improve clarity when checking preconditions."
                 ],
             },
             new CSharpElement
@@ -1393,11 +1503,15 @@
                 Label = "IfKeyword",
                 Facts =
                 [
-                    "",
+                    "The 'if' keyword is used to start a conditional statement in C#.",
+                    "It allows execution of a block of code if a specified condition evaluates to true.",
+                    "The condition inside the 'if' statement must evaluate to a boolean value."
                 ],
                 Insights =
                 [
-                    ""
+                    "The 'if' keyword is essential for controlling the flow of execution in your programs.",
+                    "Avoid complex conditions in a single 'if' statement to maintain readability.",
+                    "Use 'if' statements with 'else' or 'else if' for multi-branch decision-making."
                 ],
             },
             new CSharpElement
@@ -1405,11 +1519,15 @@
                 Label = "IfStatement",
                 Facts =
                 [
-                    "",
+                    "An 'if' statement in C# is used to execute code conditionally based on a boolean expression.",
+                    "The 'if' statement can optionally include an 'else' or 'else if' block for additional conditions.",
+                    "The condition in the 'if' statement is evaluated only once."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use 'if' statements to handle decision logic in your code.",
+                    "For complex conditional logic, consider breaking it into multiple 'if' statements for clarity.",
+                    "Be cautious of deeply nested 'if' statements, as they can reduce readability."
                 ],
             },
             new CSharpElement
@@ -1417,11 +1535,15 @@
                 Label = "TypeArgumentList",
                 Facts =
                 [
-                    "",
+                    "A TypeArgumentList is used in C# to specify the types of a generic class or method.",
+                    "It appears within angle brackets '<>' and contains one or more type arguments.",
+                    "The TypeArgumentList is used when defining or invoking generic types or methods."
                 ],
                 Insights =
                 [
-                    ""
+                    "TypeArgumentList is essential for working with generics in C#.",
+                    "Be mindful of type constraints to ensure type safety when using generics.",
+                    "Generics with TypeArgumentList improve code reusability and type safety."
                 ],
             },
             new CSharpElement
@@ -1429,11 +1551,15 @@
                 Label = "NewKeyword",
                 Facts =
                 [
-                    "",
+                    "The 'new' keyword is used to create instances of types (e.g., objects, collections, arrays).",
+                    "It can also be used to hide members in a base class when declaring a member in a derived class.",
+                    "In C#, 'new' is used for object creation or to hide a member in inheritance."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use 'new' to instantiate objects or allocate memory for data types in C#.",
+                    "When hiding base class members, consider using 'new' carefully to avoid confusion with polymorphism.",
+                    "For clear object creation, prefer constructors over directly using 'new' for complex types."
                 ],
             },
             new CSharpElement
@@ -1441,11 +1567,15 @@
                 Label = "ImplicitObjectCreationExpression",
                 Facts =
                 [
-                    "",
+                    "An ImplicitObjectCreationExpression creates an object without explicitly specifying the type.",
+                    "It typically occurs when using 'new' to instantiate a type, and the type can be inferred by the compiler.",
+                    "This expression is often seen in anonymous types and var declarations."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use ImplicitObjectCreationExpression when the type can be inferred by the compiler for cleaner code.",
+                    "In complex scenarios, avoid excessive use of implicit object creation to maintain clarity.",
+                    "Implicit types can be beneficial for quick prototyping but should be used cautiously in production code."
                 ],
             },
             new CSharpElement
@@ -1453,11 +1583,15 @@
                 Label = "SimpleAssignmentExpression",
                 Facts =
                 [
-                    "",
+                    "A SimpleAssignmentExpression assigns a value to a variable using the '=' operator.",
+                    "The left side of the assignment must be a variable, field, or property.",
+                    "The right side can be any expression that evaluates to a value compatible with the left-hand side."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use SimpleAssignmentExpression to update variable values during the program's execution.",
+                    "Ensure the value type matches the variable type to avoid runtime errors.",
+                    "Avoid complex expressions on the right-hand side to keep assignments clear."
                 ],
             },
             new CSharpElement
@@ -1465,11 +1599,15 @@
                 Label = "ObjectInitializerExpression",
                 Facts =
                 [
-                    "",
+                    "An ObjectInitializerExpression allows initializing properties or fields of an object during its creation.",
+                    "It is written using curly braces '{}' and is commonly used with object and collection initializers.",
+                    "This expression helps make the initialization of objects more concise and readable."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use ObjectInitializerExpression to streamline object creation and initialization.",
+                    "Object initialization syntax promotes immutability and reduces boilerplate code.",
+                    "Avoid overusing object initialization when the logic for setting properties is complex."
                 ],
             },
             new CSharpElement
@@ -1477,11 +1615,15 @@
                 Label = "StaticKeyword",
                 Facts =
                 [
-                    "",
+                    "The 'static' keyword in C# indicates that a member belongs to the type itself rather than an instance.",
+                    "It is used for fields, methods, properties, and classes that are shared among all instances of the type.",
+                    "Static members are accessed using the type name, not through an instance."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use 'static' for utility methods, constants, or singleton patterns where you don't need an instance.",
+                    "Static members are shared across all instances, which can lead to state issues in multithreaded environments.",
+                    "Be careful with static constructors, as they execute only once when the type is accessed."
                 ],
             },
             new CSharpElement
@@ -1489,11 +1631,15 @@
                 Label = "ExclamationToken",
                 Facts =
                 [
-                    "",
+                    "The '!' token is used for logical negation in C#.",
+                    "It inverts the boolean value of an expression, turning true to false and vice versa.",
+                    "The '!' token is often used in conditional expressions and loops."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use the '!' token to perform boolean negation for condition checks.",
+                    "ExclamationToken is essential in controlling the flow of conditional logic.",
+                    "Avoid double negation, as it can reduce the clarity of your conditions."
                 ],
             },
             new CSharpElement
@@ -1501,11 +1647,15 @@
                 Label = "LogicalNotExpression",
                 Facts =
                 [
-                    "",
+                    "A LogicalNotExpression represents a logical negation operation in C#.",
+                    "It is represented using the '!' token and inverts the truth value of an expression.",
+                    "LogicalNotExpression is typically used in boolean conditions or expressions."
                 ],
                 Insights =
                 [
-                    ""
+                    "LogicalNotExpression is an essential tool for inverting boolean logic.",
+                    "Be cautious of overuse, as it can make conditions harder to understand.",
+                    "Double negation can often be simplified for better readability."
                 ],
             },
             new CSharpElement
@@ -1513,11 +1663,15 @@
                 Label = "QuestionQuestionToken",
                 Facts =
                 [
-                    "",
+                    "The '??' token is used for the null-coalescing operator in C#.",
+                    "It provides a default value when the left-hand side expression evaluates to null.",
+                    "The null-coalescing operator is commonly used to simplify null checks."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use the '??' operator to provide default values for nullable types or reference types.",
+                    "The null-coalescing operator is very helpful for reducing verbose null checks.",
+                    "Chaining '??' with other expressions can help streamline error handling and fallback logic."
                 ],
             },
             new CSharpElement
@@ -1525,11 +1679,15 @@
                 Label = "CoalesceExpression",
                 Facts =
                 [
-                    "",
+                    "A CoalesceExpression uses the '??' operator to evaluate and return the first non-null value.",
+                    "It is commonly used to set default values for nullable types or reference types.",
+                    "The CoalesceExpression is a concise alternative to explicit null checks in many scenarios."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use CoalesceExpression to simplify null handling by providing fallback values.",
+                    "The '??' operator is particularly useful in dealing with optional parameters or nullable types.",
+                    "Avoid overusing the '??' operator in cases where explicit null checks improve clarity."
                 ],
             },
             new CSharpElement
@@ -1537,11 +1695,15 @@
                 Label = "ExpressionStatement",
                 Facts =
                 [
-                    "",
+                    "An ExpressionStatement represents a single expression followed by a semicolon.",
+                    "It is used to execute expressions that produce side effects, such as method calls or assignments.",
+                    "ExpressionStatements are one of the most common types of statements in C#."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use ExpressionStatements for concise and clear logic execution.",
+                    "Avoid embedding too much logic in a single ExpressionStatement to maintain readability.",
+                    "ExpressionStatements are often used for invoking methods, assigning values, or incrementing variables."
                 ],
             },
             new CSharpElement
@@ -1549,11 +1711,15 @@
                 Label = "BreakKeyword",
                 Facts =
                 [
-                    "",
+                    "The 'break' keyword is used to exit a loop or a switch statement prematurely.",
+                    "It can appear in loops (for, while, do-while) or within switch sections.",
+                    "When executed, it transfers control to the statement immediately following the enclosing construct."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use 'break' to improve control flow and exit loops or switches when a condition is met.",
+                    "Overusing 'break' in loops can make logic harder to follow; consider refactoring in such cases.",
+                    "Combine 'break' with conditions in loops to terminate iterations effectively."
                 ],
             },
             new CSharpElement
@@ -1561,11 +1727,15 @@
                 Label = "BreakStatement",
                 Facts =
                 [
-                    "",
+                    "A BreakStatement is a statement that uses the 'break' keyword to terminate a loop or switch section.",
+                    "It is followed by a semicolon and does not take any additional expressions or parameters.",
+                    "BreakStatements improve control flow by exiting constructs prematurely."
                 ],
                 Insights =
                 [
-                    ""
+                    "BreakStatements are useful in scenarios where continuing the loop or switch is unnecessary.",
+                    "They improve readability by explicitly showing when a construct ends early.",
+                    "Overuse of BreakStatements may indicate opportunities to simplify control structures."
                 ],
             },
             new CSharpElement
@@ -1573,11 +1743,15 @@
                 Label = "SwitchStatement",
                 Facts =
                 [
-                    "",
+                    "A SwitchStatement allows multi-way branching based on the value of an expression.",
+                    "It contains one or more switch sections, each with a case label or a default label.",
+                    "The expression evaluated in a SwitchStatement must result in a compatible type for comparison."
                 ],
                 Insights =
                 [
-                    ""
+                    "SwitchStatements are ideal for replacing long chains of 'if-else' conditions with clearer logic.",
+                    "The addition of switch expressions in modern C# enhances flexibility and conciseness.",
+                    "Always include a 'default' section in a SwitchStatement to handle unexpected cases."
                 ],
             },
             new CSharpElement
@@ -1585,11 +1759,15 @@
                 Label = "SwitchKeyword",
                 Facts =
                 [
-                    "",
+                    "The 'switch' keyword is used to declare a switch statement or expression.",
+                    "It evaluates an expression and directs control flow based on its value.",
+                    "The 'switch' keyword is followed by a block containing case or default labels."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use the 'switch' keyword to implement readable multi-way branching logic.",
+                    "Switch constructs simplify decision-making compared to long 'if-else' chains.",
+                    "In performance-critical scenarios, prefer switch statements over multiple conditional checks."
                 ],
             },
             new CSharpElement
@@ -1597,11 +1775,15 @@
                 Label = "SwitchSection",
                 Facts =
                 [
-                    "",
+                    "A SwitchSection represents a block of code associated with one or more case labels in a SwitchStatement.",
+                    "Each SwitchSection can contain one or more statements, which execute if the case matches.",
+                    "A SwitchSection ends with a 'break', 'goto', or 'return' statement to terminate execution."
                 ],
                 Insights =
                 [
-                    ""
+                    "SwitchSections improve readability by grouping logic for each case.",
+                    "Use clear and concise logic within SwitchSections to avoid clutter.",
+                    "Always ensure a SwitchSection ends properly to prevent unintended fall-through."
                 ],
             },
             new CSharpElement
@@ -1609,11 +1791,15 @@
                 Label = "CaseKeyword",
                 Facts =
                 [
-                    "",
+                    "The 'case' keyword is used to define a match condition in a switch statement.",
+                    "Each 'case' is followed by a value that the switch expression is compared against.",
+                    "The code block under a 'case' executes if the value matches the switch expression."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use 'case' to define specific conditions in a switch statement.",
+                    "Ensure each 'case' ends with a terminating statement like 'break' to avoid fall-through.",
+                    "Consider combining 'case' labels with the same logic to avoid duplication."
                 ],
             },
             new CSharpElement
@@ -1621,11 +1807,15 @@
                 Label = "CaseSwitchLabel",
                 Facts =
                 [
-                    "",
+                    "A CaseSwitchLabel represents a specific label in a switch section defined by the 'case' keyword.",
+                    "It specifies the value to be compared with the switch expression.",
+                    "Multiple CaseSwitchLabels can direct execution to the same SwitchSection."
                 ],
                 Insights =
                 [
-                    ""
+                    "CaseSwitchLabels improve clarity by defining exact match conditions.",
+                    "Use consistent formatting for CaseSwitchLabels to enhance readability.",
+                    "Combine related CaseSwitchLabels to reduce repetitive logic."
                 ],
             },
             new CSharpElement
@@ -1633,11 +1823,15 @@
                 Label = "DefaultSwitchLabel",
                 Facts =
                 [
-                    "",
+                    "A DefaultSwitchLabel is used to define the default case in a switch statement.",
+                    "It executes when none of the 'case' labels match the switch expression.",
+                    "The default case is optional but recommended to handle unexpected values."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use DefaultSwitchLabel as a fallback for handling unmatched cases.",
+                    "Including a default label makes your switch statements robust and future-proof.",
+                    "Ensure meaningful logic in the default case to handle edge cases appropriately."
                 ],
             },
             new CSharpElement
@@ -1645,11 +1839,15 @@
                 Label = "DefaultKeyword",
                 Facts =
                 [
-                    "",
+                    "The 'default' keyword has multiple uses in C#: as a default case in a switch statement or as the default literal.",
+                    "In generics, 'default' initializes a type parameter to its default value.",
+                    "The 'default' keyword can also be used to specify a default value for nullable or reference types."
                 ],
                 Insights =
                 [
-                    ""
+                    "Use 'default' to initialize variables with type-safe defaults in generics or nullable contexts.",
+                    "The 'default' case in switch statements ensures all possible inputs are handled.",
+                    "Leverage the 'default' literal for cleaner and safer default initializations."
                 ],
             },
         };

@@ -1,5 +1,7 @@
 ﻿using csharp_cartographer._01.Configuration.CSharpElements;
 using csharp_cartographer._03.Models.Tokens;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using System.Text.RegularExpressions;
 
 namespace csharp_cartographer._05.Services.TokenTags
@@ -13,19 +15,30 @@ namespace csharp_cartographer._05.Services.TokenTags
         private static readonly string _newParameterReferenceLabel = "ParameterReferenceIdentifier";
         private static readonly string _newClassReferenceLabel = "ClassReferenceIdentifier";
 
-
         private static readonly string _newMethodInvocationColor = "color-yellow";
         private static readonly string _newFieldReferenceColor = "color-white";
         private static readonly string _newPropertyReferenceColor = "color-white";
         private static readonly string _newVariableReferenceColor = "color-light-blue";
         private static readonly string _newParameterReferenceColor = "color-light-blue";
 
-        public TokenTagWizard()
+        private static ITokenTagGenerator _tokenTagGenerator;
+
+        public TokenTagWizard(ITokenTagGenerator tokenTagGenerator)
         {
+            _tokenTagGenerator = tokenTagGenerator;
         }
 
         public void UpdateNavTokenTags(List<NavToken> navTokens)
         {
+            /*
+             * Steps to update token tags
+             * 
+             * Step 1. 
+             * 
+             * 
+             * 
+             */
+
             for (int i = 0; i < navTokens.Count; i++)
             {
                 var token = navTokens[i];
@@ -53,7 +66,9 @@ namespace csharp_cartographer._05.Services.TokenTags
             }
 
             RemoveRemainingIdentifierTags(navTokens);
+            //AddTagExtenstions(navTokens);
             AddSpacesToTagLabels(navTokens);
+            AddElementHighlightingIndicies(navTokens);
         }
 
         private static void MakeMethodInvocationUpdatesIfNeeded(NavToken token, List<NavToken> navTokens, int index)
@@ -196,7 +211,7 @@ namespace csharp_cartographer._05.Services.TokenTags
                 && token.Tags[2].Label == "Parameter")
             {
                 token.Tags[1].Label = "ParameterType";
-                token.Tags[1].Facts = ["ParameterType fact"];
+                token.Tags[1].Facts = ["The data type of the following parameter."];
                 token.Tags[1].Insights = ["ParameterType insight"];
                 token.HighlightColor = GetClassOrInterfaceColor(token.Text);
             }
@@ -206,6 +221,7 @@ namespace csharp_cartographer._05.Services.TokenTags
 
         private static void MakeFieldDeclarationUpdatesIfNeeded(NavToken token)
         {
+            // only applies to field names, not data types
             if (token.Tags.Count >= 4
                 && token.Tags[0].Label == "IdentifierToken"
                 && token.Tags[1].Label == "VariableDeclarator"
@@ -404,6 +420,96 @@ namespace csharp_cartographer._05.Services.TokenTags
             }
 
             AddFactsAndInsights(token);
+        }
+
+        public static void AddElementHighlightingIndicies(List<NavToken> navTokens)
+        {
+            foreach (var token in navTokens)
+            {
+                var tagCount = 1;
+                foreach (var tag in token.Tags)
+                {
+                    if (tag.Tokens.Count == 0 || tagCount == 1)
+                    {
+                        tag.HighlightIndices.Add(token.Index);
+                    }
+                    else
+                    {
+                        GetElementIndices(navTokens, tag);
+                    }
+                    tagCount++;
+                }
+            }
+        }
+
+        private static void GetElementIndices(List<NavToken> navTokens, TokenTag tag)
+        {
+            if (tag.Label == "Simple Member Access Expression")
+            {
+
+            }
+
+            List<int> highlightIndices = [];
+            var elementTextStrings = GetElementStrings(tag);
+
+
+            if (elementTextStrings.Count == 0 || navTokens.Count < elementTextStrings.Count)
+            {
+                return;
+            }
+
+            for (int i = 0; i <= navTokens.Count - elementTextStrings.Count; i++)
+            {
+                bool isMatch = true;
+
+                for (int j = 0; j < elementTextStrings.Count; j++)
+                {
+                    if (navTokens[i + j].Text != elementTextStrings[j])
+                    {
+                        isMatch = false;
+                        break;
+                    }
+                }
+
+                if (isMatch)
+                {
+                    for (int j = 0; j < elementTextStrings.Count; j++)
+                    {
+                        highlightIndices.Add(i + j);
+                    }
+                    break;
+                }
+            }
+
+            tag.HighlightIndices = highlightIndices;
+        }
+
+        private static List<string> GetElementStrings(TokenTag tag)
+        {
+            List<string> elementStrings = [];
+
+            // trim endOfFile token from list
+            if (tag.Tokens.Last().IsKind(SyntaxKind.EndOfFileToken))
+            {
+                tag.Tokens.RemoveAt(tag.Tokens.Count - 1);
+            }
+            // trim extra semicolon token from list
+            if (tag.Tokens.Last().IsKind(SyntaxKind.SemicolonToken) && !tag.Label.EndsWith("Declaration"))
+            {
+                tag.Tokens.RemoveAt(tag.Tokens.Count - 1);
+            }
+
+            // correction - add lamda to element strings
+            if (tag.Label == "Arrow Expression Clause")
+            {
+                elementStrings.Add("=>");
+            }
+
+            foreach (var roslynToken in tag.Tokens)
+            {
+                elementStrings.Add(roslynToken.Text);
+            }
+            return elementStrings;
         }
 
         private static void AddFactsAndInsights(NavToken token)

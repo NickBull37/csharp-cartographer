@@ -41,10 +41,13 @@ namespace csharp_cartographer._05.Services.Artifacts
             // Step 3. use syntax tree to generate nav tokens
             var navTokens = _tokenGenerator.GenerateNavTokens(syntaxTree);
 
+            // Step 4. generate token tags
             _tokenTagGenerator.GenerateTokenTags(navTokens);
 
+            // Step 5. update token tags
             _tokenTagWizard.UpdateNavTokenTags(navTokens);
 
+            // Step 6. add syntax highlighting
             _syntaxHighlighter.HighlightNavTokens(navTokens);
 
             Artifact artifact = new()
