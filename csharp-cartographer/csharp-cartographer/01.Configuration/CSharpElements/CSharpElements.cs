@@ -1470,15 +1470,13 @@
                 Label = "MethodIdentifier",
                 Facts =
                 [
-                    "A MethodIdentifier represents the name of a method.",
-                    "It is part of a method declaration or invocation.",
-                    "MethodIdentifier must follow C# naming conventions for identifiers."
+                    "Represents the name of a method.",
+                    "It can be used as part of a method declaration or invocation.",
                 ],
                 Insights =
                 [
-                    "Choose descriptive and consistent MethodIdentifiers for better code understanding.",
-                    "Overloaded methods can share the same identifier with different parameter lists.",
-                    "Avoid ambiguous names to prevent confusion in larger codebases."
+                    "Choose descriptive and consistent names for better code understanding.",
+                    "Overloaded methods can share the same method name while having different parameter lists.",
                 ],
             },
 

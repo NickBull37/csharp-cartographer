@@ -33,6 +33,7 @@ namespace csharp_cartographer._03.Models.Tokens
             Text = roslynToken.Text;
             RoslynKind = roslynToken.Kind().ToString();
             RoslynToken = roslynToken;
+
             if (roslynToken.HasLeadingTrivia)
             {
                 foreach (var trivia in roslynToken.LeadingTrivia)

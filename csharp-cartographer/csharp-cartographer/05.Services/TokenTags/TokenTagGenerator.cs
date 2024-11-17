@@ -52,19 +52,12 @@ namespace csharp_cartographer._05.Services.TokenTags
                 // add tags for all parent nodes
                 while (currentNode != null)
                 {
+                    // skip any tags that don't offer useful info
                     if (_KindsToSkip.Contains(currentNode.Kind()))
                     {
                         currentNode = currentNode.Parent;
                         continue;
                     }
-
-                    //if (currentNode.IsKind(SyntaxKind.CompilationUnit)
-                    //    || currentNode.IsKind(SyntaxKind.QualifiedName)
-                    //    || currentNode.IsKind(SyntaxKind.PredefinedType))
-                    //{
-                    //    currentNode = currentNode.Parent;
-                    //    continue;
-                    //}
 
                     AddParentNodeTokenTag(navToken, currentNode, level);
 
