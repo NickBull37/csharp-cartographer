@@ -15,8 +15,6 @@ namespace csharp_cartographer._03.Models.Tokens
 
         public int Index { get; set; }
 
-
-
         public List<TokenTag> Tags { get; set; } = [];
 
         // Lexical (token) data
@@ -88,18 +86,20 @@ namespace csharp_cartographer._03.Models.Tokens
 
         public List<Chart> Charts { get; set; } = [];
 
-        public NavToken(SyntaxToken token, SemanticModel semanticModel, SyntaxTree syntaxTree, int index)
+        public NavToken(SyntaxToken roslynToken, SemanticModel semanticModel, SyntaxTree syntaxTree, int index)
         {
             Index = index;
 
             #region Lexical (token) data
-            Text = token.Text;
-            Kind = token.Kind();
-            RoslynKind = token.Kind().ToString();
-            Span = token.Span;
-            if (token.HasLeadingTrivia)
+            Text = roslynToken.Text;
+            Kind = roslynToken.Kind();
+            RoslynKind = roslynToken.Kind().ToString();
+            Span = roslynToken.Span;
+            if (roslynToken.HasLeadingTrivia)
             {
-                foreach (var trivia in token.LeadingTrivia)
+                //LeadingTrivia = GetLeadingTrivia(roslynToken);
+
+                foreach (var trivia in roslynToken.LeadingTrivia)
                 {
                     var triviaString = trivia.ToString();
 
@@ -181,23 +181,23 @@ namespace csharp_cartographer._03.Models.Tokens
                     }
                 }
             }
-            if (token.HasTrailingTrivia)
+            if (roslynToken.HasTrailingTrivia)
             {
-                foreach (var trivia in token.TrailingTrivia)
+                foreach (var trivia in roslynToken.TrailingTrivia)
                 {
                     TrailingTrivia.Add(trivia.ToString());
                 }
             }
-            Value = token.Value;
-            RoslynToken = token;
-            if (token.Parent is not null)
+            Value = roslynToken.Value;
+            RoslynToken = roslynToken;
+            if (roslynToken.Parent is not null)
             {
-                Parent = token.Parent;
+                Parent = roslynToken.Parent;
             }
             #endregion
 
             #region Syntax data
-            var parentNode = token.Parent;
+            var parentNode = roslynToken.Parent;
 
             if (parentNode != null)
             {
@@ -257,67 +257,10 @@ namespace csharp_cartographer._03.Models.Tokens
             }
             #endregion
         }
+
+        public static void Test()
+        {
+
+        }
     }
-
-    //public class NavToken
-    //{
-    //    public int ID { get; set; }
-
-    //    public int Index { get; set; }
-
-    //    public string Text { get; init; } = string.Empty;
-
-    //    //public string Label { get; set; } = string.Empty;
-
-    //    public string RoslynKind { get; set; } = string.Empty;
-
-    //    public string? HighlightColor { get; set; } = null;
-
-    //    public List<string> LeadingTrivia { get; set; } = [];
-
-    //    public List<string> TrailingTrivia { get; set; } = [];
-
-    //    public List<TokenTag> Tags { get; set; } = [];
-
-    //    [JsonIgnore]
-    //    public SyntaxToken RoslynToken { get; set; }
-
-    //    public NavToken(SyntaxToken roslynToken, int index)
-    //    {
-    //        Index = index;
-    //        Text = roslynToken.Text;
-    //        RoslynKind = roslynToken.Kind().ToString();
-    //        RoslynToken = roslynToken;
-
-    //        if (roslynToken.HasLeadingTrivia)
-    //        {
-    //            foreach (var trivia in roslynToken.LeadingTrivia)
-    //            {
-    //                var triviaString = trivia.ToString();
-
-    //                if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
-    //                {
-    //                    triviaString = "///" + triviaString;
-    //                }
-
-    //                LeadingTrivia.Add(triviaString);
-
-    //                if (trivia.IsKind(SyntaxKind.SingleLineCommentTrivia)
-    //                    || trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia)
-    //                    || trivia.IsKind(SyntaxKind.RegionDirectiveTrivia)
-    //                    || trivia.IsKind(SyntaxKind.EndRegionDirectiveTrivia))
-    //                {
-    //                    LeadingTrivia.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
-    //                }
-    //            }
-    //        }
-    //        if (roslynToken.HasTrailingTrivia)
-    //        {
-    //            foreach (var trivia in roslynToken.TrailingTrivia)
-    //            {
-    //                TrailingTrivia.Add(trivia.ToString());
-    //            }
-    //        }
-    //    }
-    //}
 }

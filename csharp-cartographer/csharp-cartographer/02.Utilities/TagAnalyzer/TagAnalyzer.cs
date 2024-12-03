@@ -121,6 +121,22 @@ namespace csharp_cartographer._02.Utilities.TagAnalyzer
                 token.Tags[3].Label == "InvocationExpression";
         }
 
+        public static bool IsAttribute(NavToken token)
+        {
+            return token.Tags.Count > 2 &&
+                token.Tags[0].Label == "IdentifierToken" &&
+                token.Tags[1].Label == "IdentifierName" &&
+                token.Tags[2].Label == "Attribute";
+        }
+
+        public static bool IsNameColon(NavToken token)
+        {
+            return token.Tags.Count > 2 &&
+                token.Tags[0].Label == "IdentifierToken" &&
+                token.Tags[1].Label == "IdentifierName" &&
+                token.Tags[2].Label == "NameColon";
+        }
+
         public static bool IsExpression(NavToken token)
         {
             bool isExpression = false;

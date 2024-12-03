@@ -4,7 +4,8 @@ namespace csharp_cartographer._05.Services.FileProcessing
 {
     public class FileProcessor : IFileProcessor
     {
-        private readonly string _modelDefinitionDemoFilePath = @"C:\Users\nbuli\source\repos\csharp-cartographer\csharp-cartographer\csharp-cartographer\01.Configuration\TestFiles\Animal.cs";
+        //private readonly string _modelDefinitionDemoFilePath = @"C:\Users\nbuli\source\repos\csharp-cartographer\csharp-cartographer\csharp-cartographer\01.Configuration\TestFiles\Animal.cs";
+        private readonly string _modelDefinitionDemoFilePath = @"C:\Users\nbuli\source\repos\csharp-cartographer\csharp-cartographer\csharp-cartographer\03.Models\Tokens\NavToken.cs";
         private readonly string _workflowDemoFilePath = @"C:\Users\nbuli\source\repos\csharp-cartographer\csharp-cartographer\csharp-cartographer\05.Services\Artifacts\ArtifactGenerator.cs";
         private readonly string _serviceDemoFilePath = @"C:\Users\nbuli\source\repos\csharp-cartographer\csharp-cartographer\csharp-cartographer\05.Services\SyntaxHighlighting\SyntaxHighlighter.cs";
         private readonly string _repositoryDemoFilePath = "";

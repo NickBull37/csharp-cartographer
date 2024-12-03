@@ -187,6 +187,20 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                     token.HighlightColor = GetClassOrInterfaceColor(token.Text);
                     continue;
                 }
+
+                // attributes
+                if (TagAnalyzer.IsAttribute(token))
+                {
+                    token.HighlightColor = GetClassOrInterfaceColor(token.Text);
+                    continue;
+                }
+
+                // name colons
+                if (TagAnalyzer.IsNameColon(token))
+                {
+                    token.HighlightColor = "color-light-blue";
+                    continue;
+                }
             }
         }
 
