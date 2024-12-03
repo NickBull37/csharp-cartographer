@@ -1,7 +1,5 @@
 ﻿using csharp_cartographer._01.Configuration.CSharpElements;
 using csharp_cartographer._03.Models.Tokens;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using System.Text.RegularExpressions;
 
 namespace csharp_cartographer._05.Services.TokenTags
@@ -21,11 +19,55 @@ namespace csharp_cartographer._05.Services.TokenTags
         private static readonly string _newVariableReferenceColor = "color-light-blue";
         private static readonly string _newParameterReferenceColor = "color-light-blue";
 
-        private static ITokenTagGenerator _tokenTagGenerator;
-
-        public TokenTagWizard(ITokenTagGenerator tokenTagGenerator)
+        public TokenTagWizard()
         {
-            _tokenTagGenerator = tokenTagGenerator;
+        }
+
+        public void AddFactsAndInsightsToTags(List<NavToken> navTokens)
+        {
+            foreach (var token in navTokens)
+            {
+                foreach (var tag in token.Tags)
+                {
+                    foreach (var element in CSharpElements.ElementList)
+                    {
+                        if (tag.Label.Equals(element.Label))
+                        {
+                            tag.Facts = element.Facts;
+                            tag.Insights = element.Insights;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void CleanUpTokenTags(List<NavToken> navTokens)
+        {
+            foreach (var token in navTokens)
+            {
+                if (token.Tags.Count <= 0)
+                {
+                    continue;
+                }
+
+                if (token.Tags[0].Label == "IdentifierToken"
+                    && token.Tags[1].Label == "IdentifierName")
+                {
+                    token.Tags.RemoveAt(1);
+                    token.Tags[0].Label = "IdentifierName";
+                }
+            }
+
+            foreach (var token in navTokens)
+            {
+                foreach (var tag in token.Tags)
+                {
+                    if (tag.Label == "IdentifierToken")
+                    {
+                        tag.Label = "IdentifierName";
+                    }
+                }
+            }
         }
 
         public void UpdateNavTokenTags(List<NavToken> navTokens)
@@ -35,40 +77,37 @@ namespace csharp_cartographer._05.Services.TokenTags
              * 
              * Step 1. 
              * 
-             * 
-             * 
              */
 
-            for (int i = 0; i < navTokens.Count; i++)
-            {
-                var token = navTokens[i];
+            //for (int i = 0; i < navTokens.Count; i++)
+            //{
+            //    var token = navTokens[i];
 
-                MakeMethodInvocationUpdatesIfNeeded(token, navTokens, i);
-                MakeFieldReferenceUpdatesIfNeeded(token, navTokens, i);
-                MakeClassReferenceUpdatesIfNeeded(token, navTokens, i);
-                MakePropertyReferenceUpdatesIfNeeded(token, navTokens, i);
-                MakeVariableReferenceUpdatesIfNeeded(token, navTokens, i);
+            //    MakeMethodInvocationUpdatesIfNeeded(token, navTokens, i);
+            //    MakeFieldReferenceUpdatesIfNeeded(token, navTokens, i);
+            //    MakeClassReferenceUpdatesIfNeeded(token, navTokens, i);
+            //    MakePropertyReferenceUpdatesIfNeeded(token, navTokens, i);
+            //    MakeVariableReferenceUpdatesIfNeeded(token, navTokens, i);
 
-                MakeDecimalLiteralUpdatesIfNeeded(token);
-                MakeFloatLiteralUpdatesIfNeeded(token);
-                MakeMethodReturnTypeUpdatesIfNeeded(token);
-                MakeParameterDataTypeUpdatesIfNeeded(token);
-                MakeFieldDeclarationUpdatesIfNeeded(token);
-                MakePropertyTypeUpdatesIfNeeded(token);
-                MakeVariableDeclarationUpdatesIfNeeded(token);
-                MakeTypeArgumentUpdatesIfNeeded(token);
-                MakeBaseTypeUpdatesIfNeeded(token);
-                MakeAttributeUpdatesIfNeeded(token);
-                MakeArgumentPrefixUpdatesIfNeeded(token);
-                MakeCatchDeclarationUpdatesIfNeeded(token);
-                MakeNamespaceDeclarationUpdatesIfNeeded(token);
-                MakeUsingDirectiveUpdatesIfNeeded(token);
-            }
+            //    MakeDecimalLiteralUpdatesIfNeeded(token);
+            //    MakeFloatLiteralUpdatesIfNeeded(token);
+            //    MakeMethodReturnTypeUpdatesIfNeeded(token);
+            //    MakeParameterDataTypeUpdatesIfNeeded(token);
+            //    MakeFieldDeclarationUpdatesIfNeeded(token);
+            //    MakePropertyTypeUpdatesIfNeeded(token);
+            //    MakeVariableDeclarationUpdatesIfNeeded(token);
+            //    MakeTypeArgumentUpdatesIfNeeded(token);
+            //    MakeBaseTypeUpdatesIfNeeded(token);
+            //    MakeAttributeUpdatesIfNeeded(token);
+            //    MakeArgumentPrefixUpdatesIfNeeded(token);
+            //    MakeCatchDeclarationUpdatesIfNeeded(token);
+            //    MakeNamespaceDeclarationUpdatesIfNeeded(token);
+            //    MakeUsingDirectiveUpdatesIfNeeded(token);
+            //}
 
-            RemoveRemainingIdentifierTags(navTokens);
+            //RemoveRemainingIdentifierTags(navTokens);
             //AddTagExtenstions(navTokens);
-            AddSpacesToTagLabels(navTokens);
-            AddElementHighlightingIndicies(navTokens);
+            //AddSpacesToTagLabels(navTokens);
         }
 
         private static void MakeMethodInvocationUpdatesIfNeeded(NavToken token, List<NavToken> navTokens, int index)
@@ -420,96 +459,6 @@ namespace csharp_cartographer._05.Services.TokenTags
             }
 
             AddFactsAndInsights(token);
-        }
-
-        public static void AddElementHighlightingIndicies(List<NavToken> navTokens)
-        {
-            foreach (var token in navTokens)
-            {
-                var tagCount = 1;
-                foreach (var tag in token.Tags)
-                {
-                    if (tag.Tokens.Count == 0 || tagCount == 1)
-                    {
-                        tag.HighlightIndices.Add(token.Index);
-                    }
-                    else
-                    {
-                        GetElementIndices(navTokens, tag);
-                    }
-                    tagCount++;
-                }
-            }
-        }
-
-        private static void GetElementIndices(List<NavToken> navTokens, TokenTag tag)
-        {
-            if (tag.Label == "Simple Member Access Expression")
-            {
-
-            }
-
-            List<int> highlightIndices = [];
-            var elementTextStrings = GetElementStrings(tag);
-
-
-            if (elementTextStrings.Count == 0 || navTokens.Count < elementTextStrings.Count)
-            {
-                return;
-            }
-
-            for (int i = 0; i <= navTokens.Count - elementTextStrings.Count; i++)
-            {
-                bool isMatch = true;
-
-                for (int j = 0; j < elementTextStrings.Count; j++)
-                {
-                    if (navTokens[i + j].Text != elementTextStrings[j])
-                    {
-                        isMatch = false;
-                        break;
-                    }
-                }
-
-                if (isMatch)
-                {
-                    for (int j = 0; j < elementTextStrings.Count; j++)
-                    {
-                        highlightIndices.Add(i + j);
-                    }
-                    break;
-                }
-            }
-
-            tag.HighlightIndices = highlightIndices;
-        }
-
-        private static List<string> GetElementStrings(TokenTag tag)
-        {
-            List<string> elementStrings = [];
-
-            // trim endOfFile token from list
-            if (tag.Tokens.Last().IsKind(SyntaxKind.EndOfFileToken))
-            {
-                tag.Tokens.RemoveAt(tag.Tokens.Count - 1);
-            }
-            // trim extra semicolon token from list
-            if (tag.Tokens.Last().IsKind(SyntaxKind.SemicolonToken) && !tag.Label.EndsWith("Declaration"))
-            {
-                tag.Tokens.RemoveAt(tag.Tokens.Count - 1);
-            }
-
-            // correction - add lamda to element strings
-            if (tag.Label == "Arrow Expression Clause")
-            {
-                elementStrings.Add("=>");
-            }
-
-            foreach (var roslynToken in tag.Tokens)
-            {
-                elementStrings.Add(roslynToken.Text);
-            }
-            return elementStrings;
         }
 
         private static void AddFactsAndInsights(NavToken token)

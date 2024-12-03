@@ -9,9 +9,9 @@ namespace csharp_cartographer._03.Models.Tokens
 
         public int Level { get; set; }
 
-        public List<string>? Facts { get; set; }
+        public List<string> Facts { get; set; } = [];
 
-        public List<string>? Insights { get; set; }
+        public List<string> Insights { get; set; } = [];
 
         public List<int> HighlightIndices { get; set; } = [];
 

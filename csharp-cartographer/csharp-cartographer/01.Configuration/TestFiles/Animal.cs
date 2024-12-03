@@ -1,4 +1,6 @@
-﻿namespace csharp_cartographer._01.Configuration.TestFiles
+﻿using csharp_cartographer._03.Models.Tokens;
+
+namespace csharp_cartographer._01.Configuration.TestFiles
 {
     public class Animal
     {
@@ -10,7 +12,16 @@
 
         private string _type = string.Empty;
 
+        /// <summary>The age of the animal.</summary>
         public int Age { get; set; }
+
+        public List<string> Names { get; set; }
+
+        public List<int> Numbers { get; set; }
+
+        public IEnumerable<int> Values { get; set; } = Enumerable.Empty<int>();
+
+        public List<NavToken> Tokens { get; set; }
 
         public string? Name { get; set; }
 
@@ -19,6 +30,10 @@
             _type = type;
         }
 
+        /// <summary>
+        ///     Gets the animal type.
+        /// </summary>
+        /// <returns>A string.</returns>
         public string GetAnimalType()
         {
             return _type;
@@ -27,6 +42,24 @@
         public int GetAge()
         {
             return Age;
+        }
+
+        public bool IsOlderThan10()
+        {
+            if (Age > 10)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsYoungerThan10()
+        {
+            if (Age < 10)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

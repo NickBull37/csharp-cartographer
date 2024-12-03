@@ -8,10 +8,11 @@ namespace csharp_cartographer._05.Services.TokenTags
     {
         private static readonly List<SyntaxKind> _KindsToSkip =
         [
-            SyntaxKind.Block,
+            //SyntaxKind.Block,
             SyntaxKind.CompilationUnit,
-            SyntaxKind.QualifiedName,
-            SyntaxKind.PredefinedType,
+            //SyntaxKind.QualifiedName,
+            //SyntaxKind.IdentifierToken,
+            //SyntaxKind.PredefinedType,
         ];
 
         public TokenTagGenerator()
@@ -43,55 +44,89 @@ namespace csharp_cartographer._05.Services.TokenTags
         {
             foreach (var navToken in navTokens)
             {
-                // add tag for the current node
-                AddCurrentNodeTokenTag(navToken, navToken.RoslynKind, 1);
+                AddTokenTag(navToken, navToken.Kind.ToString(), 1, navToken.RoslynToken);
 
-                var currentNode = navToken.RoslynToken.Parent;
                 int level = 2;
-
-                // add tags for all parent nodes
-                while (currentNode != null)
+                foreach (var parentNode in GetParentNodes(navToken.RoslynToken))
                 {
-                    // skip any tags that don't offer useful info
-                    if (_KindsToSkip.Contains(currentNode.Kind()))
+                    if (_KindsToSkip.Contains(parentNode.Kind()))
                     {
-                        currentNode = currentNode.Parent;
                         continue;
                     }
 
-                    AddParentNodeTokenTag(navToken, currentNode, level);
-
-                    currentNode = currentNode.Parent;
+                    AddTokenTag(navToken, parentNode.Kind().ToString(), level, parentNode);
                     level++;
                 }
             }
         }
 
-        private static void AddCurrentNodeTokenTag(NavToken navToken, string roslynKind, int level)
+        private static IEnumerable<SyntaxNode> GetParentNodes(SyntaxToken token)
         {
+            var currentNode = token.Parent;
+            while (currentNode != null)
+            {
+                yield return currentNode;
+                currentNode = currentNode.Parent;
+            }
+        }
+
+        private static void AddTokenTag(NavToken navToken, string label, int level, SyntaxNodeOrToken nodeOrToken)
+        {
+            List<SyntaxToken> tokens;
+
+            if (nodeOrToken.AsNode() != null && nodeOrToken.IsNode)
+            {
+                // If it's a SyntaxNode, get its descendant tokens
+                tokens = nodeOrToken.AsNode()!.DescendantTokens().ToList();
+            }
+            else if (nodeOrToken.IsToken)
+            {
+                // If it's a SyntaxToken, wrap it in a list
+                tokens = [nodeOrToken.AsToken()];
+            }
+            else
+            {
+                // Handle unexpected case (this shouldn't happen in normal Roslyn APIs)
+                throw new InvalidOperationException("Unsupported SyntaxNodeOrToken type.");
+            }
+
             var tokenTag = new TokenTag
             {
-                Label = roslynKind,
+                Label = label,
                 Level = level,
-                Tokens = []
+                Tokens = tokens
             };
+
             navToken.Tags.Add(tokenTag);
         }
 
-        private static void AddParentNodeTokenTag(NavToken navToken, SyntaxNode currentNode, int level)
-        {
-            var textSpan = currentNode.ToString();
-            var syntaxTree = CSharpSyntaxTree.ParseText(textSpan);
-            SyntaxNode root = syntaxTree.GetRoot();
-            var roslynTokens = root.DescendantTokens();
+        //private static void CleanUpTokenTags(List<NavToken> navTokens)
+        //{
+        //    foreach (var token in navTokens)
+        //    {
+        //        if (token.Tags.Count <= 0)
+        //        {
+        //            continue;
+        //        }
 
-            var tokenTag = new TokenTag
-            {
-                Label = currentNode.Kind().ToString(),
-                Level = level,
-                Tokens = roslynTokens.ToList()
-            };
-            navToken.Tags.Add(tokenTag);
-        }
+        //        if (token.Tags[0].Label == "IdentifierToken"
+        //            && token.Tags[1].Label == "IdentifierName")
+        //        {
+        //            token.Tags.RemoveAt(1);
+        //            token.Tags[0].Label = "IdentifierName";
+        //        }
+        //    }
+
+        //    foreach (var token in navTokens)
+        //    {
+        //        foreach (var tag in token.Tags)
+        //        {
+        //            if (tag.Label == "IdentifierToken")
+        //            {
+        //                tag.Label = "IdentifierName";
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

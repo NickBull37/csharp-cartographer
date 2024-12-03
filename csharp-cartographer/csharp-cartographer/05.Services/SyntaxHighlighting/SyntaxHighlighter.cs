@@ -1,5 +1,7 @@
 ﻿using csharp_cartographer._01.Configuration.ReservedText;
+using csharp_cartographer._02.Utilities.TagAnalyzer;
 using csharp_cartographer._03.Models.Tokens;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace csharp_cartographer._05.Services.SyntaxHighlighting
 {
@@ -11,11 +13,6 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
 
         public void HighlightNavTokens(List<NavToken> navTokens)
         {
-            /*
-             *  SyntaxHighlighter only called after all token tags have
-             *  been updated. Do all token tag edits before highlighting.
-             */
-
             AddReservedTextHighlighting(navTokens);
 
             AddLiteralHighlighting(navTokens);
@@ -23,6 +20,8 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
             AddIdentifierHighlighting(navTokens);
 
             AddIdentifierReferenceHighlighting(navTokens);
+
+            AddHighlightingThatNeedsSurroundingTokens(navTokens);
         }
 
         private static void AddReservedTextHighlighting(List<NavToken> navTokens)
@@ -61,14 +60,14 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                 }
 
                 // string literals
-                if (token.RoslynKind == "StringLiteralToken")
+                if (token.Kind == SyntaxKind.StringLiteralToken)
                 {
                     token.HighlightColor = "color-orange";
                 }
                 // numeric literals (integer, decimal, float)
-                if (token.RoslynKind == "NumericLiteralToken"
-                    || token.RoslynKind == "DecimalLiteralToken"
-                    || token.RoslynKind == "FloatLiteralToken")
+                if (token.Kind == SyntaxKind.NumericLiteralToken
+                    || token.Kind.ToString() == "DecimalLiteralToken"
+                    || token.Kind.ToString() == "FloatLiteralToken")
                 {
                     token.HighlightColor = "color-light-green";
                 }
@@ -85,113 +84,109 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                 }
 
                 // using directive identifier
-                if (token.Tags.Count > 1)
+                if (TagAnalyzer.IsUsingDirective(token))
                 {
-                    if (token.Tags[1].Label == "Using Directive")
-                    {
-                        token.HighlightColor = "color-white";
-                        continue;
-                    }
+                    token.HighlightColor = "color-white";
+                    continue;
                 }
 
                 // interface delclaration identifier
-                if (token.Tags.Count > 0)
+                if (TagAnalyzer.IsInterfaceDeclaration(token))
                 {
-                    if (token.Tags[0].Label == "Interface Declaration")
-                    {
-                        token.HighlightColor = "color-light-green";
-                        continue;
-                    }
+                    token.HighlightColor = "color-light-green";
+                    continue;
                 }
 
                 // class delclaration identifier
-                if (token.Tags.Count > 0)
+                if (TagAnalyzer.IsClassDeclaration(token))
                 {
-                    if (token.Tags[0].Label == "Class Declaration")
-                    {
-                        token.HighlightColor = "color-green";
-                        continue;
-                    }
+                    token.HighlightColor = "color-green";
+                    continue;
                 }
 
                 // constructor delclaration identifier
-                if (token.Tags.Count > 0)
+                if (TagAnalyzer.IsConstructorDeclaration(token))
                 {
-                    if (token.Tags[0].Label == "Constructor Declaration")
-                    {
-                        token.HighlightColor = "color-green";
-                        continue;
-                    }
+                    token.HighlightColor = "color-green";
+                    continue;
                 }
 
                 // method delclaration identifier
-                if (token.Tags.Count > 0)
+                if (TagAnalyzer.IsMethodDeclaration(token))
                 {
-                    if (token.Tags[0].Label == "Method Declaration" && token.TrailingTrivia.Count == 0)
-                    {
-                        token.HighlightColor = "color-yellow";
-                        continue;
-                    }
+                    token.HighlightColor = "color-yellow";
+                    continue;
                 }
 
                 // variable delclaration identifier
-                if (token.Tags.Count > 0)
+                if (TagAnalyzer.IsVariableDeclaration(token))
                 {
-                    if (token.Tags[0].Label == "Variable Declaration")
-                    {
-                        token.HighlightColor = "color-light-blue";
-                        continue;
-                    }
+                    token.HighlightColor = "color-light-blue";
+                    continue;
                 }
 
                 // parameter identifier
-                if (token.Tags.Count > 0)
+                if (TagAnalyzer.IsParameter(token))
                 {
-                    if (token.Tags[0].Label == "Parameter")
-                    {
-                        token.HighlightColor = "color-light-blue";
-                        continue;
-                    }
+                    token.HighlightColor = "color-light-blue";
+                    continue;
+                }
+
+                // parameter type identifier
+                if (TagAnalyzer.IsParameterType(token))
+                {
+                    token.HighlightColor = GetClassOrInterfaceColor(token.Text);
+                    continue;
                 }
 
                 // field identifier
-                if (token.Tags.Count > 0)
+                if (TagAnalyzer.IsField(token))
                 {
-                    if (token.Tags[0].Label == "Field Declaration")
-                    {
-                        token.HighlightColor = "color-white";
-                        continue;
-                    }
+                    token.HighlightColor = "color-white";
+                    continue;
                 }
 
                 // property identifier
-                if (token.Tags.Count > 0)
+                if (TagAnalyzer.IsProperty(token))
                 {
-                    if (token.Tags[0].Label == "Property Declaration")
-                    {
-                        token.HighlightColor = "color-white";
-                        continue;
-                    }
+                    token.HighlightColor = "color-white";
+                    continue;
                 }
 
                 // namespace delclaration identifier
-                if (token.Tags.Count > 1)
+                if (TagAnalyzer.IsNamespaceDeclaration(token))
                 {
-                    if (token.Tags[1].Label == "Namespace Declaration")
-                    {
-                        token.HighlightColor = "color-white";
-                        continue;
-                    }
+                    token.HighlightColor = "color-white";
+                    continue;
+                }
+
+                // type argument identifiers
+                if (TagAnalyzer.IsTypeArgument(token))
+                {
+                    token.HighlightColor = GetClassOrInterfaceColor(token.Text);
+                    continue;
+                }
+
+                // base types
+                if (TagAnalyzer.IsBaseType(token))
+                {
+                    token.HighlightColor = GetClassOrInterfaceColor(token.Text);
+                    continue;
+                }
+
+                // expressions
+                if (TagAnalyzer.IsExpression(token))
+                {
+                    token.HighlightColor = "color-yellow";
+                    continue;
                 }
 
                 // data types
-                //if (token.Tags.Count > 1)
-                //{
-                //    if (token.Tags[1].Label == "DataType")
-                //    {
-                //        token.HighlightColor = GetClassOrInterfaceColor(token.Text);
-                //    }
-                //}
+                if (TagAnalyzer.IsDataType(token))
+                {
+                    token.HighlightColor = GetClassOrInterfaceColor(token.Text);
+                    continue;
+                }
             }
         }
 
@@ -200,25 +195,20 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
             foreach (var token in navTokens)
             {
                 // parameter refs
-                if (token.Tags.Count >= 1
-                    && token.Tags[0].Label == "Parameter")
+                if (TagAnalyzer.IsParameter(token))
                 {
                     UpdateParameterReferences(navTokens, token.Index);
                 }
 
                 // variable refs
-                if (token.Tags.Count >= 1
-                    && token.Tags[0].Label == "Variable Declaration")
+                if (TagAnalyzer.IsVariableDeclaration(token))
                 {
                     UpdateVariableReferences(navTokens, token.Index);
                 }
 
                 // foreach var refs
-                if (token.Tags.Count >= 1
-                    && token.Tags[0].Label == "ForEach Statement")
+                if (TagAnalyzer.IsForEachVariable(token))
                 {
-                    //token.Tags[1].RoslynKind = "ForEachVariableIdentifier";
-                    //token.Tags[1].Label = "ForEachVariableIdentifier";
                     token.HighlightColor = "color-light-blue";
                     UpdateForEachVariableReferences(navTokens, token.Index);
                 }
@@ -375,6 +365,40 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
             }
 
             return "color-green";
+        }
+
+        private static void AddHighlightingThatNeedsSurroundingTokens(List<NavToken> navTokens)
+        {
+
+            for (int i = 0; i < navTokens.Count; i++)
+            {
+                var token = navTokens[i];
+
+                if (HighlightColorAlreadySet(token))
+                {
+                    continue;
+                }
+
+                if (!TagAnalyzer.IsInvocation(token))
+                {
+                    //token.HighlightColor = "color-red"; // unhighlighted tokens
+                    continue;
+                }
+
+                var nextToken = navTokens[i + 1];
+
+                // method invocations
+                if (nextToken.Text == "(")
+                {
+                    token.HighlightColor = "color-yellow";
+                }
+
+                // static class invocations
+                if (nextToken.Text == "." && token.SymbolKind != "Field")
+                {
+                    token.HighlightColor = "color-green";
+                }
+            }
         }
     }
 }

@@ -9,23 +9,20 @@ namespace csharp_cartographer._05.Services.Tokens
         {
         }
 
-        public List<NavToken> GenerateNavTokens(SyntaxTree syntaxTree)
+        public List<NavToken> GenerateNavTokens(SemanticModel semanticModel, SyntaxTree syntaxTree)
         {
-            SyntaxNode root = syntaxTree.GetRoot();
-            var roslynTokens = root.DescendantTokens();
-            return ConvertRoslynTokensToNavTokens(roslynTokens);
-        }
-
-        private static List<NavToken> ConvertRoslynTokensToNavTokens(IEnumerable<SyntaxToken> roslynTokens)
-        {
-            int index = 0;
             List<NavToken> navTokens = [];
 
+            SyntaxNode root = syntaxTree.GetRoot();
+            var roslynTokens = root.DescendantTokens();
+
+            int index = 0;
             foreach (var token in roslynTokens)
             {
-                navTokens.Add(new NavToken(token, index));
+                navTokens.Add(new NavToken(token, semanticModel, syntaxTree, index));
                 index++;
             }
+
             return navTokens;
         }
     }

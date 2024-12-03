@@ -4,6 +4,12 @@ namespace csharp_cartographer._05.Services.FileProcessing
 {
     public class FileProcessor : IFileProcessor
     {
+        private readonly string _modelDefinitionDemoFilePath = @"C:\Users\nbuli\source\repos\csharp-cartographer\csharp-cartographer\csharp-cartographer\01.Configuration\TestFiles\Animal.cs";
+        private readonly string _workflowDemoFilePath = @"C:\Users\nbuli\source\repos\csharp-cartographer\csharp-cartographer\csharp-cartographer\05.Services\Artifacts\ArtifactGenerator.cs";
+        private readonly string _serviceDemoFilePath = @"C:\Users\nbuli\source\repos\csharp-cartographer\csharp-cartographer\csharp-cartographer\05.Services\SyntaxHighlighting\SyntaxHighlighter.cs";
+        private readonly string _repositoryDemoFilePath = "";
+        private readonly string _controllerDemoFilePath = @"C:\Users\nbuli\source\repos\csharp-cartographer\csharp-cartographer\csharp-cartographer\06.Controllers\Artifacts\ArtifactController.cs";
+
         private readonly string _testFilePath1 = @"C:\Users\nbuli\source\repos\csharp-cartographer\csharp-cartographer\csharp-cartographer\01.Configuration\TestFiles\Animal.cs";
         private readonly string _testFilePath2 = @"C:\Users\nbuli\source\repos\ss-navigator\ss-navigator\05.Services\Roslyn\RoslynAnalyzer.cs";
         private readonly string _testFilePath3 = @"C:\Users\nbuli\source\repos\ss-navigator-v2\ss-navigator-v2\05.Services\Constructs\InterfaceWizard.cs";
@@ -19,19 +25,19 @@ namespace csharp_cartographer._05.Services.FileProcessing
 
             if (fileName == "Animal.cs")
             {
-                testFile = _testFilePath1;
+                testFile = _modelDefinitionDemoFilePath;
             }
             else if (fileName == "RoslynAnalyzer.cs")
             {
-                testFile = _testFilePath2;
+                testFile = _workflowDemoFilePath;
             }
             else if (fileName == "SyntaxHighlighter.cs")
             {
-                testFile = _testFilePath3;
+                testFile = _serviceDemoFilePath;
             }
             else if (fileName == "ArtifactController.cs")
             {
-                testFile = _testFilePath4;
+                testFile = _controllerDemoFilePath;
             }
 
             if (!string.IsNullOrEmpty(testFile) && !File.Exists(testFile))

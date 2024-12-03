@@ -1,4 +1,5 @@
 using csharp_cartographer._05.Services.Artifacts;
+using csharp_cartographer._05.Services.Cartography;
 using csharp_cartographer._05.Services.FileProcessing;
 using csharp_cartographer._05.Services.SyntaxHighlighting;
 using csharp_cartographer._05.Services.Tokens;
@@ -20,11 +21,13 @@ builder.Services.Configure<FormOptions>(options =>
 
 // configure DI for SS NAVIGATOR services
 builder.Services.AddScoped<IArtifactGenerator, ArtifactGenerator>();
+builder.Services.AddScoped<ICartographer, Cartographer>();
 builder.Services.AddScoped<IFileProcessor, FileProcessor>();
 builder.Services.AddScoped<ISyntaxHighlighter, SyntaxHighlighter>();
 builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
 builder.Services.AddScoped<ITokenTagGenerator, TokenTagGenerator>();
 builder.Services.AddScoped<ITokenTagWizard, TokenTagWizard>();
+builder.Services.AddScoped<ITagIndexer, TagIndexer>();
 
 var app = builder.Build();
 

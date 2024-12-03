@@ -4,6 +4,8 @@ namespace csharp_cartographer._05.Services.TokenTags
 {
     public interface ITokenTagWizard
     {
+        void AddFactsAndInsightsToTags(List<NavToken> navTokens);
+        void CleanUpTokenTags(List<NavToken> navTokens);
         void UpdateNavTokenTags(List<NavToken> navTokens);
     }
 }

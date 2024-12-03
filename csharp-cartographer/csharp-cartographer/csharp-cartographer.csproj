@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="02.Utilities\" />
+    <Folder Include="02.Utilities\Logging\Logs\" />
     <Folder Include="04.DataAccess\" />
     <Folder Include="07.FrontEnd\" />
   </ItemGroup>
