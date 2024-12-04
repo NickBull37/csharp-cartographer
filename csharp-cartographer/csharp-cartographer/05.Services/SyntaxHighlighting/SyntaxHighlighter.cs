@@ -201,6 +201,14 @@ namespace csharp_cartographer._05.Services.SyntaxHighlighting
                     token.HighlightColor = "color-light-blue";
                     continue;
                 }
+
+                //// property type class
+                //if (TagAnalyzer.IsPropertyTypeClass(token))
+                //{
+                //    token.HighlightColor = "color-red";
+                //    //token.HighlightColor = GetClassOrInterfaceColor(token.Text);
+                //    continue;
+                //}
             }
         }
 

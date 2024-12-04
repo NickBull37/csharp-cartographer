@@ -95,132 +95,22 @@ namespace csharp_cartographer._03.Models.Tokens
             Kind = roslynToken.Kind();
             RoslynKind = roslynToken.Kind().ToString();
             Span = roslynToken.Span;
-            if (roslynToken.HasLeadingTrivia)
-            {
-                //LeadingTrivia = GetLeadingTrivia(roslynToken);
-
-                foreach (var trivia in roslynToken.LeadingTrivia)
-                {
-                    var triviaString = trivia.ToString();
-
-                    if (!trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia)
-                        && !trivia.IsKind(SyntaxKind.MultiLineCommentTrivia))
-                    {
-                        LeadingTrivia.Add(triviaString);
-                    }
-
-                    if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
-                    {
-                        triviaString = "///" + triviaString;
-
-                        if (StringHelpers.CountOccurrences(triviaString, "///") == 1)
-                        {
-                            // single-line comment
-                            LeadingTrivia.Add(triviaString);
-                            LeadingTrivia.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
-                        }
-                        if (StringHelpers.CountOccurrences(triviaString, "///") > 1)
-                        {
-                            // multi-line comment
-                            var newStrings = triviaString.Split("\r\n");
-
-                            var count = 1;
-                            var numOfStrings = newStrings.Length;
-                            foreach (var newString in newStrings)
-                            {
-                                // check if string has sequential spaces
-                                // if so, cut them and create a new space trivia with them
-                                if (StringHelpers.HasSequentialSpaces(newString))
-                                {
-                                    var spacesString = StringHelpers.PullSequentialSpaces(newString);
-                                    LeadingTrivia.Add(spacesString);
-                                }
-
-                                // add new trivia strings
-                                LeadingTrivia.Add(newString.Trim());
-                                if (count < numOfStrings)
-                                {
-                                    LeadingTrivia.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
-                                }
-                                count++;
-                            }
-                        }
-                    }
-
-                    if (trivia.IsKind(SyntaxKind.MultiLineCommentTrivia))
-                    {
-                        // multi-line comment
-                        var newStrings = triviaString.Split("\r\n");
-
-                        var count = 1;
-                        var numOfStrings = newStrings.Length;
-                        foreach (var newString in newStrings)
-                        {
-                            // check if string has sequential spaces
-                            // if so, cut them and create a new space trivia with them
-                            if (StringHelpers.HasSequentialSpaces(newString))
-                            {
-                                var spacesString = StringHelpers.PullSequentialSpaces(newString);
-                                LeadingTrivia.Add(spacesString);
-                            }
-
-                            // add new trivia strings
-                            LeadingTrivia.Add(newString.Trim());
-                            if (count < numOfStrings)
-                            {
-                                LeadingTrivia.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
-                            }
-                            count++;
-                        }
-                    }
-
-                    if (trivia.IsKind(SyntaxKind.RegionDirectiveTrivia)
-                        || trivia.IsKind(SyntaxKind.EndRegionDirectiveTrivia))
-                    {
-                        LeadingTrivia.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
-                    }
-                }
-            }
-            if (roslynToken.HasTrailingTrivia)
-            {
-                foreach (var trivia in roslynToken.TrailingTrivia)
-                {
-                    TrailingTrivia.Add(trivia.ToString());
-                }
-            }
+            LeadingTrivia = GetLeadingTrivia(roslynToken);
+            TrailingTrivia = GetTrailingTrivia(roslynToken);
             Value = roslynToken.Value;
             RoslynToken = roslynToken;
-            if (roslynToken.Parent is not null)
-            {
-                Parent = roslynToken.Parent;
-            }
+            Parent = GetParentNode(roslynToken);
             #endregion
 
             #region Syntax data
-            var parentNode = roslynToken.Parent;
-
-            if (parentNode != null)
-            {
-                ParentNodeKind = parentNode.Kind().ToString();
-                ParentNodeType = parentNode.GetType().Name;
-
-                if (parentNode.Parent is not null)
-                {
-                    GrandParent = parentNode.Parent;
-                    GrandParentNodeKind = GrandParent.Kind().ToString();
-                    GrandParentNodeType = GrandParent.GetType().Name;
-
-                    if (GrandParent.Parent is not null)
-                    {
-                        GreatGrandParent = GrandParent.Parent;
-                        GreatGrandParentNodeKind = GreatGrandParent.Kind().ToString();
-                        GreatGrandParentNodeType = GreatGrandParent.GetType().Name;
-                    }
-                }
-            }
+            ParentNodeKind = GetParentNodeKind(roslynToken);
+            GrandParentNodeKind = GetGrandParentNodeKind(roslynToken);
+            GreatGrandParentNodeKind = GetGreatGrandParentNodeKind(roslynToken);
             #endregion
 
             #region Semantic data
+            var parentNode = roslynToken.Parent;
+
             if (parentNode != null)
             {
                 var symbolInfo = semanticModel.GetSymbolInfo(parentNode);
@@ -258,9 +148,189 @@ namespace csharp_cartographer._03.Models.Tokens
             #endregion
         }
 
-        public static void Test()
+        public static List<string> GetLeadingTrivia(SyntaxToken roslynToken)
         {
+            if (!roslynToken.HasLeadingTrivia)
+            {
+                return [];
+            }
 
+            List<string> leadingTriviaStrings = [];
+
+            foreach (var trivia in roslynToken.LeadingTrivia)
+            {
+                var triviaString = trivia.ToString();
+
+                if (!trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia)
+                    && !trivia.IsKind(SyntaxKind.MultiLineCommentTrivia))
+                {
+                    leadingTriviaStrings.Add(triviaString);
+                }
+
+                if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+                {
+                    triviaString = "///" + triviaString;
+
+                    if (StringHelpers.CountOccurrences(triviaString, "///") == 1)
+                    {
+                        // single-line comment
+                        leadingTriviaStrings.Add(triviaString);
+                        leadingTriviaStrings.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
+                    }
+                    if (StringHelpers.CountOccurrences(triviaString, "///") > 1)
+                    {
+                        // multi-line comment
+                        var newStrings = triviaString.Split("\r\n");
+
+                        var count = 1;
+                        var numOfStrings = newStrings.Length;
+                        foreach (var newString in newStrings)
+                        {
+                            // check if string has sequential spaces
+                            // if so, cut them and create a new space trivia with them
+                            if (StringHelpers.HasSequentialSpaces(newString))
+                            {
+                                var spacesString = StringHelpers.PullSequentialSpaces(newString);
+                                leadingTriviaStrings.Add(spacesString);
+                            }
+
+                            // add new trivia strings
+                            leadingTriviaStrings.Add(newString.Trim());
+                            if (count < numOfStrings)
+                            {
+                                leadingTriviaStrings.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
+                            }
+                            count++;
+                        }
+                    }
+                }
+
+                if (trivia.IsKind(SyntaxKind.MultiLineCommentTrivia))
+                {
+                    // multi-line comment
+                    var newStrings = triviaString.Split("\r\n");
+
+                    var count = 1;
+                    var numOfStrings = newStrings.Length;
+                    foreach (var newString in newStrings)
+                    {
+                        // check if string has sequential spaces
+                        // if so, cut them and create a new space trivia with them
+                        if (StringHelpers.HasSequentialSpaces(newString))
+                        {
+                            var spacesString = StringHelpers.PullSequentialSpaces(newString);
+                            leadingTriviaStrings.Add(spacesString);
+                        }
+
+                        // add new trivia strings
+                        leadingTriviaStrings.Add(newString.Trim());
+                        if (count < numOfStrings)
+                        {
+                            leadingTriviaStrings.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
+                        }
+                        count++;
+                    }
+                }
+
+                if (trivia.IsKind(SyntaxKind.RegionDirectiveTrivia)
+                    || trivia.IsKind(SyntaxKind.EndRegionDirectiveTrivia))
+                {
+                    leadingTriviaStrings.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
+                }
+            }
+            return leadingTriviaStrings;
+        }
+
+        public static List<string> GetTrailingTrivia(SyntaxToken roslynToken)
+        {
+            if (!roslynToken.HasTrailingTrivia)
+            {
+                return [];
+            }
+
+            List<string> trailingTriviaStrings = [];
+
+            foreach (var trivia in roslynToken.TrailingTrivia)
+            {
+                trailingTriviaStrings.Add(trivia.ToString());
+            }
+
+            return trailingTriviaStrings;
+        }
+
+        public static SyntaxNode? GetParentNode(SyntaxToken roslynToken)
+        {
+            if (roslynToken.Parent is null)
+            {
+                return null;
+            }
+            else
+            {
+                return roslynToken.Parent;
+            }
+        }
+
+        public static string? GetParentNodeKind(SyntaxToken roslynToken)
+        {
+            if (roslynToken.Parent is null)
+            {
+                return null;
+            }
+            else
+            {
+                return roslynToken.Parent.Kind().ToString();
+            }
+        }
+
+        public static string? GetGrandParentNodeKind(SyntaxToken roslynToken)
+        {
+            if (roslynToken.Parent is null)
+            {
+                return null;
+            }
+            else
+            {
+                var parentNode = roslynToken.Parent;
+
+                if (parentNode.Parent is null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return parentNode.Parent.Kind().ToString();
+                }
+            }
+        }
+
+        public static string? GetGreatGrandParentNodeKind(SyntaxToken roslynToken)
+        {
+            if (roslynToken.Parent is null)
+            {
+                return null;
+            }
+            else
+            {
+                var parentNode = roslynToken.Parent;
+
+                if (parentNode.Parent is null)
+                {
+                    return null;
+                }
+                else
+                {
+                    var grandParentNode = parentNode.Parent;
+
+                    if (grandParentNode.Parent is null)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return grandParentNode.Parent.Kind().ToString();
+                    }
+                }
+            }
         }
     }
 }

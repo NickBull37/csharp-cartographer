@@ -129,6 +129,14 @@ namespace csharp_cartographer._02.Utilities.TagAnalyzer
                 token.Tags[2].Label == "Attribute";
         }
 
+        public static bool IsPropertyTypeClass(NavToken token)
+        {
+            return token.Tags.Count > 2 &&
+                token.Tags[0].Label == "IdentifierToken" &&
+                token.Tags[1].Label == "IdentifierName" &&
+                token.Tags[2].Label == "PropertyDeclaration";
+        }
+
         public static bool IsNameColon(NavToken token)
         {
             return token.Tags.Count > 2 &&
@@ -174,7 +182,7 @@ namespace csharp_cartographer._02.Utilities.TagAnalyzer
             }
 
             if (token.Tags.Count > 2 &&
-                (token.Tags[2].Label == "MethodDeclaration" || token.Tags[2].Label == "VariableDeclaration"))
+                (token.Tags[2].Label == "MethodDeclaration" || token.Tags[2].Label == "VariableDeclaration" || token.Tags[2].Label == "PropertyDeclaration"))
             {
                 isDeclaration = true;
             }
