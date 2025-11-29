@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
 
@@ -29,7 +29,6 @@ const LineNumberText = styled(Typography)(() => ({
 const CodeWindow = ({ leftSidebarOpen, tokenList, activeToken, setActiveToken, activeHighlightIndices, setActiveHighlightIndices, selectedTokens, setSelectedTokens }) => {
 
     // Constants
-    // Find the index of the activeToken in the tokenList
     const activeTokenIndex = tokenList.findIndex(token => token === activeToken);
 
     // State Variables
@@ -99,8 +98,6 @@ const CodeWindow = ({ leftSidebarOpen, tokenList, activeToken, setActiveToken, a
         }
     }, [leftSidebarOpen]);
 
-    // API Calls
-
     // Common styling configuration
     const codeStyle = {
         fontFamily: 'Consolas, Input, DejaVu Sans Mono',
@@ -140,7 +137,6 @@ const CodeWindow = ({ leftSidebarOpen, tokenList, activeToken, setActiveToken, a
             onMouseUp={handleMouseUp}
         >
             <FlexBox
-                
                 sx={{
                     ...codeStyle
                 }}
@@ -161,7 +157,6 @@ const CodeWindow = ({ leftSidebarOpen, tokenList, activeToken, setActiveToken, a
                 <Typography
                     sx={{
                         lineHeight: 'inherit',
-                        // fontSize: 'inherit', (1.063rem)
                         fontSize: '1rem'
                     }}
                 >

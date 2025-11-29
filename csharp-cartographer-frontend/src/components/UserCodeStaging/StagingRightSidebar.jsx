@@ -1,17 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from "axios";
-import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { Box, Stack, Paper, Typography, TextField, Tooltip, Button } from '@mui/material';
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import { Box, Stack, Paper, Typography, TextField, Button } from '@mui/material';
 import ApiIcon from '@mui/icons-material/Api';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import CodeIcon from '@mui/icons-material/Code';
-import DataArrayIcon from '@mui/icons-material/DataArray';
-import DataObjectIcon from '@mui/icons-material/DataObject';
 
 const SideBarPaper = styled(Paper)(() => ({
     backgroundColor: '#4d4d4d',
@@ -39,13 +30,6 @@ const SideBarPaper = styled(Paper)(() => ({
     '::-webkit-scrollbar-thumb:hover': {
         background: '#00b3a1', /* Hover color of the thumb */
     },
-}));
-
-const FlexBox = styled(Box)(() => ({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'baseline',
-    marginTop: '16px',
 }));
 
 const InsightIconBox = styled(Box)(() => ({
@@ -79,31 +63,10 @@ const ClearTokensBtn = styled(Button)(() => ({
     },
 }));
 
-const OrangeBox = styled(Box)(() => ({
-    padding: '4px 8px',
-    border: '1px solid rgba(255, 136, 77, 1)',
-    borderRadius: '4px',
-    backgroundColor: 'rgba(255, 136, 77, 0.1)'
-}));
-
-const TokenText = styled(Typography)(() => ({
-    fontFamily: 'Consolas, Input, DejaVu Sans Mono',
-    fontSize: '16px',
-    borderRadius: '4px',
-    boxShadow: '0px 2px 4px 0.4px #333333',
-    marginTop: '8px',
-    padding: '4px 12px',
-}));
-
 const BoxTitle = styled(Typography)(() => ({
     fontFamily: 'Consolas, Input, DejaVu Sans Mono',
     fontSize: '18px',
     color: '#00FFC7',
-}));
-
-const BoxText = styled(Typography)(() => ({
-    fontFamily: 'Mona Sans, MonaSansFallback, Segoe UI, Helvetica, Arial, sans-serif',
-    fontSize: '14px',
 }));
 
 const StagingRightSidebar = ({ selectedTokenIndexList, setSelectedTokenIndexList }) => {

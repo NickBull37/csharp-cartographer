@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from "axios";
+import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Stack, Typography, TextField } from '@mui/material';
 import { ToggleButton, Divider, Button } from '@mui/material';
@@ -19,29 +18,10 @@ const ContentContainer = styled(Box)(() => ({
     height: '100%',
 }));
 
-const BulletText = styled(Typography)(() => ({
-    fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
-    fontSize: '0.875rem',
-    color: colors.gray85,
-}));
-
-const BoxText = styled(Typography)(() => ({
-    fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
-    fontSize: '13px',
-    letterSpacing: '0.03em',
-    color: colors.gray95
-}));
-
 const SelectedCountText = styled(Typography)(() => ({
     fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
     fontSize: '1.125rem',
     color: colors.code,
-    // border: '1px solid #808080',
-    // borderRadius: '4px',
-    // paddingTop: '4px',
-    // paddingBottom: '4px',
-    // paddingRight: '8px',
-    // paddingLeft: '8px',
 }));
 
 const ResponseText = styled(Typography)(() => ({
@@ -84,18 +64,9 @@ const AiSidebarContent = ({navTokens, selectedTokens, setSelectedTokens}) => {
 
     // API Calls
     async function GetAiAnalysis() {
-        try {
-            // Get AI analysis
-            const response = await axios.post("https://localhost:44300/Artifact/generate-artifact", {
-                selectedTokens: selectedTokens
-            });
 
-            if (response.status === 200) {
-                setAiResponse(response.data.aiResponse);
-            }
-        } catch (error) {
-            console.log('Get AI analysis API call failed.');
-        }
+        // implement this
+
     }
 
     return (
@@ -103,9 +74,6 @@ const AiSidebarContent = ({navTokens, selectedTokens, setSelectedTokens}) => {
             <Stack
                 gap={2.5}
             >
-                {/* <BulletText>
-                    Select the tokens you want more insight on and click the Ask AI button to receive an in-depth breakdown of the selected tokens.
-                </BulletText> */}
                 <FlexBox
                     justifyContent="space-evenly"
                 >

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Box, Button, Stack, Typography } from '@mui/material';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import colors from '../utils/colors';
 
@@ -61,8 +60,6 @@ const ViewDemoBtn = styled(Button)(() => ({
 
 const DemoOptionSelection = () => {
 
-    // Constants
-
     // State Variables
     const [selectedFile, setSelectedFile] = useState("NavToken.cs");
 
@@ -70,13 +67,6 @@ const DemoOptionSelection = () => {
     const handleFileClick = (value) => {
         setSelectedFile(value);
     };
-
-    // Use Effects
-    useEffect(() => {
-        
-    }, []);
-
-    // API Calls
 
     return (
         <PageContainer>

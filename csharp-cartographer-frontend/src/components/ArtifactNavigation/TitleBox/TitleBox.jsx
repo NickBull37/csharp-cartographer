@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from "axios";
 import { styled } from '@mui/material/styles';
-import { Box, Stack, Paper, Typography, Tooltip, IconButton, Divider } from '@mui/material';
-import { Accordion, AccordionActions, AccordionSummary, AccordionDetails, Button } from '@mui/material';
-import TodayIcon from '@mui/icons-material/Today';
-import FeedOutlinedIcon from '@mui/icons-material/FeedOutlined';
+import { Box, Paper, Typography, Tooltip, Divider } from '@mui/material';
 import ApiIcon from '@mui/icons-material/Api';
 import colors from '../../../utils/colors';
 
 const TitleBoxContainer = styled(Box)(() => ({
     position: 'fixed',
     width: '99%',
-    // minHeight: '62px',
     marginTop: '1.5rem',
     marginRight: '0.75rem',
     marginLeft: '0.75rem',
@@ -23,7 +17,6 @@ const StyledPaper = styled(Paper)(() => ({
     boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.4), 0px 4px 5px 0px rgba(0, 0, 0, 0.28), 0px 1px 10px 0px rgba(0, 0, 0, 0.24)',
     padding: "0 8px 0 12px",
     color: "#fff",
-    // minHeight: '60px',
     minHeight: '50px',
     alignItems: "center",
 }));
@@ -32,60 +25,17 @@ const FlexBox = styled(Box)(() => ({
     display: 'flex',
 }));
 
-const FlexContainer = styled(Box)(() => ({
-    display: 'flex',
-    width: '100%',
-    height: '100%',
-    // padding: '8px'
-    // marginRight: 24,
-    // marginLeft: 24,
-}));
-
-// const GrowBox = styled(Box)(() => ({
-//     display: 'flex',
-//     flexGrow: 1
-// }));
-
-const TitleGreen = styled(Typography)(() => ({
-    fontSize: '1rem',
-    fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
-    color: '#00FFC7',
-}));
-
-const TitleGray = styled(Typography)(() => ({
-    fontSize: '1rem',
-    fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
-    color: '#fff',
-}));
-
 const TitleText = styled(Typography)(() => ({
     fontSize: '1rem',
     fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
     color: '#fff',
-    // '&:hover': {
-    //     backgroundColor: 'rgba(0, 230, 207, 0.15)',
-    //     borderRadius: '2px',
-    //     padding: '4px',
-    // },
 }));
 
 const DataText = styled(Typography)(() => ({
     fontSize: '0.875rem',
     fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
     color: '#e6e6e6',
-    // '&:hover': {
-    //     backgroundColor: 'rgba(0, 230, 207, 0.15)',
-    //     borderRadius: '2px',
-    //     padding: '4px',
-    // },
 }));
-
-// const TitleNoHoverText = styled(Typography)(() => ({
-//     fontSize: '18px',
-//     fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
-//     color: '#fff',
-//     lineHeight: '1.1',
-// }));
 
 const TitleBox = ({ artifactTitle, leftSidebarOpen, numTokens, numTags, numAncestors, generationTime }) => {
 
@@ -93,7 +43,6 @@ const TitleBox = ({ artifactTitle, leftSidebarOpen, numTokens, numTags, numAnces
         <TitleBoxContainer>
             <StyledPaper>
                 <FlexBox
-                    // justifyContent="space-between"
                     width="100%"
                 >
                     <FlexBox
@@ -121,7 +70,6 @@ const TitleBox = ({ artifactTitle, leftSidebarOpen, numTokens, numTags, numAnces
                     <FlexBox
                         flexGrow={1}
                         justifyContent="space-between"
-                        // gap={12}
                         sx={{
                             px: 2
                         }}
@@ -215,67 +163,6 @@ const TitleBox = ({ artifactTitle, leftSidebarOpen, numTokens, numTags, numAnces
 
                 </FlexBox>
             </StyledPaper>
-            {/* <StyledPaper>
-                <FlexBox gap={6}>
-                    <Stack justifyContent="space-evenly">
-                        <TitleSubGreen>
-                            Title
-                        </TitleSubGreen>
-                        <TitleText>
-                            {artifactTitle}
-                        </TitleText>
-                    </Stack>
-                    <Stack justifyContent="space-evenly">
-                        <TitleSubGreen>
-                            Language
-                        </TitleSubGreen>
-                        <TitleText>
-                            {artifactLanguage}
-                        </TitleText>
-                    </Stack>
-                    <Stack justifyContent="space-evenly">
-                        <TitleSubGreen>
-                            Artifact Type
-                        </TitleSubGreen>
-                        <Tooltip title="A model definition is a class that defines that properties of an entity, usually one that will be mapped to a database column. They may contain constructors but not often methods with logic that manipulates data.">
-                            <TitleText>
-                                {artifactType}
-                            </TitleText>
-                        </Tooltip>
-                    </Stack>
-                    <GrowBox />
-                    <Stack justifyContent="space-evenly">
-                        <TitleSubGreen>
-                            Date Created
-                        </TitleSubGreen>
-                        <FlexBox gap={1}>
-                            <TitleText>
-                                {formattedCreatedDate}
-                            </TitleText>
-                        </FlexBox>
-                    </Stack>
-                    <Stack justifyContent="space-evenly" alignItems="center">
-                        <TitleSubGreen>
-                            Artifact Insights
-                        </TitleSubGreen>
-                        <FlexBox gap={1}>
-                            <ApiIcon fontSize="small" sx={{ height: '18px', color: "#ff7733" }} />
-                            <TitleNoHoverText>
-                                3
-                            </TitleNoHoverText>
-                            <ApiIcon fontSize="small" sx={{ ml: 1.5, height: '18px', color: "#ff4dd2" }} />
-                            <TitleNoHoverText>
-                                6
-                            </TitleNoHoverText>
-                        </FlexBox>
-                    </Stack>
-                    <FlexBox>
-                        <IconButton>
-                            <FeedOutlinedIcon fontSize='large' sx={{ color: '#fff' }} />
-                        </IconButton>
-                    </FlexBox>
-                </FlexBox>
-            </StyledPaper> */}
         </TitleBoxContainer>
     );
 }

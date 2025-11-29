@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navbar } from "./components";
-import { DemoUploadChoice, DemoOptionSelection, CartographerDemo, UserCodeUpload, UserCodeStaging, UserCodeCartograph } from "./pages";
+import { DemoUploadChoice, DemoOptionSelection, CartographerDemo, UserCodeUpload, UserCodeStaging, UserCodeCartograph, CartographerLandingPage } from "./pages";
 
 function App() {
 
@@ -15,6 +15,8 @@ function App() {
         <BrowserRouter>
             <Navbar />
             <Routes>
+                <Route path="/landing-page" element={<CartographerLandingPage />} />
+
                 <Route path="/" element={<DemoUploadChoice />} />
                 <Route path="/demo-options" element={<DemoOptionSelection />} />
                 <Route path="/cartographer-demo" element={<CartographerDemo />} />
@@ -22,7 +24,6 @@ function App() {
                 <Route path="/upload" element={<UserCodeUpload setArtifact={setArtifact} />} />
                 <Route path="/staging" element={<UserCodeStaging artifact={artifact} />} />
                 <Route path="/cartograph" element={<UserCodeCartograph artifact={artifact} />} />
-                {/* <Route path="/landing-page" element={<LandingPage />} /> */}
             </Routes>
         </BrowserRouter>
     );

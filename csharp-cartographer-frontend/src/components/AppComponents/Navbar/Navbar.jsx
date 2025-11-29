@@ -1,12 +1,11 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { Box, Divider } from '@mui/material';
+import { Box } from '@mui/material';
 import { AppBar, Toolbar, IconButton, Avatar, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
-import { compass, compass3, compass4, cartographer, orgCartographer, newCartographer } from '../../../utils/constants';
+import { compass3, newCartographer } from '../../../utils/constants';
 import colors from '../../../utils/colors';
 
 const StyledAppBar = styled(AppBar)(() => ({
@@ -53,6 +52,7 @@ const Navbar = () => {
                             <img className='cartographer-logo' src={newCartographer} height={33} />
                         </Box>
                     </Link>
+
                     <FlexBox
                         flexGrow={1}
                         justifyContent="flex-end"
@@ -107,8 +107,10 @@ const Navbar = () => {
                             </Avatar>
                         </FlexBox>
                     </FlexBox>
+
                 </Toolbar>
             </StyledAppBar>
+
             <Toolbar variant="dense" />
         </Box>
     );

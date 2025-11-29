@@ -1,7 +1,7 @@
 //#########################################################################################//
 //################################  C# CARTOGRAPHER PAGES  ################################//
 //#########################################################################################//
-// export { default as LandingPage } from './LandingPage';
+export { default as CartographerLandingPage } from './CartographerLandingPage';
 export { default as DemoUploadChoice } from './DemoUploadChoice';
 export { default as DemoOptionSelection } from './DemoOptionSelection';
 export { default as CartographerDemo } from './CartographerDemo';

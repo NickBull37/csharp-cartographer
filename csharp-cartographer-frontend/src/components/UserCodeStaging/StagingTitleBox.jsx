@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { styled } from '@mui/material/styles';
-import { Box, Paper, Typography, Button } from '@mui/material';
+import { Box, Paper, Button } from '@mui/material';
 import { TextField, InputLabel, Select, FormControl, MenuItem } from '@mui/material';
 import colors from '../../utils/colors';
 
@@ -16,7 +15,6 @@ const TitleBoxContainer = styled(Box)(() => ({
 const StyledPaper = styled(Paper)(() => ({
     alignItems: 'center',
     backgroundColor: colors.gray25,
-    //boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)',
     boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.4), 0px 4px 5px 0px rgba(0, 0, 0, 0.28), 0px 1px 10px 0px rgba(0, 0, 0, 0.24)',
     padding: "6px 12px",
     color: "#fff",
@@ -32,16 +30,8 @@ const GrowBox = styled(Box)(() => ({
     flexGrow: 1
 }));
 
-const TitleSubGreen = styled(Typography)(() => ({
-    fontSize: '0.75rem',
-    fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
-    color: '#00FFC7',
-    padding: '0 4px',
-}));
-
 const SaveArtifactBtn = styled(Button)(() => ({
     color: '#fff',
-    //backgroundColor: '#00b38c',
     background: 'linear-gradient(to right, #006650, #00cca0)',
     boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)',
     padding: '4px 12px 2px 12px',
@@ -74,9 +64,6 @@ const StyledTextField = styled(TextField)(() => ({
         },
         backgroundColor: '#595959',  // Input background color
     },
-    // '& .MuiInputLabel-root': {
-    //     color: '#ff7733',  // Label color
-    // },
     '& .MuiInputLabel-root.Mui-focused': {
         color: '#00FFC7',  // Label color when focused
         fontFamily: 'Consolas, Input, DejaVu Sans Mono',

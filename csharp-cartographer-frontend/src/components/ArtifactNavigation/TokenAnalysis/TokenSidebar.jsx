@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from "axios";
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Box, Stack, Typography, Divider } from '@mui/material';
+import { Box, Typography, Divider } from '@mui/material';
 import { Drawer, IconButton, List } from '@mui/material';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-import BlurCircularIcon from '@mui/icons-material/BlurCircular';
 import { TokenSidebarContent } from "../../../components";
 import colors from '../../../utils/colors';
 
@@ -16,17 +14,17 @@ const FlexBox = styled(Box)(() => ({
 const CustomDrawer = styled(Drawer)(() => ({
     '& .MuiDrawer-paper': {
         '&::-webkit-scrollbar': {
-            width: '4px', // Width of the scrollbar
+            width: '4px', // width of the scrollbar
         },
         '&::-webkit-scrollbar-track': {
-            backgroundColor: '#333333', // Track color
-            borderRadius: '10px', // Rounded corners for the track
+            backgroundColor: '#333333', // track color
+            borderRadius: '10px', // rounded corners for the track
         },
         '&::-webkit-scrollbar-thumb': {
-            backgroundColor: '#555555', // Thumb color
-            borderRadius: '10px', // Rounded corners for the thumb
+            backgroundColor: '#555555', // thumb color
+            borderRadius: '10px', // rounded corners for the thumb
             '&:hover': {
-                backgroundColor: '#888888', // Thumb color on hover
+                backgroundColor: '#888888', // thumb color on hover
             },
         },
     },
@@ -42,7 +40,6 @@ const TokenSidebar = ({ navTokens, activeToken, setActiveToken, activeHighlightI
 
     return (
         <div>
-            {/* Drawer (Sidebar) */}
             <CustomDrawer
                 variant="permanent"
                 anchor="right"
@@ -50,14 +47,14 @@ const TokenSidebar = ({ navTokens, activeToken, setActiveToken, activeHighlightI
                 sx={{
                     flexShrink: 0,
                     '& .MuiDrawer-paper': {
-                        width: drawerOpen ? 390 : 50, // Full width when open, 50px when collapsed
+                        width: drawerOpen ? 390 : 50, // full width when open, 50px when collapsed
                         boxSizing: 'border-box',
                         transition: 'width 0.3s',
-                        top: '140px', // Set to 150px to create a gap below the existing AppBar & TitleBox
-                        height: 'calc(100% - 140px)', // Adjust height to fit screen and allow scrolling
+                        top: '140px', // set to 150px to create a gap below the existing AppBar & TitleBox
+                        height: 'calc(100% - 140px)', // adjust height to fit screen and allow scrolling
                         backgroundColor: colors.gray25,
                         color: '#fff',
-                        borderRadius: '4px 0px 0px 0px', // Rounded right edge
+                        borderRadius: '4px 0px 0px 0px', // rounded right edge
                         boxShadow: '0px 3px 5px -1px rgba(0, 0, 0, 0.6), 0px 5px 6px 0px rgba(0, 0, 0, 0.36), 1px 2px 11px 0px rgba(0, 0, 0, 0.32)',
                         overflow: 'auto'
                     },
@@ -102,7 +99,9 @@ const TokenSidebar = ({ navTokens, activeToken, setActiveToken, activeHighlightI
                             <KeyboardDoubleArrowLeftIcon />
                         </IconButton>
                 }
+
                 <Divider sx={{ bgcolor: '#808080' }} />
+
                 {!drawerOpen
                     ?
                         <Box
@@ -116,7 +115,7 @@ const TokenSidebar = ({ navTokens, activeToken, setActiveToken, activeHighlightI
                                     position: 'absolute',
                                     top: '47%',
                                     left: '50%',
-                                    transform: 'translate(-50%, -50%) rotate(-90deg)', // Center and rotate text
+                                    transform: 'translate(-50%, -50%) rotate(-90deg)', // center and rotate text
                                     whiteSpace: 'nowrap',
                                     fontSize: '1.25rem',
                                     textShadow: '1px 1px 2px #000, 0 0 16px #333333, 0 0 5px #1a1a1a',
@@ -124,9 +123,6 @@ const TokenSidebar = ({ navTokens, activeToken, setActiveToken, activeHighlightI
                                 >
                                 Token Analysis
                             </Typography>
-                            {/* <BlurCircularIcon
-
-                            /> */}
                         </Box>
                     :
                         <TokenSidebarContent

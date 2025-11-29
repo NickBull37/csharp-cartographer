@@ -1,29 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from "axios";
 import { styled } from '@mui/material/styles';
-import { Box, Stack, Paper, Typography, Divider, TextField } from '@mui/material';
-import { Drawer, AppBar, Toolbar, IconButton, List, ListItem, ListItemIcon, ListItemText, Collapse } from '@mui/material';
-import { Menu as MenuIcon, ExpandLess, ExpandMore, Inbox as InboxIcon, Mail as MailIcon } from '@mui/icons-material';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-import { StructureContent } from "..";
-import colors from '../../utils/colors';
+import { Stack, Typography, TextField } from '@mui/material';
 
 const TitleText = styled(Typography)(() => ({
     fontFamily: 'Consolas, Input, DejaVu Sans Mono',
     fontSize: '18px',
     color: '#00FFC7',
     marginBottom: '4px'
-}));
-
-const FlexBox = styled(Box)(() => ({
-    display: 'flex',
-}));
-
-const ContentContainer = styled(Box)(() => ({
-    display: 'flex',
-    padding: '8px',
-    height: '82%',
 }));
 
 const StagingLeftSidebarContent = ({artifactTemplateDescription, setArtifactTemplateDescription}) => {

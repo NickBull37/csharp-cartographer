@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { TitleBox, StructureSidebar, TokenSidebar, CodeWindow } from "../components";
 
 const UserCodeCartograph = ({artifact}) => {
-
-    // Constants
 
     // TitleBox State Variables
     const [artifactTitle, setArtifactTitle] = useState('');
@@ -28,9 +26,6 @@ const UserCodeCartograph = ({artifact}) => {
     // Right sidebar state variables
     const [activeToken, setActiveToken] = useState();
     
-    // Event Handlers
-    
-
     // Use Effects
     useEffect(() => {
         
@@ -50,14 +45,6 @@ const UserCodeCartograph = ({artifact}) => {
 
     return (
         <Box>
-
-            {/* <TitleBox
-                artifactTitle={artifactTitle}
-                artifactLanguage={artifactLanguage}
-                artifactType={artifactType}
-                dateCreated={dateCreated}
-                artifactDescription={artifactDescription}
-            /> */}
 
             <TitleBox
                 artifactTitle={artifactTitle}

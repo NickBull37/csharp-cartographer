@@ -1,24 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from "axios";
-import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 import { TitleBox, AiSidebar, TokenSidebar, CodeWindow } from "../components";
-// import { TitleBox, StructureDrawer, AiDrawer, TokenDrawer, CodeBox } from "../components";
-
-const FlexBox = styled(Box)(() => ({
-    display: 'flex',
-}));
-
-const PageContainer = styled(Box)(() => ({
-
-}));
 
 const CartographerDemo = () => {
 
     // Constants
     const [searchParams] = useSearchParams();
-    const selectedFile = searchParams.get('file'); // Get the 'file' query parameter
+    const selectedFile = searchParams.get('file');
 
     // TitleBox State Variables
     const [artifactTitle, setArtifactTitle] = useState('');

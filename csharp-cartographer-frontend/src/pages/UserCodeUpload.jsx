@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { styled } from '@mui/material/styles';
-import { Box, Stack, Button, IconButton, Typography, TextField } from '@mui/material';
+import { Box, Stack, Button, IconButton, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import CloseIcon from '@mui/icons-material/Close';
@@ -68,9 +68,9 @@ const UserCodeUpload = ({setArtifact}) => {
 
             const reader = new FileReader();
             reader.onload = (e) => {
-                setFileContent(e.target.result); // Save the file content
+                setFileContent(e.target.result);
             };
-            reader.readAsText(file); // Read the file content as text
+            reader.readAsText(file);
         }
     };
 
@@ -82,19 +82,17 @@ const UserCodeUpload = ({setArtifact}) => {
     };
 
     const handleGenerateFromFile = () => {
-        // Send API request
         GenerateArtifact();
     };
 
     // Use Effects
     useEffect(() => {
-        setGenerateFileBtnEnabled(!!fileName); // Enable button if file is provided
+        setGenerateFileBtnEnabled(!!fileName);
     }, [fileName]);
 
     // API Calls
     async function GenerateArtifact() {
         try {
-            // Create artifact
             const response = await axios.post("https://localhost:44300/Artifact/generate-artifact", {
                 fileName: fileName,
                 fileContent: fileContent
@@ -188,7 +186,7 @@ const UserCodeUpload = ({setArtifact}) => {
                                 mt: 4
                             }}
                         >
-                            Generate NavDoc
+                            Map Source File
                         </GenerateButton>
                     </Stack>
                 </Stack>

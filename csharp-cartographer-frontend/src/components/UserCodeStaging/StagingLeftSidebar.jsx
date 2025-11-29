@@ -1,26 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { Box, Stack, Paper, Typography, TextField, Divider, List, Drawer, IconButton } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import SettingsIcon from '@mui/icons-material/Settings';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import { Box, Typography, Divider, List, Drawer, IconButton } from '@mui/material';
 import { StagingLeftSidebarContent } from "../../components";
 import colors from '../../utils/colors';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-
-const SideBarPaper = styled(Paper)(() => ({
-    backgroundColor: '#4d4d4d',
-    boxShadow: "0px 2px 10px 0.6px #1a1a1a",
-    padding: "12px 16px",
-    color: "#fff",
-    height: "525px",
-    width: "300px",
-    position: "fixed",
-    left: 30,
-    top: 155
-}));
 
 const FlexBox = styled(Box)(() => ({
     display: 'flex',
@@ -43,13 +26,6 @@ const CustomDrawer = styled(Drawer)(() => ({
             },
         },
     },
-}));
-
-const TitleText = styled(Typography)(() => ({
-    fontFamily: 'Consolas, Input, DejaVu Sans Mono',
-    fontSize: '18px',
-    color: '#00FFC7',
-    marginBottom: '4px'
 }));
 
 const StagingLeftSidebar = ({leftSideBarOpen, setLeftSideBarOpen, artifactTemplateDescription, setArtifactTemplateDescription}) => {

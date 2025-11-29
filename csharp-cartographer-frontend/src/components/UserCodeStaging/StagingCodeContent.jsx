@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
 
 const CodeContainer = styled(Box)(() => ({
     display: 'flex',
     paddingTop: '7rem',
-    // height: '100%',
-    // width: '55%',
 }));
 
 const FlexBox = styled(Box)(() => ({
@@ -31,7 +29,6 @@ const LineNumberText = styled(Typography)(() => ({
 const StagingCodeContent = ({ leftSideBarOpen, navTokens, activeToken, setActiveToken }) => {
 
     // Constants
-    // Find the index of the activeToken in the tokenList
     const activeTokenIndex = navTokens.findIndex(token => token === activeToken);
 
     // State Variables
@@ -74,13 +71,6 @@ const StagingCodeContent = ({ leftSideBarOpen, navTokens, activeToken, setActive
         setActiveToken(navTokens[index]);
     };
 
-    // Use Effects
-    // useEffect(() => {
-        
-    // }, []);
-
-    // API Calls
-
     // Common styling configuration
     const codeStyle = {
         fontFamily: 'Consolas, Input, DejaVu Sans Mono',
@@ -107,8 +97,8 @@ const StagingCodeContent = ({ leftSideBarOpen, navTokens, activeToken, setActive
     return (
         <CodeContainer>
             <FlexBox
-                onMouseUp={handleMouseUp} // Ensure mouse up is handled at the FlexBox level
-                className="disable-text-selection" // Disable text selection
+                onMouseUp={handleMouseUp}
+                className="disable-text-selection"
             >
                 <FlexBox
                     sx={{
@@ -128,6 +118,7 @@ const StagingCodeContent = ({ leftSideBarOpen, navTokens, activeToken, setActive
                             </LineNumberText>
                         ))}
                     </LineNumberBox>
+
                     <Typography
                         sx={{
                             lineHeight: 'inherit',
@@ -161,7 +152,7 @@ const StagingCodeContent = ({ leftSideBarOpen, navTokens, activeToken, setActive
                         
                                 // If the trivia contains multiple spaces, render them inside a span with "pad-token code"
                                 if (triviaItem.includes(' ')) {
-                                    const spaceCount = triviaItem.length; // Double the spaces as requested
+                                    const spaceCount = triviaItem.length;
                                     return (
                                         <span key={`trivia-${index}-${triviaIndex}`} className="pad-token code">
                                             {Array(spaceCount).fill('\u00A0')}

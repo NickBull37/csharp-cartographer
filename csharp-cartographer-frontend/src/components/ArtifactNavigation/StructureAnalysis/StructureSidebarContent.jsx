@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from "axios";
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Stack, Typography } from '@mui/material';
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
@@ -26,11 +25,10 @@ const BlueAccordion = styled(Accordion)(() => ({
     },
 }));
 const BlueAccordionSummary = styled(AccordionSummary)(() => ({
-    // fontFamily: '#000',
     backgroundColor: 'rgba(70, 147, 210, 0.5)',
     '&.Mui-expanded': {
-        minHeight: '42px', // Limit height to 30px when expanded
-        maxHeight: '42px', // Ensure height does not exceed 30px
+        minHeight: '42px',
+        maxHeight: '42px',
         backgroundColor: 'rgba(70, 147, 210, 0.5)',
         borderBottom: '1px solid #235f90',
     },
@@ -47,8 +45,8 @@ const GreenAccordion = styled(Accordion)(() => ({
 const GreenAccordionSummary = styled(AccordionSummary)(() => ({
     backgroundColor: 'rgba(60, 195, 168, 0.25)',
     '&.Mui-expanded': {
-        minHeight: '42px', // Limit height to 30px when expanded
-        maxHeight: '42px', // Ensure height does not exceed 30px
+        minHeight: '42px',
+        maxHeight: '42px',
         backgroundColor: 'rgba(60, 195, 168, 0.25)',
         borderBottom: '1px solid #309c86',
     },
@@ -65,8 +63,8 @@ const LightGreenAccordion = styled(Accordion)(() => ({
 const LightGreenAccordionSummary = styled(AccordionSummary)(() => ({
     backgroundColor: 'rgba(128, 201, 79, 0.35)',
     '&.Mui-expanded': {
-        minHeight: '42px', // Limit height to 30px when expanded
-        maxHeight: '42px', // Ensure height does not exceed 30px
+        minHeight: '42px',
+        maxHeight: '42px',
         backgroundColor: 'rgba(128, 201, 79, 0.3)',
         borderBottom: '1px solid #5b9c30',
     },
@@ -83,8 +81,8 @@ const YellowAccordion = styled(Accordion)(() => ({
 const YellowAccordionSummary = styled(AccordionSummary)(() => ({
     backgroundColor: 'rgba(220, 220, 170, 0.3)',
     '&.Mui-expanded': {
-        minHeight: '42px', // Limit height to 30px when expanded
-        maxHeight: '42px', // Ensure height does not exceed 30px
+        minHeight: '42px',
+        maxHeight: '42px',
         backgroundColor: 'rgba(220, 220, 170, 0.3)',
         borderBottom: '1px solid #cbcb80',
     },
@@ -101,8 +99,8 @@ const RedAccordion = styled(Accordion)(() => ({
 const RedAccordionSummary = styled(AccordionSummary)(() => ({
     backgroundColor: 'rgba(255, 102, 102, 0.25)',
     '&.Mui-expanded': {
-        minHeight: '42px', // Limit height to 30px when expanded
-        maxHeight: '42px', // Ensure height does not exceed 30px
+        minHeight: '42px',
+        maxHeight: '42px',
         backgroundColor: 'rgba(255, 102, 102, 0.25)',
         borderBottom: '1px solid #ff6666',
     },
@@ -119,8 +117,8 @@ const PurpleAccordion = styled(Accordion)(() => ({
 const PurpleAccordionSummary = styled(AccordionSummary)(() => ({
     backgroundColor: 'rgba(194, 102, 255, 0.2)',
     '&.Mui-expanded': {
-        minHeight: '42px', // Limit height to 30px when expanded
-        maxHeight: '42px', // Ensure height does not exceed 30px
+        minHeight: '42px',
+        maxHeight: '42px',
         backgroundColor: 'rgba(194, 102, 255, 0.2)',
         borderBottom: '1px solid #c266ff',
     },
@@ -135,8 +133,6 @@ const BulletText = styled(Typography)(() => ({
     fontSize: '0.875rem',
     color: colors.gray85,
 }));
-
-//ss_navigator._05.Services
 
 const StructureSidebarContent = () => {
 
@@ -167,7 +163,6 @@ const StructureSidebarContent = () => {
                             <Typography
                                 sx={{
                                     fontFamily: 'Consolas, Input, DejaVu Sans Mono',
-                                    //fontSize: '0.875rem',
                                     color: '#fff',
                                     mb: 0.75,
                                     textAlign: 'center'
@@ -186,7 +181,6 @@ const StructureSidebarContent = () => {
                                 sx={{
                                     p: 0.75,
                                     mt: 1,
-                                    // border: '1px solid #00e6cf',
                                     borderRadius: '4px',
                                     backgroundColor: colors.gray35,
                                 }}
@@ -227,7 +221,6 @@ const StructureSidebarContent = () => {
                                                 sx={{
                                                     p: 0.75,
                                                     mt: 1,
-                                                    // border: '1px solid #00e6cf',
                                                     borderRadius: '4px',
                                                     backgroundColor: '#666666',
                                                 }}
@@ -271,7 +264,6 @@ const StructureSidebarContent = () => {
                                                                 sx={{
                                                                     p: 0.75,
                                                                     mt: 1,
-                                                                    // border: '1px solid #00e6cf',
                                                                     borderRadius: '4px',
                                                                     backgroundColor: '#666666',
                                                                 }}
@@ -317,7 +309,6 @@ const StructureSidebarContent = () => {
                                                                 sx={{
                                                                     p: 0.75,
                                                                     mt: 1,
-                                                                    // border: '1px solid #00e6cf',
                                                                     borderRadius: '4px',
                                                                     backgroundColor: '#666666',
                                                                 }}
@@ -367,7 +358,6 @@ const StructureSidebarContent = () => {
                                                 sx={{
                                                     p: 0.75,
                                                     mt: 1,
-                                                    // border: '1px solid #00e6cf',
                                                     borderRadius: '4px',
                                                     backgroundColor: '#666666',
                                                 }}
@@ -411,7 +401,6 @@ const StructureSidebarContent = () => {
                                                                 sx={{
                                                                     p: 0.75,
                                                                     mt: 1,
-                                                                    // border: '1px solid #00e6cf',
                                                                     borderRadius: '4px',
                                                                     backgroundColor: '#666666',
                                                                 }}
@@ -457,7 +446,6 @@ const StructureSidebarContent = () => {
                                                                 sx={{
                                                                     p: 0.75,
                                                                     mt: 1,
-                                                                    // border: '1px solid #00e6cf',
                                                                     borderRadius: '4px',
                                                                     backgroundColor: '#666666',
                                                                 }}
@@ -503,7 +491,6 @@ const StructureSidebarContent = () => {
                                                                 sx={{
                                                                     p: 0.75,
                                                                     mt: 1,
-                                                                    // border: '1px solid #00e6cf',
                                                                     borderRadius: '4px',
                                                                     backgroundColor: '#666666',
                                                                 }}
@@ -549,7 +536,6 @@ const StructureSidebarContent = () => {
                                                                 sx={{
                                                                     p: 0.75,
                                                                     mt: 1,
-                                                                    // border: '1px solid #00e6cf',
                                                                     borderRadius: '4px',
                                                                     backgroundColor: '#666666',
                                                                 }}
@@ -567,6 +553,7 @@ const StructureSidebarContent = () => {
                         </Stack>
                     </StyledAccordionDetails>
                 </BlueAccordion>
+
                 <FlexBox
                     sx={{
                         minHeight: '8px'

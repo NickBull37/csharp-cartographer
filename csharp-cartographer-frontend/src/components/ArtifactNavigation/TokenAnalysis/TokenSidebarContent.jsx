@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Stack, Typography, IconButton, Tooltip, Divider } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -8,13 +8,6 @@ import ExploreIcon from '@mui/icons-material/Explore';
 
 import colors from '../../../utils/colors';
 
-const FlexBox = styled(Box)(() => ({
-    display: 'flex',
-}));
-const FlexBoxCenterX = styled(Box)(() => ({
-    display: 'flex',
-    justifyContent: 'center',
-}));
 const FlexBoxCenterY = styled(Box)(() => ({
     display: 'flex',
     alignItems: 'center',
@@ -22,15 +15,12 @@ const FlexBoxCenterY = styled(Box)(() => ({
 
 const ContentContainer = styled(Box)(() => ({
     display: 'flex',
-    // padding: '8px 12px',
-    //height: '82%',
 }));
 
 const OrangeBox = styled(Box)(() => ({
     padding: '12px 12px',
     //border: '1px solid rgba(255, 136, 77, 0.7)',
     borderRadius: '4px',
-    // backgroundColor: 'rgba(255, 187, 153, 0.175)'
     backgroundColor: 'rgba(204, 82, 0, 0.175)',
     marginBottom: '4px',
 }));
@@ -45,7 +35,6 @@ const TealBox = styled(Box)(() => ({
 const GrayBox = styled(Box)(() => ({
     padding: '12px 12px',
     borderRadius: '4px',
-    // backgroundColor: colors.gray20,
     backgroundColor: 'rgba(51, 51, 51, 0.575)',
     marginBottom: '4px',
 }));
@@ -55,7 +44,6 @@ const TagDefinitionBox = styled(Box)(() => ({
     borderRadius: '4px',
     backgroundColor: colors.gray30,
     border: '1px solid #333333',
-    // backgroundColor: 'rgba(51, 51, 51, 0.8)'
 }));
 
 const TokenText = styled(Typography)(() => ({
@@ -71,13 +59,6 @@ const BoxText = styled(Typography)(() => ({
     fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
     fontSize: '13px',
     letterSpacing: '0.04em',
-    color: colors.gray95
-}));
-
-const BoxTextOptionsLabel = styled(Typography)(() => ({
-    fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
-    fontSize: '12px',
-    letterSpacing: '0.03em',
     color: colors.gray95
 }));
 
@@ -127,14 +108,14 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
 
         let nextIndex = activeTokenIndex + 1;
 
-        // Loop to skip any tokens that are just spaces
+        // loop to skip any tokens that are just spaces
         while (nextIndex < navTokens.length
             && (navTokens[nextIndex].text.trim() === ""
             || navTokens[nextIndex].text === "<newline>")) {
             nextIndex++;
         }
 
-        // Check if the next valid token exists and set it as the active token
+        // check if the next valid token exists and set it as the active token
         if (nextIndex < navTokens.length) {
             setActiveToken(navTokens[nextIndex]);
         }
@@ -147,14 +128,14 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
 
         let prevIndex = activeTokenIndex - 1;
 
-        // Loop to skip any tokens that are just spaces
+        // loop to skip any tokens that are just spaces
         while (prevIndex >= 0
             && (navTokens[prevIndex].text.trim() === ""
             || navTokens[prevIndex].text === "<newline>")) {
             prevIndex--;
         }
 
-        // Check if the previous valid token exists and set it as the active token
+        // check if the previous valid token exists and set it as the active token
         if (prevIndex >= 0) {
             setActiveToken(navTokens[prevIndex]);
         }
@@ -165,7 +146,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
             setActiveTag(null);
         }
         else {
-            setActiveTag(tag); // Update the active tag on click
+            setActiveTag(tag); // update the active tag on click
         }
     };
 
@@ -184,13 +165,13 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
             setActiveChart(null);
         }
         else {
-            setActiveChart(chart); // Update the active chart on click
+            setActiveChart(chart); // update the active chart on click
         }
     };
 
     // Use Effects
     useEffect(() => {
-        if (activeToken) { // Check if activeToken is not null or undefined
+        if (activeToken) { // check activeToken is not null or undefined
             setTokenText(activeToken.text || '');
             setTokenLabel(activeToken.label || '');
             setTokenClassification(activeToken.type || '');
@@ -200,7 +181,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
             setTokenTags(activeToken.tags || []);
             setCharts(activeToken.charts || []);
         } else {
-            // If activeToken is null or undefined, reset states
+            // if activeToken is null or undefined, reset states
             setTokenText('');
             setTokenLabel('');
             setTokenClassification('');
@@ -212,10 +193,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
         }
     }, [activeToken]);
 
-    // useEffect(() => {
-    //     setActiveHighlightIndices(activeHighlightValues);
-    // }, [activeHighlightValues]);
-
     return (
         <ContentContainer>
             <Stack
@@ -223,7 +200,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                     width: '100%',
                 }}
             >
-                {/* button TOKEN button */}
                 <FlexBoxCenterY
                     justifyContent="space-between"
                     sx={{
@@ -288,15 +264,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                     </Tooltip>
                 </FlexBoxCenterY>
 
-
-
-
-
-
-
-
-
-
                 <Stack
                     mb={1}
                 >
@@ -326,17 +293,9 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             >
                                 Pins
                             </Typography>
-                            {/* <Tooltip
-                                title="Tags are added to tokens when specific language element criteria are met. Tags provide textbook definitions for basic language elements."
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" className="bi bi-info-circle bootstrap-icon-fill-gray" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                                </svg>
-                            </Tooltip> */}
                         </Box>
                     </Tooltip>
-                    {/* <Divider sx={{ bgcolor: '#808080' }} /> */}
+
                     {tokenTags.map((tag, index) => (
                         <Stack
                             className={`${tag.borderClass} ${tag.bgColorClass}`}
@@ -464,19 +423,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                                             px: 4
                                                                         }}
                                                                     >
-                                                                        {/* {option.label !== null
-                                                                            ?
-                                                                                <BoxText
-                                                                                    sx={{
-                                                                                        color: colors.gray95,
-                                                                                        mb: 0.25
-                                                                                    }}
-                                                                                >
-                                                                                    {option.label}:
-                                                                                </BoxText>
-                                                                            :
-                                                                                <></>
-                                                                        } */}
                                                                         <Typography
                                                                             style={{
                                                                                 whiteSpace: 'pre-wrap', // keeps double spaces in text string
@@ -505,13 +451,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                         </Stack>
                     ))}
                 </Stack>
-
-
-
-
-
-
-
 
                 <Stack
                     my={2}
@@ -542,17 +481,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                 >
                                     Charts
                                 </Typography>
-                                {/* <Tooltip
-                                    title="The uploaded C# source code has been parsed into a syntax tree using the Micrsoft.CodeAnalysis.CSharp (&quot;Roslyn&quot;) library. This syntax tree is then parsed to create the &quot;navigation&quot; tokens displayed on the screen. The following charts provide facts & insights on each token's ancestor nodes in the syntax tree. Click the compass icon to highlight the ancestor tokens in the source code."
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" className="bi bi-info-circle bootstrap-icon-fill-gray" viewBox="0 0 16 16">
-                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                                    </svg>
-                                </Tooltip> */}
                             </Box>
                         </Tooltip>
-                        {/* <Divider sx={{ bgcolor: '#808080' }} /> */}
                         {charts.map((chart, index) => (
                             <Stack
                                 className='chart-border-gray chart-bg-gray'
@@ -647,13 +577,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                                     >
                                                                         <Box>
                                                                             <Tooltip title="Also called">
-                                                                            {/* <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" className="bi bi-fingerprint bootstrap-icon-fill" viewBox="0 0 16 16">
-                                                                                <path d="M8.06 6.5a.5.5 0 0 1 .5.5v.776a11.5 11.5 0 0 1-.552 3.519l-1.331 4.14a.5.5 0 0 1-.952-.305l1.33-4.141a10.5 10.5 0 0 0 .504-3.213V7a.5.5 0 0 1 .5-.5Z"/>
-                                                                                <path d="M6.06 7a2 2 0 1 1 4 0 .5.5 0 1 1-1 0 1 1 0 1 0-2 0v.332q0 .613-.066 1.221A.5.5 0 0 1 6 8.447q.06-.555.06-1.115zm3.509 1a.5.5 0 0 1 .487.513 11.5 11.5 0 0 1-.587 3.339l-1.266 3.8a.5.5 0 0 1-.949-.317l1.267-3.8a10.5 10.5 0 0 0 .535-3.048A.5.5 0 0 1 9.569 8m-3.356 2.115a.5.5 0 0 1 .33.626L5.24 14.939a.5.5 0 1 1-.955-.296l1.303-4.199a.5.5 0 0 1 .625-.329"/>
-                                                                                <path d="M4.759 5.833A3.501 3.501 0 0 1 11.559 7a.5.5 0 0 1-1 0 2.5 2.5 0 0 0-4.857-.833.5.5 0 1 1-.943-.334m.3 1.67a.5.5 0 0 1 .449.546 10.7 10.7 0 0 1-.4 2.031l-1.222 4.072a.5.5 0 1 1-.958-.287L4.15 9.793a9.7 9.7 0 0 0 .363-1.842.5.5 0 0 1 .546-.449Zm6 .647a.5.5 0 0 1 .5.5c0 1.28-.213 2.552-.632 3.762l-1.09 3.145a.5.5 0 0 1-.944-.327l1.089-3.145c.382-1.105.578-2.266.578-3.435a.5.5 0 0 1 .5-.5Z"/>
-                                                                                <path d="M3.902 4.222a5 5 0 0 1 5.202-2.113.5.5 0 0 1-.208.979 4 4 0 0 0-4.163 1.69.5.5 0 0 1-.831-.556m6.72-.955a.5.5 0 0 1 .705-.052A4.99 4.99 0 0 1 13.059 7v1.5a.5.5 0 1 1-1 0V7a3.99 3.99 0 0 0-1.386-3.028.5.5 0 0 1-.051-.705M3.68 5.842a.5.5 0 0 1 .422.568q-.044.289-.044.59c0 .71-.1 1.417-.298 2.1l-1.14 3.923a.5.5 0 1 1-.96-.279L2.8 8.821A6.5 6.5 0 0 0 3.058 7q0-.375.054-.736a.5.5 0 0 1 .568-.422m8.882 3.66a.5.5 0 0 1 .456.54c-.084 1-.298 1.986-.64 2.934l-.744 2.068a.5.5 0 0 1-.941-.338l.745-2.07a10.5 10.5 0 0 0 .584-2.678.5.5 0 0 1 .54-.456"/>
-                                                                                <path d="M4.81 1.37A6.5 6.5 0 0 1 14.56 7a.5.5 0 1 1-1 0 5.5 5.5 0 0 0-8.25-4.765.5.5 0 0 1-.5-.865m-.89 1.257a.5.5 0 0 1 .04.706A5.48 5.48 0 0 0 2.56 7a.5.5 0 0 1-1 0c0-1.664.626-3.184 1.655-4.333a.5.5 0 0 1 .706-.04ZM1.915 8.02a.5.5 0 0 1 .346.616l-.779 2.767a.5.5 0 1 1-.962-.27l.778-2.767a.5.5 0 0 1 .617-.346m12.15.481a.5.5 0 0 1 .49.51c-.03 1.499-.161 3.025-.727 4.533l-.07.187a.5.5 0 0 1-.936-.351l.07-.187c.506-1.35.634-2.74.663-4.202a.5.5 0 0 1 .51-.49"/>
-                                                                            </svg> */}
                                                                             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" className="bi bi-layers bootstrap-icon-fill" viewBox="0 0 16 16">
                                                                                 <path d="M8.235 1.559a.5.5 0 0 0-.47 0l-7.5 4a.5.5 0 0 0 0 .882L3.188 8 .264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l2.922-1.559a.5.5 0 0 0 0-.882zm3.515 7.008L14.438 10 8 13.433 1.562 10 4.25 8.567l3.515 1.874a.5.5 0 0 0 .47 0zM8 9.433 1.562 6 8 2.567 14.438 6z"/>
                                                                             </svg>
