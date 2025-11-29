@@ -1,13 +1,508 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/********************************************************************************************************************************************
+*********************************************************** TABLE OF CONTENTS ***************************************************************
+********************************************************************************************************************************************/
+/*
+    1. ROOT VARIABLES
+        1.1 Colors
+        1.2 Text Size
+
+    2. DEFAULT STYLES
+        2.1 Default page styling
+        2.2 Default font styling
+        2.3 Default component styling
+        2.4 Additional fonts
+
+    3. GENERIC STYLES
+        3.1 Spacing
+        3.2 Color
+        3.3 Display
+        3.4 Typography
+
+    4. TYPOGRAPHY
+
+    5. FOOTER
+
+    6. MEDIA QUERIES
+        6.1 Tablet View
+        6.2 Mobile View
+*/
+
+/********************************************************************************************************************************************
+************************************************************ 1. ROOT VARIABLES **************************************************************
+********************************************************************************************************************************************/
+:root {
+
+    /* ----------------- 1.1 Colors ----------------- */
+    --white-100: #e6e6e6;
+    --white-200: #cccccc;
+    --white-300: #b3b3b3;
+    --white-400: #999999;
+
+    /* Color Palette */
+    --pal-primary: #000;
+    --pal-secondary: #000;
+    --pal-tertiary: #000;
+
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+
+/********************************************************************************************************************************************
+*********************************************************** 2. DEFAULT STYLES ***************************************************************
+********************************************************************************************************************************************/
+/* ------------------- 2.1 Default page styling ------------------- */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+html {
+    scroll-behavior: smooth!important;
+}
+
+body {
+    /* Set background color for entire site */
+    /* 15% */
+    background: #262626;
+
+    /* Set default text color for entire site */
+    color: #fff;
+}
+
+
+/********************************************************************************************************************************************
+*********************************************************** 3. GENERIC STYLES ***************************************************************
+********************************************************************************************************************************************/
+.bootstrap-icon-fill {
+    fill: #d9d9d9!important;
+}
+
+.bootstrap-icon-fill-code {
+    fill: #00e6cf!important;
+}
+
+.bootstrap-icon-fill-gray {
+    fill: #a6a6a6!important;
+}
+
+
+/********************************************************************************************************************************************
+************************************************************** 4. TYPOGRAPHY ****************************************************************
+********************************************************************************************************************************************/
+/* -------------------- 4.1 Additional Fonts --------------------- */
+@font-face {
+    font-family: 'Gravedigger';
+    src: local('Gravedigger'),
+         url('./fonts/Gravedigger.ttf') format('truetype');
+}
+
+
+/* ------------------- 4.1 Font Family Styling ------------------- */
+.code {
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace!important;
+}
+
+.text {
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif!important;
+}
+
+.gravedigger {
+    font-family: Gravedigger!important;
+}
+
+.titlebox-data {
+    font-size: 1.063rem;
+    color: #fff;
+    /* background-color: #333333;
+    padding: 2px 6px;
+    border-radius: 4px; */
+}
+
+/* ------------------- 2.2 Font Color Styling ------------------- */
+.color-white {
+    color: #fff!important;
+}
+.color-code {
+    color: #00e6cf;
+}
+.hashtag {
+    color: #fff!important;
+    font-size: 7.5rem;
+    font-weight: 900;
+}
+.hashtag-2 {
+    color: #fff!important;
+    font-size: 7.5rem;
+    font-weight: 900!important;
+    padding-right: 7px;
+    /* font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace!important; */
+}
+.cartographer {
+    background: linear-gradient(to right, #0e715e, #10d594);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 4rem;
+    font-family: Gravedigger!important;
+    letter-spacing: 1px;
+}
+.cartographer1 {
+    background: linear-gradient(to right, #0e715e, #10d594);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 4rem;
+    font-family: Gravedigger!important;
+    letter-spacing: 1px;
+}
+.cartographer2 {
+    background: linear-gradient(to right, #10d594, #118870);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 4rem;
+    font-family: Gravedigger!important;
+    letter-spacing: 1px;
+    text-shadow: '1px 1px 2px black, 0 0 20px #00b3a1, 0 0 5px #00665c'!important;
+}
+.net {
+    /* background: linear-gradient(to right, #ff3300, #ffa366); */
+    background: linear-gradient(to right, #10d594, #0e715e, #10d594);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 4rem;
+    font-family: Gravedigger!important;
+    letter-spacing: 1px;
+}
+.dot {
+    color: #fff!important;
+    font-size: 3rem;
+    font-weight: 900!important;
+    padding-right: 7px;
+    font-family: Gravedigger!important;
+    margin-top: 4px;
+}
+
+
+
+
+
+.code-gradient {
+    background: linear-gradient(to right, #0e715e, #10d594);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* font-style: italic!important; */
+}
+
+.code-gradient-2 {
+    background: linear-gradient(to right, #fff, #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: normal!important;
+}
+
+.title-hash {
+    font-style: italic;
+}
+
+/********************************************************************************************************************************************
+**************************************************************** 4. NAVBAR ******************************************************************
+********************************************************************************************************************************************/
+.nav-logo {
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px 0.2px #000!important;
+    z-index: 1000!important;
+}
+.nav-logo:hover {
+    border-radius: 4px;
+    box-shadow: 0px 2px 10px 0.7px #000!important;
+    z-index: 1000!important;
+}
+.cartographer-logo {
+    /* box-shadow: 0px 2px 6px 0.2px #000!important; */
+    z-index: 1000!important;
+    margin-left: 0.75rem;
+}
+.cartographer-logo:hover {
+    z-index: 1000!important;
+}
+
+
+
+/********************************************************************************************************************************************
+************************************************************* 5. CODE CONTENT ***************************************************************
+********************************************************************************************************************************************/
+/* ------------------- 5.1 Visual Studio Syntax Hightling ------------------- */
+.color-white {
+    color: #ffffff;
+}
+.color-gray {
+    color: #d9d9d9;
+}
+.color-dark-gray {
+    color: #808080;
+}
+.color-blue {
+    color: #6fabdc;
+}
+.color-light-blue {
+    color: #b3d1ff;
+}
+.color-dark-blue {
+    color: #008ae6;
+}
+.color-green {
+    color: #4ec9b0;
+}
+.color-light-green {
+    color: #b8d7a3;
+}
+.color-dark-green {
+    color: #539e47;
+}
+.color-purple {
+    color: #d8a0df;
+}
+.color-orange {
+    color: #d69d85;
+}
+.color-yellow {
+    color: #dcdcaa;
+}
+.color-jade {
+    color: #86c691;
+}
+.color-olive {
+    color: #b8d7a3;
+}
+.color-red {
+    color: #ff0000;
+}
+
+/* ------------------- 5.2 Active Token Styling ------------------- */
+.token-active {
+    box-shadow: 0 1px 5px 0 rgba(13, 13, 13, 0.35), 0 2px 8px 0 rgba(13, 13, 13, 0.35);
+    background-color: #4d4d4d;
+    padding: 0 3px 3px 3px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+.token-hover:hover {
+    box-shadow: 0px 0px 4px 0.1px rgba(0, 230, 207, 1);
+    background-color: #4d4d4d;
+    padding: 0 1px 3px 1px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+.pad-token {
+    padding: 0 1px 3px 1px;
+}
+.tag-highlight {
+    /* border-bottom: 1px solid #ff6600; */
+    background-color: rgba(255, 163, 102, 0.20);
+    padding-bottom: 3px;
+    /* padding: 0 1px 3px 1px; */
+    /* border-radius: 3px; */
+    /* box-shadow: 
+        0 -5px 5px -5px rgba(255, 163, 102, 1),
+        0  5px 5px -5px rgba(255, 163, 102, 1); */
+}
+
+
+
+/********************************************************************************************************************************************
+************************************************************ 5. TOKEN ANALYSIS **************************************************************
+********************************************************************************************************************************************/
+.active-white {
+    color: #ffffff;
+}
+.active-gray {
+    color: #d9d9d9;
+}
+.active-blue {
+    color: #6fabdc;
+}
+.active-light-blue {
+    color: #b3d1ff;
+}
+.active-dark-blue {
+    color: #008ae6;
+}
+.active-green {
+    color: #4ec9b0;
+}
+.active-light-green {
+    color: #b8d7a3;
+}
+.active-dark-green {
+    color: #539e47;
+}
+.active-purple {
+    color: #d8a0df;
+}
+.active-orange {
+    color: #d69d85;
+}
+.active-yellow {
+    color: #dcdcaa;
+}
+
+
+.tag-border-black {
+    border: 1px solid #000;
+}
+.tag-bg-black {
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+
+.tag-border-gray {
+    border: 1px solid #8c8c8c;
+}
+.tag-bg-gray {
+    background-color: rgba(128, 128, 128, 0.35);
+}
+
+
+.tag-border-purple {
+    border: 1px solid #b300b3;
+}
+.tag-bg-purple {
+    background-color: rgba(179, 0, 179, 0.2);
+}
+
+
+.tag-border-darkpurple {
+    border: 1px solid #9900cc;
+}
+.tag-bg-darkpurple {
+    background-color: rgba(134, 0, 179, 0.2);
+}
+
+
+.tag-border-jade {
+    border: 1px solid #00e6ac;
+}
+.tag-bg-jade {
+    background-color: rgba(0, 230, 172, 0.25);
+}
+.tag-option-jade {
+    color: #00e6ac;
+}
+
+
+.tag-border-darkjade {
+    border: 1px solid #009999;
+}
+.tag-bg-darkjade {
+    background-color: rgba(0, 102, 102, 0.25);
+}
+.tag-option-darkjade {
+    color: #008060;
+}
+
+
+.tag-border-lightblue {
+    border: 1px solid #33ccff;
+}
+.tag-bg-lightblue {
+    background-color: rgba(51, 204, 255, 0.25);
+}
+
+
+.tag-border-cyan {
+    border: 1px solid #00e6e6;
+}
+.tag-bg-cyan {
+    background-color: rgba(0, 255, 255, 0.25);
+}
+
+
+.tag-border-blue {
+    border: 1px solid #3366ff;
+}
+.tag-bg-blue {
+    background-color: rgba(51, 102, 255, 0.25);
+}
+.tag-options-blue {
+    color: #809fff;
+}
+
+
+.tag-border-orange {
+    border: 1px solid #ff6600;
+}
+.tag-bg-orange {
+    background-color: rgba(255, 102, 0, 0.2);
+}
+
+
+.tag-border-lightgreen {
+    border: 1px solid #00e64d;
+}
+.tag-bg-lightgreen {
+    background-color: rgba(0, 230, 77, 0.2);
+}
+
+
+.tag-border-green {
+    border: 1px solid #009933;
+}
+.tag-bg-green {
+    background-color: rgba(0, 153, 51, 0.2);
+}
+
+
+.tag-border-red {
+    border: 1px solid #b30000;
+}
+.tag-bg-red {
+    background-color: rgba(179, 0, 0, 0.2);
+}
+
+
+.tag-border-indigo {
+    border: 1px solid #004080;
+}
+.tag-bg-indigo {
+    background-color: rgba(0, 64, 128, 0.2);
+}
+
+
+.tag-border-yellow {
+    border: 1px solid #cca300;
+}
+.tag-bg-yellow {
+    background-color: rgba(204, 163, 0, 0.2);
+}
+
+
+
+.chart-border-gray {
+    border: 1px solid #666666;
+}
+.chart-bg-gray {
+    background-color: rgba(102, 102, 102, 0.2);
+}
+
+
+.dev-highlight {
+    box-shadow: 0px 0px 4px 0.1px rgba(255, 77, 210, 1);
+    /* color: #ff80df; */
+    background-color: #404040;
+    padding: 0 1px 3px 1px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+.disable-text-selection {
+    user-select: none!important; /* Standard property */
+    -webkit-user-select: none!important; /* Safari and Chrome */
+    -moz-user-select: none!important; /* Firefox */
+    -ms-user-select: none!important; /* Internet Explorer/Edge */
 }
