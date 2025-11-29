@@ -40,14 +40,12 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
         public Artifact ExecGenerateDemoArtifact(string fileName)
         {
-            // Step 0. Read in source code from demo file path & generate FileData.
             FileData fileData = _fileProcessor.ReadInTestFileData(fileName);
             return GenerateArtifact(fileData);
         }
 
         public Artifact ExecGenerateUserArtifact(GenerateArtifactDto requestDto)
         {
-            // Step 0. Read in source code from user uploaded file & generate FileData.
             FileData fileData = _fileProcessor.ReadInFileData(requestDto);
             return GenerateArtifact(fileData);
         }
@@ -57,6 +55,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             /*
              *   Steps to generate an artifact:
              * 
+             *   0. Read in source code from user uploaded file & generate FileData.
              *   1. Start stopwatch.
              *   2. Generate SyntaxTree with passed in FileData.
              *   3. Generate CompilationUnit with SyntaxTree.
@@ -104,6 +103,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             // Step 10. Add syntax highlighting for all NavTokens (should be last step in workflow).
             _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
 
+            // Step X. Log token list (optional)
             TokenLogger.LogTokenList(navTokens);
 
             // Step 11. Stop stopwatch.

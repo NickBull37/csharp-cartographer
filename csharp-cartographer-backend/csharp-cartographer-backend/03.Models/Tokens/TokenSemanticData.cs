@@ -3,7 +3,7 @@
 namespace csharp_cartographer_backend._03.Models.Tokens
 {
     // TODO: Rename to TokenSemanticData
-    public class SemanticData
+    public class TokenSemanticData
     {
         public ISymbol? Symbol { get; set; }
 

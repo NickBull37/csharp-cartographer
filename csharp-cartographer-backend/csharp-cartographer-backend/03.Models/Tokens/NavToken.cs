@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 namespace csharp_cartographer_backend._03.Models.Tokens
 {
     /// <summary>
-    ///     A model definition for the NavToken class.
+    ///     A Model Definition for the NavToken class.
     /// </summary>
     public class NavToken
     {
@@ -65,7 +65,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         /// <summary>The token's semantic data.</summary>
         [JsonIgnore]
-        public SemanticData? SemanticData { get; set; }
+        public TokenSemanticData? SemanticData { get; set; }
 
         /// <summary>A list of references to this token in the source code file.</summary>
         public List<string> References { get; set; } = [];
@@ -277,14 +277,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <param name="semanticModel">The semantic model generated from the source code.</param>
         /// <param name="node">The node the semantic data is reffering to.</param>
         /// <returns>The semantic data for the passed in node.</returns>
-        private static SemanticData? GetSemanticData(SemanticModel semanticModel, SyntaxNode? node)
+        private static TokenSemanticData? GetSemanticData(SemanticModel semanticModel, SyntaxNode? node)
         {
             if (node is null)
             {
                 return null;
             }
 
-            SemanticData semanticData = new();
+            TokenSemanticData semanticData = new();
             var symbolInfo = semanticModel.GetSymbolInfo(node);
 
             if (symbolInfo.Symbol != null)

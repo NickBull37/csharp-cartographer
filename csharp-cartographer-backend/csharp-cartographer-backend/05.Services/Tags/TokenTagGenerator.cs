@@ -235,7 +235,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddClassTagIfNeeded(NavToken token)
         {
-            // classes
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "ClassDeclaration")
             {
@@ -245,7 +244,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddOperatorTagIfNeeded(NavToken token)
         {
-            // operators
             if (_operators.Contains(token.Text))
             {
                 token.Tags.Add(new OperatorTag());
@@ -254,7 +252,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddModifierTagIfNeeded(NavToken token)
         {
-            // modifiers
             if (_modifiers.Contains(token.RoslynKind))
             {
                 token.Tags.Add(new ModifierTag());
@@ -414,7 +411,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddPunctuationTagIfNeeded(NavToken token)
         {
-            // punctuation
             if (_punctuationChars.Contains(token.Text))
             {
                 token.Tags.Add(new PunctuationTag());
@@ -423,7 +419,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddDelimiterTagIfNeeded(NavToken token)
         {
-            // delimiters
             bool isAligatorClip = false;
 
             if (token.Text == "<" || token.Text == ">")
@@ -447,7 +442,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddPropertyTagIfNeeded(NavToken token)
         {
-            // properties
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "PropertyDeclaration")
             {
@@ -457,7 +451,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddMethodTagIfNeeded(NavToken token)
         {
-            // methods
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "MethodDeclaration")
             {
@@ -467,7 +460,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddConstructorTagIfNeeded(NavToken token)
         {
-            // constructors
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "ConstructorDeclaration")
             {
@@ -477,7 +469,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddFieldTagIfNeeded(NavToken token)
         {
-            // fields
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "VariableDeclarator"
                 && token.GrandParentNodeKind == "VariableDeclaration"
@@ -489,7 +480,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddBaseTypeTagIfNeeded(NavToken token)
         {
-            // base types
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "IdentifierName"
                 && token.GrandParentNodeKind == "SimpleBaseType"

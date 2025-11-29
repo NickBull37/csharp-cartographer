@@ -3,7 +3,7 @@
     public static class StringHelpers
     {
         /// <summary>
-        /// Counts the number of times a substring occurs in an input string.
+        ///     Counts the number of times a substring occurs in an input string.
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="sequence">The substring.</param>
@@ -27,7 +27,7 @@
         }
 
         /// <summary>
-        /// Determines if an input string contains multiple spaces in a row.
+        ///     Determines if an input string contains multiple spaces in a row.
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <returns>True if the input string has sequential spaces, false otherwise.</returns>
@@ -41,7 +41,7 @@
         }
 
         /// <summary>
-        /// Extracts a string containing sequential spaces from an input string.
+        ///     Extracts a string containing sequential spaces from an input string.
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <returns>A string containing the sequential spaces.</returns>
@@ -64,6 +64,7 @@
                     break;
                 }
             }
+
             return new string(' ', count); // Create a string of spaces
         }
     }
