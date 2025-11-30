@@ -8,6 +8,7 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
     [Route("[controller]")]
     public class ArtifactController : ControllerBase
     {
+        // TODO: Add logging for exceptions caught here
         private readonly IGenerateArtifactWorkflow _generateArtifactWorkflow;
 
         public ArtifactController(IGenerateArtifactWorkflow generateArtifactWorkflow)
@@ -45,14 +46,24 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
         }
         #endregion
 
+        #region POST Endpoints
+        /// <summary>Generates and returns an artifact for user uploaded source code.</summary>
         [HttpPost]
         [Route("generate-artifact")]
         public async Task<IActionResult> GenerateArtifact([FromBody] GenerateArtifactDto dto)
         {
+            if (string.IsNullOrEmpty(dto.FileName) || string.IsNullOrEmpty(dto.FileContent))
+            {
+                return Problem(
+                    type: "Bad Request",
+                    title: "Missing file name/content",
+                    detail: "The uploaded file must have a file name and valid C# source code.",
+                    statusCode: StatusCodes.Status400BadRequest);
+            }
+
             try
             {
                 var artifact = _generateArtifactWorkflow.ExecGenerateUserArtifact(dto);
-
                 return Ok(artifact);
             }
             catch (Exception ex)
@@ -63,5 +74,6 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
                     statusCode: StatusCodes.Status500InternalServerError);
             }
         }
+        #endregion
     }
 }
