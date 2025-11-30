@@ -143,6 +143,22 @@ const DemoOptionSelection = () => {
                             >
                                 [GenerateArtifactDto.cs]
                             </BtnText>
+                            <BtnText
+                                onClick={() => handleFileClick("OperatorDemo.cs")}
+                                sx={{
+                                    color: selectedFile === 'OperatorDemo.cs' ? colors.code : '#fff'
+                                }}
+                            >
+                                [OperatorDemo.cs]
+                            </BtnText>
+                            <BtnText
+                                onClick={() => handleFileClick("CollectionDemo.cs")}
+                                sx={{
+                                    color: selectedFile === 'CollectionDemo.cs' ? colors.code : '#fff'
+                                }}
+                            >
+                                [CollectionDemo.cs]
+                            </BtnText>
                         </Stack>
                     </Stack>
 
@@ -459,6 +475,78 @@ const DemoOptionSelection = () => {
                                     </InfoText>
                                     <InfoText>
                                         They often represent a subset or a projection of the underlying data to avoid overfetching or exposing sensitive internal fields.
+                                    </InfoText>
+                                </Stack>
+                            </Stack>
+                        )
+                        : selectedFile === "OperatorDemo.cs"
+                        ? (
+                            <Stack
+                                width={'40%'}
+                                gap={3}
+                                sx={{
+                                    px: 8
+                                }}
+                            >
+                                <InfoText
+                                    className='color-code'
+                                    textAlign={"center"}
+                                    sx={{
+                                        fontSize: '1.65rem'
+                                    }}
+                                >
+                                    Operator Demo
+                                </InfoText>
+                                <Stack
+                                    display={'flex'}
+                                    gap={4}
+                                    sx={{
+                                        bgcolor: colors.gray25,
+                                        padding: 2,
+                                        borderRadius: '5px'
+                                    }}
+                                >
+                                    <InfoText>
+                                    </InfoText>
+                                    <InfoText>
+                                    </InfoText>
+                                    <InfoText>
+                                    </InfoText>
+                                </Stack>
+                            </Stack>
+                        )
+                        : selectedFile === "CollectionDemo.cs"
+                        ? (
+                            <Stack
+                                width={'40%'}
+                                gap={3}
+                                sx={{
+                                    px: 8
+                                }}
+                            >
+                                <InfoText
+                                    className='color-code'
+                                    textAlign={"center"}
+                                    sx={{
+                                        fontSize: '1.65rem'
+                                    }}
+                                >
+                                    Collection Demo
+                                </InfoText>
+                                <Stack
+                                    display={'flex'}
+                                    gap={4}
+                                    sx={{
+                                        bgcolor: colors.gray25,
+                                        padding: 2,
+                                        borderRadius: '5px'
+                                    }}
+                                >
+                                    <InfoText>
+                                    </InfoText>
+                                    <InfoText>
+                                    </InfoText>
+                                    <InfoText>
                                     </InfoText>
                                 </Stack>
                             </Stack>

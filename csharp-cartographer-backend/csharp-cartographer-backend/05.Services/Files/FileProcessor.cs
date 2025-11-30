@@ -17,6 +17,9 @@ namespace csharp_cartographer_backend._05.Services.Files
         private readonly string _dtoDemoFilePath = @"08.Controllers\Artifacts\Dtos\GenerateArtifactDto.cs";
         private readonly string _providerDemoFilePath = @"07.Clients\ChatGpt\ChatGptClient.cs";
 
+        private readonly string _operatorDemoFilePath = @"01.Configuration\TestFiles\OperatorDemo.cs";
+        private readonly string _collectionDemoFilePath = @"01.Configuration\TestFiles\CollectionDemo.cs";
+
         public FileData ReadInTestFileData(string fileName)
         {
             var demoFile = fileName switch
@@ -30,6 +33,8 @@ namespace csharp_cartographer_backend._05.Services.Files
                 "CartographerConfig.cs" => Path.Combine(projectRoot, _configDemoFilePath),
                 "GenerateArtifactDto.cs" => Path.Combine(projectRoot, _dtoDemoFilePath),
                 "ChatGptProvider.cs" => Path.Combine(projectRoot, _providerDemoFilePath),
+                "OperatorDemo.cs" => Path.Combine(projectRoot, _operatorDemoFilePath),
+                "CollectionDemo.cs" => Path.Combine(projectRoot, _collectionDemoFilePath),
                 _ => string.Empty
             };
 

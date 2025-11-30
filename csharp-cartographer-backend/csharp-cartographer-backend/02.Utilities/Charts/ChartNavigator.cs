@@ -102,16 +102,34 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
                 token.Charts[1].Label == "CatchDeclaration";
         }
 
-        public static bool IsExpression(NavToken token)
+        public static bool IsMethodInvocation(NavToken token)
         {
-            bool isExpression = false;
+            bool isInvocation = false;
 
             if (token.Charts.Count > 2 &&
                 token.Charts[0].Label == "IdentifierToken" &&
                 token.Charts[1].Label == "IdentifierName" &&
                 token.Charts[2].Label == "InvocationExpression")
             {
-                isExpression = true;
+                isInvocation = true;
+            }
+
+            if (token.Charts.Count > 3 &&
+                token.Charts[0].Label == "IdentifierToken" &&
+                token.Charts[1].Label == "IdentifierName" &&
+                token.Charts[2].Label == "MemberBindingExpression" &&
+                token.Charts[3].Label == "InvocationExpression")
+            {
+                isInvocation = true;
+            }
+
+            if (token.Charts.Count > 3 &&
+                token.Charts[0].Label == "IdentifierToken" &&
+                token.Charts[1].Label == "IdentifierName" &&
+                token.Charts[2].Label == "SimpleMemberAccessExpression" &&
+                token.Charts[3].Label == "InvocationExpression")
+            {
+                isInvocation = true;
             }
 
             if (token.Charts.Count > 3 &&
@@ -120,10 +138,15 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
                 token.Charts[2].Label == "SimpleMemberAccessExpression" &&
                 token.Charts[3].Label == "InvocationExpression")
             {
-                isExpression = true;
+                isInvocation = true;
             }
 
-            return isExpression;
+            if (token.NextToken is not null && token.NextToken.Text != "(")
+            {
+                isInvocation = false;
+            }
+
+            return isInvocation;
         }
 
         public static bool IsField(NavToken token)
@@ -248,11 +271,12 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
 
         public static bool IsPropertyAccess(NavToken token)
         {
-            return token.Charts.Count > 2 &&
-                token.Charts[0].Label == "IdentifierToken" &&
-                token.Charts[1].Label == "IdentifierName" &&
-                token.Charts[2].Label == "SimpleMemberAccessExpression" &&
-                token.Charts[3].Label == "SimpleMemberAccessExpression";
+            return token.Charts.Count > 2
+                && token.Charts[0].Label == "IdentifierToken"
+                && token.Charts[1].Label == "IdentifierName"
+                && token.Charts[2].Label == "SimpleMemberAccessExpression"
+                && token.Charts[3].Label != "InvocationExpression";
+            //&& token.Charts[3].Label == "SimpleMemberAccessExpression";
         }
 
         public static bool IsPropertyTypeClass(NavToken token)

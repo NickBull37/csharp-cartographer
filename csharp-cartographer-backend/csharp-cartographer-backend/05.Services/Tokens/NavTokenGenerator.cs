@@ -15,7 +15,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             int index = 0;
             foreach (var token in roslynTokens)
             {
-                navTokens.Add(new NavToken(token, semanticModel, syntaxTree, index));
+                var newToken = new NavToken(token, semanticModel, syntaxTree, index);
+                navTokens.Add(newToken);
+
+                // each token in list needs data from the next token for syntax highlighting
+                if (index > 0)
+                {
+                    var prevToken = navTokens[index - 1];
+                    prevToken.NextToken = newToken;
+                }
+
                 index++;
             }
 

@@ -23,7 +23,7 @@
         private const string _jade = "color-jade";
         private const string _olive = "color-olive";
 
-        public static readonly List<ReservedTextElement> ElementList = new()
+        public static readonly List<ReservedTextElement> KeywordList = new()
         {
             /// **************************************************
             /// |             KEYWORDS - Alphabetical            |
@@ -93,11 +93,6 @@
             {
                 Text = "continue",
                 HighlightColor = _purple,
-            },
-            new ReservedTextElement
-            {
-                Text = "DateTime",
-                HighlightColor = _jade,
             },
             new ReservedTextElement
             {
@@ -176,6 +171,11 @@
             },
             new ReservedTextElement
             {
+                Text = "global",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
                 Text = "goto",
                 HighlightColor = _blue,
             },
@@ -207,11 +207,6 @@
             new ReservedTextElement
             {
                 Text = "internal",
-                HighlightColor = _blue,
-            },
-            new ReservedTextElement
-            {
-                Text = "is",
                 HighlightColor = _blue,
             },
             new ReservedTextElement
@@ -286,6 +281,11 @@
             },
             new ReservedTextElement
             {
+                Text = "record",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
                 Text = "ref",
                 HighlightColor = _blue,
             },
@@ -329,21 +329,22 @@
                 Text = "switch",
                 HighlightColor = _purple,
             },
-            new ReservedTextElement
-            {
-                Text = "SyntaxKind",
-                HighlightColor = _olive,
-            },
-            new ReservedTextElement
-            {
-                Text = "SyntaxToken",
-                HighlightColor = _jade,
-            },
-            new ReservedTextElement
-            {
-                Text = "TextSpan",
-                HighlightColor = _jade,
-            },
+            // TODO: Not System library elements, shouldn't be hardcoded
+            //new ReservedTextElement
+            //{
+            //    Text = "SyntaxKind",
+            //    HighlightColor = _olive,
+            //},
+            //new ReservedTextElement
+            //{
+            //    Text = "SyntaxToken",
+            //    HighlightColor = _jade,
+            //},
+            //new ReservedTextElement
+            //{
+            //    Text = "TextSpan",
+            //    HighlightColor = _jade,
+            //},
             new ReservedTextElement
             {
                 Text = "this",
@@ -414,11 +415,10 @@
                 Text = "while",
                 HighlightColor = _purple,
             },
+        };
 
-            /// **************************************************
-            /// |                   PUNCTUATION                  |
-            /// **************************************************
-
+        public static readonly List<ReservedTextElement> DelimiterList = new()
+        {
             new ReservedTextElement
             {
                 Text = "(",
@@ -449,16 +449,318 @@
                 Text = "]",
                 HighlightColor = _white,
             },
+        };
+
+        public static readonly List<ReservedTextElement> OperatorList = new()
+        {
+            // Arithmetic operators
             new ReservedTextElement
             {
-                Text = "<",
-                HighlightColor = _white,
+                Text = "+",
+                HighlightColor = _gray,
             },
+            new ReservedTextElement
+            {
+                Text = "-",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "*",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "/",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "%",
+                HighlightColor = _gray,
+            },
+
+            // Comparison (relational) operators
+            new ReservedTextElement()
+            {
+                Text = "==",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement()
+            {
+                Text = "!=",
+                HighlightColor = _gray,
+            },
+            // TODO: fix aligator clips are getting marked as delimiters and operators
             new ReservedTextElement
             {
                 Text = ">",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "<",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = ">=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "<=",
+                HighlightColor = _gray,
+            },
+
+            // Logical operators
+            new ReservedTextElement()
+            {
+                Text = "&&",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement()
+            {
+                Text = "||",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement()
+            {
+                Text = "!",
+                HighlightColor = _gray,
+            },
+
+            // Bitwise operators
+            new ReservedTextElement()
+            {
+                Text = "&",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement()
+            {
+                Text = "|",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement()
+            {
+                Text = "^",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement()
+            {
+                Text = "~",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement()
+            {
+                Text = "<<",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement()
+            {
+                Text = ">>",
+                HighlightColor = _gray,
+            },
+
+            // Assignment operators
+            new ReservedTextElement
+            {
+                Text = "=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "+=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "-=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "*=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "/=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "%=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "&=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "|=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "^=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "<<=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = ">>=",
+                HighlightColor = _gray,
+            },
+            
+            // Unary (single-operand) operators
+            new ReservedTextElement
+            {
+                Text = "+",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "-",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "++",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "--",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "!",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "~",
+                HighlightColor = _gray,
+            },
+
+            // Null-coalescing operators
+            new ReservedTextElement
+            {
+                Text = "??",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "??=",
+                HighlightColor = _gray,
+            },
+
+            // Type operators
+            new ReservedTextElement
+            {
+                Text = "is",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
+                Text = "as",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
+                Text = "sizeof",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
+                Text = "typeof",
+                HighlightColor = _blue,
+            },
+
+            // Lambda operators
+            new ReservedTextElement
+            {
+                Text = "=>",
+                HighlightColor = _gray,
+            },
+
+            // Index & Range operators
+            new ReservedTextElement
+            {
+                Text = "..",
                 HighlightColor = _white,
             },
+            new ReservedTextElement
+            {
+                Text = "^",
+                HighlightColor = _gray,
+            },
+
+            // Member access operators
+            new ReservedTextElement
+            {
+                Text = ".",
+                HighlightColor = _white,
+            },
+            new ReservedTextElement
+            {
+                Text = "?.",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = "::",
+                HighlightColor = _gray,
+            },
+
+            // Misc operators
+            new ReservedTextElement
+            {
+                Text = "new",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
+                Text = "checked",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
+                Text = "unchecked",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
+                Text = "default",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
+                Text = "nameof",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
+                Text = "stackalloc",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
+                Text = "_",
+                HighlightColor = _blue,
+            },
+        };
+
+        public static readonly List<ReservedTextElement> PunctuatorList = new()
+        {
             new ReservedTextElement
             {
                 Text = ":",
@@ -471,37 +773,7 @@
             },
             new ReservedTextElement
             {
-                Text = ".",
-                HighlightColor = _white,
-            },
-            new ReservedTextElement
-            {
                 Text = ",",
-                HighlightColor = _white,
-            },
-            new ReservedTextElement
-            {
-                Text = "+",
-                HighlightColor = _white,
-            },
-            new ReservedTextElement
-            {
-                Text = "-",
-                HighlightColor = _white,
-            },
-            new ReservedTextElement
-            {
-                Text = "*",
-                HighlightColor = _white,
-            },
-            new ReservedTextElement
-            {
-                Text = "/",
-                HighlightColor = _white,
-            },
-            new ReservedTextElement
-            {
-                Text = "=",
                 HighlightColor = _white,
             },
             new ReservedTextElement
@@ -509,21 +781,230 @@
                 Text = "?",
                 HighlightColor = _gray,
             },
-            new ReservedTextElement
-            {
-                Text = "!",
-                HighlightColor = _gray,
-            },
-            new ReservedTextElement
-            {
-                Text = "_",
-                HighlightColor = _blue,
-            },
+        };
 
-            /// ****************************************************
-            /// |                GENERIC INTERFACES                |
-            /// ****************************************************
-            
+        public static readonly List<ReservedTextElement> SystemClassList = new()
+        {
+            #region System Library
+            new ReservedTextElement
+            {
+                Text = "Console",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "Environment",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "Math",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "Nullable",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "Object",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "Random",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "String",
+                HighlightColor = _green,
+            },
+            #endregion
+
+            #region System.Collections Library
+            new ReservedTextElement
+            {
+                Text = "ArrayList",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "BitArray",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "Hashtable",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "Queue",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "SortedList",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "Stack",
+                HighlightColor = _green,
+            },
+            #endregion
+
+            #region System.Collections.Specialized Library
+            new ReservedTextElement
+            {
+                Text = "HybridDictionary",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "ListDictionary",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "NameValueCollection",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "OrderedDictionary",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "StringCollection",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "StringDictionary",
+                HighlightColor = _green,
+            },
+            #endregion
+
+            #region System.Collections.Generics Library
+            new ReservedTextElement
+            {
+                Text = "Dictionary",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "HashSet",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "LinkedList",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "List",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "Queue",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "SortedDictionary",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "SortedList",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "SortedSet",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "Stack",
+                HighlightColor = _green,
+            },
+            #endregion
+
+            #region System.Collections.ObjectModel Library
+            new ReservedTextElement
+            {
+                Text = "Collection",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "MyKeyedCollection",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "ObservableCollection",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "ReadOnlyCollection",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "ReadOnlyDictionary",
+                HighlightColor = _green,
+            },
+            #endregion
+
+            #region System.Collections.Concurrent Library
+            new ReservedTextElement
+            {
+                Text = "BlockingCollection",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "ConcurrentBag",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "ConcurrentDictionary",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "ConcurrentQueue",
+                HighlightColor = _green,
+            },
+            new ReservedTextElement
+            {
+                Text = "ConcurrentStack",
+                HighlightColor = _green,
+            },
+            #endregion
+
+            #region System.Threading.Tasks Library
+            new ReservedTextElement
+            {
+                Text = "Task",
+                HighlightColor = _green,
+            },
+            #endregion
+        };
+
+        public static readonly List<ReservedTextElement> SystemInterfaceList = new()
+        {
+            #region System.Collections Library
             new ReservedTextElement
             {
                 Text = "ICollection",
@@ -556,11 +1037,6 @@
             },
             new ReservedTextElement
             {
-                Text = "IReadOnlyDictionary",
-                HighlightColor = _lightGreen,
-            },
-            new ReservedTextElement
-            {
                 Text = "IReadOnlyList",
                 HighlightColor = _lightGreen,
             },
@@ -569,136 +1045,98 @@
                 Text = "ISet",
                 HighlightColor = _lightGreen,
             },
+            #endregion
+        };
 
-            /// **************************************************
-            /// |                    GENERICS                    |
-            /// **************************************************
-            
+        public static readonly List<ReservedTextElement> SystemStructList = new()
+        {
+            #region System Library
             new ReservedTextElement
             {
-                Text = "Collection",
-                HighlightColor = _green,
+                Text = "Boolean",
+                HighlightColor = _jade,
             },
             new ReservedTextElement
             {
-                Text = "ConcurrentBag",
-                HighlightColor = _green,
+                Text = "Byte",
+                HighlightColor = _jade,
             },
             new ReservedTextElement
             {
-                Text = "ConcurrentDictionary",
-                HighlightColor = _green,
+                Text = "Char",
+                HighlightColor = _jade,
             },
             new ReservedTextElement
             {
-                Text = "ConcurrentQueue",
-                HighlightColor = _green,
+                Text = "DateOnly",
+                HighlightColor = _jade,
             },
             new ReservedTextElement
             {
-                Text = "ConcurrentStack",
-                HighlightColor = _green,
+                Text = "DateTime",
+                HighlightColor = _jade,
             },
             new ReservedTextElement
             {
-                Text = "Dictionary",
-                HighlightColor = _green,
+                Text = "Decimal",
+                HighlightColor = _jade,
             },
             new ReservedTextElement
             {
-                Text = "HashSet",
-                HighlightColor = _green,
+                Text = "Double",
+                HighlightColor = _jade,
             },
-            new ReservedTextElement
-            {
-                Text = "HashTable",
-                HighlightColor = _green,
-            },
-            new ReservedTextElement
-            {
-                Text = "LinkedList",
-                HighlightColor = _green,
-            },
-            new ReservedTextElement
-            {
-                Text = "List",
-                HighlightColor = _green,
-            },
-            new ReservedTextElement
-            {
-                Text = "Queue",
-                HighlightColor = _green,
-            },
-            new ReservedTextElement
-            {
-                Text = "SortedDictionary",
-                HighlightColor = _green,
-            },
-            new ReservedTextElement
-            {
-                Text = "SortedSet",
-                HighlightColor = _green,
-            },
-            new ReservedTextElement
-            {
-                Text = "Stack",
-                HighlightColor = _green,
-            },
-            new ReservedTextElement
-            {
-                Text = "Task",
-                HighlightColor = _green,
-            },
-
-            /// **************************************************
-            /// |                GENERIC METHODS                 |
-            /// **************************************************
-
-            new ReservedTextElement
-            {
-                Text = "OfType",
-                HighlightColor = _yellow,
-            },
-            new ReservedTextElement
-            {
-                Text = "OfTypeIterator",
-                HighlightColor = _yellow,
-            },
-
-            /// **************************************************
-            /// |                     OTHER                      |
-            /// **************************************************
-
             new ReservedTextElement
             {
                 Text = "Guid",
                 HighlightColor = _jade,
             },
+            // TODO: Index is also common property name & should stay white in that case
+            //new ReservedTextElement
+            //{
+            //    Text = "Index",
+            //    HighlightColor = _jade,
+            //},
             new ReservedTextElement
             {
-                Text = "record",
-                HighlightColor = _blue,
+                Text = "Int32",
+                HighlightColor = _jade,
             },
             new ReservedTextElement
             {
-                Text = "init",
-                HighlightColor = _blue,
+                Text = "Int64",
+                HighlightColor = _jade,
             },
             new ReservedTextElement
             {
-                Text = "TokenType",
-                HighlightColor = _olive,
+                Text = "Range",
+                HighlightColor = _jade,
             },
             new ReservedTextElement
             {
-                Text = "IOptions",
-                HighlightColor = _olive,
+                Text = "Single",
+                HighlightColor = _jade,
             },
+            // TODO: Span is also common property name & should stay white in that case
+            //new ReservedTextElement
+            //{
+            //    Text = "Span",
+            //    HighlightColor = _jade,
+            //},
+            new ReservedTextElement
+            {
+                Text = "TimeSpan",
+                HighlightColor = _jade,
+            },
+            #endregion
+
+            #region System.Threading Library
             new ReservedTextElement
             {
                 Text = "CancellationToken",
                 HighlightColor = _jade,
             },
+            #endregion
         };
     }
 }

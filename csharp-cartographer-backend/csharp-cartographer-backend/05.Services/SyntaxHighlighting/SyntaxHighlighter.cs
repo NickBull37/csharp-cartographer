@@ -19,6 +19,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         public void AddSyntaxHighlightingToNavTokens(List<NavToken> navTokens)
         {
+            // TODO: SyntaxHighlighter can't tell the difference between classes, enums, & structs (check NavToken props)
+
             foreach (var token in navTokens)
             {
                 AddReservedTextHighlighting(token);
@@ -37,11 +39,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static void AddReservedTextHighlighting(NavToken token)
         {
-            if (HighlightColorAlreadySet(token))
-            {
-                return;
-            }
-
             // default keyword can be blue or purple
             if (token.Text == "default")
             {
@@ -49,11 +46,27 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 return;
             }
 
-            foreach (var element in ReservedTextElements.ElementList)
+            LoopThroughListAndAddColor(ReservedTextElements.KeywordList);
+            LoopThroughListAndAddColor(ReservedTextElements.DelimiterList);
+            LoopThroughListAndAddColor(ReservedTextElements.OperatorList);
+            LoopThroughListAndAddColor(ReservedTextElements.PunctuatorList);
+            LoopThroughListAndAddColor(ReservedTextElements.SystemClassList);
+            LoopThroughListAndAddColor(ReservedTextElements.SystemInterfaceList);
+            LoopThroughListAndAddColor(ReservedTextElements.SystemStructList);
+
+            void LoopThroughListAndAddColor(List<ReservedTextElement> reservedTextList)
             {
-                if (token.Text.Equals(element.Text))
+                if (HighlightColorAlreadySet(token))
                 {
-                    token.HighlightColor = element.HighlightColor;
+                    return;
+                }
+
+                foreach (var element in reservedTextList)
+                {
+                    if (token.Text.Equals(element.Text))
+                    {
+                        token.HighlightColor = element.HighlightColor;
+                    }
                 }
             }
         }
@@ -67,10 +80,10 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
             token.HighlightColor = token.Kind switch
             {
-                // numeric literals (integer, decimal, float)
+                // integer, decimal, float
                 SyntaxKind.NumericLiteralToken => "color-light-green",
 
-                // string and char literals
+                // string, char
                 SyntaxKind.StringLiteralToken or SyntaxKind.CharacterLiteralToken => "color-orange",
 
                 // interpolated strings
@@ -99,8 +112,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
             // namespace delclaration identifier
             // using directive identifier
-            // field identifier
-            // property
+            // field declaration identifier
+            // property declaration identifier
             // property access
             if (ChartNavigator.IsNamespaceDeclaration(token)
                 || ChartNavigator.IsUsingDirective(token)
@@ -134,7 +147,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             // method delclarations
             // expressions
             if (ChartNavigator.IsMethodDeclaration(token)
-                || ChartNavigator.IsExpression(token))
+                || ChartNavigator.IsMethodInvocation(token))
             {
                 token.HighlightColor = "color-yellow";
                 return;
@@ -365,6 +378,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     continue;
                 }
 
+                // TODO: Factor this out using NextToken prop on NavToken
                 // supposed to be for enum & static class member access
                 if (nextToken != null
                     && ChartNavigator.IsMemberAccess(token)
@@ -378,12 +392,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 if (!ChartNavigator.IsInvocation(token))
                 {
                     continue;
-                }
-
-                // method invocations
-                if (nextToken.Text == "(")
-                {
-                    token.HighlightColor = "color-yellow";
                 }
 
                 // static class invocations

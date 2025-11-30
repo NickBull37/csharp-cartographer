@@ -42,6 +42,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         [JsonIgnore]
         public SyntaxToken RoslynToken { get; set; }
 
+        /// <summary>The token that comes after this one sequentially.</summary>
+        [JsonIgnore]
+        public NavToken? NextToken { get; set; }
+
         /// <summary>The Roslyn generated SyntaxNode of the token's parent.</summary>
         [JsonIgnore]
         public SyntaxNode? Parent { get; set; }

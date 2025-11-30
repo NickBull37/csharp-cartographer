@@ -1169,6 +1169,18 @@
                     "Close brackets are used to complete array indexing or attribute declarations started with an open bracket."
                 ],
             },
+            new CSharpElement
+            {
+                Label = "UnderscoreToken",
+                Facts =
+                [
+                    "Represents the '_' symbol in C#."
+                ],
+                Insights =
+                [
+                    "Also known as a discard value, the underscore is used here when you don't need to save the value into a variable."
+                ],
+            },
 
             new CSharpElement
             {
