@@ -291,7 +291,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                     fontSize: '14px'
                                 }}
                             >
-                                Pins
+                                Tags
                             </Typography>
                         </Box>
                     </Tooltip>

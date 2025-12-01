@@ -19,17 +19,32 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         public void AddSyntaxHighlightingToNavTokens(List<NavToken> navTokens)
         {
+
             // TODO: SyntaxHighlighter can't tell the difference between classes, enums, & structs (check NavToken props)
 
+            // loop through tokens and set highlight color when possible
             foreach (var token in navTokens)
             {
                 AddReservedTextHighlighting(token);
                 AddLiteralHighlighting(token);
                 AddIdentifierHighlighting(token);
-                AddIdentifierReferenceHighlighting(token, navTokens);
             }
 
-            AddHighlightingThatNeedsSurroundingTokens(navTokens);
+            // loop through again and set references for any identifiers
+            foreach (var token in navTokens)
+            {
+                if (token.IsIdentifier)
+                {
+                    AddIdentifierReferenceHighlighting(token, navTokens);
+                }
+            }
+
+            foreach (var token in navTokens)
+            {
+                AddStaticClassHighlighting(token);
+            }
+
+            //AddHighlightingThatNeedsSurroundingTokens(navTokens);
 
             if (_config.ShowUnhighlightedTokens)
             {
@@ -104,10 +119,15 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
 
             // interface delclaration identifier
-            if (ChartNavigator.IsInterfaceDeclaration(token))
+            if (ChartNavigator.IsInterfaceDeclarationIdentifier(token))
             {
                 token.HighlightColor = "color-light-green";
                 return;
+            }
+
+            if (token.Index == 548)
+            {
+
             }
 
             // namespace delclaration identifier
@@ -117,8 +137,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             // property access
             if (ChartNavigator.IsNamespaceDeclaration(token)
                 || ChartNavigator.IsUsingDirective(token)
-                || ChartNavigator.IsField(token)
-                || ChartNavigator.IsProperty(token)
+                || ChartNavigator.IsFieldDeclarationIdentifier(token)
+                || ChartNavigator.IsPropertyDeclarationIdentifier(token)
                 || ChartNavigator.IsPropertyAccess(token))
             {
                 token.HighlightColor = "color-white";
@@ -133,7 +153,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             // record declaration
             // catch declarations
             if (ChartNavigator.IsConstructorDeclarationIdentifier(token)
-                || ChartNavigator.IsClassDeclaration(token)
+                || ChartNavigator.IsClassDeclarationIdentifier(token)
                 || ChartNavigator.IsException(token)
                 || ChartNavigator.IsDeclarationPattern(token)
                 || ChartNavigator.IsObjectCreationIdentifier(token)
@@ -145,7 +165,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
 
             // method delclarations
-            // expressions
+            // method invocations
             if (ChartNavigator.IsMethodDeclaration(token)
                 || ChartNavigator.IsMethodInvocation(token))
             {
@@ -206,8 +226,53 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case var _ when ChartNavigator.IsForLoopIdentifier(token):
                     UpdateForLoopIdentifierReferences(navTokens, token.Index);
                     break;
+                case var _ when ChartNavigator.IsFieldDeclarationIdentifier(token):
+                case var _ when ChartNavigator.IsPropertyDeclarationIdentifier(token):
+                    UpdateRefsInContainingBlock(navTokens, token.Index);
+                    break;
                 default:
                     break;
+            }
+        }
+
+        private static void AddStaticClassHighlighting(NavToken token)
+        {
+            if (HighlightColorAlreadySet(token))
+            {
+                return;
+            }
+
+            if (token.NextToken != null
+                && ChartNavigator.IsMemberAccess(token)
+                && ChartNavigator.IsInvocation(token))
+            {
+                token.HighlightColor = "color-green";
+            }
+        }
+
+        private static void UpdateRefsInContainingBlock(List<NavToken> tokens, int startIndex)
+        {
+            var identifierName = tokens[startIndex].Text;
+            int blockDepth = 1;
+
+            for (int i = startIndex + 1; i < tokens.Count; i++)
+            {
+                if (tokens[i].Text == "{")
+                {
+                    blockDepth++;
+                }
+                if (tokens[i].Text == "}")
+                {
+                    blockDepth--;
+                    if (blockDepth == 0)
+                    {
+                        break;
+                    }
+                }
+                if (tokens[i].Text == identifierName && !HighlightColorAlreadySet(tokens[i]))
+                {
+                    tokens[i].HighlightColor = "color-white";
+                }
             }
         }
 
@@ -352,7 +417,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         {
             if (string.IsNullOrEmpty(text) || text.Length < 2)
             {
-                return "color-red"; // color red for unidentified tokens
+                return "color-orange"; // color red for unidentified tokens
             }
 
             if (char.IsUpper(text[0])
@@ -380,19 +445,19 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
                 // TODO: Factor this out using NextToken prop on NavToken
                 // supposed to be for enum & static class member access
-                if (nextToken != null
-                    && ChartNavigator.IsMemberAccess(token)
-                    && !ChartNavigator.IsInvocation(token)
-                    && nextToken.Text == "."
-                    && !token.Text.StartsWith('_'))
-                {
-                    token.HighlightColor = "color-green";
-                }
+                //if (nextToken != null
+                //    && ChartNavigator.IsMemberAccess(token)
+                //    && !ChartNavigator.IsInvocation(token)
+                //    && nextToken.Text == "."
+                //    && !token.Text.StartsWith('_'))
+                //{
+                //    token.HighlightColor = "color-green";
+                //}
 
-                if (!ChartNavigator.IsInvocation(token))
-                {
-                    continue;
-                }
+                //if (!ChartNavigator.IsInvocation(token))
+                //{
+                //    continue;
+                //}
 
                 // static class invocations
                 if (nextToken.Text == "." && token.SemanticData?.SymbolKind != "Field")

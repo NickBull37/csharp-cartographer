@@ -29,14 +29,36 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
                 token.Charts[2].Label == "CatchDeclaration";
         }
 
-        public static bool IsClassDeclaration(NavToken token)
+        public static bool IsClassDeclarationIdentifier(NavToken token)
         {
-            return token.Charts.Count > 1 &&
-                token.Charts[0].Label == "IdentifierToken" &&
-                token.Charts[1].Label == "ClassDeclaration";
+            return token.Charts.Count > 1
+                && token.Charts[0].Label == "IdentifierToken"
+                && token.Charts[1].Label == "ClassDeclaration";
         }
 
-        // TODO: Update all to identifier where needed
+        public static bool IsInterfaceDeclarationIdentifier(NavToken token)
+        {
+            return token.Charts.Count > 1
+                && token.Charts[0].Label == "IdentifierToken"
+                && token.Charts[1].Label == "InterfaceDeclaration";
+        }
+
+        public static bool IsFieldDeclarationIdentifier(NavToken token)
+        {
+            return token.Charts.Count > 3
+                && token.Charts[0].Label == "IdentifierToken"
+                && token.Charts[1].Label == "VariableDeclarator"
+                && token.Charts[2].Label == "VariableDeclaration"
+                && token.Charts[3].Label == "FieldDeclaration";
+        }
+
+        public static bool IsPropertyDeclarationIdentifier(NavToken token)
+        {
+            return token.Charts.Count > 1
+                && token.Charts[0].Label == "IdentifierToken"
+                && token.Charts[1].Label == "PropertyDeclaration";
+        }
+
         public static bool IsConstructorDeclarationIdentifier(NavToken token)
         {
             return token.Charts.Count > 1 &&
@@ -149,14 +171,7 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
             return isInvocation;
         }
 
-        public static bool IsField(NavToken token)
-        {
-            return token.Charts.Count > 3 &&
-                token.Charts[0].Label == "IdentifierToken" &&
-                token.Charts[1].Label == "VariableDeclarator" &&
-                token.Charts[2].Label == "VariableDeclaration" &&
-                token.Charts[3].Label == "FieldDeclaration";
-        }
+
 
         public static bool IsForEachVariable(NavToken token)
         {
@@ -174,12 +189,7 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
                 token.Charts[3].Label == "ForStatement";
         }
 
-        public static bool IsInterfaceDeclaration(NavToken token)
-        {
-            return token.Charts.Count > 1 &&
-                token.Charts[0].Label == "IdentifierToken" &&
-                token.Charts[1].Label == "InterfaceDeclaration";
-        }
+
 
         public static bool IsInterpolatedStringStart(NavToken token)
         {
@@ -262,12 +272,7 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
                 token.Charts[2].Label == "Parameter";
         }
 
-        public static bool IsProperty(NavToken token)
-        {
-            return token.Charts.Count > 1 &&
-                token.Charts[0].Label == "IdentifierToken" &&
-                token.Charts[1].Label == "PropertyDeclaration";
-        }
+
 
         public static bool IsPropertyAccess(NavToken token)
         {

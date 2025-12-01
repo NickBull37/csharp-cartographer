@@ -329,22 +329,6 @@
                 Text = "switch",
                 HighlightColor = _purple,
             },
-            // TODO: Not System library elements, shouldn't be hardcoded
-            //new ReservedTextElement
-            //{
-            //    Text = "SyntaxKind",
-            //    HighlightColor = _olive,
-            //},
-            //new ReservedTextElement
-            //{
-            //    Text = "SyntaxToken",
-            //    HighlightColor = _jade,
-            //},
-            //new ReservedTextElement
-            //{
-            //    Text = "TextSpan",
-            //    HighlightColor = _jade,
-            //},
             new ReservedTextElement
             {
                 Text = "this",

@@ -25,6 +25,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         [JsonIgnore]
         public SyntaxKind Kind { get; set; }
 
+        /// <summary>True if the token is an identifier, false otherwise.</summary>
+        [JsonIgnore]
+        public bool IsIdentifier { get; set; }
+
         /// <summary>The Roslyn SyntaxKind of the token as a string.</summary>
         public string RoslynKind { get; set; }
 
@@ -96,6 +100,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             #region Lexical (token) data
             Text = roslynToken.Text;
             Kind = roslynToken.Kind();
+            IsIdentifier = roslynToken.Kind().ToString().Contains("Identifier");
             RoslynKind = roslynToken.Kind().ToString();
             Span = roslynToken.Span;
             LeadingTrivia = GetLeadingTrivia(roslynToken);
