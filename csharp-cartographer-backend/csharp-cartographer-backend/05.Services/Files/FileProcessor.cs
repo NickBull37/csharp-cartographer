@@ -1,5 +1,7 @@
 ﻿using csharp_cartographer_backend._03.Models.Files;
 using csharp_cartographer_backend._08.Controllers.Artifacts.Dtos;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 
 namespace csharp_cartographer_backend._05.Services.Files
 {
@@ -48,11 +50,25 @@ namespace csharp_cartographer_backend._05.Services.Files
                 }
             }
 
+            var workspace = new AdhocWorkspace();
+            var sourceCode = File.ReadAllText(demoFile);
+            var projectInfo = ProjectInfo.Create(
+                ProjectId.CreateNewId(),
+                VersionStamp.Create(),
+                name: "UserCodeProject",
+                assemblyName: "UserCodeProject",
+                language: LanguageNames.CSharp
+            );
+            var project = workspace.AddProject(projectInfo);
+            var document = workspace.AddDocument(project.Id, "UserUpload.cs", SourceText.From(sourceCode));
+
             return new FileData
             {
                 FileName = Path.GetFileName(demoFile),
                 FileLines = fileLines,
-                Content = File.ReadAllText(demoFile)
+                Content = File.ReadAllText(demoFile),
+                Workspace = workspace,
+                Document = document
             };
         }
 

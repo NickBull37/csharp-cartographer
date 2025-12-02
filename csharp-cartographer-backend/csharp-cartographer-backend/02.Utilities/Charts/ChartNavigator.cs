@@ -272,8 +272,6 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
                 token.Charts[2].Label == "Parameter";
         }
 
-
-
         public static bool IsPropertyAccess(NavToken token)
         {
             return token.Charts.Count > 2
@@ -323,7 +321,7 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
                 token.Charts[2].Label == "TypeArgumentList";
         }
 
-        public static bool IsUsingDirective(NavToken token)
+        public static bool IsUsingDirectiveIdentifier(NavToken token)
         {
             return token.Charts.Count > 2 &&
                 token.Charts[0].Label == "IdentifierToken" &&

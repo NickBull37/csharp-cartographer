@@ -23,6 +23,7 @@
         private const string _jade = "color-jade";
         private const string _olive = "color-olive";
 
+        // TODO: Potentially split these out into "ReservedKeywords" and "ContextualKeywords"
         public static readonly List<ReservedTextElement> KeywordList = new()
         {
             /// **************************************************
@@ -31,7 +32,17 @@
 
             new ReservedTextElement
             {
+                Text = "_",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
                 Text = "abstract",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
+                Text = "as",
                 HighlightColor = _blue,
             },
             new ReservedTextElement
@@ -196,6 +207,11 @@
             },
             new ReservedTextElement
             {
+                Text = "init",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
                 Text = "int",
                 HighlightColor = _blue,
             },
@@ -211,7 +227,17 @@
             },
             new ReservedTextElement
             {
+                Text = "is",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
                 Text = "lock",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
+                Text = "nameof",
                 HighlightColor = _blue,
             },
             new ReservedTextElement
@@ -311,6 +337,11 @@
             },
             new ReservedTextElement
             {
+                Text = "stackalloc",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
                 Text = "static",
                 HighlightColor = _blue,
             },
@@ -396,6 +427,11 @@
             },
             new ReservedTextElement
             {
+                Text = "where",
+                HighlightColor = _blue,
+            },
+            new ReservedTextElement
+            {
                 Text = "while",
                 HighlightColor = _purple,
             },
@@ -431,6 +467,16 @@
             new ReservedTextElement
             {
                 Text = "]",
+                HighlightColor = _white,
+            },
+            new ReservedTextElement
+            {
+                Text = ">",
+                HighlightColor = _white,
+            },
+            new ReservedTextElement
+            {
+                Text = "<",
                 HighlightColor = _white,
             },
         };
@@ -635,7 +681,12 @@
                 HighlightColor = _gray,
             },
 
-            // Null-coalescing operators
+            // Null/Null-coalescing operators
+            new ReservedTextElement
+            {
+                Text = "?",
+                HighlightColor = _gray,
+            },
             new ReservedTextElement
             {
                 Text = "??",
@@ -644,6 +695,11 @@
             new ReservedTextElement
             {
                 Text = "??=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextElement
+            {
+                Text = ":",
                 HighlightColor = _gray,
             },
 

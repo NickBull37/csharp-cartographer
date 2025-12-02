@@ -1,5 +1,4 @@
-﻿using csharp_cartographer_backend._02.Utilities.Logging;
-using csharp_cartographer_backend._03.Models.Artifacts;
+﻿using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._03.Models.Files;
 using csharp_cartographer_backend._05.Services.Charts;
 using csharp_cartographer_backend._05.Services.Files;
@@ -38,19 +37,19 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _tokenTagGenerator = tokenTagGenerator;
         }
 
-        public Artifact ExecGenerateDemoArtifact(string fileName)
+        public async Task<Artifact> ExecGenerateDemoArtifact(string fileName)
         {
             FileData fileData = _fileProcessor.ReadInTestFileData(fileName);
-            return GenerateArtifact(fileData);
+            return await GenerateArtifact(fileData);
         }
 
-        public Artifact ExecGenerateUserArtifact(GenerateArtifactDto requestDto)
+        public async Task<Artifact> ExecGenerateUserArtifact(GenerateArtifactDto requestDto)
         {
             FileData fileData = _fileProcessor.ReadInFileData(requestDto);
-            return GenerateArtifact(fileData);
+            return await GenerateArtifact(fileData);
         }
 
-        private Artifact GenerateArtifact(FileData fileData)
+        private async Task<Artifact> GenerateArtifact(FileData fileData)
         {
             /*
              *   Steps to generate an artifact:
@@ -86,7 +85,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             var semanticModel = compilationUnit.GetSemanticModel(syntaxTree);
 
             // Step 5. Use SyntaxTree & SemanticModel to generate NavTokens for the artifact.
-            var navTokens = _navTokenGenerator.GenerateNavTokens(semanticModel, syntaxTree);
+            var navTokens = await _navTokenGenerator.GenerateNavTokens(semanticModel, syntaxTree, fileData.Document);
 
             // Step 6. Generate TokenTags.
             _tokenTagGenerator.GenerateTokenTags(navTokens);
@@ -104,7 +103,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
 
             // Step X. Log token list (optional)
-            TokenLogger.LogTokenList(navTokens);
+            //TokenLogger.LogTokenList(navTokens);
 
             // Step 11. Stop stopwatch.
             stopwatch.Stop();

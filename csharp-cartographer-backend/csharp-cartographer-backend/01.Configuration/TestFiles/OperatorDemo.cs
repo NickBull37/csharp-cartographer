@@ -1,4 +1,6 @@
-﻿namespace csharp_cartographer_backend._01.Configuration.TestFiles
+﻿using Microsoft.CodeAnalysis;
+
+namespace csharp_cartographer_backend._01.Configuration.TestFiles
 {
     public class OperatorDemo
     {
@@ -115,6 +117,47 @@
             // use the field with operators
             _counter += sum;
             _counter -= diff;
+
+            var test = new Test
+            {
+                TestInt = 5
+            };
+            string stringX = test.TestInt.ToString();
+        }
+    }
+
+    public class Test
+    {
+        public int TestInt { get; set; }
+    }
+
+    public class NodeFinder
+    {
+        /// <summary>
+        /// Finds all descendant syntax nodes of the specified type.
+        /// </summary>
+        public IEnumerable<TSyntax> FindNodes<TSyntax>(SyntaxNode root)
+            where TSyntax : SyntaxNode
+        {
+            return root.DescendantNodes().OfType<TSyntax>();
+        }
+
+        /// <summary>
+        /// Finds the first syntax node of the specified type.
+        /// </summary>
+        public TSyntax? FindFirstNode<TSyntax>(SyntaxNode root)
+            where TSyntax : SyntaxNode
+        {
+            return root.DescendantNodes().OfType<TSyntax>().FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Counts how many nodes of a given syntax type exist.
+        /// </summary>
+        public int CountNodes<TSyntax>(SyntaxNode root)
+            where TSyntax : SyntaxNode
+        {
+            return root.DescendantNodes().OfType<TSyntax>().Count();
         }
     }
 }

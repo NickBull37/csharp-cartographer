@@ -5,6 +5,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 {
     public interface INavTokenGenerator
     {
-        List<NavToken> GenerateNavTokens(SemanticModel semanticModel, SyntaxTree syntaxTree);
+        Task<List<NavToken>> GenerateNavTokens(SemanticModel semanticModel, SyntaxTree syntaxTree, Document document);
     }
 }

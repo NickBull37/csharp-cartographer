@@ -5,8 +5,8 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 {
     public interface IGenerateArtifactWorkflow
     {
-        Artifact ExecGenerateDemoArtifact(string fileName);
+        Task<Artifact> ExecGenerateDemoArtifact(string fileName);
 
-        Artifact ExecGenerateUserArtifact(GenerateArtifactDto requestDto);
+        Task<Artifact> ExecGenerateUserArtifact(GenerateArtifactDto requestDto);
     }
 }

@@ -33,7 +33,7 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
 
             try
             {
-                var artifact = _generateArtifactWorkflow.ExecGenerateDemoArtifact(fileName);
+                var artifact = await _generateArtifactWorkflow.ExecGenerateDemoArtifact(fileName);
                 return Ok(artifact);
             }
             catch (Exception ex)
@@ -63,7 +63,7 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
 
             try
             {
-                var artifact = _generateArtifactWorkflow.ExecGenerateUserArtifact(dto);
+                var artifact = await _generateArtifactWorkflow.ExecGenerateUserArtifact(dto);
                 return Ok(artifact);
             }
             catch (Exception ex)

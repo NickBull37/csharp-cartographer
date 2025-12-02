@@ -29,6 +29,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         [JsonIgnore]
         public bool IsIdentifier { get; set; }
 
+        [JsonIgnore]
+        public string? Classification { get; set; }
+
         /// <summary>The Roslyn SyntaxKind of the token as a string.</summary>
         public string RoslynKind { get; set; }
 
@@ -45,6 +48,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <summary>The Roslyn generated SyntaxToken.</summary>
         [JsonIgnore]
         public SyntaxToken RoslynToken { get; set; }
+
+        /// <summary>The token that comes before this one sequentially.</summary>
+        [JsonIgnore]
+        public NavToken? PrevToken { get; set; }
 
         /// <summary>The token that comes after this one sequentially.</summary>
         [JsonIgnore]
@@ -92,7 +99,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <param name="semanticModel">The semantic model generated from the source code.</param>
         /// <param name="syntaxTree">The syntax tree generated from the source code.</param>
         /// <param name="index">The index of the token in the list.</param>
-        public NavToken(SyntaxToken roslynToken, SemanticModel semanticModel, SyntaxTree syntaxTree, int index)
+        public NavToken(SyntaxToken roslynToken, SemanticModel semanticModel, SyntaxTree syntaxTree, int index, string? classification)
         {
             ID = Guid.NewGuid();
             Index = index;
@@ -100,6 +107,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             #region Lexical (token) data
             Text = roslynToken.Text;
             Kind = roslynToken.Kind();
+            Classification = CorrectClassification(roslynToken.Text, classification, roslynToken);
             IsIdentifier = roslynToken.Kind().ToString().Contains("Identifier");
             RoslynKind = roslynToken.Kind().ToString();
             Span = roslynToken.Span;
@@ -340,13 +348,53 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             // find all nodes where the symbol matches
             return identifierNodes
-                .Where(node =>
-                {
-                    var nodeSymbol = semanticModel.GetSymbolInfo(node).Symbol;
-                    return SymbolEqualityComparer.Default.Equals(nodeSymbol, symbol);
-                })
+                .Where(
+                    node =>
+                    {
+                        var nodeSymbol = semanticModel.GetSymbolInfo(node).Symbol;
+                        return SymbolEqualityComparer.Default.Equals(nodeSymbol, symbol);
+                    }
+                )
                 .Select(reference => reference.ToString())
                 .ToList();
+        }
+
+        // TODO: Correct classifications after full list of nav tokens is generated. Add param prefix classification
+        private static string? CorrectClassification(string roslynTokenText, string? roslynClassification, SyntaxToken roslynToken)
+        {
+            List<string> delimiters = ["(", ")", "{", "}", "[", "]"];
+
+            if (roslynClassification == "punctuation" && delimiters.Contains(roslynTokenText)) // correct delimiters
+            {
+                return "delimiter";
+            }
+
+            if (roslynClassification == "punctuation" && roslynTokenText == "..") // correct range operator
+            {
+                return "operator";
+            }
+
+            if (roslynClassification == "static symbol") // correct static method call
+            {
+                return "static method identifier";
+            }
+
+            if ((roslynTokenText == "<" || roslynTokenText == ">") && roslynClassification == "punctuation")
+            {
+                if (roslynToken.Parent.IsKind(SyntaxKind.TypeArgumentList)
+                    || roslynToken.Parent.IsKind(SyntaxKind.TypeParameterList)) // correct generic type delimiters
+                {
+                    return "delimiter";
+                }
+
+                if (roslynToken.Parent.IsKind(SyntaxKind.GreaterThanExpression)
+                    || roslynToken.Parent.IsKind(SyntaxKind.LessThanExpression)) // correct greater/less than operators
+                {
+                    return "operator";
+                }
+            }
+
+            return roslynClassification;
         }
     }
 }
