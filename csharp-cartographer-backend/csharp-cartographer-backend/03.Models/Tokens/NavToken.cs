@@ -360,6 +360,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         }
 
         // TODO: Correct classifications after full list of nav tokens is generated. Add param prefix classification
+        /// <summary>Updates the classification for specific tokens that can have more than one classification.</summary>
+        /// <param name="roslynTokenText">The text of the Roslyn generated syntax token.</param>
+        /// <param name="roslynClassification">The Roslyn generated token classification.</param>
+        /// <param name="roslynToken">The Roslyn generated syntax token.</param>
+        /// <returns>A string representing the updated classification if one is present.</returns>
         private static string? CorrectClassification(string roslynTokenText, string? roslynClassification, SyntaxToken roslynToken)
         {
             List<string> delimiters = ["(", ")", "{", "}", "[", "]"];

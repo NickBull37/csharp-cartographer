@@ -3,12 +3,16 @@
     public class CartographerConfig
     {
         /// <summary>
-        ///     A boolean flag that colors all unhighlighted tokens red when enabled.
+        ///     Will log the full list of tokens to 02.Utilities/Logging/Logs/TokenListLog.txt if true.
         /// </summary>
-        public bool ShowUnhighlightedTokens { get; set; }
+        public bool LogArtifact { get; set; }
+
+        /// <summary>
+        ///     Will log any unidentified (red) tokens to 02.Utilities/Logging/Logs/TokenLog.txt if true.
+        /// </summary>
+        public bool LogUnidentifiedTokens { get; set; }
 
         // TODO: Move to ChatGpt client config
-
         /// <summary>
         ///     The ChatGpt endpoint url for generating code analysis..
         /// </summary>

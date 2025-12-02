@@ -27,7 +27,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                     .FirstOrDefault(c => c.TextSpan.Length == token.Span.Length).ClassificationType;
 
                 var newToken = new NavToken(token, semanticModel, syntaxTree, index, classification);
-                //TokenLogger.LogToken(newToken);
                 navTokens.Add(newToken);
 
                 // each token in list needs data from the ones before & after for syntax highlighting
