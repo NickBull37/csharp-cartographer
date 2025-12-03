@@ -4,27 +4,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
 {
     public class TokenTagGenerator : ITokenTagGenerator
     {
-        private static readonly List<string> _punctuationChars =
-        [
-            ".",
-            ",",
-            ";",
-            ":",
-            "?"
-        ];
-
-        private static readonly List<string> _delimiterChars =
-        [
-            "(",
-            ")",
-            "[",
-            "]",
-            "{",
-            "}",
-            "<",
-            ">"
-        ];
-
         private static readonly List<string> _primitiveTypes =
         [
             "StringKeyword",
@@ -56,25 +35,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
             "dynamic",
         ];
 
-        private static readonly List<string> _primitiveIntegralTypes =
-        [
-            "byte",
-            "sbyte",
-            "short",
-            "ushort",
-            "int",
-            "uint",
-            "long",
-            "ulong",
-            "char",
-        ];
-
-        private static readonly List<string> _primitiveFloatingPointTypes =
-        [
-            "double",
-            "float"
-        ];
-
         private static readonly List<string> _accessModifiers =
         [
             "PublicKeyword",
@@ -94,89 +54,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
             "StaticKeyword",
             "VirtualKeyword",
             "VolatileKeyword"
-        ];
-
-        private static readonly List<string> _literalKinds =
-        [
-            "NumericLiteralToken",
-            "StringLiteralToken"
-        ];
-
-        private static readonly List<string> _genericCollections =
-        [
-            "List",
-        ];
-
-        private static readonly List<string> _operators =
-        [
-            // arithmetic
-            "+",
-            "-",
-            "*",
-            "/",
-            "%",
-            // comparison (relational)
-            "==",
-            "!=",
-            ">",
-            "<",
-            ">=",
-            "<=",
-            // logical
-            "&&",
-            "||",
-            "!",
-            // bitwise
-            "&",
-            "|",
-            "^",
-            "~",
-            "<<",
-            ">>",
-            // assignment
-            "=",
-            "+=",
-            "-=",
-            "*=",
-            "/=",
-            "%=",
-            "&=",
-            "|=",
-            "^=",
-            "<<=",
-            ">>=",
-            // unary (single-operand)
-            "+",
-            "-",
-            "++",
-            "--",
-            "!",
-            "~",
-            // null-coalescing
-            "??",
-            "??=",
-            // type
-            "is",
-            "as",
-            "sizeof",
-            "typeof",
-            // lambda
-            "=>",
-            // index & range
-            "[]",
-            "..",
-            "^",
-            // member access
-            ".",
-            "?.",
-            "::",
-            // misc
-            "new",
-            "checked",
-            "unchecked",
-            "default",
-            "nameof",
-            "stackalloc"
         ];
 
         public void GenerateTokenTags(List<NavToken> navTokens)
@@ -238,7 +115,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddOperatorTagIfNeeded(NavToken token)
         {
-            if (_operators.Contains(token.Text))
+            if (token.Classification == "operator")
             {
                 token.Tags.Add(new OperatorTag());
             }
@@ -340,7 +217,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddPunctuationTagIfNeeded(NavToken token)
         {
-            if (_punctuationChars.Contains(token.Text))
+            if (token.Classification == "punctuation")
             {
                 token.Tags.Add(new PunctuationTag());
             }
@@ -348,24 +225,9 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddDelimiterTagIfNeeded(NavToken token)
         {
-            bool isAligatorClip = false;
-
-            if (token.Text == "<" || token.Text == ">")
-            {
-                isAligatorClip = true;
-            }
-
-            if (_delimiterChars.Contains(token.Text) && !isAligatorClip)
+            if (token.Classification == "delimiter")
             {
                 token.Tags.Add(new DelimiterTag());
-            }
-            else if (_delimiterChars.Contains(token.Text) && isAligatorClip)
-            {
-                if (token.ParentNodeKind != "LessThanExpression"
-                    && token.ParentNodeKind != "GreaterThanExpression")
-                {
-                    token.Tags.Add(new DelimiterTag());
-                }
             }
         }
 

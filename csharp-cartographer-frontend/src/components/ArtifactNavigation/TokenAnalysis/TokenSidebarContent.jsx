@@ -268,33 +268,30 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                     mb={1}
                 >
                     <Divider sx={{ bgcolor: '#808080' }} />
-                    <Tooltip
-                        title="Tags are added to tokens when specific language element criteria are met. Tags provide textbook definitions for basic language elements."
+
+                    <Box
+                        display="flex"
+                        alignItems="baseline"
+                        sx={{
+                            pt: 1,
+                            pl: 1
+                        }}
                     >
-                        <Box
-                            display="flex"
-                            alignItems="baseline"
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" class="bi bi-pin-map bootstrap-icon-fill-gray" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8z"/>
+                            <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
+                        </svg>
+                        <Typography
+                            className='code'
                             sx={{
-                                pt: 1,
-                                pl: 1
+                                px: 1,
+                                color: colors.gray60,
+                                fontSize: '14px'
                             }}
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" class="bi bi-pin-map bootstrap-icon-fill-gray" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8z"/>
-                                <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
-                            </svg>
-                            <Typography
-                                className='code'
-                                sx={{
-                                    px: 1,
-                                    color: colors.gray60,
-                                    fontSize: '14px'
-                                }}
-                            >
-                                Tags
-                            </Typography>
-                        </Box>
-                    </Tooltip>
+                            Tags
+                        </Typography>
+                    </Box>
 
                     {tokenTags.map((tag, index) => (
                         <Stack
@@ -305,8 +302,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                 borderRadius: '4px',
                                 mx: 2,
                                 px: '12px',
-                                pt: '5px',
-                                pb: tag == activeTag ? '12px' : '5px',
+                                pt: '8px',
+                                pb: tag == activeTag ? '12px' : '8px',
                             }}
                         >
                             <Box
@@ -314,7 +311,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                 justifyContent="flex-start"
                                 alignItems="center"
                                 sx={{
-                                    mb: tag == activeTag ? '1rem' : '0'
+                                    mb: tag == activeTag ? '0.75rem' : '0'
                                 }}
                             >
                                 <Typography
@@ -421,64 +418,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                     <></>
                                             }
                                         </Stack>
-
-                                        {/* <Stack
-                                            gap={2}
-                                            sx={{
-                                                mt: tag.options !== null ? 2 : 0
-                                            }}
-                                        >
-                                            {tag.options !== null && tag.options.length > 0
-                                                ?
-                                                    <TagDefinitionBox>
-                                                        <Stack
-                                                            gap={2}
-                                                        >
-                                                            <Box
-                                                                display="flex"
-                                                                alignItems="center"
-                                                                gap={2}
-                                                            >
-                                                                <Tooltip title="Available Options">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" className="bi bi-code-slash bootstrap-icon-fill" viewBox="0 0 16 16">
-                                                                        <path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0m6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0"/>
-                                                                    </svg>
-                                                                </Tooltip>
-                                                                <BoxText>
-                                                                    {tag.optionsLabel}
-                                                                </BoxText>
-                                                            </Box>
-                                                            {tag.options.map((option, index) => (
-                                                                <Stack
-                                                                    key={index}
-                                                                    display="flex"
-                                                                >
-                                                                    <Box
-                                                                        sx={{
-                                                                            px: 4
-                                                                        }}
-                                                                    >
-                                                                        <Typography
-                                                                            style={{
-                                                                                whiteSpace: 'pre-wrap', // keeps double spaces in text string
-                                                                            }}
-                                                                            className={`${tag.optionsColorClass} code`}
-                                                                            sx={{
-                                                                                fontSize: '0.875rem',
-                                                                                lineHeight: '2'
-                                                                            }}
-                                                                        >
-                                                                            {option.optionsText}
-                                                                        </Typography>
-                                                                    </Box>
-                                                                </Stack>
-                                                            ))}
-                                                        </Stack>
-                                                    </TagDefinitionBox>
-                                                :
-                                                    <></>
-                                            }
-                                        </Stack> */}
                                     </>
                                 :
                                 <></>
@@ -492,32 +431,37 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                 >
                     <Stack>
                         <Divider sx={{ bgcolor: '#808080' }} />
-                        <Tooltip
-                            title="The uploaded C# source code has been parsed into a syntax tree using the Micrsoft.CodeAnalysis.CSharp (&quot;Roslyn&quot;) library. This syntax tree is then parsed to create the &quot;navigation&quot; tokens displayed on the screen. The following charts provide facts & insights on each token's ancestor nodes in the syntax tree. Click the compass icon to highlight the ancestor tokens in the source code."
-                        >
+                        
                             <Box
                                 display="flex"
                                 alignItems="center"
-                                sx={{
-                                    pt: 1,
-                                    pl: 1
-                                }}
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" className="bi bi-diagram-3 bootstrap-icon-fill-gray" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
-                                </svg>
-                                <Typography
-                                    className='code'
-                                    sx={{
-                                        px: 1,
-                                        color: colors.gray60,
-                                        fontSize: '14px'
-                                    }}
-                                >
-                                    Ancestor Charts
-                                </Typography>
+                                <Tooltip title="The uploaded C# source code has been parsed into a syntax tree using the Micrsoft.CodeAnalysis.CSharp (&quot;Roslyn&quot;) library. This syntax tree is then parsed to create the &quot;navigation&quot; tokens displayed on the screen. The following charts provide facts & insights on each token's ancestor nodes in the syntax tree. Click the compass icon to highlight the ancestor tokens in the source code.">
+                                    <Box
+                                        display="flex"
+                                        alignItems="center"
+                                        sx={{
+                                            pt: 1,
+                                            pl: 1
+                                        }}
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" className="bi bi-diagram-3 bootstrap-icon-fill-gray" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                                        </svg>
+                                        <Typography
+                                            className='code'
+                                            sx={{
+                                                px: 1,
+                                                color: colors.gray60,
+                                                fontSize: '14px'
+                                            }}
+                                        >
+                                            Ancestor Charts
+                                        </Typography>
+                                    </Box>
+                                </Tooltip>
                             </Box>
-                        </Tooltip>
+
                         {charts.map((chart, index) => (
                             <Stack
                                 className='chart-border-gray chart-bg-gray'
@@ -527,7 +471,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                     borderRadius: '4px',
                                     mx: 2,
                                     px: '12px',
-                                    py: '5px',
+                                    py: '8px',
                                 }}
                             >
                                 <Box
@@ -536,7 +480,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                     alignItems="center"
                                     gap={1.25}
                                     sx={{
-                                        mb: chart == activeChart ? '1rem' : '0'
+                                        mb: chart == activeChart ? '0.75rem' : '0'
                                     }}
                                 >
                                     <IconButton
