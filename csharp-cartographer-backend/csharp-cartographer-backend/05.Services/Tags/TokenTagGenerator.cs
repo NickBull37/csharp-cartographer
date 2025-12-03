@@ -191,19 +191,13 @@ namespace csharp_cartographer_backend._05.Services.Tags
         {
             AddIdentifierTagIfNeeded(token);
             AddKeywordTagIfNeeded(token);
-
             AddAccessModifierTagIfNeeded(token);
             AddModifierTagIfNeeded(token);
             AddPredefinedTypeTagIfNeeded(token);
-            //AddPrimitiveTypeTagIfNeeded(token);
-            AddPrimitiveIntegralTypeTagIfNeeded(token);
-            AddPrimitiveFloatingPointTypeTagIfNeeded(token);
             AddParameterTagIfNeeded(token);
-            AddParameterTypeTagIfNeeded(token);
             AddStringLiteralTagIfNeeded(token);
             AddNumericLiteralTagIfNeeded(token);
             AddGenericTypeArgumentTagIfNeeded(token);
-            AddGenericCollectionTagIfNeeded(token);
             AddAttributeTagIfNeeded(token);
             AddPunctuationTagIfNeeded(token);
             AddDelimiterTagIfNeeded(token);
@@ -290,16 +284,6 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddGenericCollectionTagIfNeeded(NavToken token)
-        {
-            if (_genericCollections.Contains(token.Text)
-                && token.RoslynKind == "IdentifierToken"
-                && token.ParentNodeKind == "GenericName")
-            {
-                token.Tags.Add(new GenericCollectionTag());
-            }
-        }
-
         private static void AddAttributeTagIfNeeded(NavToken token)
         {
             if (token.RoslynKind == "IdentifierToken"
@@ -346,66 +330,11 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddParameterTypeTagIfNeeded(NavToken token)
-        {
-            bool isParamType = false;
-
-            // non-primitive types
-            if (token.RoslynKind == "IdentifierToken"
-                && token.ParentNodeKind == "IdentifierName"
-                && token.GrandParentNodeKind == "Parameter"
-                && token.GreatGrandParentNodeKind == "ParameterList")
-            {
-                isParamType = true;
-            }
-
-            // primitive types
-            if (_primitiveTypes.Contains(token.RoslynKind)
-                && token.ParentNodeKind == "PredefinedType"
-                && token.GrandParentNodeKind == "Parameter"
-                && token.GreatGrandParentNodeKind == "ParameterList")
-            {
-                isParamType = true;
-            }
-
-            if (isParamType)
-            {
-                token.Tags.Add(new ParameterTypeTag());
-            }
-        }
-
         private static void AddPredefinedTypeTagIfNeeded(NavToken token)
         {
             if (_predefinedTypes.Contains(token.Text))
             {
                 token.Tags.Add(new PredefinedTypeTag());
-            }
-        }
-
-        private static void AddPrimitiveTypeTagIfNeeded(NavToken token)
-        {
-            if (_primitiveTypes.Contains(token.RoslynKind)
-                && token.ParentNodeKind == "PredefinedType")
-            {
-                token.Tags.Add(new PrimitiveTypeTag());
-            }
-        }
-
-        private static void AddPrimitiveIntegralTypeTagIfNeeded(NavToken token)
-        {
-            if (_primitiveIntegralTypes.Contains(token.Text)
-                && token.ParentNodeKind == "PredefinedType")
-            {
-                token.Tags.Add(new PrimitiveIntegralTypeTag());
-            }
-        }
-
-        private static void AddPrimitiveFloatingPointTypeTagIfNeeded(NavToken token)
-        {
-            if (_primitiveFloatingPointTypes.Contains(token.Text)
-                && token.ParentNodeKind == "PredefinedType")
-            {
-                token.Tags.Add(new PrimitiveFloatingPointTypeTag());
             }
         }
 
@@ -488,14 +417,5 @@ namespace csharp_cartographer_backend._05.Services.Tags
                 token.Tags.Add(new BaseTypeTag());
             }
         }
-
-        //private static void AddReturnTypeTagIfNeeded(NavToken token)
-        //{
-        //    // return types
-        //    if ()
-        //    {
-        //        token.Tags.Add(new ReturnTypeTag());
-        //    }
-        //}
     }
 }

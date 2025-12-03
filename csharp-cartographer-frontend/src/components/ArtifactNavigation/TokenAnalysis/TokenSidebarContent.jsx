@@ -300,13 +300,13 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                         <Stack
                             className={`${tag.borderClass} ${tag.bgColorClass}`}
                             sx={{
-                                mt: 2.5,
-                                boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.35), 0 2px 8px 0 rgba(0, 0, 0, 0.35)',
+                                mt: 2,
+                                boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.20), 0 2px 6px 0 rgba(0, 0, 0, 0.20)',
                                 borderRadius: '4px',
                                 mx: 2,
                                 px: '12px',
-                                pt: '8px',
-                                pb: tag == activeTag ? '12px' : '8px',
+                                pt: '5px',
+                                pb: tag == activeTag ? '12px' : '5px',
                             }}
                         >
                             <Box
@@ -353,12 +353,12 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             { activeTag === tag
                                 ?
                                     <>
-                                        <Stack gap={2}>
+                                        <Stack>
                                             {tag.facts.length > 0
                                                 ?
                                                     <TagDefinitionBox>
                                                         <Stack
-                                                            gap={2}
+                                                            gap={1.75}
                                                         >
                                                             {tag.facts.map((fact, index) => (
                                                                 <Box
@@ -387,7 +387,42 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                             }
                                         </Stack>
 
-                                        <Stack
+                                        <Box sx={{ minHeight: '12px' }}></Box>
+
+                                        <Stack>
+                                            {tag.insights.length > 0
+                                                ?
+                                                    <TagDefinitionBox>
+                                                        <Stack gap={1.75}>
+                                                            {tag.insights.map((insight, index) => (
+                                                                <Box
+                                                                    display="flex"
+                                                                    alignItems="baseline"
+                                                                    gap={2}
+                                                                >
+                                                                    <Box>
+                                                                        <Tooltip title="Tag Insights">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" className="bi bi-compass bootstrap-icon-fill" viewBox="0 0 16 16">
+                                                                                <path d="M8 16.016a7.5 7.5 0 0 0 1.962-14.74A1 1 0 0 0 9 0H7a1 1 0 0 0-.962 1.276A7.5 7.5 0 0 0 8 16.016m6.5-7.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"/>
+                                                                                <path d="m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z"/>
+                                                                            </svg>
+                                                                        </Tooltip>
+                                                                    </Box>
+                                                                    <BoxText
+                                                                        key={index}
+                                                                    >
+                                                                        {insight}
+                                                                    </BoxText>
+                                                                </Box>
+                                                            ))}
+                                                        </Stack>
+                                                    </TagDefinitionBox>
+                                                :
+                                                    <></>
+                                            }
+                                        </Stack>
+
+                                        {/* <Stack
                                             gap={2}
                                             sx={{
                                                 mt: tag.options !== null ? 2 : 0
@@ -443,7 +478,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 :
                                                     <></>
                                             }
-                                        </Stack>
+                                        </Stack> */}
                                     </>
                                 :
                                 <></>
@@ -453,7 +488,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                 </Stack>
 
                 <Stack
-                    my={2}
+                    my={1.75}
                 >
                     <Stack>
                         <Divider sx={{ bgcolor: '#808080' }} />
@@ -479,7 +514,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                         fontSize: '14px'
                                     }}
                                 >
-                                    Charts
+                                    Ancestor Charts
                                 </Typography>
                             </Box>
                         </Tooltip>
@@ -487,12 +522,12 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             <Stack
                                 className='chart-border-gray chart-bg-gray'
                                 sx={{
-                                    mt: 2.5,
-                                    boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.35), 0 2px 8px 0 rgba(0, 0, 0, 0.35)',
+                                    mt: 2,
+                                    boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.20), 0 2px 6px 0 rgba(0, 0, 0, 0.20)',
                                     borderRadius: '4px',
                                     mx: 2,
                                     px: '12px',
-                                    py: '8px',
+                                    py: '5px',
                                 }}
                             >
                                 <Box

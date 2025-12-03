@@ -11,21 +11,24 @@
         public string BorderClass { get; set; }
 
         public string BgColorClass { get; set; }
-
-        public string OptionsColorClass { get; set; }
-
-        public string OptionsLabel { get; set; }
-
-        public List<AvailableOption>? Options { get; set; }
     }
 
-    public class AvailableOption
+    public class KeywordTag : TokenTag
     {
-        public string? Label { get; set; }
-
-        public string? OptionsText { get; set; }
-
-        public List<string>? OptionsList { get; set; }
+        public KeywordTag()
+        {
+            Label = $"C# Keyword";
+            Facts =
+            [
+                "Keywords are reserved words that have special meaning to the C# compiler and cannot be used as identifiers.",
+            ];
+            Insights =
+            [
+                "Some keywords are contextual — they only act like keywords in certain situations (var, nameof, async).",
+            ];
+            BorderClass = "tag-border-purple";
+            BgColorClass = "tag-bg-purple";
+        }
     }
 
     public class AccessorTag : TokenTag
@@ -35,14 +38,13 @@
             Label = $"Accessor";
             Facts =
             [
-                "Accessors are elements of code within a property or indexer that allow getting or setting the property's value.",
-                "By default, their implementation is implicitly provided by the compiler when using the get or set keywords but can be explicitly defined or customized if needed.",
-                "You can also provide an access modifier to an accessor to control their visibility independently of the property's overall access level.",
-                "The accessors available in C# are \"get\", \"set\", and \"init\""
+                "Accessors are elements of code within a property that allow getting or setting the property's value.",
+                "You can provide an access modifier to an accessor to control who can get or set a property's value independently of the property's overall access level.",
             ];
             Insights =
             [
-                ""
+                "You can provide an access modifier to an accessor to control who can get or set a property's value independently of the property's overall access level.",
+                "Properties do not require accessors. Remove the \"set\" accessor and that property's value cannot be set outside of initialization."
             ];
             BorderClass = "tag-border-blue";
             BgColorClass = "tag-bg-blue";
@@ -56,32 +58,16 @@
             Label = $"Access Modifier";
             Facts =
             [
-                "Access modifiers are keywords used to define the visibility and accessibility of classes, methods, variables, and other members."
+                "Access modifiers in C# control who is allowed to see and use your classes, methods, and variables.",
+                "This allows you to hide or expose parts of your code so others interact with it as intended."
             ];
             Insights =
             [
-                ""
+                "Access modifiers harden your code by preventing other parts of your program from misusing internal details.",
+                "Choosing the most restrictive modifier by default (like private) is common since the access level can always be updated later."
             ];
             BorderClass = "tag-border-blue";
             BgColorClass = "tag-bg-blue";
-            OptionsColorClass = "tag-options-blue";
-            OptionsLabel = "The available access modifiers in C# are";
-            Options =
-            [
-                new AvailableOption()
-                {
-                    OptionsText = "public  private  protected  internal  protected\u2011internal  private\u2011protected  file",
-                    OptionsList =
-                    [
-                        "public",
-                        "private",
-                        "protected",
-                        "internal",
-                        "protected internal",
-                        "private protected",
-                    ]
-                }
-            ];
         }
     }
 
@@ -92,11 +78,13 @@
             Label = $"Attribute";
             Facts =
             [
-                "Attributes are declarative tags used to add metadata to code elements such as classes, methods, properties, or assemblies."
+                "Attributes are declarative tags used to add extra information to code elements such as classes, methods, or properties.",
+                "They don’t change your code directly, but they tell the compiler or other tools to treat your code in a certain way."
             ];
             Insights =
             [
-                ""
+                "Attributes let you quickly add powerful behavior without changing your actual code logic, such as data validation or serialization.",
+                "Many frameworks (like ASP.NET) use attributes heavily and there are many options available to take advantage of."
             ];
             BorderClass = "tag-border-green";
             BgColorClass = "tag-bg-green";
@@ -115,8 +103,8 @@
             ];
             Insights =
             [
-                "C# allows for single-class inheritance, meaning a class can inherit from only one base class at a time.",
-                "C# allows for multiple-interface inheritance, meaning a class or interface can implement or inherit from multiple interfaces at the same time.",
+                "C# allows for single-class inheritance, meaning a class can only inherit from one base class at a time.",
+                "C# allows for multiple-interface inheritance, meaning a class or interface can inherit from multiple interfaces at the same time.",
                 "A class can inherit from a single base class while also implementing multiple interfaces."
             ];
             BorderClass = "tag-border-green";
@@ -131,11 +119,13 @@
             Label = $"Class";
             Facts =
             [
-                "Classes are blueprints for creating objects. They define the structure and behavior of an object using fields (data) and methods (functions) that operate on the data.",
+                "Classes are blueprints for creating objects. They define the structure and behavior of an object using fields, properties, and methods that operate on the data.",
+                "You can create an instance of a class by using the \"new\" keyword."
             ];
             Insights =
             [
-                "",
+                "Classes can be used in many ways such as model definitions which often contain many properties, to services which usually have more methods.",
+                "Using classes lets you reuse logic and share behavior through inheritance, reducing repetition in your code."
             ];
             BorderClass = "tag-border-green";
             BgColorClass = "tag-bg-green";
@@ -150,11 +140,12 @@
             Facts =
             [
                 "Constructors are special methods called automatically called when an instance of a class or struct is created.",
-                "Their purpose is to initialize the object, often by setting initial values for its fields or properties."
+                "You can create multiple constructors with different parameters, giving flexibility in how an object can be created."
             ];
             Insights =
             [
-                "",
+                "If you create a class and don’t create a constructor, C# gives your class a default constructor that does nothing but create the object.",
+                "If you do create a constructor that requires input parameters, you will lose access to the default constructor provided by C#."
             ];
             BorderClass = "tag-border-green";
             BgColorClass = "tag-bg-green";
@@ -168,11 +159,12 @@
             Label = $"Delimiter";
             Facts =
             [
-                "Delimiters are characters or sequences of characters used to separate, enclose, or structure code elements."
+                "Delimiters are characters used to separate, enclose, or structure code elements."
             ];
             Insights =
             [
-                ""
+                "Visual Studio can automatically fix indentation, braces, and spacing around delimiters using the shortcut Ctrl + K, Ctrl + D.",
+                "You can also enforce certains rules around delimiters using an .editorconfig file."
             ];
             BorderClass = "tag-border-black";
             BgColorClass = "tag-bg-black";
@@ -186,34 +178,16 @@
             Label = $"Field";
             Facts =
             [
-                "Fields are variables declared directly within a class or struct to store data or state.",
-                "Fields are typically accessed directly or through properties for better encapsulation and control."
+                "Fields are variables that belong to a class or struct to store data and cannot be accessed outside the scope they are defined.",
+                "Fields are typically accessed directly when inside the class or through properties when outside the class for better encapsulation and control."
             ];
             Insights =
             [
-                "",
+                "Fields can have access modifiers (like private or public) to control who can read or change them.",
+                "Most fields are kept private so the class controls how its data is accessed, usually through properties."
             ];
             BorderClass = "tag-border-red";
             BgColorClass = "tag-bg-red";
-        }
-    }
-
-    public class GenericCollectionTag : TokenTag
-    {
-        public GenericCollectionTag()
-        {
-            Label = $"Generic Collection Type";
-            Facts =
-            [
-                "Generic collections are type-safe collections that allows you to define the type of elements they can store at compile-time.",
-                "Generic collections are part of the System.Collections.Generic namespace and provide better performance and type safety compared to non-generic collections."
-            ];
-            Insights =
-            [
-                "",
-            ];
-            BorderClass = "tag-border-green";
-            BgColorClass = "tag-bg-green";
         }
     }
 
@@ -224,12 +198,13 @@
             Label = $"Generic Type Argument";
             Facts =
             [
-                "Generic type arguments are the specific type you provide when instantiating a generic class, struct, interface, method, or delegate.",
-                "They replace the generic type parameter (T, TKey, TValue, etc.) defined in the generic declaration."
+                "A generic type argument is the specific data type you supply when using a generic class or method.",
+                "They replace the generic type parameter inside angle brackets (T, TKey, TValue, etc.) defined in the generic declaration."
             ];
             Insights =
             [
-                "",
+                "This reduces duplication because one generic class or method can work with many different types.",
+                "If a method requires a generic type constraint, any type that inherits from that constraint will also work.",
             ];
             BorderClass = "tag-border-green";
             BgColorClass = "tag-bg-green";
@@ -247,28 +222,11 @@
             ];
             Insights =
             [
-                //"Hover your mouse over an identifier in Visual Studio to show details about the identifier."
+                "Hover your cursor over an identifier in Visual Studio to show details about the identifier.",
+                "You can add information to these details by using XML documentation comments."
             ];
             BorderClass = "tag-border-gray";
             BgColorClass = "tag-bg-gray";
-        }
-    }
-
-    public class KeywordTag : TokenTag
-    {
-        public KeywordTag()
-        {
-            Label = $"C# Keyword";
-            Facts =
-            [
-                "Keywords are reserved words with a special meaning in the C# language syntax and cannot be used as identifiers.",
-            ];
-            Insights =
-            [
-                "",
-            ];
-            BorderClass = "tag-border-purple";
-            BgColorClass = "tag-bg-purple";
         }
     }
 
@@ -284,7 +242,7 @@
             ];
             Insights =
             [
-                "",
+                "Breaking your program into small, focused methods that perform a single task makes your code easier to understand and debug.",
             ];
             BorderClass = "tag-border-yellow";
             BgColorClass = "tag-bg-yellow";
@@ -298,12 +256,12 @@
             Label = $"Modifier";
             Facts =
             [
-                "Modifiers (non-access modifiers) define additional behaviors or characteristics of a member (field, method, property, etc.).",
-                "Non-access modifiers in C# include \"abstract\", \"async\", \"const\", \"override\", \"readonly\", \"sealed\", \"static\", \"virtual\", & \"volatile\"."
+                "Modifiers are words added to classes, methods, fields, or properties that change how they behave, such as controlling access or inheritance.",
+                "Common modifiers in C# include \"abstract\", \"async\", \"const\", \"override\", \"readonly\", \"sealed\", \"static\", \"virtual\", & \"volatile\"."
             ];
             Insights =
             [
-                ""
+                "Modifiers help make your intent obvious to other developers, improving clarity and reducing mistakes."
             ];
             BorderClass = "tag-border-blue";
             BgColorClass = "tag-bg-blue";
@@ -317,13 +275,12 @@
             Label = $"Numeric Literal";
             Facts =
             [
-                "Numeric literal are constant values written directly in the code to represent a number.",
-                "It can be an integer (e.g., 42), a floating-point number (e.g., 3.14), or use suffixes to specify types (e.g., 42L for long, 3.14f for float, 2.71m for decimal).",
-                "Numeric literals can also be written in different formats like hexadecimal (0x1A) or binary (0b1010)."
+                "Numeric literal are values written directly in the code instead of storing it in a variable.",
             ];
             Insights =
             [
-                "",
+                "They can be integers (e.g., 42), floating-point numbers (e.g., 3.14), or use suffixes to specify types (e.g., 42L for long, 3.14f for float, 2.71m for decimal).",
+                "Numeric literals can also be written in different formats like hexadecimal (0x1A) or binary (0b1010)."
             ];
             BorderClass = "tag-border-lightgreen";
             BgColorClass = "tag-bg-lightgreen";
@@ -337,11 +294,11 @@
             Label = $"Operator";
             Facts =
             [
-                "Operators are symbols or keyword that performs a specific operation on one or more operands, such as arithmetic, assignment, comparison, or logical operations.",
+                "Operators are symbols that performs a specific operation on one or more operands, such as arithmetic, assignment, comparison, or logical operations.",
             ];
             Insights =
             [
-                "",
+                "Learning operators helps you express logic clearly and efficiently while expanding your options for solving problems.",
             ];
             BorderClass = "tag-border-darkpurple";
             BgColorClass = "tag-bg-darkpurple";
@@ -355,34 +312,17 @@
             Label = $"Parameter";
             Facts =
             [
-                "Parameters are variables declared in a method, constructor, or function definition that will receive input values (called arguments) when the method is called.",
-                "Parameters are defined inside the parentheses of the method signature, with a type and a name, such as int number in public void PrintNumber(int number).",
-                "Parameters can also have modifiers like ref, out, or params to modify their behavior.",
+                "Parameters are variables declared in a method or constructor definition that will receive input values when the method or constructor is called.",
+                "Parameters are defined inside the parentheses of the method or constructor signature and require a name and a type.",
+
             ];
             Insights =
             [
-                ""
+                "Parameters can also have modifiers like \"ref\" or \"out\" to modify their behavior.",
+                "Parameters only refer to values in the method/constructor where they are defined. The values passed in for parameters are called arguments."
             ];
             BorderClass = "tag-border-cyan";
             BgColorClass = "tag-bg-cyan";
-        }
-    }
-
-    public class ParameterTypeTag : TokenTag
-    {
-        public ParameterTypeTag()
-        {
-            Label = $"Parameter Type";
-            Facts =
-            [
-                "Parameter types are the data types specified for a parameter in a method, constructor, or function definition and define the type of value that the parameter can accept."
-            ];
-            Insights =
-            [
-                ""
-            ];
-            BorderClass = "tag-border-lightblue";
-            BgColorClass = "tag-bg-lightblue";
         }
     }
 
@@ -396,97 +336,12 @@
                 "Predefined types refer to all data types that are natively supported by the C# language.",
                 "These types are aliases for corresponding .NET Framework types (e.g., int is an alias for System.Int32)."
             ];
-            Insights = [];
+            Insights =
+            [
+                "Choosing the right predefined type for your data helps your program run efficiently and avoids unexpected bugs.",
+            ];
             BorderClass = "tag-border-darkjade";
             BgColorClass = "tag-bg-darkjade";
-        }
-    }
-
-    public class PrimitiveTypeTag : TokenTag
-    {
-        public PrimitiveTypeTag()
-        {
-            Label = $"Primitive Type";
-            Facts =
-            [
-                "Primitive types are a subset of predefined types that are directly mapped to low-level data types in the Common Language Runtime (CLR).",
-                "These are the most basic data types the C# language has to offer and are typically optimized for performance."
-            ];
-            Insights = [];
-            BorderClass = "tag-border-jade";
-            BgColorClass = "tag-bg-jade";
-            //OptionsColorClass = "tag-option-jade";
-            //OptionsLabel = "The available primitive types in C# are";
-            //Options =
-            //[
-            //    new AvailableOption()
-            //    {
-            //        Label = "Integral Types",
-            //        OptionsText = "byte  sbyte  short  ushort  int  uint  long  ulong  char"
-            //    },
-            //    new AvailableOption()
-            //    {
-            //        Label = "Floating-point Types",
-            //        OptionsText = "float  double  decimal"
-            //    },
-            //    new AvailableOption()
-            //    {
-            //        Label = "Other Types",
-            //        OptionsText = "bool  string  object  void"
-            //    }
-            //];
-        }
-    }
-
-    public class PrimitiveIntegralTypeTag : TokenTag
-    {
-        public PrimitiveIntegralTypeTag()
-        {
-            Label = $"Primitive Type: Integral";
-            Facts =
-            [
-                "Primitive types are a subset of predefined types that are directly mapped to low-level data types in the Common Language Runtime (CLR).",
-                "These are the most basic data types the C# language has to offer and are typically optimized for performance.",
-                "Integral types are value types that represent whole numbers without fractional parts."
-            ];
-            Insights = [];
-            BorderClass = "tag-border-jade";
-            BgColorClass = "tag-bg-jade";
-            OptionsColorClass = "tag-option-jade";
-            OptionsLabel = "The predefined integral types in C# are";
-            Options =
-            [
-                new AvailableOption()
-                {
-                    OptionsText = "byte  sbyte  short  ushort  int  uint  long  ulong  char"
-                },
-            ];
-        }
-    }
-
-    public class PrimitiveFloatingPointTypeTag : TokenTag
-    {
-        public PrimitiveFloatingPointTypeTag()
-        {
-            Label = $"Primitive Type: Floating-point";
-            Facts =
-            [
-                "Primitive types are a subset of predefined types that are directly mapped to low-level data types in the Common Language Runtime (CLR).",
-                "These are the most basic data types the C# language has to offer and are typically optimized for performance.",
-                "Floating-point types are value types used to represent numbers with fractional parts."
-            ];
-            Insights = [];
-            BorderClass = "tag-border-jade";
-            BgColorClass = "tag-bg-jade";
-            OptionsColorClass = "tag-option-jade";
-            OptionsLabel = "The predefined floating-point types in C# are";
-            Options =
-            [
-                new AvailableOption()
-                {
-                    OptionsText = "float  double  decimal"
-                },
-            ];
         }
     }
 
@@ -497,11 +352,13 @@
             Label = $"Property";
             Facts =
             [
-                "Properties are class members that provide a flexible mechanism to access and modify the value of a class's fields or data, often encapsulating logic for getting and setting values.",
+                "Properties are class members that provide a flexible mechanism to access and modify the property's value.",
+                "Auto-properties (public int Age { get; set; }) let C# automatically create the hidden field that stores the value."
             ];
             Insights =
             [
-                "",
+                "Properties can help protect data by adding rules or checks before a value is returned or updated.",
+                "A property can have a getter, a setter, or both, and you can control access to each one independently."
             ];
             BorderClass = "tag-border-indigo";
             BgColorClass = "tag-bg-indigo";
@@ -515,32 +372,14 @@
             Label = $"Punctuation";
             Facts =
             [
-                "Punctuation refers to the special symbols used in the syntax to structure code and separate elements."
+                "Punctuation refers to the special symbols used to structure code and tell the compiler how to read it."
             ];
             Insights =
             [
-                ""
+                "Mastering punctuation helps reduce common beginner errors since small mistakes like missing semicolons can cause major headaches."
             ];
             BorderClass = "tag-border-black";
             BgColorClass = "tag-bg-black";
-        }
-    }
-
-    public class ReturnTypeTag : TokenTag
-    {
-        public ReturnTypeTag()
-        {
-            Label = $"Return Type";
-            Facts =
-            [
-                "The return type specifies the type of value that a method returns to its caller and is defined before the method name in the method declaration..",
-            ];
-            Insights =
-            [
-                //"To make code more dynamic, return interfaces when possible. This allows implementation to be more adaptable because the code can return any object that implements the interface.",
-            ];
-            BorderClass = "tag-border-purple";
-            BgColorClass = "tag-bg-purple";
         }
     }
 
@@ -552,10 +391,12 @@
             Facts =
             [
                 "String literals are a sequence of characters enclosed in double quotes (\" \"), representing a constant text value.",
+                "String literals can also include escape sequences like \n for a new line or \" for an actual quote character."
             ];
             Insights =
             [
-                "",
+                "You can also use a verbatim string literal (@\"C:\\Path\\Here\") to write text without escaping backslashes.",
+                "Interpolated string literals allow you to insert variable values into placeholders ($\"Hello {name}\")."
             ];
             BorderClass = "tag-border-orange";
             BgColorClass = "tag-bg-orange";

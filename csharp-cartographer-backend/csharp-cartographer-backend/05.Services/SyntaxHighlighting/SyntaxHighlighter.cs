@@ -82,6 +82,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static void AddIdentifierHighlighting(NavToken token)
         {
+            // Roslyn cannot tell the difference between class, struct, or enum identifier
+            // references when they are defined outside of the uploaded file. 
+
             if (HighlightColorAlreadySet(token))
             {
                 return;
