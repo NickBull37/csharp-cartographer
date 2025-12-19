@@ -91,9 +91,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <summary>A list of token tags attached to the token.</summary>
         public List<TokenTag> Tags { get; set; } = [];
 
-        /// <summary>An expansion on the regular classification.</summary>
-        public TokenClass Class { get; set; }
-
         /// <summary>A list of ancestor nodes & data attached to the token.</summary>
         public List<TokenChart> Charts { get; set; } = [];
 

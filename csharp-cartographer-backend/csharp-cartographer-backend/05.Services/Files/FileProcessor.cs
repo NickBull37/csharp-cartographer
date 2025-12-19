@@ -84,11 +84,36 @@ namespace csharp_cartographer_backend._05.Services.Files
                 }
             }
 
+            // Create workspace
+            var workspace = new AdhocWorkspace();
+
+            // Use the uploaded file's content directly
+            var sourceCode = requestDto.FileContent;
+
+            // Create a Roslyn project
+            var projectInfo = ProjectInfo.Create(
+                ProjectId.CreateNewId(),
+                VersionStamp.Create(),
+                name: "UserCodeProject",
+                assemblyName: "UserCodeProject",
+                language: LanguageNames.CSharp
+            );
+            var project = workspace.AddProject(projectInfo);
+
+            // Add the document with the uploaded content
+            var document = workspace.AddDocument(
+                project.Id,
+                requestDto.FileName,
+                SourceText.From(sourceCode)
+            );
+
             return new FileData
             {
                 FileName = requestDto.FileName,
                 FileLines = fileLines,
-                Content = requestDto.FileContent
+                Content = requestDto.FileContent,
+                Workspace = workspace,
+                Document = document
             };
         }
     }

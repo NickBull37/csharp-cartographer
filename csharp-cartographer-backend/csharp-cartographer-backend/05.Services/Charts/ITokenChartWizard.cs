@@ -7,5 +7,7 @@ namespace csharp_cartographer_backend._05.Services.Charts
         void AddFactsAndInsightsToNavTokenCharts(List<NavToken> navTokens);
 
         void AddHighlightValuesToNavTokenCharts(List<NavToken> navTokens);
+
+        void RemoveExcessChartsFromNavTokens(List<NavToken> navTokens);
     }
 }

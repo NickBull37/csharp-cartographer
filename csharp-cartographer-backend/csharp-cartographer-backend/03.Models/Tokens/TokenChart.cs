@@ -17,6 +17,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public List<int> HighlightIndices { get; set; } = [];
 
+        public bool ShouldBeRemoved { get; set; }
+
         [JsonIgnore]
         public List<SyntaxToken> Tokens { get; set; } = [];
     }

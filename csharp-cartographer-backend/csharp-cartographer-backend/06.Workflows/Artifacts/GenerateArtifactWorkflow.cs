@@ -71,8 +71,9 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
              *   8. Add TokenCharts highlight indices for highlighting in the code viewer.
              *   9. Add TokenTags definitions & insights.
              *   10. Add syntax highlighting for all NavTokens (should be last step in workflow).
-             *   11. Stop stopwatch.
-             *   12. Build & return artifact.
+             *   11. Trim charts that are useful for highlighting but not useful anymore.
+             *   12. Stop stopwatch.
+             *   13. Build & return artifact.
              *   
              */
 
@@ -108,10 +109,13 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             // Step 10. Add syntax highlighting for all NavTokens (should be last step in workflow).
             _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
 
-            // Step 11. Stop stopwatch.
+            // Step 11. Trim charts that are useful for highlighting but not useful anymore.
+            _tokenChartWizard.RemoveExcessChartsFromNavTokens(navTokens);
+
+            // Step 12. Stop stopwatch.
             stopwatch.Stop();
 
-            // Step 12. Build & return artifact.
+            // Step 13. Build & return artifact.
             var artifact = new Artifact(fileData.FileName, stopwatch.Elapsed, navTokens);
 
             // Bonus: Log artifact (optional)

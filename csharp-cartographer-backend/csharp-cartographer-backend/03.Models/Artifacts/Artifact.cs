@@ -26,10 +26,6 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
 
         public List<NavToken> NavTokens { get; set; } = [];
 
-        public Artifact()
-        {
-        }
-
         public Artifact(string fileName, TimeSpan timeToGenerate, List<NavToken> navTokens)
         {
             CreatedDate = DateTime.Now;

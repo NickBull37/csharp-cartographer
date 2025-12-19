@@ -30,11 +30,6 @@ namespace csharp_cartographer_backend._05.Services.Charts
         {
             foreach (var token in navTokens)
             {
-                if (token.Index == 90)
-                {
-
-                }
-
                 var chartCount = 1;
                 foreach (var chart in token.Charts)
                 {
@@ -47,6 +42,23 @@ namespace csharp_cartographer_backend._05.Services.Charts
                         GetElementIndices(navTokens, chart);
                     }
                     chartCount++;
+                }
+            }
+        }
+
+        public void RemoveExcessChartsFromNavTokens(List<NavToken> navTokens)
+        {
+            foreach (var token in navTokens)
+            {
+                if (token.Charts.Count > 0)
+                {
+                    for (int i = 0; i < token.Charts.Count; i++)
+                    {
+                        if (token.Charts[i].Label == "IdentifierName")
+                        {
+                            token.Charts.RemoveAt(i);
+                        }
+                    }
                 }
             }
         }
