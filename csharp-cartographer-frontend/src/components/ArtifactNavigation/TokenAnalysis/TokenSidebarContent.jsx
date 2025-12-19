@@ -90,6 +90,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
     // State Variables
     const [tokenText, setTokenText] = useState('');
     const [tokenLabel, setTokenLabel] = useState('');
+    const [roslynClassification, setRoslynClassification] = useState('');
     const [tokenClassification, setTokenClassification] = useState('');
     const [tokenDefinition, setTokenDefinition] = useState('');
     const [comprehensiveElement, setComprehensiveElement] = useState('');
@@ -174,7 +175,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
         if (activeToken) { // check activeToken is not null or undefined
             setTokenText(activeToken.text || '');
             setTokenLabel(activeToken.label || '');
-            setTokenClassification(activeToken.type || '');
+            setTokenClassification(activeToken.classification || '');
+            setRoslynClassification(activeToken.roslynClassification || '');
             setTokenDefinition(activeToken.definition || '');
             setComprehensiveElement(activeToken.comprehensiveElement || '');
             setHighlightColor(activeToken.highlightColor || '');
@@ -267,6 +269,34 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                 <Stack
                     mb={1}
                 >
+                    <Divider sx={{ bgcolor: '#808080' }} />
+                    <Typography
+                        className='code'
+                        sx={{
+                            px: 1,
+                            color: colors.gray60,
+                            fontSize: '14px',
+                            textAlign: 'center',
+                            py: '2px'
+                        }}
+                    >
+                        {roslynClassification}
+                    </Typography>
+
+                    <Divider sx={{ bgcolor: '#808080' }} />
+                    <Typography
+                        className='code'
+                        sx={{
+                            px: 1,
+                            color: colors.gray60,
+                            fontSize: '14px',
+                            textAlign: 'center',
+                            py: '2px'
+                        }}
+                    >
+                        {tokenClassification}
+                    </Typography>
+
                     <Divider sx={{ bgcolor: '#808080' }} />
 
                     <Box

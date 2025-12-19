@@ -11,7 +11,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         {
             foreach (var token in navTokens)
             {
-                if (string.IsNullOrEmpty(token.Classification))
+                if (string.IsNullOrEmpty(token.UpdatedClassification))
                 {
                     continue;
                 }
@@ -23,7 +23,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     continue;
                 }
 
-                switch (token.Classification)
+                switch (token.UpdatedClassification)
                 {
                     case string classification when classification.Contains("keyword"):
                         AddClassificationHighlighting(token, ReservedTextElements.KeywordList);
@@ -37,22 +37,27 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case "operator":
                         AddClassificationHighlighting(token, ReservedTextElements.OperatorList);
                         break;
-                    case "namespace name":
-                    case "field name":
-                    case "property name":
-                    case "constant name":
+                    case "identifier - namespace":
+                    case "identifier - field declaration":
+                    case "identifier - field reference":
+                    case "identifier - property declaration":
+                    case "identifier - property reference":
+                    case "identifier - constant":
                         token.HighlightColor = "color-white";
                         break;
-                    case "parameter name":
-                    case "local name":
+                    case "identifier - parameter":
+                    case "identifier - parameter prefix":
+                    case "identifier - local variable":
                         token.HighlightColor = "color-light-blue";
                         break;
-                    case "method name":
-                    case "static method name":
+                    case "identifier - method declaration":
+                    case "identifier - method invocation":
                         token.HighlightColor = "color-yellow";
                         break;
-                    case "class name":
-                    case "record class name":
+                    case "identifier - class declaration":
+                    case "identifier - class name":
+                    case "identifier - constructor":
+                    case "identifier - record declaration":
                         token.HighlightColor = "color-green";
                         break;
                     case "number":
@@ -111,6 +116,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             if (token.NextToken?.Text == "(" && token.GrandParentNodeKind != "ObjectCreationExpression" && token.GrandParentNodeKind != "Attribute")
             {
                 token.HighlightColor = "color-yellow";
+                token.UpdatedClassification = "method identifier - invocation";
                 return;
             }
             // generic methods that need types applied
@@ -132,13 +138,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             if (token.PrevToken?.Text == "." && token.NextToken?.Text != "<")
             {
                 token.HighlightColor = "color-white";
-                return;
-            }
-
-            // color parameter prefixes light blue
-            if (token.NextToken?.Text == ":" && token.GreatGrandParentNodeKind == "Argument")
-            {
-                token.HighlightColor = "color-light-blue";
                 return;
             }
 
@@ -174,9 +173,15 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         private static void HighlightUnidentifiedTokensRed(List<NavToken> navTokens)
         {
             TokenLogger.ClearLogFile(LogType.TokenLog);
+            TokenLogger.ClearLogFile(LogType.TextLog);
 
             foreach (var token in navTokens)
             {
+                TokenLogger.LogText($"Token {token.Index}: {token.Text}");
+                TokenLogger.LogText($"Classification: {token.UpdatedClassification}");
+                TokenLogger.LogText("-------------------------------------------");
+                TokenLogger.LogText(" ");
+
                 if (string.IsNullOrEmpty(token.HighlightColor))
                 {
                     TokenLogger.LogToken(token);

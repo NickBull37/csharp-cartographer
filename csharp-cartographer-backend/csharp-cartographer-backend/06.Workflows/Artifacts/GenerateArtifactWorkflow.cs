@@ -23,6 +23,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         private readonly ITokenChartGenerator _tokenChartGenerator;
         private readonly ITokenChartWizard _tokenChartWizard;
         private readonly ITokenTagGenerator _tokenTagGenerator;
+        private readonly ITokenWizard _tokenWizard;
         private readonly CartographerConfig _config;
 
         public GenerateArtifactWorkflow(
@@ -32,6 +33,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             ITokenChartGenerator tokenChartGenerator,
             ITokenChartWizard tokenChartWizard,
             ITokenTagGenerator tokenTagGenerator,
+            ITokenWizard tokenWizard,
             IOptions<CartographerConfig> config)
         {
             _fileProcessor = fileProcessor;
@@ -40,6 +42,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _tokenChartGenerator = tokenChartGenerator;
             _tokenChartWizard = tokenChartWizard;
             _tokenTagGenerator = tokenTagGenerator;
+            _tokenWizard = tokenWizard;
             _config = config.Value;
         }
 
@@ -94,6 +97,8 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             // Step 5. Use SyntaxTree & SemanticModel to generate NavTokens for the artifact.
             var navTokens = await _navTokenGenerator.GenerateNavTokens(semanticModel, syntaxTree, fileData.Document);
 
+            _tokenWizard.CorrectTokenClassifications(navTokens);
+
             // Step 6. Generate TokenTags.
             _tokenTagGenerator.GenerateTokenTags(navTokens);
 
@@ -110,7 +115,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
 
             // Step 11. Trim charts that are useful for highlighting but not useful anymore.
-            _tokenChartWizard.RemoveExcessChartsFromNavTokens(navTokens);
+            //_tokenChartWizard.RemoveExcessChartsFromNavTokens(navTokens);
 
             // Step 12. Stop stopwatch.
             stopwatch.Stop();

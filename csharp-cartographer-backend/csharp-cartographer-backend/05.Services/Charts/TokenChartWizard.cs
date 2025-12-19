@@ -14,6 +14,10 @@ namespace csharp_cartographer_backend._05.Services.Charts
                 foreach (var chart in token.Charts)
                 {
                     // TODO: if chart.Label == "IdentifierToken" => rename to be more specific
+                    if (chart is not null && chart.Label == "IdentifierToken")
+                    {
+                        UpdateIdentifierChart(token, chart);
+                    }
 
                     foreach (var element in CSharpElements.ElementList)
                     {
@@ -153,6 +157,40 @@ namespace csharp_cartographer_backend._05.Services.Charts
                 || chart.Label == "ReturnStatement")
             {
                 elementStrings.Add(";");
+            }
+        }
+
+        private static void UpdateIdentifierChart(NavToken token, TokenChart chart)
+        {
+            switch (token.UpdatedClassification)
+            {
+                case "namespace name":
+                    chart.Label = $"NamespaceIdentifier";
+                    break;
+                case "field name":
+                    chart.Label = $"FieldIdentifier";
+                    break;
+                case "property name":
+                    chart.Label = $"PropertyIdentifier";
+                    break;
+                case "parameter name":
+                    chart.Label = $"ParameterIdentifier";
+                    break;
+                case "local name":
+                    chart.Label = $"LocalVariableIdentifier";
+                    break;
+                case "method name":
+                    chart.Label = $"MethodIdentifier";
+                    break;
+                case "static method name":
+                    chart.Label = $"StaticMethodIdentifier";
+                    break;
+                case "class name":
+                    chart.Label = $"ClassIdentifier";
+                    break;
+                case "record class name":
+                    chart.Label = $"RecordIdentifier";
+                    break;
             }
         }
     }

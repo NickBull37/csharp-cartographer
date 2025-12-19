@@ -115,7 +115,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddOperatorTagIfNeeded(NavToken token)
         {
-            if (token.Classification == "operator")
+            if (token.UpdatedClassification == "operator")
             {
                 token.Tags.Add(new OperatorTag());
             }
@@ -217,7 +217,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddPunctuationTagIfNeeded(NavToken token)
         {
-            if (token.Classification == "punctuation")
+            if (token.UpdatedClassification == "punctuation")
             {
                 token.Tags.Add(new PunctuationTag());
             }
@@ -225,7 +225,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddDelimiterTagIfNeeded(NavToken token)
         {
-            if (token.Classification == "delimiter")
+            if (token.UpdatedClassification == "delimiter")
             {
                 token.Tags.Add(new DelimiterTag());
             }

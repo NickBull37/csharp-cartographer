@@ -44,6 +44,7 @@ builder.Services.AddScoped<ISyntaxHighlighter, SyntaxHighlighter>();
 builder.Services.AddScoped<ITokenChartGenerator, TokenChartGenerator>();
 builder.Services.AddScoped<ITokenChartWizard, TokenChartWizard>();
 builder.Services.AddScoped<ITokenTagGenerator, TokenTagGenerator>();
+builder.Services.AddScoped<ITokenWizard, TokenWizard>();
 
 // configure DI for csharp-cartographer workflows
 builder.Services.AddScoped<IGenerateArtifactWorkflow, GenerateArtifactWorkflow>();

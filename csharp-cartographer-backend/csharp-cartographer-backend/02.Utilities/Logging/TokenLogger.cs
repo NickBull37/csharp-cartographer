@@ -7,7 +7,8 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
     {
         TokenLog,
         ArtifactLog,
-        ExceptionLog
+        ExceptionLog,
+        TextLog
     }
 
     public static class TokenLogger
@@ -15,14 +16,27 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
         private static readonly string projectRoot = Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.FullName;
         private static readonly string _tokenLogPath = @"02.Utilities\Logging\Logs\TokenLog.txt";
         private static readonly string _artifactLogPath = @"02.Utilities\Logging\Logs\TokenListLog.txt";
+        private static readonly string _textLogPath = @"02.Utilities\Logging\Logs\TextLog.txt";
 
         public static void ClearLogFile(LogType logType)
         {
-            using StreamWriter tokenWriter = new(Path.Combine(projectRoot, _tokenLogPath), false);
-            tokenWriter.Write("");
+            if (logType == LogType.ArtifactLog)
+            {
+                using StreamWriter streamWriter = new(Path.Combine(projectRoot, _artifactLogPath), false);
+                streamWriter.Write("");
+            }
 
-            using StreamWriter tokenListWriter = new(Path.Combine(projectRoot, _artifactLogPath), false);
-            tokenListWriter.Write("");
+            if (logType == LogType.TokenLog)
+            {
+                using StreamWriter streamWriter = new(Path.Combine(projectRoot, _tokenLogPath), false);
+                streamWriter.Write("");
+            }
+
+            if (logType == LogType.TextLog)
+            {
+                using StreamWriter streamWriter = new(Path.Combine(projectRoot, _textLogPath), false);
+                streamWriter.Write("");
+            }
         }
 
         public static void LogArtifact(Artifact artifact)
@@ -44,7 +58,7 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
             LogMessage(" ");
             LogMessage("-------------------------- Misc data --------------------------");
             LogMessage($"Index: {token.Index}");
-            LogMessage($"Classification: {token.Classification ?? "..."}");
+            LogMessage($"Classification: {token.UpdatedClassification ?? "..."}");
             LogMessage($"HighlightColor: {token.HighlightColor ?? "..."}");
             LogMessage("------------------------- Token data -------------------------");
             LogMessage($"Text: {token.Text ?? "..."}");
@@ -107,6 +121,17 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
             LogMessage(" ");
             LogMessage(" ");
             LogMessage(" ");
+        }
+
+        public static void LogText(string? text)
+        {
+            if (text is null)
+            {
+                return;
+            }
+
+            using StreamWriter writer = new(Path.Combine(projectRoot, _textLogPath), true);
+            writer.WriteLine($"{text}");
         }
 
         private static void LogStats(List<NavToken> navTokens)

@@ -34,8 +34,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public IFieldSymbol? FieldSymbol { get; set; }
 
         /// <summary>The token classification.</summary>
-        [JsonIgnore]
+        public string? RoslynClassification { get; set; }
+
+        /// <summary>The token classification.</summary>
         public string? Classification { get; set; }
+
+        /// <summary>The token classification.</summary>
+        public string? UpdatedClassification { get; set; }
 
         /// <summary>The Roslyn SyntaxKind of the token as a string.</summary>
         public string RoslynKind { get; set; }
@@ -113,7 +118,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             Text = roslynToken.Text;
             Kind = roslynToken.Kind();
             FieldSymbol = TryGetFieldSymbol(semanticModel, roslynToken);
-            Classification = CorrectClassification(roslynToken.Text, classification, roslynToken, FieldSymbol);
+            RoslynClassification = classification;
+            //Classification = classification;
             IsIdentifier = roslynToken.Kind().ToString().Contains("Identifier");
             RoslynKind = roslynToken.Kind().ToString();
             Span = roslynToken.Span;
