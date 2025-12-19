@@ -177,8 +177,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
             foreach (var token in navTokens)
             {
+                TokenLogger.LogText($"PrevToken: {token.PrevToken?.Text}");
                 TokenLogger.LogText($"Token {token.Index}: {token.Text}");
-                TokenLogger.LogText($"Classification: {token.UpdatedClassification}");
+                TokenLogger.LogText($"NextToken: {token.NextToken?.Text}");
                 TokenLogger.LogText("-------------------------------------------");
                 TokenLogger.LogText(" ");
 

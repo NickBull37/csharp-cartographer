@@ -20,6 +20,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 
         private static string? GetCorrectedClassification(NavToken token)
         {
+            // correct keyword classifications
+            if (token.RoslynClassification is not null && token.RoslynClassification.Contains("keyword"))
+            {
+                return GetCorrectedKeywordClassification(token);
+            }
+
             // correct constant identifiers
             if (token.FieldSymbol?.IsConst == true)
             {
@@ -134,6 +140,31 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             if (token.RoslynClassification == "record class name" && token.ParentNodeKind == "RecordDeclaration")
             {
                 return "identifier - record declaration";
+            }
+
+            return token.RoslynClassification;
+        }
+
+        private static string? GetCorrectedKeywordClassification(NavToken token)
+        {
+            if (token.Text is "public" or "protected" or "private" or "internal")
+            {
+                return $"keyword - access modifier - {token.Text}";
+            }
+
+            if (token.Text is "static" or "abstract" or "sealed" or "void")
+            {
+                return $"keyword - modifier - {token.Text}";
+            }
+
+            if (token.Text is "int" or "bool" or "double" or "char" or "decimal" or "string")
+            {
+                return $"keyword - predefined type - {token.Text}";
+            }
+
+            if (token.RoslynClassification == "keyword - control")
+            {
+                return $"keyword - control - {token.Text}";
             }
 
             return token.RoslynClassification;

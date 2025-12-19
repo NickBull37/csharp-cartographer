@@ -1,6 +1,7 @@
 using csharp_cartographer_backend._01.Configuration.Configs;
 using csharp_cartographer_backend._05.Services.Charts;
 using csharp_cartographer_backend._05.Services.Files;
+using csharp_cartographer_backend._05.Services.Roslyn;
 using csharp_cartographer_backend._05.Services.SyntaxHighlighting;
 using csharp_cartographer_backend._05.Services.Tags;
 using csharp_cartographer_backend._05.Services.Tokens;
@@ -40,6 +41,7 @@ builder.Services.Configure<FormOptions>(options =>
 // configure DI for csharp-cartographer services
 builder.Services.AddScoped<IFileProcessor, FileProcessor>();
 builder.Services.AddScoped<INavTokenGenerator, NavTokenGenerator>();
+builder.Services.AddScoped<IRoslynAnalyzer, RoslynAnalyzer>();
 builder.Services.AddScoped<ISyntaxHighlighter, SyntaxHighlighter>();
 builder.Services.AddScoped<ITokenChartGenerator, TokenChartGenerator>();
 builder.Services.AddScoped<ITokenChartWizard, TokenChartWizard>();

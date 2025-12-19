@@ -404,57 +404,5 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             return null;
         }
-
-        // TODO: Correct classifications after full list of nav tokens is generated. Add param prefix classification
-        /// <summary>Updates the classification for specific tokens that can have more than one classification.</summary>
-        /// <param name="roslynTokenText">The text of the Roslyn generated syntax token.</param>
-        /// <param name="roslynClassification">The Roslyn generated token classification.</param>
-        /// <param name="roslynToken">The Roslyn generated syntax token.</param>
-        /// <returns>A string representing the updated classification if one is present.</returns>
-        private static string? CorrectClassification(
-            string roslynTokenText,
-            string? roslynClassification,
-            SyntaxToken roslynToken,
-            IFieldSymbol? fieldSymbol)
-        {
-            List<string> delimiters = ["(", ")", "{", "}", "[", "]"];
-
-            if (roslynClassification == "punctuation" && delimiters.Contains(roslynTokenText))
-            {
-                return "delimiter"; // correct delimiters
-            }
-
-            if (roslynClassification == "punctuation" && roslynTokenText == "..")
-            {
-                return "operator"; // correct range operator
-            }
-
-            if (fieldSymbol is not null && fieldSymbol.IsConst)
-            {
-                return "constant name"; // correct constant identifiers
-            }
-
-            if (roslynClassification == "static symbol")
-            {
-                return "static method name"; // correct static method identifiers
-            }
-
-            if ((roslynTokenText == "<" || roslynTokenText == ">") && roslynClassification == "punctuation")
-            {
-                if (roslynToken.Parent.IsKind(SyntaxKind.TypeArgumentList)
-                    || roslynToken.Parent.IsKind(SyntaxKind.TypeParameterList))
-                {
-                    return "delimiter"; // correct generic type delimiters
-                }
-
-                if (roslynToken.Parent.IsKind(SyntaxKind.GreaterThanExpression)
-                    || roslynToken.Parent.IsKind(SyntaxKind.LessThanExpression))
-                {
-                    return "operator"; // correct greater/less than operators
-                }
-            }
-
-            return roslynClassification;
-        }
     }
 }
