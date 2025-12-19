@@ -13,6 +13,8 @@ namespace csharp_cartographer_backend._05.Services.Charts
             {
                 foreach (var chart in token.Charts)
                 {
+                    // TODO: if chart.Label == "IdentifierToken" => rename to be more specific
+
                     foreach (var element in CSharpElements.ElementList)
                     {
                         if (chart.Label.Equals(element.Label))
@@ -74,7 +76,6 @@ namespace csharp_cartographer_backend._05.Services.Charts
             {
                 return;
             }
-
 
             for (int i = 0; i <= navTokens.Count - elementTextStrings.Count; i++)
             {

@@ -29,6 +29,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         [JsonIgnore]
         public bool IsIdentifier { get; set; }
 
+        /// <summary>The token field symbol.</summary>
+        [JsonIgnore]
+        public IFieldSymbol? FieldSymbol { get; set; }
+
+        /// <summary>The token classification.</summary>
         [JsonIgnore]
         public string? Classification { get; set; }
 
@@ -107,7 +112,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             #region Lexical (token) data
             Text = roslynToken.Text;
             Kind = roslynToken.Kind();
-            Classification = CorrectClassification(roslynToken.Text, classification, roslynToken);
+            FieldSymbol = TryGetFieldSymbol(semanticModel, roslynToken);
+            Classification = CorrectClassification(roslynToken.Text, classification, roslynToken, FieldSymbol);
             IsIdentifier = roslynToken.Kind().ToString().Contains("Identifier");
             RoslynKind = roslynToken.Kind().ToString();
             Span = roslynToken.Span;
@@ -359,43 +365,86 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 .ToList();
         }
 
+        private static IFieldSymbol? TryGetFieldSymbol(SemanticModel semanticModel, SyntaxToken roslynToken)
+        {
+            var declarator = roslynToken.Parent?.AncestorsAndSelf()
+                .OfType<VariableDeclaratorSyntax>()
+                .FirstOrDefault();
+
+            if (declarator != null && declarator.Identifier == roslynToken)
+            {
+                return semanticModel.GetDeclaredSymbol(declarator) as IFieldSymbol;
+            }
+
+            var identifierName = roslynToken.Parent?.AncestorsAndSelf()
+                .OfType<IdentifierNameSyntax>()
+                .FirstOrDefault();
+
+            if (identifierName != null && identifierName.Identifier == roslynToken)
+            {
+                return semanticModel.GetSymbolInfo(identifierName).Symbol as IFieldSymbol;
+            }
+
+            var memberAccess = roslynToken.Parent?.AncestorsAndSelf()
+                .OfType<MemberAccessExpressionSyntax>()
+                .FirstOrDefault();
+
+            if (memberAccess != null
+                && memberAccess.Name is IdentifierNameSyntax nameId
+                && nameId.Identifier == roslynToken)
+            {
+                return semanticModel.GetSymbolInfo(memberAccess).Symbol as IFieldSymbol;
+            }
+
+            return null;
+        }
+
         // TODO: Correct classifications after full list of nav tokens is generated. Add param prefix classification
         /// <summary>Updates the classification for specific tokens that can have more than one classification.</summary>
         /// <param name="roslynTokenText">The text of the Roslyn generated syntax token.</param>
         /// <param name="roslynClassification">The Roslyn generated token classification.</param>
         /// <param name="roslynToken">The Roslyn generated syntax token.</param>
         /// <returns>A string representing the updated classification if one is present.</returns>
-        private static string? CorrectClassification(string roslynTokenText, string? roslynClassification, SyntaxToken roslynToken)
+        private static string? CorrectClassification(
+            string roslynTokenText,
+            string? roslynClassification,
+            SyntaxToken roslynToken,
+            IFieldSymbol? fieldSymbol)
         {
             List<string> delimiters = ["(", ")", "{", "}", "[", "]"];
 
-            if (roslynClassification == "punctuation" && delimiters.Contains(roslynTokenText)) // correct delimiters
+            if (roslynClassification == "punctuation" && delimiters.Contains(roslynTokenText))
             {
-                return "delimiter";
+                return "delimiter"; // correct delimiters
             }
 
-            if (roslynClassification == "punctuation" && roslynTokenText == "..") // correct range operator
+            if (roslynClassification == "punctuation" && roslynTokenText == "..")
             {
-                return "operator";
+                return "operator"; // correct range operator
             }
 
-            if (roslynClassification == "static symbol") // correct static method call
+            if (fieldSymbol is not null && fieldSymbol.IsConst)
             {
-                return "static method identifier";
+                return "constant name"; // correct constant identifiers
+            }
+
+            if (roslynClassification == "static symbol")
+            {
+                return "static method name"; // correct static method identifiers
             }
 
             if ((roslynTokenText == "<" || roslynTokenText == ">") && roslynClassification == "punctuation")
             {
                 if (roslynToken.Parent.IsKind(SyntaxKind.TypeArgumentList)
-                    || roslynToken.Parent.IsKind(SyntaxKind.TypeParameterList)) // correct generic type delimiters
+                    || roslynToken.Parent.IsKind(SyntaxKind.TypeParameterList))
                 {
-                    return "delimiter";
+                    return "delimiter"; // correct generic type delimiters
                 }
 
                 if (roslynToken.Parent.IsKind(SyntaxKind.GreaterThanExpression)
-                    || roslynToken.Parent.IsKind(SyntaxKind.LessThanExpression)) // correct greater/less than operators
+                    || roslynToken.Parent.IsKind(SyntaxKind.LessThanExpression))
                 {
-                    return "operator";
+                    return "operator"; // correct greater/less than operators
                 }
             }
 

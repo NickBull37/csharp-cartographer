@@ -40,6 +40,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case "namespace name":
                     case "field name":
                     case "property name":
+                    case "constant name":
                         token.HighlightColor = "color-white";
                         break;
                     case "parameter name":
@@ -47,6 +48,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                         token.HighlightColor = "color-light-blue";
                         break;
                     case "method name":
+                    case "static method name":
                         token.HighlightColor = "color-yellow";
                         break;
                     case "class name":

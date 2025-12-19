@@ -4,6 +4,14 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
 {
     public static class ChartNavigator
     {
+        public static bool IsUsingDirectiveIdentifier(NavToken token)
+        {
+            return token.Charts.Count > 2 &&
+                token.Charts[0].Label == "IdentifierToken" &&
+                token.Charts[1].Label == "IdentifierName" &&
+                token.Charts[2].Label == "UsingDirective";
+        }
+
         #region Identifiers
         public static bool IsAttribute(NavToken token)
         {
@@ -171,8 +179,6 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
             return isInvocation;
         }
 
-
-
         public static bool IsForEachVariable(NavToken token)
         {
             return token.Charts.Count > 1 &&
@@ -188,8 +194,6 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
                 token.Charts[2].Label == "VariableDeclaration" &&
                 token.Charts[3].Label == "ForStatement";
         }
-
-
 
         public static bool IsInterpolatedStringStart(NavToken token)
         {
@@ -279,7 +283,6 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
                 && token.Charts[1].Label == "IdentifierName"
                 && token.Charts[2].Label == "SimpleMemberAccessExpression"
                 && token.Charts[3].Label != "InvocationExpression";
-            //&& token.Charts[3].Label == "SimpleMemberAccessExpression";
         }
 
         public static bool IsPropertyTypeClass(NavToken token)
@@ -321,14 +324,6 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
                 token.Charts[2].Label == "TypeArgumentList";
         }
 
-        public static bool IsUsingDirectiveIdentifier(NavToken token)
-        {
-            return token.Charts.Count > 2 &&
-                token.Charts[0].Label == "IdentifierToken" &&
-                token.Charts[1].Label == "IdentifierName" &&
-                token.Charts[2].Label == "UsingDirective";
-        }
-
         public static bool IsVariableDeclaration(NavToken token)
         {
             return token.Charts.Count > 3 &&
@@ -337,8 +332,6 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
                 token.Charts[2].Label == "VariableDeclaration" &&
                 token.Charts[3].Label == "LocalDeclarationStatement";
         }
-
-        // member binding expression
         #endregion
     }
 }
