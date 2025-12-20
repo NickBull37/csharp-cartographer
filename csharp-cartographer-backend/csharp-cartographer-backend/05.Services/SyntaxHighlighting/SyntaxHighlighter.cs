@@ -173,16 +173,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         private static void HighlightUnidentifiedTokensRed(List<NavToken> navTokens)
         {
             TokenLogger.ClearLogFile(LogType.TokenLog);
-            TokenLogger.ClearLogFile(LogType.TextLog);
 
             foreach (var token in navTokens)
             {
-                //TokenLogger.LogText($"PrevToken: {token.PrevToken?.Text}");
-                //TokenLogger.LogText($"Token {token.Index}: {token.Text}");
-                //TokenLogger.LogText($"NextToken: {token.NextToken?.Text}");
-                //TokenLogger.LogText("-------------------------------------------");
-                //TokenLogger.LogText(" ");
-
                 if (string.IsNullOrEmpty(token.HighlightColor))
                 {
                     TokenLogger.LogToken(token);

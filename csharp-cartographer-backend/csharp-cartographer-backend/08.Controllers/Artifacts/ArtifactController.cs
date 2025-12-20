@@ -8,7 +8,6 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
     [Route("[controller]")]
     public class ArtifactController : ControllerBase
     {
-        // TODO: Add logging for exceptions caught here
         private readonly IGenerateArtifactWorkflow _generateArtifactWorkflow;
 
         public ArtifactController(IGenerateArtifactWorkflow generateArtifactWorkflow)
