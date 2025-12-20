@@ -13,10 +13,14 @@ namespace csharp_cartographer_backend._05.Services.Charts
             {
                 foreach (var chart in token.Charts)
                 {
-                    // TODO: if chart.Label == "IdentifierToken" => rename to be more specific
-                    if (chart is not null && chart.Label == "IdentifierToken")
+                    if (chart is null)
                     {
-                        UpdateIdentifierChart(token, chart);
+                        continue;
+                    }
+
+                    if (chart.Label == "IdentifierToken")
+                    {
+                        UpdateIdentifierChartLabel(token, chart);
                     }
 
                     foreach (var element in CSharpElements.ElementList)
@@ -160,7 +164,7 @@ namespace csharp_cartographer_backend._05.Services.Charts
             }
         }
 
-        private static void UpdateIdentifierChart(NavToken token, TokenChart chart)
+        private static void UpdateIdentifierChartLabel(NavToken token, TokenChart chart)
         {
             switch (token.UpdatedClassification)
             {

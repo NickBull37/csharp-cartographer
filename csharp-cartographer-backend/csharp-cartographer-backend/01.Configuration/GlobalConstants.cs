@@ -2,7 +2,7 @@
 {
     public class GlobalConstants
     {
-        public static readonly List<string> _punctuationChars =
+        public static readonly List<string> _punctuations =
         [
             ".",
             ",",
@@ -11,7 +11,7 @@
             "?"
         ];
 
-        public static readonly List<string> _delimiterChars =
+        public static readonly List<string> _delimiters =
         [
             "(",
             ")",
@@ -23,18 +23,7 @@
             ">"
         ];
 
-        public static readonly List<string> _primitiveTypes =
-        [
-            "StringKeyword",
-            "DecimalKeyword",
-            "DoubleKeyword",
-            "IntKeyword",
-            "CharKeyword",
-            "FloatKeyword",
-            "BoolKeyword"
-        ];
-
-        public static readonly List<string> _predefinedTypes =
+        public static readonly List<string> PredefinedTypes =
         [
             "byte",
             "sbyte",
@@ -54,55 +43,27 @@
             "dynamic",
         ];
 
-        public static readonly List<string> _primitiveIntegralTypes =
+        public static readonly List<string> AccessModifiers =
         [
-            "byte",
-            "sbyte",
-            "short",
-            "ushort",
-            "int",
-            "uint",
-            "long",
-            "ulong",
-            "char",
+            "public",
+            "protected",
+            "internal",
+            "private",
         ];
 
-        public static readonly List<string> _primitiveFloatingPointTypes =
+        public static readonly List<string> Modifiers =
         [
-            "double",
-            "float"
-        ];
-
-        public static readonly List<string> _accessModifiers =
-        [
-            "PublicKeyword",
-            "PrivateKeyword",
-            "ProtectedKeyword",
-            "InternalKeyword"
-        ];
-
-        public static readonly List<string> _modifiers =
-        [
-            "AbstractKeyword",
-            "AsyncKeyword",
-            "ConstKeyword",
-            "OverrideKeyword",
-            "ReadOnlyKeyword",
-            "SealedKeyword",
-            "StaticKeyword",
-            "VirtualKeyword",
-            "VolatileKeyword"
-        ];
-
-        public static readonly List<string> _literalKinds =
-        [
-            "NumericLiteralToken",
-            "StringLiteralToken"
-        ];
-
-        public static readonly List<string> _genericCollections =
-        [
-            "List",
+            "abstract",
+            "async",
+            "const",
+            "override",
+            "partial",
+            "readonly",
+            "required",
+            "sealed",
+            "static",
+            "virtual",
+            "volatile"
         ];
 
         public static readonly List<string> _operators =
@@ -175,6 +136,11 @@
             "default",
             "nameof",
             "stackalloc"
+        ];
+
+        public static readonly List<string> _genericCollections =
+        [
+            "List",
         ];
     }
 }

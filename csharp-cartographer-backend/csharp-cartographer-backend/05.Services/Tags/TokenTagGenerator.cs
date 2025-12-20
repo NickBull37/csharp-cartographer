@@ -1,61 +1,12 @@
-﻿using csharp_cartographer_backend._03.Models.Tokens;
+﻿using csharp_cartographer_backend._01.Configuration;
+using csharp_cartographer_backend._03.Models.Tokens;
 
 namespace csharp_cartographer_backend._05.Services.Tags
 {
     public class TokenTagGenerator : ITokenTagGenerator
     {
-        private static readonly List<string> _primitiveTypes =
-        [
-            "StringKeyword",
-            "DecimalKeyword",
-            "DoubleKeyword",
-            "IntKeyword",
-            "CharKeyword",
-            "FloatKeyword",
-            "BoolKeyword"
-        ];
-
-        private static readonly List<string> _predefinedTypes =
-        [
-            "byte",
-            "sbyte",
-            "short",
-            "ushort",
-            "int",
-            "uint",
-            "long",
-            "ulong",
-            "char",
-            "float",
-            "double",
-            "decimal",
-            "bool",
-            "string",
-            "object",
-            "dynamic",
-        ];
-
-        private static readonly List<string> _accessModifiers =
-        [
-            "PublicKeyword",
-            "PrivateKeyword",
-            "ProtectedKeyword",
-            "InternalKeyword"
-        ];
-
-        private static readonly List<string> _modifiers =
-        [
-            "AbstractKeyword",
-            "AsyncKeyword",
-            "ConstKeyword",
-            "OverrideKeyword",
-            "ReadOnlyKeyword",
-            "SealedKeyword",
-            "StaticKeyword",
-            "VirtualKeyword",
-            "VolatileKeyword"
-        ];
-
+        /// <summary>Iterates through the list of NavTokens and adds tags for each.</summary>
+        /// <param name="navTokens">The list of NavTokens.</param>
         public void GenerateTokenTags(List<NavToken> navTokens)
         {
             foreach (var token in navTokens)
@@ -66,29 +17,29 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void AddTokenTags(NavToken token)
         {
-            AddIdentifierTagIfNeeded(token);
-            AddKeywordTagIfNeeded(token);
-            AddAccessModifierTagIfNeeded(token);
-            AddModifierTagIfNeeded(token);
-            AddPredefinedTypeTagIfNeeded(token);
-            AddParameterTagIfNeeded(token);
-            AddStringLiteralTagIfNeeded(token);
-            AddNumericLiteralTagIfNeeded(token);
-            AddGenericTypeArgumentTagIfNeeded(token);
-            AddAttributeTagIfNeeded(token);
-            AddPunctuationTagIfNeeded(token);
-            AddDelimiterTagIfNeeded(token);
-            AddPropertyTagIfNeeded(token);
-            AddFieldTagIfNeeded(token);
-            AddBaseTypeTagIfNeeded(token);
-            AddConstructorTagIfNeeded(token);
-            AddMethodTagIfNeeded(token);
-            AddClassTagIfNeeded(token);
-            AddAccessorTagIfNeeded(token);
-            AddOperatorTagIfNeeded(token);
+            TryAddIdentifierTag(token);
+            TryAddKeywordTag(token);
+            TryAddAccessModifierTag(token);
+            TryAddModifierTag(token);
+            TryAddPredefinedTypeTag(token);
+            TryAddParameterTag(token);
+            TryAddStringLiteralTag(token);
+            TryAddNumericLiteralTag(token);
+            TryAddGenericTypeArgumentTag(token);
+            TryAddAttributeTag(token);
+            TryAddPunctuationTag(token);
+            TryAddDelimiterTag(token);
+            TryAddPropertyTag(token);
+            TryAddFieldTag(token);
+            TryAddBaseTypeTag(token);
+            TryAddConstructorTag(token);
+            TryAddMethodTag(token);
+            TryAddClassTag(token);
+            TryAddAccessorTag(token);
+            TryAddOperatorTag(token);
         }
 
-        private static void AddAccessorTagIfNeeded(NavToken token)
+        private static void TryAddAccessorTag(NavToken token)
         {
             if (token.RoslynKind == "GetKeyword" || token.RoslynKind == "SetKeyword")
             {
@@ -96,15 +47,15 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddAccessModifierTagIfNeeded(NavToken token)
+        private static void TryAddAccessModifierTag(NavToken token)
         {
-            if (_accessModifiers.Contains(token.RoslynKind))
+            if (GlobalConstants.AccessModifiers.Contains(token.Text))
             {
                 token.Tags.Add(new AccessModifierTag());
             }
         }
 
-        private static void AddClassTagIfNeeded(NavToken token)
+        private static void TryAddClassTag(NavToken token)
         {
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "ClassDeclaration")
@@ -113,7 +64,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddOperatorTagIfNeeded(NavToken token)
+        private static void TryAddOperatorTag(NavToken token)
         {
             if (token.UpdatedClassification == "operator")
             {
@@ -121,15 +72,15 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddModifierTagIfNeeded(NavToken token)
+        private static void TryAddModifierTag(NavToken token)
         {
-            if (_modifiers.Contains(token.RoslynKind))
+            if (GlobalConstants.Modifiers.Contains(token.Text))
             {
                 token.Tags.Add(new ModifierTag());
             }
         }
 
-        private static void AddIdentifierTagIfNeeded(NavToken token)
+        private static void TryAddIdentifierTag(NavToken token)
         {
             if (token.RoslynKind == "IdentifierToken")
             {
@@ -137,7 +88,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddKeywordTagIfNeeded(NavToken token)
+        private static void TryAddKeywordTag(NavToken token)
         {
             if (token.RoslynKind.Contains("Keyword"))
             {
@@ -145,7 +96,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddStringLiteralTagIfNeeded(NavToken token)
+        private static void TryAddStringLiteralTag(NavToken token)
         {
             if (token.RoslynKind == "StringLiteralToken")
             {
@@ -153,7 +104,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddNumericLiteralTagIfNeeded(NavToken token)
+        private static void TryAddNumericLiteralTag(NavToken token)
         {
             if (token.RoslynKind == "NumericLiteralToken")
             {
@@ -161,7 +112,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddAttributeTagIfNeeded(NavToken token)
+        private static void TryAddAttributeTag(NavToken token)
         {
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "IdentifierName"
@@ -171,11 +122,12 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddGenericTypeArgumentTagIfNeeded(NavToken token)
+        private static void TryAddGenericTypeArgumentTag(NavToken token)
         {
             bool isGenericType = false;
 
-            if (_primitiveTypes.Contains(token.RoslynKind)
+            // handles pre-defined types
+            if (GlobalConstants.PredefinedTypes.Contains(token.Text)
                 && token.ParentNodeKind == "PredefinedType"
                 && token.GrandParentNodeKind == "TypeArgumentList"
                 && token.GreatGrandParentNodeKind == "GenericName")
@@ -183,6 +135,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
                 isGenericType = true;
             }
 
+            // handles non pre-defined types
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "IdentifierName"
                 && token.GrandParentNodeKind == "TypeArgumentList"
@@ -197,7 +150,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddParameterTagIfNeeded(NavToken token)
+        private static void TryAddParameterTag(NavToken token)
         {
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "Parameter"
@@ -207,15 +160,15 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddPredefinedTypeTagIfNeeded(NavToken token)
+        private static void TryAddPredefinedTypeTag(NavToken token)
         {
-            if (_predefinedTypes.Contains(token.Text))
+            if (GlobalConstants.PredefinedTypes.Contains(token.Text))
             {
                 token.Tags.Add(new PredefinedTypeTag());
             }
         }
 
-        private static void AddPunctuationTagIfNeeded(NavToken token)
+        private static void TryAddPunctuationTag(NavToken token)
         {
             if (token.UpdatedClassification == "punctuation")
             {
@@ -223,7 +176,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddDelimiterTagIfNeeded(NavToken token)
+        private static void TryAddDelimiterTag(NavToken token)
         {
             if (token.UpdatedClassification == "delimiter")
             {
@@ -231,7 +184,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddPropertyTagIfNeeded(NavToken token)
+        private static void TryAddPropertyTag(NavToken token)
         {
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "PropertyDeclaration")
@@ -240,7 +193,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddMethodTagIfNeeded(NavToken token)
+        private static void TryAddMethodTag(NavToken token)
         {
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "MethodDeclaration")
@@ -249,7 +202,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddConstructorTagIfNeeded(NavToken token)
+        private static void TryAddConstructorTag(NavToken token)
         {
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "ConstructorDeclaration")
@@ -258,7 +211,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddFieldTagIfNeeded(NavToken token)
+        private static void TryAddFieldTag(NavToken token)
         {
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "VariableDeclarator"
@@ -269,7 +222,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void AddBaseTypeTagIfNeeded(NavToken token)
+        private static void TryAddBaseTypeTag(NavToken token)
         {
             if (token.RoslynKind == "IdentifierToken"
                 && token.ParentNodeKind == "IdentifierName"

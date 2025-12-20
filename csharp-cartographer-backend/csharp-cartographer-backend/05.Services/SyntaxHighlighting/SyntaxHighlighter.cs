@@ -60,11 +60,11 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case "identifier - record declaration":
                         token.HighlightColor = "color-green";
                         break;
-                    case "number":
+                    case "numeric literal":
                     case "type parameter name":
                         token.HighlightColor = "color-light-green";
                         break;
-                    case "string":
+                    case "string literal":
                         token.HighlightColor = "color-orange";
                         break;
                     case string classification when classification.Contains("identifier"):

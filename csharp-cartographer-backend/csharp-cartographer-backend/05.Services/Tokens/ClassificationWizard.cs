@@ -35,6 +35,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 return GetPunctuationCorrection(token);
             }
 
+            // correct literal classifications
+            if (token.RoslynClassification == "string" || token.RoslynClassification == "number")
+            {
+                return GetLiteralCorrection(token);
+            }
+
             return token.RoslynClassification;
         }
 
@@ -202,6 +208,19 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                     return "operator";
             }
 
+            return token.RoslynClassification;
+        }
+
+        private static string? GetLiteralCorrection(NavToken token)
+        {
+            if (token.RoslynClassification == "string")
+            {
+                return "string literal";
+            }
+            if (token.RoslynClassification == "number")
+            {
+                return "numeric literal";
+            }
             return token.RoslynClassification;
         }
 
