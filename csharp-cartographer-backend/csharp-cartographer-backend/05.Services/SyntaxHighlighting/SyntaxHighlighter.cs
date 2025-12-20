@@ -26,16 +26,16 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 switch (token.UpdatedClassification)
                 {
                     case string classification when classification.Contains("keyword"):
-                        AddClassificationHighlighting(token, ReservedTextElements.KeywordList);
+                        AddClassificationHighlighting(token, ReservedTextColors.Keywords);
                         break;
                     case "punctuation":
-                        AddClassificationHighlighting(token, ReservedTextElements.PunctuatorList);
+                        AddClassificationHighlighting(token, ReservedTextColors.Punctuators);
                         break;
                     case "delimiter":
-                        AddClassificationHighlighting(token, ReservedTextElements.DelimiterList);
+                        AddClassificationHighlighting(token, ReservedTextColors.Delimiters);
                         break;
                     case "operator":
-                        AddClassificationHighlighting(token, ReservedTextElements.OperatorList);
+                        AddClassificationHighlighting(token, ReservedTextColors.Operators);
                         break;
                     case "identifier - namespace":
                     case "identifier - field declaration":
@@ -76,7 +76,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             HighlightUnidentifiedTokensRed(navTokens);
         }
 
-        private static void AddClassificationHighlighting(NavToken token, List<ReservedTextElement> list)
+        private static void AddClassificationHighlighting(NavToken token, List<ReservedTextColor> list)
         {
             foreach (var element in list)
             {

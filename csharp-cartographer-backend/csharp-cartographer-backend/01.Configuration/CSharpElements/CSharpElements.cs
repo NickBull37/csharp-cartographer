@@ -10,12 +10,13 @@
 
     public class CSharpElements
     {
-        public static readonly List<CSharpElement> ElementList = new()
+        public static readonly List<CSharpElement> Elements = new()
         {
             new CSharpElement
             {
                 Label = "DotToken",
-                Facts = [
+                Facts =
+                [
                     "Allows access to properties or fields of an object or class instance.",
                     "Can be used to invoke methods of an object or class instance.",
                     "Can be used to navigate namespaces in using directives."
@@ -29,7 +30,8 @@
             new CSharpElement
             {
                 Label = "SemicolonToken",
-                Facts = [
+                Facts =
+                [
                     "Marks the end of a statement or expression.",
                 ],
                 Insights =
@@ -39,7 +41,8 @@
             new CSharpElement
             {
                 Label = "NamespaceKeyword",
-                Facts = [
+                Facts =
+                [
                     "A reserved C# keyword used to define a location the enclosed code can be accessed from.",
                 ],
                 Insights =

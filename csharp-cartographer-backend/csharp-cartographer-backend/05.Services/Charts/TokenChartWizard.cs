@@ -23,7 +23,7 @@ namespace csharp_cartographer_backend._05.Services.Charts
                         UpdateIdentifierChartLabel(token, chart);
                     }
 
-                    foreach (var element in CSharpElements.ElementList)
+                    foreach (var element in CSharpElements.Elements)
                     {
                         if (chart.Label.Equals(element.Label))
                         {
