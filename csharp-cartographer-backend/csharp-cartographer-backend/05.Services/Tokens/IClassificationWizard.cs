@@ -2,7 +2,7 @@
 
 namespace csharp_cartographer_backend._05.Services.Tokens
 {
-    public interface ITokenWizard
+    public interface IClassificationWizard
     {
         void CorrectTokenClassifications(List<NavToken> navTokens);
     }

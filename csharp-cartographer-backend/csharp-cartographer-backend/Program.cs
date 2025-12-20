@@ -39,6 +39,7 @@ builder.Services.Configure<FormOptions>(options =>
 });
 
 // configure DI for csharp-cartographer services
+builder.Services.AddScoped<IClassificationWizard, ClassificationWizard>();
 builder.Services.AddScoped<IFileProcessor, FileProcessor>();
 builder.Services.AddScoped<INavTokenGenerator, NavTokenGenerator>();
 builder.Services.AddScoped<IRoslynAnalyzer, RoslynAnalyzer>();
@@ -46,7 +47,6 @@ builder.Services.AddScoped<ISyntaxHighlighter, SyntaxHighlighter>();
 builder.Services.AddScoped<ITokenChartGenerator, TokenChartGenerator>();
 builder.Services.AddScoped<ITokenChartWizard, TokenChartWizard>();
 builder.Services.AddScoped<ITokenTagGenerator, TokenTagGenerator>();
-builder.Services.AddScoped<ITokenWizard, TokenWizard>();
 
 // configure DI for csharp-cartographer workflows
 builder.Services.AddScoped<IGenerateArtifactWorkflow, GenerateArtifactWorkflow>();

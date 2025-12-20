@@ -23,7 +23,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         private readonly ITokenChartGenerator _tokenChartGenerator;
         private readonly ITokenChartWizard _tokenChartWizard;
         private readonly ITokenTagGenerator _tokenTagGenerator;
-        private readonly ITokenWizard _tokenWizard;
+        private readonly IClassificationWizard _classificationWizard;
         private readonly CartographerConfig _config;
 
         public GenerateArtifactWorkflow(
@@ -34,7 +34,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             ITokenChartGenerator tokenChartGenerator,
             ITokenChartWizard tokenChartWizard,
             ITokenTagGenerator tokenTagGenerator,
-            ITokenWizard tokenWizard,
+            IClassificationWizard classificationWizard,
             IOptions<CartographerConfig> config)
         {
             _fileProcessor = fileProcessor;
@@ -44,7 +44,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _tokenChartGenerator = tokenChartGenerator;
             _tokenChartWizard = tokenChartWizard;
             _tokenTagGenerator = tokenTagGenerator;
-            _tokenWizard = tokenWizard;
+            _classificationWizard = classificationWizard;
             _config = config.Value;
         }
 
@@ -94,7 +94,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             // Step 5. Use SyntaxTree & SemanticModel to generate NavTokens for the artifact.
             var navTokens = await _navTokenGenerator.GenerateNavTokens(semanticModel, syntaxTree, fileData.Document);
 
-            _tokenWizard.CorrectTokenClassifications(navTokens);
+            _classificationWizard.CorrectTokenClassifications(navTokens);
 
             // Step 6. Generate TokenTags.
             _tokenTagGenerator.GenerateTokenTags(navTokens);

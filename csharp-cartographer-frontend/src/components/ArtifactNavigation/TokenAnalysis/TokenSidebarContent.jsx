@@ -91,7 +91,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
     const [tokenText, setTokenText] = useState('');
     const [tokenLabel, setTokenLabel] = useState('');
     const [roslynClassification, setRoslynClassification] = useState('');
-    const [tokenClassification, setTokenClassification] = useState('');
+    const [updatedClassification, setUpdatedClassification] = useState('');
     const [tokenDefinition, setTokenDefinition] = useState('');
     const [comprehensiveElement, setComprehensiveElement] = useState('');
     const [highlightColor, setHighlightColor] = useState('');
@@ -175,7 +175,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
         if (activeToken) { // check activeToken is not null or undefined
             setTokenText(activeToken.text || '');
             setTokenLabel(activeToken.label || '');
-            setTokenClassification(activeToken.classification || '');
+            setUpdatedClassification(activeToken.updatedClassification || '');
             setRoslynClassification(activeToken.roslynClassification || '');
             setTokenDefinition(activeToken.definition || '');
             setComprehensiveElement(activeToken.comprehensiveElement || '');
@@ -186,7 +186,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
             // if activeToken is null or undefined, reset states
             setTokenText('');
             setTokenLabel('');
-            setTokenClassification('');
+            setUpdatedClassification('');
             setTokenDefinition('');
             setComprehensiveElement('');
             setHighlightColor('');
@@ -294,7 +294,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             py: '2px'
                         }}
                     >
-                        {tokenClassification}
+                        {updatedClassification}
                     </Typography>
 
                     <Divider sx={{ bgcolor: '#808080' }} />

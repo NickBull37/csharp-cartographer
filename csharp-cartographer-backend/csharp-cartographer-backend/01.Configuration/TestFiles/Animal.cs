@@ -61,5 +61,10 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             }
             return false;
         }
+
+        public void SetName()
+        {
+            Name = TEST_LITERAL;
+        }
     }
 }

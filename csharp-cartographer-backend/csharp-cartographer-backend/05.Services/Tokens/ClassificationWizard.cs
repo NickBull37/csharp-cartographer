@@ -4,17 +4,14 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace csharp_cartographer_backend._05.Services.Tokens
 {
-    public class TokenWizard : ITokenWizard
+    public class ClassificationWizard : IClassificationWizard
     {
-        /// <summary>Updates classifications that are misleading or don't provide enough info.</summary>
+        /// <summary>Updates classifications that are misleading or don't provide enough info to be helpful.</summary>
         public void CorrectTokenClassifications(List<NavToken> navTokens)
         {
             foreach (var token in navTokens)
             {
                 token.UpdatedClassification = GetCorrectedClassification(token);
-                token.Classification = token.UpdatedClassification is not null
-                    ? token.UpdatedClassification
-                    : token.RoslynClassification;
             }
         }
 
@@ -23,41 +20,72 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             // correct keyword classifications
             if (token.RoslynClassification is not null && token.RoslynClassification.Contains("keyword"))
             {
-                return GetCorrectedKeywordClassification(token);
+                return GetKeywordCorrection(token);
             }
 
+            // correct identifier classifications
+            if (token.RoslynKind == "IdentifierToken")
+            {
+                return GetIdentifierCorrection(token);
+            }
+
+            // correct punctuation classifications
+            if (token.RoslynClassification == "punctuation")
+            {
+                return GetPunctuationCorrection(token);
+            }
+
+            return token.RoslynClassification;
+        }
+
+        private static string? GetKeywordCorrection(NavToken token)
+        {
+            if (token.Text is "public" or "protected" or "private" or "internal")
+            {
+                return $"keyword - access modifier - {token.Text}";
+            }
+
+            if (token.Text is "static" or "abstract" or "sealed" or "void")
+            {
+                return $"keyword - modifier - {token.Text}";
+            }
+
+            if (token.Text is "int" or "bool" or "double" or "char" or "decimal" or "string")
+            {
+                return $"keyword - predefined type - {token.Text}";
+            }
+
+            if (token.RoslynClassification == "keyword - control")
+            {
+                return $"keyword - control - {token.Text}";
+            }
+
+            return token.RoslynClassification;
+        }
+
+        private static string? GetIdentifierCorrection(NavToken token)
+        {
             // correct constant identifiers
             if (token.FieldSymbol?.IsConst == true)
             {
                 return "identifier - constant";
             }
 
-            // correct range operator
-            if (IsClassifiedAsPunctuation(token) && token.Text == "..")
-            {
-                return "operator";
-            }
-
-            // correct delimiters
-            if (IsClassifiedAsPunctuation(token) && IsDelimiterTokenText(token.Text))
-            {
-                return "delimiter";
-            }
-
             // correct static symbol identifiers
             if (token.RoslynClassification == "static symbol")
             {
-                return GetStaticSymbolCorrection(token) ?? token.RoslynClassification;
+                if (token.NextToken?.Text == "(")
+                {
+                    return "method identifier - invocation";
+                }
+                if (token.PrevToken?.Text == "class")
+                {
+                    return "static class name identifier";
+                }
             }
 
-            // correct angle brackets
-            if (IsClassifiedAsPunctuation(token) && IsAngleBracket(token.Text))
-            {
-                return GetAngleBracketCorrection(token) ?? token.RoslynClassification;
-            }
-
-            // correct parameter prefix
-            if (IsClassifiedAsPunctuation(token.NextToken)
+            // correct parameter prefix identifiers
+            if (token.NextToken?.RoslynClassification == "punctuation"
                 && token.GrandParentNodeKind == "NameColon"
                 && token.GreatGrandParentNodeKind == "Argument")
             {
@@ -145,67 +173,42 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             return token.RoslynClassification;
         }
 
-        private static string? GetCorrectedKeywordClassification(NavToken token)
+        private static string? GetPunctuationCorrection(NavToken token)
         {
-            if (token.Text is "public" or "protected" or "private" or "internal")
+            // correct range operator
+            if (token.Text == "..")
             {
-                return $"keyword - access modifier - {token.Text}";
+                return "operator";
             }
 
-            if (token.Text is "static" or "abstract" or "sealed" or "void")
+            // correct delimiters
+            if (IsDelimiterTokenText(token.Text))
             {
-                return $"keyword - modifier - {token.Text}";
+                return "delimiter";
             }
 
-            if (token.Text is "int" or "bool" or "double" or "char" or "decimal" or "string")
+            // correct angle brackets
+            if (IsAngleBracketTokenText(token.Text))
             {
-                return $"keyword - predefined type - {token.Text}";
-            }
+                var parent = token.RoslynToken.Parent;
+                if (parent is null) return null;
 
-            if (token.RoslynClassification == "keyword - control")
-            {
-                return $"keyword - control - {token.Text}";
+                // Generic type delimiters: List<T>
+                if (parent.IsKind(SyntaxKind.TypeArgumentList) || parent.IsKind(SyntaxKind.TypeParameterList))
+                    return "delimiter";
+
+                // Comparison operators: a < b, a > b
+                if (parent.IsKind(SyntaxKind.GreaterThanExpression) || parent.IsKind(SyntaxKind.LessThanExpression))
+                    return "operator";
             }
 
             return token.RoslynClassification;
         }
 
-        private static string? GetStaticSymbolCorrection(NavToken token)
-        {
-            if (token.NextToken?.Text == "(")
-            {
-                return "method identifier - invocation";
-            }
-            if (token.PrevToken?.Text == "class")
-            {
-                return "static class name identifier";
-            }
-            return null;
-        }
-
-        private static string? GetAngleBracketCorrection(NavToken token)
-        {
-            var parent = token.RoslynToken.Parent;
-            if (parent is null) return null;
-
-            // Generic type delimiters: List<T>
-            if (parent.IsKind(SyntaxKind.TypeArgumentList) || parent.IsKind(SyntaxKind.TypeParameterList))
-                return "delimiter";
-
-            // Comparison operators: a < b, a > b
-            if (parent.IsKind(SyntaxKind.GreaterThanExpression) || parent.IsKind(SyntaxKind.LessThanExpression))
-                return "operator";
-
-            return null;
-        }
-
-        private static bool IsClassifiedAsPunctuation(NavToken? token) =>
-            token is not null && token.RoslynClassification == "punctuation";
-
         private static bool IsDelimiterTokenText(string text) =>
             text is "(" or ")" or "{" or "}" or "[" or "]";
 
-        private static bool IsAngleBracket(string text) =>
+        private static bool IsAngleBracketTokenText(string text) =>
             text is "<" or ">";
     }
 }
