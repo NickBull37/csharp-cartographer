@@ -72,7 +72,7 @@ const TokenSidebar = ({ navTokens, activeToken, setActiveToken, activeHighlightI
                             <Typography
                                 className='code color-code'
                                 sx={{
-                                    ml: 2.5,
+                                    ml: 1.25,
                                 }}
                             >
                                 Token Analysis
@@ -120,7 +120,7 @@ const TokenSidebar = ({ navTokens, activeToken, setActiveToken, activeHighlightI
                                     fontSize: '1.25rem',
                                     textShadow: '1px 1px 2px #000, 0 0 16px #333333, 0 0 5px #1a1a1a',
                                 }}
-                                >
+                            >
                                 Token Analysis
                             </Typography>
                         </Box>
