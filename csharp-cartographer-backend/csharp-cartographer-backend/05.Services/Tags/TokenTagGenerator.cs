@@ -43,7 +43,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
         {
             if (token.RoslynKind == "GetKeyword" || token.RoslynKind == "SetKeyword")
             {
-                token.Tags.Add(new AccessorTag());
+                token.Tags.Add(new AccessorTag(token.Text));
             }
         }
 
@@ -51,7 +51,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
         {
             if (GlobalConstants.AccessModifiers.Contains(token.Text))
             {
-                token.Tags.Add(new AccessModifierTag());
+                token.Tags.Add(new AccessModifierTag(token.Text));
             }
         }
 
@@ -76,7 +76,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
         {
             if (GlobalConstants.Modifiers.Contains(token.Text))
             {
-                token.Tags.Add(new ModifierTag());
+                token.Tags.Add(new ModifierTag(token.Text));
             }
         }
 
@@ -229,7 +229,16 @@ namespace csharp_cartographer_backend._05.Services.Tags
                 && token.GrandParentNodeKind == "SimpleBaseType"
                 && token.GreatGrandParentNodeKind == "BaseList")
             {
-                token.Tags.Add(new BaseTypeTag());
+                if (char.IsUpper(token.Text[0])
+                    && char.IsUpper(token.Text[1])
+                    && token.Text.StartsWith('I'))
+                {
+                    token.Tags.Add(new InterfaceBaseTypeTag());
+                }
+                else
+                {
+                    token.Tags.Add(new ClassBaseTypeTag());
+                }
             }
         }
     }

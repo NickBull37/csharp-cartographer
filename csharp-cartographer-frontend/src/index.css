@@ -430,8 +430,8 @@ body {
 .tag-bg-blue {
     background-color: rgba(51, 102, 255, 0.25);
 }
-.tag-options-blue {
-    color: #809fff;
+.tag-keyword-blue {
+    color: #809fff!important;
 }
 
 
@@ -480,6 +480,20 @@ body {
 }
 .tag-bg-yellow {
     background-color: rgba(204, 163, 0, 0.2);
+}
+
+.tag-code-segment {
+    /* background-color: #4d4d4d;
+    border-radius: 3px;
+    padding: 2px 3px; */
+}
+
+.tag-link-segment {
+    cursor: pointer;
+    color: #00e6cf;
+}
+.tag-link-segment:hover {
+    text-decoration: underline;
 }
 
 

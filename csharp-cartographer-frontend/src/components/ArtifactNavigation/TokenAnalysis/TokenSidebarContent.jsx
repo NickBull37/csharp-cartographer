@@ -269,9 +269,9 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                 <Stack gap={1}>
 
                     <Stack>
-                        {/* <Divider sx={{ bgcolor: '#808080' }} /> */}
 
-                        {/* <Typography
+                        <Divider sx={{ bgcolor: '#808080' }} />
+                        <Typography
                             className='code'
                             sx={{
                                 px: 1,
@@ -296,7 +296,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             }}
                         >
                             {updatedClassification}
-                        </Typography> */}
+                        </Typography>
 
                         <Divider sx={{ bgcolor: '#808080' }} />
 
@@ -385,29 +385,213 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 {tag.label}
                                             </Typography>
 
+                                            <Box
+                                                sx={{
+                                                    mt: '6px'
+                                                }}
+                                            >
+                                                <Typography
+                                                    sx={{
+                                                        //textAlign: 'center',
+                                                        fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
+                                                        fontSize: '12px',
+                                                        letterSpacing: '0.04em',
+                                                        color: colors.gray60,
+                                                        pl: '9px',
+                                                        borderBottom: '1px solid #808080'
+                                                    }}
+                                                >
+                                                    The basics
+                                                </Typography>
+                                            </Box>
+
                                             <Stack
                                                 gap={1.5}
                                                 sx={{
-                                                    pt: '4px',
-                                                    pb: '8px',
-                                                    px: '4px'
+                                                    p: '8px 10px 8px 10px',
                                                 }}
                                             >
-                                                {tag.facts.map((fact, index) => (
-                                                    <Box
-                                                        display="flex"
-                                                    >
-                                                        <BoxText
-                                                            key={index}
-                                                            sx={{
-                                                                px: '6px'
-                                                            }}
-                                                        >
-                                                            {fact}
+                                                {tag.facts.map((fact) => (
+                                                    <Box key={fact.id} display="flex">
+                                                        <BoxText>
+                                                            {fact.segments.map((segment) => (
+                                                                <Box
+                                                                    key={segment.id}
+                                                                    component={segment.ref?.url ? 'a' : 'span'}
+                                                                    href={segment.ref?.url}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className={segment.isKeyword ? `${segment.highlightColor}` : ''}
+                                                                    sx={{
+                                                                        fontWeight: segment.isBold ? 700 : 'inherit',
+                                                                        fontStyle: segment.isItalic ? 'italic' : 'inherit',
+                                                                        fontFamily: segment.isCode ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace" : 'inherit',
+                                                                    }}
+                                                                >
+                                                                    {segment.text}
+                                                                </Box>
+                                                            ))}
                                                         </BoxText>
                                                     </Box>
                                                 ))}
                                             </Stack>
+
+                                            {tag.definitionSegments.length > 0 && (
+                                                <Box
+                                                    sx={{
+                                                        p: '4px 10px 12px 10px',
+                                                    }}
+                                                >
+                                                    {tag.definitionSegments.map((segment) => (
+                                                        <BoxText
+                                                            key={segment.id}
+                                                            component="span"
+                                                            className={[
+                                                                segment.isKeyword && segment.highlightColor,
+                                                                segment.isCode && 'tag-code-segment',
+                                                            ]
+                                                                .filter(Boolean)
+                                                                .join(' ')
+                                                            }
+                                                            sx={{
+                                                                fontWeight: segment.isBold ? 700 : 'inherit',
+                                                                fontStyle: segment.isItalic ? 'italic' : 'inherit',
+                                                                fontFamily: segment.isCode ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace" : "'Roboto','Helvetica','Arial',sans-serif'",
+                                                                display: 'inline',
+                                                            }}
+                                                        >
+                                                            {segment.text}
+                                                        </BoxText>
+                                                    ))}
+                                                </Box>
+                                            )}
+
+                                            {tag.insights.length > 0 && (
+                                                <Box
+                                                    sx={{
+                                                        mt: '0.5rem'
+                                                    }}
+                                                >
+                                                    <Typography
+                                                        sx={{
+                                                            //textAlign: 'center',
+                                                            fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
+                                                            fontSize: '12px',
+                                                            letterSpacing: '0.04em',
+                                                            color: colors.gray60,
+                                                            pl: '9px',
+                                                            borderBottom: '1px solid #808080'
+                                                        }}
+                                                    >
+                                                        How to use
+                                                    </Typography>
+
+                                                    <Stack
+                                                        gap={1.5}
+                                                        sx={{
+                                                            p: '8px 10px 12px 10px',
+                                                        }}
+                                                    >
+                                                        {tag.insights.map((insight) => (
+                                                            <Box key={insight.id} display="flex">
+                                                                <BoxText>
+                                                                    {insight.segments.map((segment) => (
+                                                                        <Box
+                                                                            key={segment.id}
+                                                                            component={segment.ref?.url ? 'a' : 'span'}
+                                                                            href={segment.ref?.url}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className={[
+                                                                                segment.isKeyword && segment.highlightColor,
+                                                                                segment.isCode && 'tag-code-segment',
+                                                                                segment.ref && 'tag-link-segment',
+                                                                            ]
+                                                                                .filter(Boolean)
+                                                                                .join(' ')
+                                                                            }
+                                                                            sx={{
+                                                                                fontWeight: segment.isBold ? 700 : 'inherit',
+                                                                                fontStyle: segment.isItalic ? 'italic' : 'inherit',
+                                                                                fontFamily: segment.isCode ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace" : 'inherit',
+                                                                                display: 'inline',
+                                                                            }}
+                                                                        >
+                                                                            {segment.text}
+                                                                        </Box>
+                                                                    ))}
+                                                                </BoxText>
+                                                            </Box>
+                                                        ))}
+                                                    </Stack>
+                                                </Box>
+                                            )}
+
+                                            {tag.tips.length > 0 && (
+                                                <Box
+                                                    sx={{
+                                                        mt: '0.5rem'
+                                                    }}
+                                                >
+                                                    <Typography
+                                                        sx={{
+                                                            //textAlign: 'center',
+                                                            fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
+                                                            fontSize: '12px',
+                                                            letterSpacing: '0.04em',
+                                                            color: colors.gray60,
+                                                            pl: '9px',
+                                                            borderBottom: '1px solid #808080'
+                                                        }}
+                                                    >
+                                                        Learn more
+                                                    </Typography>
+
+                                                    <Stack
+                                                        gap={1.5}
+                                                        sx={{
+                                                            py: '8px',
+                                                            px: '10px'
+                                                        }}
+                                                    >
+                                                        {tag.tips.map((tip) => (
+                                                            <Box key={tip.id} display="flex">
+                                                                <BoxText>
+                                                                    {tip.segments.map((segment) => (
+                                                                        <Box
+                                                                            key={segment.id}
+                                                                            component={segment.ref?.url ? 'a' : 'span'}
+                                                                            href={segment.ref?.url}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className={[
+                                                                                segment.isKeyword && segment.highlightColor,
+                                                                                segment.isCode && 'tag-code-segment',
+                                                                                segment.ref && 'tag-link-segment',
+                                                                            ]
+                                                                                .filter(Boolean)
+                                                                                .join(' ')
+                                                                            }
+                                                                            sx={{
+                                                                                display: 'inline',
+                                                                                fontWeight: segment.isBold ? 700 : 'inherit',
+                                                                                fontStyle: segment.isItalic ? 'italic' : 'inherit',
+                                                                                fontFamily: segment.isCode
+                                                                                    ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace"
+                                                                                    : 'inherit',
+                                                                                backgroundColor: segment.highlightColor ?? 'transparent',
+                                                                            }}
+                                                                        >
+                                                                            {segment.text}
+                                                                        </Box>
+                                                                    ))}
+                                                                </BoxText>
+                                                            </Box>
+                                                        ))}
+                                                    </Stack>
+                                                </Box>
+                                            )}
+                                            
                                         </Stack>
                                     ))}
                                 </Stack>

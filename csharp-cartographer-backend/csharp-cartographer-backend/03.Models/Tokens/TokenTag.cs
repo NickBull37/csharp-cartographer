@@ -2,15 +2,21 @@
 {
     public class TokenTag
     {
-        public string Label { get; set; }
+        public string Label { get; init; }
 
-        public List<string> Facts { get; set; } = [];
+        public List<Segment> DefinitionSegments { get; init; } = [];
 
-        public List<string> Insights { get; set; } = [];
+        public List<TagEntry> Facts { get; init; } = [];
 
-        public string BorderClass { get; set; }
+        public List<TagEntry> Insights { get; init; } = [];
 
-        public string BgColorClass { get; set; }
+        public List<TagEntry> Tips { get; init; } = [];
+
+        public string? BorderClass { get; init; }
+
+        public string BgColorClass { get; init; }
+
+        public string? KeywordClass { get; init; }
     }
 
     public class KeywordTag : TokenTag
@@ -20,11 +26,74 @@
             Label = $"C# Keyword";
             Facts =
             [
-                "Keywords are reserved words that have special meaning to the C# compiler and cannot be used as identifiers.",
+                new TagEntry
+                {
+                    TagType = "C# Keyword",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Keywords are predefined, reserved identifiers that have special meanings to the compiler."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "C# Keyword",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Keywords can't be used as identifiers in your program unless they include @ as a prefix (i.e. "
+                        },
+                        new Segment
+                        {
+                            Text = "@if",
+                            IsCode = true,
+                        },
+                        new Segment
+                        {
+                            Text = " is a valid identifier)."
+                        },
+                    ]
+                }
             ];
-            Insights =
+            Tips =
             [
-                "Some keywords are contextual — they only act like keywords in certain situations (var, nameof, async).",
+                new TagEntry
+                {
+                    TagType = "C# Keyword",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Some keywords are ",
+                        },
+                        new Segment
+                        {
+                            Text = "contextual",
+                            Ref = new SegmentRef
+                            {
+                                Url = "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/#contextual-keywords"
+                            }
+                        },
+                        new Segment
+                        {
+                            Text = " — they have special meaning only in a limited program context.",
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "C# Keyword",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Generally, as new keywords are added to the C# language, they're added as contextual keywords in order to avoid breaking programs written in earlier versions."
+                        },
+                    ]
+                }
             ];
             BorderClass = "tag-border-purple";
             BgColorClass = "tag-bg-purple";
@@ -33,41 +102,297 @@
 
     public class AccessorTag : TokenTag
     {
-        public AccessorTag()
+        public AccessorTag(string text)
         {
-            Label = $"Accessor";
+            Label = $"Accessor - {text}";
+            DefinitionSegments = GetAccessorDefinitionSegments(text);
             Facts =
             [
-                "Accessors are elements of code within a property that allow getting or setting the property's value.",
-                "You can provide an access modifier to an accessor to control who can get or set a property's value independently of the property's overall access level.",
-            ];
-            Insights =
-            [
-                "You can provide an access modifier to an accessor to control who can get or set a property's value independently of the property's overall access level.",
-                "Properties do not require accessors. Remove the \"set\" accessor and that property's value cannot be set outside of initialization."
+                new TagEntry
+                {
+                    TagType = "Accessor",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Accessors are special methods that implement properties enabling easy access while promoting data safety and flexibility."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-blue";
             BgColorClass = "tag-bg-blue";
+            KeywordClass = "tag-keyword-blue";
+
+            static List<Segment> GetAccessorDefinitionSegments(string text)
+            {
+                switch (text)
+                {
+                    case "get":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "A ",
+                                },
+                                new Segment
+                                {
+                                    Text = "get",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " accessor defines a method within a property or indexer that returns the property value or the indexer element.",
+                                },
+                            ];
+                    case "set":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "A ",
+                                },
+                                new Segment
+                                {
+                                    Text = "set",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " accessor defines a method within a property or indexer that assigns a value to the property or the indexer element.",
+                                },
+                            ];
+                    case "init":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "An ",
+                                },
+                                new Segment
+                                {
+                                    Text = "init",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " accessor defines a method within a property or indexer that assigns a value to the property or the indexer element ",
+                                },
+                                new Segment
+                                {
+                                    Text = "only during object construction",
+                                    IsBold = true,
+                                },
+                                new Segment
+                                {
+                                    Text = ".",
+                                },
+                            ];
+                    default:
+                        return [];
+                }
+            }
         }
     }
 
     public class AccessModifierTag : TokenTag
     {
-        public AccessModifierTag()
+        public AccessModifierTag(string text)
         {
-            Label = $"Access Modifier";
+            Label = $"Access Modifier - {text}";
+            DefinitionSegments = GetAccessModifierDefinitionSegments(text);
             Facts =
             [
-                "Access modifiers in C# control who is allowed to see and use your classes, methods, and variables.",
-                "This allows you to hide or expose parts of your code so others interact with it as intended."
+                new TagEntry
+                {
+                    TagType = "AccessModifier",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "All types and type members have an accessibility level that determines what assemblies they can be accessed from. This level is specified using an access modifier keyword."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "AccessModifier",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Not all access modifiers are valid for all types or members in all contexts."
+                        },
+                    ]
+                }
             ];
             Insights =
             [
-                "Access modifiers harden your code by preventing other parts of your program from misusing internal details.",
-                "Choosing the most restrictive modifier by default (like private) is common since the access level can always be updated later."
+                new TagEntry
+                {
+                    TagType = "AccessModifier",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "An assembly is a "
+                        },
+                        new Segment
+                        {
+                            Text = ".dll",
+                            IsCode = true
+                        },
+                        new Segment
+                        {
+                            Text = " or "
+                        },
+                        new Segment
+                        {
+                            Text = ".exe",
+                            IsCode = true
+                        },
+                        new Segment
+                        {
+                            Text = " created by compiling one or more "
+                        },
+                        new Segment
+                        {
+                            Text = ".cs",
+                            IsCode = true
+                        },
+                        new Segment
+                        {
+                            Text = " files into a single compilation."
+                        },
+                    ]
+                }
+            ];
+            Tips =
+            [
+                new TagEntry
+                {
+                    TagType = "AccessModifier",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Access modifiers help developers communicate an element's intended use. You can expect private elements to have low versatility or highly specific design parameters."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "AccessModifier",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Before changing an element's access modifer, consider what it was designed for. If you can't access it, it may not have been written with your context in mind."
+                        },
+                    ]
+                }
             ];
             BorderClass = "tag-border-blue";
             BgColorClass = "tag-bg-blue";
+            KeywordClass = "tag-keyword-blue";
+
+            static List<Segment> GetAccessModifierDefinitionSegments(string text)
+            {
+                switch (text)
+                {
+                    case "public":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "public",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " access modifier means the element is accessible from any assembly.",
+                                },
+                            ];
+                    case "private":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "private",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " access modifier means the element is accessible only within the containing class or struct.",
+                                },
+                            ];
+                    case "protected":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "protected",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " access modifier means the element is accessible from within the containing class or any derived class.",
+                                },
+                            ];
+                    case "internal":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "internal",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " access modifier means the element is accessible from anywhere within the same assembly.",
+                                },
+                            ];
+                    default:
+                        return [];
+                }
+            }
         }
     }
 
@@ -76,36 +401,247 @@
         public AttributeTag()
         {
             Label = $"Attribute";
+            //Facts =
+            //[
+            //    "Attributes are declarative tags used to add extra information to code elements such as classes, methods, or properties.",
+            //    "They don’t change your code directly, but they tell the compiler or other tools to treat your code in a certain way."
+            //];
+            //Insights =
+            //[
+            //    "Attributes let you quickly add powerful behavior without changing your actual code logic, such as data validation or serialization.",
+            //    "Many frameworks (like ASP.NET) use attributes heavily and there are many options available to take advantage of."
+            //];
             Facts =
             [
-                "Attributes are declarative tags used to add extra information to code elements such as classes, methods, or properties.",
-                "They don’t change your code directly, but they tell the compiler or other tools to treat your code in a certain way."
+                new TagEntry
+                {
+                    TagType = "Attribute",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Attributes provide a powerful way to associate metadata, or declarative information, with code (assemblies, types, methods, properties, etc.)."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Attribute",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Attributes can be applied to entire assemblies, modules, or smaller program elements, such as classes and properties."
+                        },
+                    ]
+                }
             ];
             Insights =
             [
-                "Attributes let you quickly add powerful behavior without changing your actual code logic, such as data validation or serialization.",
-                "Many frameworks (like ASP.NET) use attributes heavily and there are many options available to take advantage of."
+                new TagEntry
+                {
+                    TagType = "Attribute",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "After you associate an attribute with a program entity, you can query the attribute at run time by using a technique called "
+                        },
+                        new Segment
+                        {
+                            Text = "reflection",
+                            IsItalic = true,
+                            Ref = new SegmentRef
+                            {
+                                Url = "https://learn.microsoft.com/en-us/dotnet/fundamentals/reflection/reflection",
+                            }
+                        },
+                        new Segment
+                        {
+                            Text = " that enables you to obtain information about loaded assemblies and the types defined within them."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-green";
             BgColorClass = "tag-bg-green";
         }
     }
 
-    public class BaseTypeTag : TokenTag
+    public class ClassBaseTypeTag : TokenTag
     {
-        public BaseTypeTag()
+        public ClassBaseTypeTag()
         {
-            Label = $"BaseType";
+            Label = $"BaseType - class";
+            //Facts =
+            //[
+            //    "Base types are classes or interfaces that another class or interface can inherit from.",
+            //    "Base types provide members (fields, methods, properties, etc.) that the derived type can use, override, or extend.",
+            //];
+            //Insights =
+            //[
+            //    "C# allows for single-class inheritance, meaning a class can only inherit from one base class at a time.",
+            //    "C# allows for multiple-interface inheritance, meaning a class or interface can inherit from multiple interfaces at the same time.",
+            //    "A class can inherit from a single base class while also implementing multiple interfaces."
+            //];
             Facts =
             [
-                "Base types are classes or interfaces that another class or interface can inherit from.",
-                "Base types provide members (fields, methods, properties, etc.) that the derived type can use, override, or extend.",
+                new TagEntry
+                {
+                    TagType = "BaseType - class",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Class base types are classes that another class can inherit from. A derived class is a specialization of the base class."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "BaseType - class",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "When you define a class to derive from another class, the derived class implicitly gains all the members of the base class, except for its constructors and finalizers."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "BaseType - class",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "You can add additional members in the derived class that do not exist in the base class."
+                        },
+                    ]
+                },
             ];
             Insights =
             [
-                "C# allows for single-class inheritance, meaning a class can only inherit from one base class at a time.",
-                "C# allows for multiple-interface inheritance, meaning a class or interface can inherit from multiple interfaces at the same time.",
-                "A class can inherit from a single base class while also implementing multiple interfaces."
+                new TagEntry
+                {
+                    TagType = "BaseType - class",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "C# allows for single-class inheritance, meaning a class can only inherit from one base class at a time."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "BaseType - class",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "C# allows for multiple-interface inheritance, meaning a class or interface can inherit from multiple interfaces at the same time."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "BaseType - class",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "A class can inherit from a single base class while also implementing multiple interfaces."
+                        },
+                    ]
+                },
+            ];
+            Tips =
+            [
+                new TagEntry
+                {
+                    TagType = "BaseType - class",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = ""
+                        },
+                    ]
+                },
+            ];
+            BorderClass = "tag-border-green";
+            BgColorClass = "tag-bg-green";
+        }
+    }
+
+    public class InterfaceBaseTypeTag : TokenTag
+    {
+        public InterfaceBaseTypeTag()
+        {
+            Label = $"BaseType - interface";
+            Facts =
+            [
+                new TagEntry
+                {
+                    TagType = "BaseType - interface",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Interface base types provide definitions for a group of related functionalities that a non-abstract class or a struct must implement."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "BaseType - interface",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "An interface can't declare instance data such as fields, automatically implemented properties, or property-like events."
+                        },
+                    ]
+                },
+            ];
+            Insights =
+            [
+                new TagEntry
+                {
+                    TagType = "BaseType - interface",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "By convention, interface names begin with a capital "
+                        },
+                        new Segment
+                        {
+                            Text = "I",
+                            IsCode = true,
+                            IsBold = true,
+                        },
+                        new Segment
+                        {
+                            Text = "."
+                        },
+                    ]
+                },
+            ];
+            Tips =
+            [
+                new TagEntry
+                {
+                    TagType = "BaseType - interface",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Use an interface when you have multiple classes that perform the same task but in different ways. Define methods for these shared tasks and any class that implements the interface will have to provide an implementation."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-green";
             BgColorClass = "tag-bg-green";
@@ -119,13 +655,81 @@
             Label = $"Class";
             Facts =
             [
-                "Classes are blueprints for creating objects. They define the structure and behavior of an object using fields, properties, and methods that operate on the data.",
-                "You can create an instance of a class by using the \"new\" keyword."
+                new TagEntry
+                {
+                    TagType = "Class",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Classes are blueprints for creating objects. They define the structure and behavior of an object using fields, properties, and methods."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Class",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Classes are declared by using the "
+                        },
+                        new Segment
+                        {
+                            Text = "class",
+                            IsCode = true,
+                            IsKeyword = true,
+                            IsBold = true,
+                            HighlightColor = "tag-keyword-blue",
+                        },
+                        new Segment
+                        {
+                            Text = " keyword followed by a unique identifier. "
+                        },
+                        new Segment
+                        {
+                            Text = "An optional access modifier precedes the class keyword."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Class",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Instances of a class can be created by using the "
+                        },
+                        new Segment
+                        {
+                            Text = "new",
+                            IsCode = true,
+                            IsKeyword = true,
+                            IsBold = true,
+                            HighlightColor = "tag-keyword-blue",
+                        },
+                        new Segment
+                        {
+                            Text = " keyword followed by the name of the class."
+                        },
+                    ]
+                },
             ];
             Insights =
             [
-                "Classes can be used in many ways such as model definitions which often contain many properties, to services which usually have more methods.",
-                "Using classes lets you reuse logic and share behavior through inheritance, reducing repetition in your code."
+                new TagEntry
+                {
+                    TagType = "Class",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Classes can be used in many ways such as model definitions which often contain many properties, to services which usually have more methods."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-green";
             BgColorClass = "tag-bg-green";
@@ -139,13 +743,79 @@
             Label = $"Constructor";
             Facts =
             [
-                "Constructors are special methods called automatically called when an instance of a class or struct is created.",
-                "You can create multiple constructors with different parameters, giving flexibility in how an object can be created."
+                new TagEntry
+                {
+                    TagType = "Constructor",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Constructors are special methods called automatically called when an instance of a class is created. If a class does not have a constructor defined, a default constructor is called that will initialize fields and properties to default values."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Constructor",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "A single class can define multiple constructors with different input parameters, giving flexibility in how an object can be created."
+                        },
+                    ]
+                },
             ];
             Insights =
             [
-                "If you create a class and don’t create a constructor, C# gives your class a default constructor that does nothing but create the object.",
-                "If you do create a constructor that requires input parameters, you will lose access to the default constructor provided by C#."
+                new TagEntry
+                {
+                    TagType = "Constructor",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = ""
+                        },
+                    ]
+                },
+            ];
+            Tips =
+            [
+                new TagEntry
+                {
+                    TagType = "Constructor",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "The default constructor is only available if no constructors are defined in the class. Writing your own constructor will cause you to lose access to the default constructor provided by C#."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Constructor",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Use the "
+                        },
+                        new Segment
+                        {
+                            Text = "required",
+                            IsCode = true,
+                            IsKeyword = true,
+                            IsBold = true,
+                            HighlightColor = "tag-keyword-blue",
+                        },
+                        new Segment
+                        {
+                            Text = " keyword on properties of a class to force callers of that class constructor to provide values for them."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-green";
             BgColorClass = "tag-bg-green";
@@ -159,12 +829,60 @@
             Label = $"Delimiter";
             Facts =
             [
-                "Delimiters are characters used to separate, enclose, or structure code elements."
+                new TagEntry
+                {
+                    TagType = "Delimiter",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Delimiters are characters used to separate, enclose, or structure code elements."
+                        },
+                    ]
+                },
             ];
-            Insights =
+            Tips =
             [
-                "Visual Studio can automatically fix indentation, braces, and spacing around delimiters using the shortcut Ctrl + K, Ctrl + D.",
-                "You can also enforce certains rules around delimiters using an .editorconfig file."
+                new TagEntry
+                {
+                    TagType = "Delimiter",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Visual Studio can automatically fix indentation, braces, and spacing around delimiters using the shortcut "
+                        },
+                        new Segment
+                        {
+                            Text = "Ctrl + K, Ctrl + D",
+                            IsCode = true,
+                        },
+                        new Segment
+                        {
+                            Text = "."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Delimiter",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "You can also enforce certains rules around delimiters using a "
+                        },
+                        new Segment
+                        {
+                            Text = ".editorconfig",
+                            IsCode = true,
+                        },
+                        new Segment
+                        {
+                            Text = " file."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-black";
             BgColorClass = "tag-bg-black";
@@ -178,13 +896,118 @@
             Label = $"Field";
             Facts =
             [
-                "Fields are variables that belong to a class or struct to store data and cannot be accessed outside the scope they are defined.",
-                "Fields are typically accessed directly when inside the class or through properties when outside the class for better encapsulation and control."
+                new TagEntry
+                {
+                    TagType = "Field",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "A "
+                        },
+                        new Segment
+                        {
+                            Text = "field",
+                            IsBold = true,
+                        },
+                        new Segment
+                        {
+                            Text = " is a variable of any type that is declared directly in a class or struct."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Field",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "There are "
+                        },
+                        new Segment
+                        {
+                            Text = "instance",
+                            IsBold = true,
+                        },
+                        new Segment
+                        {
+                            Text = " fields that are specific to an instance of the type they're defined in. And there are "
+                        },
+                        new Segment
+                        {
+                            Text = "static",
+                            IsBold = true,
+                        },
+                        new Segment
+                        {
+                            Text = " fields which belong to the type itself and are shared among all instances of that type."
+                        },
+                    ]
+                },
             ];
-            Insights =
+            //Insights =
+            //[
+            //    new TagEntry
+            //    {
+            //        TagType = "Field",
+            //        Segments =
+            //        [
+            //            new Segment
+            //            {
+            //                Text = ""
+            //            },
+            //        ]
+            //    },
+            //];
+            Tips =
             [
-                "Fields can have access modifiers (like private or public) to control who can read or change them.",
-                "Most fields are kept private so the class controls how its data is accessed, usually through properties."
+                new TagEntry
+                {
+                    TagType = "Field",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Generally, you should declare "
+                        },
+                        new Segment
+                        {
+                            Text = "private",
+                            IsCode = true,
+                            IsKeyword = true,
+                            IsBold = true,
+                            HighlightColor = "tag-keyword-blue",
+                        },
+                        new Segment
+                        {
+                            Text = " or "
+                        },
+                        new Segment
+                        {
+                            Text = "protected",
+                            IsCode = true,
+                            IsKeyword = true,
+                            IsBold = true,
+                            HighlightColor = "tag-keyword-blue",
+                        },
+                        new Segment
+                        {
+                            Text = " accessibility for fields."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Field",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Data that your type exposes to client code should be provided through methods, properties, and indexers."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-red";
             BgColorClass = "tag-bg-red";
@@ -196,16 +1019,86 @@
         public GenericTypeArgumentTag()
         {
             Label = $"Generic Type Argument";
+            //Facts =
+            //[
+            //    "A generic type argument is the specific data type you supply when using a generic class or method.",
+            //    "They replace the generic type parameter inside angle brackets (T, TKey, TValue, etc.) defined in the generic declaration."
+            //];
+            //Insights =
+            //[
+            //    "This reduces duplication because one generic class or method can work with many different types.",
+            //    "If a method requires a generic type constraint, any type that inherits from that constraint will also work.",
+            //];
             Facts =
             [
-                "A generic type argument is the specific data type you supply when using a generic class or method.",
-                "They replace the generic type parameter inside angle brackets (T, TKey, TValue, etc.) defined in the generic declaration."
+                new TagEntry
+                {
+                    TagType = "Generic Type Argument",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "A generic type argument is the specific data type you supply when using a generic type or method."
+                        },
+                        new Segment
+                        {
+                            Text = "generic type argument"
+                        },
+                        new Segment
+                        {
+                            Text = " is the specific data type that must be supplied when using a generic class or method."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Generic Type Argument",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "A generic type argument replaces the  "
+                        },
+                        new Segment
+                        {
+                            Text = "generic type parameter",
+                            IsBold = true,
+                        },
+                        new Segment
+                        {
+                            Text = " inside the angle brackets (T, TKey, TValue, etc.) defined in the generic type or method definition."
+                        },
+                    ]
+                },
             ];
-            Insights =
-            [
-                "This reduces duplication because one generic class or method can work with many different types.",
-                "If a method requires a generic type constraint, any type that inherits from that constraint will also work.",
-            ];
+            //Insights =
+            //[
+            //    new TagEntry
+            //    {
+            //        TagType = "Generic Type Argument",
+            //        Segments =
+            //        [
+            //            new Segment
+            //            {
+            //                Text = ""
+            //            },
+            //        ]
+            //    },
+            //];
+            //Tips =
+            //[
+            //    new TagEntry
+            //    {
+            //        TagType = "Generic Type Argument",
+            //        Segments =
+            //        [
+            //            new Segment
+            //            {
+            //                Text = ""
+            //            },
+            //        ]
+            //    },
+            //];
             BorderClass = "tag-border-green";
             BgColorClass = "tag-bg-green";
         }
@@ -218,12 +1111,54 @@
             Label = $"Identifier";
             Facts =
             [
-                "An identifier refers to a named entity in C# code."
+                new TagEntry
+                {
+                    TagType = "Identifier",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "An identifier is the name you assign to a type (class, interface, struct, delegate, or enum), member, variable, or namespace."
+                        },
+                    ]
+                },
             ];
-            Insights =
+            Tips =
             [
-                "Hover your cursor over an identifier in Visual Studio to show details about the identifier.",
-                "You can add information to these details by using XML documentation comments."
+                new TagEntry
+                {
+                    TagType = "Identifier",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Hover your cursor over an identifier in Visual Studio to show additional details like the type and the namepsace where it's defined."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Identifier",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "You can add your own details to this information using ",
+                        },
+                        new Segment
+                        {
+                            Text = "XML documentation comments",
+                            Ref = new SegmentRef
+                            {
+                                Url = "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/"
+                            }
+                        },
+                        new Segment
+                        {
+                            Text = ".",
+                        },
+                    ]
+                }
             ];
             BorderClass = "tag-border-gray";
             BgColorClass = "tag-bg-gray";
@@ -237,12 +1172,37 @@
             Label = $"Method";
             Facts =
             [
-                "Methods are blocks of code that performs a specific task and can be called to execute that task.",
-                "Methods can take inputs (parameters), perform actions, and return a result or void (no result)."
-            ];
-            Insights =
-            [
-                "Breaking your program into small, focused methods that perform a single task makes your code easier to understand and debug.",
+                new TagEntry
+                {
+                    TagType = "Method",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "A method is a code block that contains a series of statements."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Method",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Method declarations consist of an access modifier, one or more optional modifiers, a return type, a method name, and any method parameters. These parts together make up the "
+                        },
+                        new Segment
+                        {
+                            Text = "method signature",
+                            IsItalic = true,
+                        },
+                        new Segment
+                        {
+                            Text = "."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-yellow";
             BgColorClass = "tag-bg-yellow";
@@ -251,20 +1211,301 @@
 
     public class ModifierTag : TokenTag
     {
-        public ModifierTag()
+        public ModifierTag(string text)
         {
-            Label = $"Modifier";
+            Label = $"Modifier - {text}";
+            DefinitionSegments = GetModifierDefinitionSegments(text);
             Facts =
             [
-                "Modifiers are words added to classes, methods, fields, or properties that change how they behave, such as controlling access or inheritance.",
-                "Common modifiers in C# include \"abstract\", \"async\", \"const\", \"override\", \"readonly\", \"sealed\", \"static\", \"virtual\", & \"volatile\"."
+                new TagEntry
+                {
+                    TagType = "Modifier",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Modifiers are keywords added to types and members that change how they behave."
+                        },
+                    ]
+                },
             ];
             Insights =
             [
-                "Modifiers help make your intent obvious to other developers, improving clarity and reducing mistakes."
+                new TagEntry
+                {
+                    TagType = "Modifier",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Modifiers help make your intent obvious to other developers."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-blue";
             BgColorClass = "tag-bg-blue";
+
+            static List<Segment> GetModifierDefinitionSegments(string text)
+            {
+                switch (text)
+                {
+                    case "abstract":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "abstract",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " modifier means the class and class members are incomplete and must be implemented in a derived class.",
+                                },
+                            ];
+                    case "async":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "async",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " modifier is used in the ",
+                                },
+                                new Segment
+                                {
+                                    Text = "TAP model",
+                                    Ref = new SegmentRef
+                                    {
+                                        Url = "https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/task-asynchronous-programming-model"
+                                    }
+                                },
+                                new Segment
+                                {
+                                    Text = " which enables code that reads like a sequence of statements, but executes in a more complicated order to avoid performance bottlenecks and enhance overall responsiveness.",
+                                },
+                            ];
+                    case "const":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "const",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " modifier can be applied to fields whose values are set at compile time and can never be changed.",
+                                },
+                            ];
+                    case "override":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "override",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " modifier is used when the method of a derived class is providing a different implementation that will be used instead of the base class implementation.",
+                                },
+                            ];
+                    case "partial":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "partial",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " modifier indicates that other parts of the class, struct, or interface can be defined in the namespace as long as all parts have the .",
+                                },
+                                new Segment
+                                {
+                                    Text = "partial",
+                                },
+                                new Segment
+                                {
+                                    Text = "modifier. This can be used to split the definition of a class, a struct, an interface, or a member over two or more source files.",
+                                },
+                            ];
+                    case "readonly":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "readonly",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " modifier means that a field can only be assigned a value during initialization or in a constructor.",
+                                },
+                            ];
+                    case "required":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "required",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " modifier means that a field must be initialized by the constructor, or by an object initializers when an object is created.",
+                                },
+                            ];
+                    case "sealed":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "sealed",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " modifier prevents the inheritance of a class or certain class members that were previously marked ",
+                                },
+                                new Segment
+                                {
+                                    Text = "virtual",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = ".",
+                                },
+                            ];
+                    case "static":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "static",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " modifier means the element is accessible from anywhere within the same assembly.",
+                                },
+                            ];
+                    case "virtual":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "virtual",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " modifier is applied to methods of a base class to indicate that it can be overridden in a derived class.",
+                                },
+                            ];
+                    case "volatile":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "The ",
+                                },
+                                new Segment
+                                {
+                                    Text = "volatile",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = " modifier indicates that a field might be modified by multiple threads that are executing at the same time.",
+                                },
+                            ];
+                    default:
+                        return [];
+                }
+            }
         }
     }
 
@@ -273,14 +1514,28 @@
         public NumericLiteralTag()
         {
             Label = $"Numeric Literal";
+            //Facts =
+            //[
+            //    "Numeric literal are values written directly in the code instead of storing it in a variable.",
+            //];
+            //Insights =
+            //[
+            //    "They can be integers (e.g., 42), floating-point numbers (e.g., 3.14), or use suffixes to specify types (e.g., 42L for long, 3.14f for float, 2.71m for decimal).",
+            //    "Numeric literals can also be written in different formats like hexadecimal (0x1A) or binary (0b1010)."
+            //];
             Facts =
             [
-                "Numeric literal are values written directly in the code instead of storing it in a variable.",
-            ];
-            Insights =
-            [
-                "They can be integers (e.g., 42), floating-point numbers (e.g., 3.14), or use suffixes to specify types (e.g., 42L for long, 3.14f for float, 2.71m for decimal).",
-                "Numeric literals can also be written in different formats like hexadecimal (0x1A) or binary (0b1010)."
+                new TagEntry
+                {
+                    TagType = "Numeric Literal",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "A numeric literal represents a fixed numeric value and are written directly in the code instead of being stord in a variable."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-lightgreen";
             BgColorClass = "tag-bg-lightgreen";
@@ -294,11 +1549,37 @@
             Label = $"Operator";
             Facts =
             [
-                "Operators are symbols that performs a specific operation on one or more operands, such as arithmetic, assignment, comparison, or logical operations.",
-            ];
-            Insights =
-            [
-                "Learning operators helps you express logic clearly and efficiently while expanding your options for solving problems.",
+                new TagEntry
+                {
+                    TagType = "Operator",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Operators are symbols or keywords that performs a specific operation on one or more operands."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Operator",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "A user-defined type can "
+                        },
+                        new Segment
+                        {
+                            Text = "overload",
+                            IsBold = true
+                        },
+                        new Segment
+                        {
+                            Text = " a predefined C# operator by providing a custom implementation of an operation in case one or both of the operands are of that type."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-darkpurple";
             BgColorClass = "tag-bg-darkpurple";
@@ -310,16 +1591,93 @@
         public ParameterTag()
         {
             Label = $"Parameter";
+            //Facts =
+            //[
+            //    "Parameters are variables declared in a method or constructor definition that will receive input values when the method or constructor is called.",
+            //    "Parameters are defined inside the parentheses of the method or constructor signature and require a name and a type.",
+            //];
+            //Insights =
+            //[
+            //    "Parameters can also have modifiers like \"ref\" or \"out\" to modify their behavior.",
+            //    "Parameters only refer to values in the method/constructor where they are defined. The values passed in for parameters are called arguments."
+            //];
             Facts =
             [
-                "Parameters are variables declared in a method or constructor definition that will receive input values when the method or constructor is called.",
-                "Parameters are defined inside the parentheses of the method or constructor signature and require a name and a type.",
-
+                new TagEntry
+                {
+                    TagType = "Parameter",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "A "
+                        },
+                        new Segment
+                        {
+                            Text = "parameter",
+                            IsBold = true,
+                        },
+                        new Segment
+                        {
+                            Text = " is made up of both a type and an identifier. They define what kind of arguments need to be passed when the method is called."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Parameter",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "By default, arguments in C# are passed to functions by "
+                        },
+                        new Segment
+                        {
+                            Text = "value",
+                            IsItalic = true,
+                        },
+                        new Segment
+                        {
+                            Text = "."
+                        },
+                    ]
+                },
             ];
             Insights =
             [
-                "Parameters can also have modifiers like \"ref\" or \"out\" to modify their behavior.",
-                "Parameters only refer to values in the method/constructor where they are defined. The values passed in for parameters are called arguments."
+                new TagEntry
+                {
+                    TagType = "Parameter",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "The parameter modifier "
+                        },
+                        new Segment
+                        {
+                            Text = "ref",
+                            IsCode = true,
+                            IsKeyword = true,
+                            IsBold = true,
+                            HighlightColor = "tag-keyword-blue",
+                        },
+                        new Segment
+                        {
+                            Text = " enables you to pass arguments by "
+                        },
+                        new Segment
+                        {
+                            Text = "reference",
+                            IsItalic = true,
+                        },
+                        new Segment
+                        {
+                            Text = ".",
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-cyan";
             BgColorClass = "tag-bg-cyan";
@@ -333,12 +1691,77 @@
             Label = $"Predefined Type";
             Facts =
             [
-                "Predefined types refer to all data types that are natively supported by the C# language.",
-                "These types are aliases for corresponding .NET Framework types (e.g., int is an alias for System.Int32)."
+                new TagEntry
+                {
+                    TagType = "Predefined Type",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Predefined types",
+                            IsBold = true,
+                        },
+                        new Segment
+                        {
+                            Text = " are built-in data types provided by the C# language."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Predefined Type",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "These come as both ",
+                        },
+                        new Segment
+                        {
+                            Text = "value",
+                            IsItalic = true,
+                        },
+                        new Segment
+                        {
+                            Text = " and "
+                        },
+                        new Segment
+                        {
+                            Text = "reference",
+                            IsItalic = true,
+                        },
+                        new Segment
+                        {
+                            Text = " types."
+                        },
+                    ]
+                },
             ];
             Insights =
             [
-                "Choosing the right predefined type for your data helps your program run efficiently and avoids unexpected bugs.",
+                new TagEntry
+                {
+                    TagType = "Predefined Type",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "All types in C# (predefined & reference types) have ",
+                        },
+                        new Segment
+                        {
+                            Text = "built-in default values",
+                            Ref = new SegmentRef
+                            {
+                                Url = "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/default-values",
+                            }
+                        },
+                        new Segment
+                        {
+                            Text = "."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-darkjade";
             BgColorClass = "tag-bg-darkjade";
@@ -350,15 +1773,107 @@
         public PropertyTag()
         {
             Label = $"Property";
+            //Facts =
+            //[
+            //    "Properties are class members that provide a flexible mechanism to access and modify the property's value.",
+            //    "Auto-properties (public int Age { get; set; }) let C# automatically create the hidden field that stores the value."
+            //];
+            //Insights =
+            //[
+            //    "Properties can help protect data by adding rules or checks before a value is returned or updated.",
+            //    "A property can have a getter, a setter, or both, and you can control access to each one independently."
+            //];
             Facts =
             [
-                "Properties are class members that provide a flexible mechanism to access and modify the property's value.",
-                "Auto-properties (public int Age { get; set; }) let C# automatically create the hidden field that stores the value."
+                new TagEntry
+                {
+                    TagType = "Property",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "A "
+                        },
+                        new Segment
+                        {
+                            Text = "property",
+                            IsBold = true,
+                        },
+                        new Segment
+                        {
+                            Text = " is a member that provides a flexible mechanism to read, write, or compute the value of a data field."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Property",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "A property definition contains declarations for a "
+                        },
+                        new Segment
+                        {
+                            Text = "get",
+                            IsCode = true,
+                            IsKeyword = true,
+                            IsBold = true,
+                            HighlightColor = "tag-keyword-blue",
+                        },
+                        new Segment
+                        {
+                            Text = " and ",
+                        },
+                        new Segment
+                        {
+                            Text = "set",
+                            IsCode = true,
+                            IsKeyword = true,
+                            IsBold = true,
+                            HighlightColor = "tag-keyword-blue",
+                        },
+                        new Segment
+                        {
+                            Text = " accessor that retrieves and assigns the value of that property."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "Property",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "You can initialize a property to a value other than the default by setting a value after the closing brace for the property."
+                        },
+                        new Segment
+                        {
+                            Text = "property",
+                            IsBold = true,
+                        },
+                        new Segment
+                        {
+                            Text = " is a member that provides a flexible mechanism to read, write, or compute the value of a data field."
+                        },
+                    ]
+                },
             ];
             Insights =
             [
-                "Properties can help protect data by adding rules or checks before a value is returned or updated.",
-                "A property can have a getter, a setter, or both, and you can control access to each one independently."
+                new TagEntry
+                {
+                    TagType = "Property",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Properties can have a getter, a setter, or both, and you can control the level of access to each independently."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-indigo";
             BgColorClass = "tag-bg-indigo";
@@ -372,11 +1887,17 @@
             Label = $"Punctuation";
             Facts =
             [
-                "Punctuation refers to the special symbols used to structure code and tell the compiler how to read it."
-            ];
-            Insights =
-            [
-                "Mastering punctuation helps reduce common beginner errors since small mistakes like missing semicolons can cause major headaches."
+                new TagEntry
+                {
+                    TagType = "Punctuation",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Punctuation refers to the special symbols used to structure code and tell the compiler how to read it."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-black";
             BgColorClass = "tag-bg-black";
@@ -390,13 +1911,63 @@
             Label = $"String Literal";
             Facts =
             [
-                "String literals are a sequence of characters enclosed in double quotes (\" \"), representing a constant text value.",
-                "String literals can also include escape sequences like \n for a new line or \" for an actual quote character."
-            ];
-            Insights =
-            [
-                "You can also use a verbatim string literal (@\"C:\\Path\\Here\") to write text without escaping backslashes.",
-                "Interpolated string literals allow you to insert variable values into placeholders ($\"Hello {name}\")."
+                new TagEntry
+                {
+                    TagType = "String Literal",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Quoted string literals",
+                            IsBold = true,
+                        },
+                        new Segment
+                        {
+                            Text = " start and end with a single double quote character (\") on the same line and are best for strings that fit on a single line and don't include any escape sequences."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "String Literal",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Verbatim string literals",
+                            IsBold = true,
+                        },
+                        new Segment
+                        {
+                            Text = " are prefixed with the @ symbol and are convenient for multi-line strings, strings that contain backslash characters, or strings that contain embedded double quotes."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "String Literal",
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "Interpolated strings",
+                            IsBold = true,
+                        },
+                        new Segment
+                        {
+                            Text = " are prefixed with the "
+                        },
+                        new Segment
+                        {
+                            Text = "$",
+                            IsCode = true,
+                        },
+                        new Segment
+                        {
+                            Text = " character and allow you to insert dynamic values inside braces."
+                        },
+                    ]
+                },
             ];
             BorderClass = "tag-border-orange";
             BgColorClass = "tag-bg-orange";

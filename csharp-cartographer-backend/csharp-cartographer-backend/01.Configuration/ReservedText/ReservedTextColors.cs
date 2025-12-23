@@ -799,6 +799,349 @@
             },
         };
 
+        public static readonly List<ReservedTextColor> OperatorsFromMicrosoftDocs = new()
+        {
+            // Arithmetic: unary (single-operand) operators
+            new ReservedTextColor
+            {
+                Text = "+",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "-",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "++",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "--",
+                HighlightColor = _gray,
+            },
+
+            // Arithmetic: binary operators
+            new ReservedTextColor
+            {
+                Text = "+",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "-",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "*",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "/",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "%",
+                HighlightColor = _gray,
+            },
+            //TODO: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/arithmetic-operators#compound-assignment
+
+            // Comparison (relational) operators
+            new ReservedTextColor
+            {
+                Text = "<",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = ">",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "<=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = ">=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor()
+            {
+                Text = "==",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor()
+            {
+                Text = "!=",
+                HighlightColor = _gray,
+            },
+
+            // Boolean Logical operators
+            new ReservedTextColor()
+            {
+                Text = "!",
+                HighlightColor = _gray,
+            },
+            // Boolean Logical operators: binary logical
+            new ReservedTextColor()
+            {
+                Text = "&",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor()
+            {
+                Text = "|",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor()
+            {
+                Text = "^",
+                HighlightColor = _gray,
+            },
+            // Boolean Logical operators: binary conditional logical
+            new ReservedTextColor()
+            {
+                Text = "&&",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor()
+            {
+                Text = "||",
+                HighlightColor = _gray,
+            },
+            
+            // Bitwise & Shift operators: unary
+            new ReservedTextColor()
+            {
+                Text = "~",
+                HighlightColor = _gray,
+            },
+            // Bitwise & Shift operators: binary
+            new ReservedTextColor()
+            {
+                Text = "<<",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor()
+            {
+                Text = ">>",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor()
+            {
+                Text = ">>>",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor()
+            {
+                Text = "&",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor()
+            {
+                Text = "|",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor()
+            {
+                Text = "^",
+                HighlightColor = _gray,
+            },
+
+            // Equality operators (duplicates of comparison operators)
+            new ReservedTextColor
+            {
+                Text = "==",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "!=",
+                HighlightColor = _gray,
+            },
+            
+            // Assignment operators
+            new ReservedTextColor
+            {
+                Text = "=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "+=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "-=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "*=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "/=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "%=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "&=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "|=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "^=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "<<=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = ">>=",
+                HighlightColor = _gray,
+            },
+
+            // Null/Null-coalescing operators
+            new ReservedTextColor
+            {
+                Text = "?",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "??",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "??=",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = ":",
+                HighlightColor = _gray,
+            },
+
+            // Type operators
+            new ReservedTextColor
+            {
+                Text = "is",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "as",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "sizeof",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "typeof",
+                HighlightColor = _blue,
+            },
+
+            // Lambda operators
+            new ReservedTextColor
+            {
+                Text = "=>",
+                HighlightColor = _gray,
+            },
+
+            // Index & Range operators
+            new ReservedTextColor
+            {
+                Text = "..",
+                HighlightColor = _white,
+            },
+            new ReservedTextColor
+            {
+                Text = "^",
+                HighlightColor = _gray,
+            },
+
+            // Member access operators
+            new ReservedTextColor
+            {
+                Text = ".",
+                HighlightColor = _white,
+            },
+            new ReservedTextColor
+            {
+                Text = "?.",
+                HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "::",
+                HighlightColor = _gray,
+            },
+
+            // Misc operators
+            new ReservedTextColor
+            {
+                Text = "new",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "checked",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "unchecked",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "default",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "nameof",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "stackalloc",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "_",
+                HighlightColor = _blue,
+            },
+        };
+
         public static readonly List<ReservedTextColor> Punctuators = new()
         {
             new ReservedTextColor

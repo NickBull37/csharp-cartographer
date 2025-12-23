@@ -68,30 +68,54 @@
 
         public static readonly List<string> _operators =
         [
-            // arithmetic
+            // arithmetic - unary
+            "+",
+            "-",
+            "++",
+            "--",
+
+            // arithmetic - binary
             "+",
             "-",
             "*",
             "/",
             "%",
+
             // comparison (relational)
+            "<",
+            ">",
+            "<=",
+            ">=",
             "==",
             "!=",
-            ">",
-            "<",
-            ">=",
-            "<=",
-            // logical
-            "&&",
-            "||",
+
+            // boolean logical - unary logical
             "!",
-            // bitwise
+
+            // boolean logical - binary logical
             "&",
             "|",
             "^",
+
+            // boolean logical - binary conditional logical
+            "&&",
+            "||",
+
+            // bitwise and shift - unary
             "~",
+
+            // bitwise and shift - binary
             "<<",
             ">>",
+            ">>>",
+            "&",
+            "|",
+            "^",
+
+            // equality (same as comparison?)
+            "==",
+            "!=",
+
             // assignment
             "=",
             "+=",
@@ -104,31 +128,31 @@
             "^=",
             "<<=",
             ">>=",
-            // unary (single-operand)
-            "+",
-            "-",
-            "++",
-            "--",
-            "!",
-            "~",
+            ">>>=",
+
             // null-coalescing
             "??",
             "??=",
+
             // type
             "is",
             "as",
             "sizeof",
             "typeof",
+
             // lambda
             "=>",
+
             // index & range
             "[]",
             "..",
             "^",
+
             // member access
             ".",
             "?.",
             "::",
+
             // misc
             "new",
             "checked",
