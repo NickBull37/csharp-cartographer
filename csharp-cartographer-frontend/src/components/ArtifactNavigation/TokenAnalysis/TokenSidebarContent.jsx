@@ -9,6 +9,7 @@ import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
 import KeyIcon from '@mui/icons-material/Key';
 import CodeIcon from '@mui/icons-material/Code';
 import LinkIcon from '@mui/icons-material/Link';
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 
 import colors from '../../../utils/colors';
 
@@ -56,7 +57,8 @@ const TokenText = styled(Typography)(() => ({
 }));
 
 const BoxText = styled(Typography)(() => ({
-    fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
+    // fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
+    fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
     fontSize: '13px',
     letterSpacing: '0.04em',
     color: colors.gray95
@@ -274,8 +276,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
 
                     <Stack>
 
-                        <Divider sx={{ bgcolor: '#808080' }} />
-                        <Typography
+                        {/* <Divider sx={{ bgcolor: '#808080' }} /> */}
+                        {/* <Typography
                             className='code'
                             sx={{
                                 px: 1,
@@ -300,7 +302,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             }}
                         >
                             {updatedClassification}
-                        </Typography>
+                        </Typography> */}
 
                         <Divider sx={{ bgcolor: '#808080' }} />
 
@@ -365,7 +367,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                     {tokenTags.map((tag, index) => (
                                         <Stack
                                             sx={{
-                                                backgroundColor: 'rgba(51, 51, 51, 0.575)',
+                                                // backgroundColor: 'rgba(51, 51, 51, 0.575)',
+                                                backgroundColor: 'rgba(51, 51, 51, 0.6)',
                                                 borderRadius: '4px',
                                                 boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.20), 0 2px 6px 0 rgba(0, 0, 0, 0.20)',
                                             }}
@@ -428,27 +431,68 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                                 .filter(Boolean)
                                                                 .join(' ')
                                                             }
+                                                            sx={{
+                                                                //whiteSpace: 'pre-wrap'
+                                                            }}
                                                         >
-                                                            {entry.segments.map((segment) => (
-                                                                <Box
-                                                                    key={segment.id}
-                                                                    component={segment.ref?.url ? 'a' : 'span'}
-                                                                    href={segment.ref?.url}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                    className={segment.isKeyword ? `${segment.highlightColor}` : ''}
-                                                                    sx={{
-                                                                        fontWeight: segment.isBold ? 700 : 'inherit',
-                                                                        fontStyle: segment.isItalic ? 'italic' : 'inherit',
-                                                                        fontFamily: segment.isCode
-                                                                            ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace"
-                                                                            : 'inherit',
-                                                                        display: 'inline'
-                                                                    }}
-                                                                >
-                                                                    {segment.text}
-                                                                </Box>
-                                                            ))}
+                                                            {entry.isInsight
+                                                                ?
+                                                                    <Box
+                                                                        display="flex"
+                                                                        alignItems="center"
+                                                                        gap={0.75}
+                                                                        sx={{
+                                                                            mb: '14px'
+                                                                        }}
+                                                                    >
+                                                                        <InfoOutlineIcon
+                                                                            sx={{
+                                                                                fontSize: '18px',
+                                                                                color: '#c0e0f2'
+                                                                            }}
+                                                                        />
+                                                                        <Typography
+                                                                            sx={{
+                                                                                fontSize: '14px',
+                                                                                letterSpacing: '0.06em',
+                                                                                fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
+                                                                                color: '#c0e0f2'
+                                                                            }}
+                                                                        >
+                                                                            Insight
+                                                                        </Typography>
+                                                                    </Box>
+                                                                :
+                                                                    <></>
+                                                            }
+                                                            {entry.segments.map((segment) =>
+                                                                segment.text === '\r\n'
+                                                                    ?
+                                                                        (
+                                                                            <Box sx={{ minHeight: '6px' }}></Box>
+                                                                        )
+                                                                    :
+                                                                        ((
+                                                                            <Box
+                                                                                key={segment.id}
+                                                                                component={segment.ref?.url ? 'a' : 'span'}
+                                                                                href={segment.ref?.url}
+                                                                                target="_blank"
+                                                                                rel="noopener noreferrer"
+                                                                                className={segment.isKeyword ? `${segment.highlightColor}` : ''}
+                                                                                sx={{
+                                                                                    fontWeight: segment.isBold ? 700 : 'inherit',
+                                                                                    fontStyle: segment.isItalic ? 'italic' : 'inherit',
+                                                                                    fontFamily: segment.isCode
+                                                                                        ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace"
+                                                                                        : 'inherit',
+                                                                                    display: 'inline'
+                                                                                }}
+                                                                            >
+                                                                                {segment.text}
+                                                                            </Box>
+                                                                        ))
+                                                            )}
                                                         </BoxText>
                                                     </Box>
                                                 ))}

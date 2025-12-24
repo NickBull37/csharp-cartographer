@@ -112,41 +112,51 @@ namespace csharp_cartographer_backend._03.Models.Tokens
     {
         public AccessorTag(string text)
         {
+            var tagEntries = GetGeneralTagEntries();
+            tagEntries.AddRange(GetIndividualTagEntries(text));
+
             Label = $"Accessor - {text}";
-            TheBasicsEntries =
-            [
-                new TagEntry
-                {
-                    TagType = "Accessor",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Accessors are special methods that implement properties, enabling easy access while promoting data safety and flexibility."
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "Accessor",
-                    Segments = GetAccessorDefinitionSegments(text),
-                },
-            ];
+            TheBasicsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.TheBasics).ToList();
+            KeyPointsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.KeyPoints).ToList();
+            UseForEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.UseFor).ToList();
+            ExploreEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.Explore).ToList();
             BorderClass = "tag-border-blue";
             BgColorClass = "tag-bg-blue";
             KeywordClass = "tag-keyword-blue";
 
-            static List<Segment> GetAccessorDefinitionSegments(string text)
+            // applicable to all accessors
+            static List<TagEntry> GetGeneralTagEntries()
             {
-                switch (text)
+                return
+                [
+                    new TagEntry
+                    {
+                        TagType = "Accessor",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Accessors are special methods that implement properties, enabling easy access while promoting data safety and flexibility."
+                            },
+                        ]
+                    },
+                ];
+            }
+
+            // applicable to individual accessors
+            static List<TagEntry> GetIndividualTagEntries(string text)
+            {
+                return text switch
                 {
-                    case "get":
-                        return
+                    "get" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Accessor - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
-                                new Segment
-                                {
-                                    Text = "A ",
-                                },
                                 new Segment
                                 {
                                     Text = "get",
@@ -157,16 +167,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " accessor defines a method within a property or indexer that returns the property value or the indexer element.",
+                                    Text = " accessors define methods within a property or indexer that returns the property value or the indexer element.",
                                 },
-                            ];
-                    case "set":
-                        return
+                            ]
+                        },
+                    ],
+                    "set" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Accessor - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
-                                new Segment
-                                {
-                                    Text = "A ",
-                                },
                                 new Segment
                                 {
                                     Text = "set",
@@ -177,16 +190,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " accessor defines a method within a property or indexer that assigns a value to the property or the indexer element.",
+                                    Text = " accessors define methods within a property or indexer that assigns a value to the property or the indexer element.",
                                 },
-                            ];
-                    case "init":
-                        return
+                            ]
+                        },
+                    ],
+                    "init" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Accessor - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
-                                new Segment
-                                {
-                                    Text = "An ",
-                                },
                                 new Segment
                                 {
                                     Text = "init",
@@ -197,21 +213,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " accessor defines a method within a property or indexer that assigns a value to the property or the indexer element ",
+                                    Text = " accessors define methods within a property or indexer that assigns a value to the property or the indexer element only during object construction.",
                                 },
-                                new Segment
-                                {
-                                    Text = "only during object construction",
-                                    IsBold = true,
-                                },
-                                new Segment
-                                {
-                                    Text = ".",
-                                },
-                            ];
-                    default:
-                        return [];
-                }
+                            ]
+                        },
+                    ],
+                    _ => [],
+                };
             }
         }
     }
@@ -1064,124 +1072,134 @@ namespace csharp_cartographer_backend._03.Models.Tokens
     {
         public FieldTag()
         {
+            var tagEntries = GetGeneralTagEntries();
+
             Label = $"Field";
-            TheBasicsEntries =
-            [
-                new TagEntry
-                {
-                    TagType = "Field",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "A "
-                        },
-                        new Segment
-                        {
-                            Text = "field",
-                            IsBold = true,
-                        },
-                        new Segment
-                        {
-                            Text = " is a variable of any type that is declared directly in a class or struct."
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "Field",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "There are "
-                        },
-                        new Segment
-                        {
-                            Text = "instance",
-                            IsBold = true,
-                        },
-                        new Segment
-                        {
-                            Text = " fields that are specific to an instance of the type they're defined in. And there are "
-                        },
-                        new Segment
-                        {
-                            Text = "static",
-                            IsBold = true,
-                        },
-                        new Segment
-                        {
-                            Text = " fields which belong to the type itself and are shared among all instances of that type."
-                        },
-                    ]
-                },
-            ];
-            //Insights =
-            //[
-            //    new TagEntry
-            //    {
-            //        TagType = "Field",
-            //        Segments =
-            //        [
-            //            new Segment
-            //            {
-            //                Text = ""
-            //            },
-            //        ]
-            //    },
-            //];
-            ExploreEntries =
-            [
-                new TagEntry
-                {
-                    TagType = "Field",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Generally, you should declare "
-                        },
-                        new Segment
-                        {
-                            Text = "private",
-                            IsCode = true,
-                            IsKeyword = true,
-                            IsBold = true,
-                            HighlightColor = "tag-keyword-blue",
-                        },
-                        new Segment
-                        {
-                            Text = " or "
-                        },
-                        new Segment
-                        {
-                            Text = "protected",
-                            IsCode = true,
-                            IsKeyword = true,
-                            IsBold = true,
-                            HighlightColor = "tag-keyword-blue",
-                        },
-                        new Segment
-                        {
-                            Text = " accessibility for fields."
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "Field",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Data that your type exposes to client code should be provided through methods, properties, and indexers."
-                        },
-                    ]
-                },
-            ];
+            TheBasicsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.TheBasics).ToList();
+            KeyPointsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.KeyPoints).ToList();
+            UseForEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.UseFor).ToList();
+            ExploreEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.Explore).ToList();
             BorderClass = "tag-border-red";
             BgColorClass = "tag-bg-red";
+
+            // applicable to all fields
+            static List<TagEntry> GetGeneralTagEntries()
+            {
+                return
+                [
+                    new TagEntry
+                    {
+                        TagType = "Field",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "A "
+                            },
+                            new Segment
+                            {
+                                Text = "field",
+                                IsBold = true,
+                            },
+                            new Segment
+                            {
+                                Text = " is a variable of any type that is declared directly in a class or struct."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "Field",
+                        IsInsight = true,
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Generally, you should declare "
+                            },
+                            new Segment
+                            {
+                                Text = "private",
+                                IsCode = true,
+                                IsKeyword = true,
+                                IsBold = true,
+                                HighlightColor = "tag-keyword-blue",
+                            },
+                            new Segment
+                            {
+                                Text = " or "
+                            },
+                            new Segment
+                            {
+                                Text = "protected",
+                                IsCode = true,
+                                IsKeyword = true,
+                                IsBold = true,
+                                HighlightColor = "tag-keyword-blue",
+                            },
+                            new Segment
+                            {
+                                Text = " accessibility for fields and use indirect access constructs to modify them."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "Field",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Instance",
+                                IsBold = true,
+                            },
+                            new Segment
+                            {
+                                Text = " (non-static) fields are specific to an instance of the type they're defined in."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "Field",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "static",
+                                IsCode = true,
+                                IsKeyword = true,
+                                IsBold = true,
+                                HighlightColor = "tag-keyword-blue",
+                            },
+                            new Segment
+                            {
+                                Text = " fields belong to the type itself and are shared among all instances of that type."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "Identifier",
+                        Section = TokenTagSection.Explore,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Fields (C# Programming Guide)",
+                                Ref = new SegmentRef
+                                {
+                                    Url = "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/fields"
+                                }
+                            },
+                        ]
+                    },
+                ];
+            }
         }
     }
 
@@ -1279,60 +1297,101 @@ namespace csharp_cartographer_backend._03.Models.Tokens
     {
         public IdentifierTag()
         {
+            var tagEntries = GetGeneralTagEntries();
+
             Label = $"Identifier";
-            TheBasicsEntries =
-            [
-                new TagEntry
-                {
-                    TagType = "Identifier",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "An identifier is the name you assign to a type (class, interface, struct, delegate, or enum), member, variable, or namespace."
-                        },
-                    ]
-                },
-            ];
-            ExploreEntries =
-            [
-                new TagEntry
-                {
-                    TagType = "Identifier",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Hover your cursor over an identifier in Visual Studio to show additional details like the type and the namepsace where it's defined."
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "Identifier",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "You can add your own details to this information using ",
-                        },
-                        new Segment
-                        {
-                            Text = "XML documentation comments",
-                            Ref = new SegmentRef
-                            {
-                                Url = "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/"
-                            }
-                        },
-                        new Segment
-                        {
-                            Text = ".",
-                        },
-                    ]
-                }
-            ];
+            TheBasicsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.TheBasics).ToList();
+            KeyPointsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.KeyPoints).ToList();
+            UseForEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.UseFor).ToList();
+            ExploreEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.Explore).ToList();
             BorderClass = "tag-border-gray";
             BgColorClass = "tag-bg-gray";
+
+            // applicable to all identifiers
+            static List<TagEntry> GetGeneralTagEntries()
+            {
+                return
+                [
+                    new TagEntry
+                    {
+                        TagType = "Identifier",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "An identifier is the name you assign to a type (class, interface, struct, delegate, or enum), member, variable, or namespace."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "Identifier",
+                        Section = TokenTagSection.TheBasics,
+                        IsInsight = true,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Hover your cursor over an identifier in Visual Studio to show additional details with links to their definitions."
+                            },
+                            new Segment
+                            {
+                                Text = "\r\n"
+                            },
+                            new Segment
+                            {
+                                Text = "\r\n"
+                            },
+                            new Segment
+                            {
+                                Text = "You can add your own details to this information using ",
+                            },
+                            new Segment
+                            {
+                                Text = "XML documentation comments",
+                                IsItalic = true,
+                            },
+                            new Segment
+                            {
+                                Text = ".",
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "Identifier",
+                        Section = TokenTagSection.Explore,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "C# identifier rules and conventions",
+                                Ref = new SegmentRef
+                                {
+                                    Url = "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names"
+                                }
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "Identifier",
+                        Section = TokenTagSection.Explore,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "XML documentation comments",
+                                Ref = new SegmentRef
+                                {
+                                    Url = "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/"
+                                }
+                            },
+                        ]
+                    },
+                ];
+            }
         }
     }
 
@@ -1384,55 +1443,50 @@ namespace csharp_cartographer_backend._03.Models.Tokens
     {
         public ModifierTag(string text)
         {
+            var tagEntries = GetGeneralTagEntries();
+            tagEntries.AddRange(GetIndividualTagEntries(text));
+
             Label = $"Modifier - {text}";
-            //DefinitionSegments = GetModifierDefinitionSegments(text);
-            TheBasicsEntries =
-            [
-                new TagEntry
-                {
-                    TagType = "Modifier",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Modifiers are keywords added to types and members that change how they behave."
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "Modifier",
-                    Segments = GetModifierDefinitionSegments(text),
-                },
-            ];
-            KeyPointsEntries =
-            [
-                new TagEntry
-                {
-                    TagType = "Modifier",
-                    Segments = GetModifierHowToReadSegments(text),
-                },
-            ];
-            UseForEntries = GetModifierHowToUseEntries(text);
+            TheBasicsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.TheBasics).ToList();
+            KeyPointsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.KeyPoints).ToList();
+            UseForEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.UseFor).ToList();
+            ExploreEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.Explore).ToList();
             BorderClass = "tag-border-blue";
             BgColorClass = "tag-bg-blue";
 
-            static void GetModifierEntrySegments(string text)
+            // applicable to all modifiers
+            static List<TagEntry> GetGeneralTagEntries()
             {
-
+                return
+                [
+                    new TagEntry
+                    {
+                        TagType = "Modifier",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Modifiers are keywords added to types and members that change how they behave."
+                            },
+                        ]
+                    },
+                ];
             }
 
-            static List<Segment> GetModifierDefinitionSegments(string text)
+            // applicable to individual modifiers
+            static List<TagEntry> GetIndividualTagEntries(string text)
             {
-                switch (text)
+                return text switch
                 {
-                    case "abstract":
-                        return
+                    "abstract" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "Modifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
-                                new Segment
-                                {
-                                    Text = "The ",
-                                },
                                 new Segment
                                 {
                                     Text = "abstract",
@@ -1443,16 +1497,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " modifier means the class and class members are incomplete and must be implemented in a derived class.",
+                                    Text = " classes and class members are incomplete and must be implemented in a derived class.",
                                 },
-                            ];
-                    case "async":
-                        return
+                            ]
+                        },
+                    ],
+                    "async" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "Modifier - async",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
-                                new Segment
-                                {
-                                    Text = "The ",
-                                },
                                 new Segment
                                 {
                                     Text = "async",
@@ -1463,28 +1520,35 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " modifier is used in the ",
+                                    Text = " is used in the TAP model which enables code that reads like a sequence of statements, but executes in a more complicated order to avoid performance bottlenecks and enhance overall responsiveness.",
                                 },
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "Modifier - async",
+                            Section = TokenTagSection.Explore,
+                            Segments =
+                            [
                                 new Segment
                                 {
-                                    Text = "TAP model",
+                                    Text = "Task Asynchronous Programming (TAP) Model",
                                     Ref = new SegmentRef
                                     {
                                         Url = "https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/task-asynchronous-programming-model"
                                     }
                                 },
-                                new Segment
-                                {
-                                    Text = " which enables code that reads like a sequence of statements, but executes in a more complicated order to avoid performance bottlenecks and enhance overall responsiveness.",
-                                },
-                            ];
-                    case "const":
-                        return
+                            ]
+                        },
+                    ],
+                    "const" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "Modifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
-                                new Segment
-                                {
-                                    Text = "The ",
-                                },
                                 new Segment
                                 {
                                     Text = "const",
@@ -1495,16 +1559,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " modifier can be applied to fields whose values are set at compile time and can never be changed.",
+                                    Text = " field values are set at compile time and can never be changed.",
                                 },
-                            ];
-                    case "override":
-                        return
+                            ]
+                        },
+                    ],
+                    "override" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "Modifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
-                                new Segment
-                                {
-                                    Text = "The ",
-                                },
                                 new Segment
                                 {
                                     Text = "override",
@@ -1515,16 +1582,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " modifier is used when the method of a derived class is providing a different implementation that will be used instead of the base class implementation.",
+                                    Text = " is used when the method of a derived class is providing a different implementation that will be used instead of the base class implementation.",
                                 },
-                            ];
-                    case "partial":
-                        return
+                            ]
+                        },
+                    ],
+                    "partial" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "Modifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
-                                new Segment
-                                {
-                                    Text = "The ",
-                                },
                                 new Segment
                                 {
                                     Text = "partial",
@@ -1535,36 +1605,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " modifier indicates that other parts of the class, struct, or interface can be defined in the namespace as long as all parts have the .",
+                                    Text = " can be used to split the definition of a class, struct, interface, or member over two or more source files.",
                                 },
-                                new Segment
-                                {
-                                    Text = "partial",
-                                },
-                                new Segment
-                                {
-                                    Text = "modifier. This can be used to split the definition of a class, a struct, an interface, or a member over two or more source files.",
-                                },
-                            ];
-                    case "readonly":
-                        return
+                            ]
+                        },
+                    ],
+                    "readonly" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "Modifier - readonly",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
-                                //new Segment
-                                //{
-                                //    Text = "The ",
-                                //},
-                                //new Segment
-                                //{
-                                //    Text = "readonly",
-                                //    IsCode = true,
-                                //    IsKeyword = true,
-                                //    IsBold = true,
-                                //    HighlightColor = "tag-keyword-blue",
-                                //},
-                                //new Segment
-                                //{
-                                //    Text = " modifier means that a field can only be assigned a value during initialization or in a constructor.",
-                                //},
                                 new Segment
                                 {
                                     Text = "readonly",
@@ -1577,14 +1630,57 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 {
                                     Text = " fields can only be assigned a value during initialization or in a constructor.",
                                 },
-                            ];
-                    case "required":
-                        return
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "Modifier - readonly",
+                            Section = TokenTagSection.KeyPoints,
+                            Segments =
                             [
                                 new Segment
                                 {
-                                    Text = "The ",
+                                    Text = "I won't be able to change this value later",
                                 },
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "Modifier - readonly",
+                            Section = TokenTagSection.UseFor,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "dependencies using the Dependancy Injection (DI) design pattern",
+                                },
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "Modifier - readonly",
+                            Section = TokenTagSection.Explore,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = ".NET Dependency Injection",
+                                    Ref = new SegmentRef
+                                    {
+                                        Url = "https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection"
+                                    }
+                                },
+                            ]
+                        },
+                    ],
+                    "required" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "Modifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
                                 new Segment
                                 {
                                     Text = "required",
@@ -1595,19 +1691,22 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " modifier means that a field must be initialized by the constructor, or by an object initializers when an object is created.",
+                                    Text = " fields must be initialized by the constructor, or by an object initializers when an object is created.",
                                 },
-                            ];
-                    case "sealed":
-                        return
+                            ]
+                        },
+                    ],
+                    "sealed" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "Modifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
                                 new Segment
                                 {
-                                    Text = "The ",
-                                },
-                                new Segment
-                                {
-                                    Text = "sealed",
+                                    Text = "required",
                                     IsCode = true,
                                     IsKeyword = true,
                                     IsBold = true,
@@ -1615,7 +1714,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " modifier prevents the inheritance of a class or certain class members that were previously marked ",
+                                    Text = " prevents the inheritance of a class or certain class members that were previously marked ",
                                 },
                                 new Segment
                                 {
@@ -1629,14 +1728,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 {
                                     Text = ".",
                                 },
-                            ];
-                    case "static":
-                        return
+                            ]
+                        },
+                    ],
+                    "static" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "Modifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
-                                new Segment
-                                {
-                                    Text = "The ",
-                                },
                                 new Segment
                                 {
                                     Text = "static",
@@ -1647,16 +1749,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " modifier means the element is accessible from anywhere within the same assembly.",
+                                    Text = " members belong to the type itself rather than to a specific object.",
                                 },
-                            ];
-                    case "virtual":
-                        return
+                            ]
+                        },
+                    ],
+                    "virtual" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "Modifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
-                                new Segment
-                                {
-                                    Text = "The ",
-                                },
                                 new Segment
                                 {
                                     Text = "virtual",
@@ -1667,16 +1772,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " modifier is applied to methods of a base class to indicate that it can be overridden in a derived class.",
+                                    Text = " is applied to methods of a base class to indicate that it can be overridden in a derived class.",
                                 },
-                            ];
-                    case "volatile":
-                        return
+                            ]
+                        },
+                    ],
+                    "volatile" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "Modifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
-                                new Segment
-                                {
-                                    Text = "The ",
-                                },
                                 new Segment
                                 {
                                     Text = "volatile",
@@ -1687,303 +1795,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " modifier indicates that a field might be modified by multiple threads that are executing at the same time.",
+                                    Text = " indicates that a field might be modified by multiple threads that are executing at the same time.",
                                 },
-                            ];
-                    default:
-                        return [];
-                }
-            }
-
-            static List<Segment> GetModifierHowToReadSegments(string text)
-            {
-                switch (text)
-                {
-                    case "abstract":
-                        return
-                            [
-                                new Segment
-                                {
-                                    Text = "",
-                                },
-                            ];
-                    case "async":
-                        return
-                            [
-                                new Segment
-                                {
-                                    Text = "",
-                                },
-                            ];
-                    case "const":
-                        return
-                            [
-                                new Segment
-                                {
-                                    Text = "",
-                                },
-                            ];
-                    case "override":
-                        return
-                            [
-                                new Segment
-                                {
-                                    Text = "",
-                                },
-                            ];
-                    case "partial":
-                        return
-                            [
-                                new Segment
-                                {
-                                    Text = "",
-                                },
-                            ];
-                    case "readonly":
-                        return
-                            [
-                                new Segment
-                                {
-                                    Text = "this element's value will never change",
-                                },
-                            ];
-                    case "required":
-                        return
-                            [
-                                new Segment
-                                {
-                                    Text = "",
-                                },
-                            ];
-                    case "sealed":
-                        return
-                            [
-                                new Segment
-                                {
-                                    Text = "",
-                                },
-                            ];
-                    case "static":
-                        return
-                            [
-                                new Segment
-                                {
-                                    Text = "",
-                                },
-                            ];
-                    case "virtual":
-                        return
-                            [
-                                new Segment
-                                {
-                                    Text = "",
-                                },
-                            ];
-                    case "volatile":
-                        return
-                            [
-                                new Segment
-                                {
-                                    Text = "",
-                                },
-                            ];
-                    default:
-                        return [];
-                }
-            }
-
-            static List<TagEntry> GetModifierHowToUseEntries(string text)
-            {
-                return text switch
-                {
-                    "abstract" =>
-                        [
-                            new TagEntry
-                            {
-                                TagType = "Modifier",
-                                Segments =
-                                [
-                                    new Segment
-                                    {
-                                        Text = "",
-                                    },
-                                ]
-                            },
-                        ],
-                    "async" =>
-                        [
-                            new TagEntry
-                            {
-                                TagType = "Modifier",
-                                Segments =
-                                [
-                                    new Segment
-                                    {
-                                        Text = "",
-                                    },
-                                ]
-                            },
-                        ],
-                    "const" =>
-                        [
-                            new TagEntry
-                            {
-                                TagType = "Modifier",
-                                Segments =
-                                [
-                                    new Segment
-                                    {
-                                        Text = "",
-                                    },
-                                ]
-                            },
-                        ],
-                    "override" =>
-                        [
-                            new TagEntry
-                            {
-                                TagType = "Modifier",
-                                Segments =
-                                [
-                                    new Segment
-                                    {
-                                        Text = "",
-                                    },
-                                ]
-                            },
-                        ],
-                    "partial" =>
-                        [
-                            new TagEntry
-                            {
-                                TagType = "Modifier",
-                                Segments =
-                                [
-                                    new Segment
-                                    {
-                                        Text = "",
-                                    },
-                                ]
-                            },
-                        ],
-                    "readonly" =>
-                        [
-                            //new TagEntry
-                            //{
-                            //    TagType = "Modifier",
-                            //    Segments =
-                            //    [
-                            //        new Segment
-                            //        {
-                            //            Text = "Modifiers help make your intent obvious to other developers."
-                            //        },
-                            //    ]
-                            //},
-                            new TagEntry
-                            {
-                                TagType = "Modifier",
-                                Segments =
-                                [
-                                    new Segment
-                                    {
-                                        Text = "dependencies using the ",
-                                    },
-                                    new Segment
-                                    {
-                                        Text = "Dependancy Injection",
-                                        Ref = new SegmentRef
-                                        {
-                                            Url = "https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection"
-                                        }
-                                    },
-                                    new Segment
-                                    {
-                                        Text = " (DI) design pattern",
-                                    },
-                                ]
-                            },
-                            new TagEntry
-                            {
-                                TagType = "Modifier",
-                                Segments =
-                                [
-                                    new Segment
-                                    {
-                                        Text = "hardcoded file paths",
-                                    },
-                                ]
-                            }
-                        ],
-                    "required" =>
-                        [
-                            new TagEntry
-                            {
-                                TagType = "Modifier",
-                                Segments =
-                                [
-                                    new Segment
-                                    {
-                                        Text = "",
-                                    },
-                                ]
-                            },
-                        ],
-                    "sealed" =>
-                        [
-                            new TagEntry
-                            {
-                                TagType = "Modifier",
-                                Segments =
-                                [
-                                    new Segment
-                                    {
-                                        Text = "",
-                                    },
-                                ]
-                            },
-                        ],
-                    "static" =>
-                        [
-                            new TagEntry
-                            {
-                                TagType = "Modifier",
-                                Segments =
-                                [
-                                    new Segment
-                                    {
-                                        Text = "",
-                                    },
-                                ]
-                            },
-                        ],
-                    "virtual" =>
-                        [
-                            new TagEntry
-                            {
-                                TagType = "Modifier",
-                                Segments =
-                                [
-                                    new Segment
-                                    {
-                                        Text = "",
-                                    },
-                                ]
-                            },
-                        ],
-                    "volatile" =>
-                        [
-                            new TagEntry
-                            {
-                                TagType = "Modifier",
-                                Segments =
-                                [
-                                    new Segment
-                                    {
-                                        Text = "",
-                                    },
-                                ]
-                            },
-                        ],
+                            ]
+                        },
+                    ],
                     _ => [],
                 };
             }
@@ -2167,85 +1983,490 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
     public class PredefinedTypeTag : TokenTag
     {
-        public PredefinedTypeTag()
+        public PredefinedTypeTag(string text)
         {
-            Label = $"Predefined Type";
-            TheBasicsEntries =
-            [
-                new TagEntry
-                {
-                    TagType = "Predefined Type",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Predefined types",
-                            IsBold = true,
-                        },
-                        new Segment
-                        {
-                            Text = " are built-in data types provided by the C# language."
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "Predefined Type",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "These come as both ",
-                        },
-                        new Segment
-                        {
-                            Text = "value",
-                            IsItalic = true,
-                        },
-                        new Segment
-                        {
-                            Text = " and "
-                        },
-                        new Segment
-                        {
-                            Text = "reference",
-                            IsItalic = true,
-                        },
-                        new Segment
-                        {
-                            Text = " types."
-                        },
-                    ]
-                },
-            ];
-            KeyPointsEntries =
-            [
-                new TagEntry
-                {
-                    TagType = "Predefined Type",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "All types in C# (predefined & reference types) have ",
-                        },
-                        new Segment
-                        {
-                            Text = "built-in default values",
-                            Ref = new SegmentRef
-                            {
-                                Url = "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/default-values",
-                            }
-                        },
-                        new Segment
-                        {
-                            Text = "."
-                        },
-                    ]
-                },
-            ];
+            var tagEntries = GetGeneralTagEntries(text);
+            tagEntries.AddRange(GetIndividualTagEntries(text));
+
+            Label = $"Predefined Type - {text}";
+            TheBasicsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.TheBasics).ToList();
+            KeyPointsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.KeyPoints).ToList();
+            UseForEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.UseFor).ToList();
+            ExploreEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.Explore).ToList();
             BorderClass = "tag-border-darkjade";
             BgColorClass = "tag-bg-darkjade";
+
+            // applicable to all pre-defined types
+            static List<TagEntry> GetGeneralTagEntries(string text)
+            {
+                return
+                [
+                    new TagEntry
+                    {
+                        TagType = $"Predefined Type - {text}",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Predefined types",
+                                IsBold = true,
+                            },
+                            new Segment
+                            {
+                                Text = " are built-in data types provided by the C# language."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = $"Predefined Type - {text}",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "These come as both ",
+                            },
+                            new Segment
+                            {
+                                Text = "value",
+                                IsItalic = true,
+                            },
+                            new Segment
+                            {
+                                Text = " and "
+                            },
+                            new Segment
+                            {
+                                Text = "reference",
+                                IsItalic = true,
+                            },
+                            new Segment
+                            {
+                                Text = " types."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = $"Predefined Type - {text}",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "All types in C# (predefined & reference) have built-in default values.",
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = $"Predefined Type - {text}",
+                        Section = TokenTagSection.Explore,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "C# Built-in types",
+                                Ref = new SegmentRef
+                                {
+                                    Url = "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/built-in-types",
+                                }
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = $"Predefined Type - {text}",
+                        Section = TokenTagSection.Explore,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Default values of C# types",
+                                Ref = new SegmentRef
+                                {
+                                    Url = "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/default-values",
+                                }
+                            },
+                        ]
+                    },
+                ];
+            }
+
+            // applicable to individual pre-defined types
+            static List<TagEntry> GetIndividualTagEntries(string text)
+            {
+                return text switch
+                {
+                    "byte" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "byte",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "sbyte" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "sbyte",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "short" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "short",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "ushort" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "ushort",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "int" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "int",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "uint" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "uint",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "long" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "long",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "ulong" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "ulong",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                            ]
+                        },
+                    ],
+                    "char" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "char",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "float" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "float",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "double" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "double",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "decimal" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "decimal",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "bool" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "bool",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "string" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "string",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "object" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "object",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    "dynamic" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = $"Predefined Type - {text}",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "dynamic",
+                                    IsCode = true,
+                                    IsKeyword = true,
+                                    IsBold = true,
+                                    HighlightColor = "tag-keyword-blue",
+                                },
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ]
+                        },
+                    ],
+                    _ => [],
+                };
+            }
         }
     }
 

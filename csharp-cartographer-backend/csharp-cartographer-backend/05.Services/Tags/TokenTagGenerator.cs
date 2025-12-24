@@ -164,7 +164,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
         {
             if (GlobalConstants.PredefinedTypes.Contains(token.Text))
             {
-                token.Tags.Add(new PredefinedTypeTag());
+                token.Tags.Add(new PredefinedTypeTag(token.Text));
             }
         }
 
