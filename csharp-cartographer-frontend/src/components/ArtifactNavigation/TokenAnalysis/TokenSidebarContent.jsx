@@ -454,7 +454,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 ))}
                                             </Stack>
 
-                                            {tag.howToReadEntries.length > 0 && (
+                                            {tag.keyPointsEntries.length > 0 && (
                                                 <Box
                                                     sx={{
                                                         mt: '0.5rem'
@@ -480,7 +480,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                             p: '8px 10px 12px 10px',
                                                         }}
                                                     >
-                                                        {tag.howToReadEntries.map((entry) => (
+                                                        {tag.keyPointsEntries.map((entry) => (
                                                             <Box
                                                                 key={entry.id}
                                                                 display="flex"
@@ -533,7 +533,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 </Box>
                                             )}
 
-                                            {tag.howToUseEntries.length > 0 && (
+                                            {tag.useForEntries.length > 0 && (
                                                 <Box
                                                     sx={{
                                                         mt: '0.5rem'
@@ -558,7 +558,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                             p: '8px 10px 12px 10px',
                                                         }}
                                                     >
-                                                        {tag.howToUseEntries.map((entry) => (
+                                                        {tag.useForEntries.map((entry) => (
                                                             <Box
                                                                 key={entry.id}
                                                                 display="flex"
@@ -611,7 +611,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 </Box>
                                             )}
 
-                                            {tag.learnMoreEntries.length > 0 && (
+                                            {tag.exploreEntries.length > 0 && (
                                                 <Box
                                                     sx={{
                                                         mt: '0.5rem'
@@ -638,7 +638,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                             px: '10px'
                                                         }}
                                                     >
-                                                        {tag.learnMoreEntries.map((entry) => (
+                                                        {tag.exploreEntries.map((entry) => (
                                                             <Box
                                                                 key={entry.id}
                                                                 display="flex"

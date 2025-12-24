@@ -6,15 +6,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
     {
         public string Label { get; init; }
 
-        public List<Segment> DefinitionSegments { get; init; } = [];
-
         public List<TagEntry> TheBasicsEntries { get; init; } = [];
 
-        public List<TagEntry> HowToReadEntries { get; init; } = [];
+        public List<TagEntry> KeyPointsEntries { get; init; } = [];
 
-        public List<TagEntry> HowToUseEntries { get; init; } = [];
+        public List<TagEntry> UseForEntries { get; init; } = [];
 
-        public List<TagEntry> LearnMoreEntries { get; init; } = [];
+        public List<TagEntry> ExploreEntries { get; init; } = [];
 
         public string? BorderClass { get; init; }
 
@@ -87,7 +85,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 }
             ];
-            LearnMoreEntries =
+            ExploreEntries =
             [
                 new TagEntry
                 {
@@ -227,9 +225,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             Label = $"Access Modifier - {text}";
             TheBasicsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.TheBasics).ToList();
-            HowToReadEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.KeyPoints).ToList();
-            HowToUseEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.UseFor).ToList();
-            LearnMoreEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.Explore).ToList();
+            KeyPointsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.KeyPoints).ToList();
+            UseForEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.UseFor).ToList();
+            ExploreEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.Explore).ToList();
             BorderClass = "tag-border-blue";
             BgColorClass = "tag-bg-blue";
             KeywordClass = "tag-keyword-blue";
@@ -295,10 +293,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                             [
                                 new Segment
                                 {
-                                    Text = "The ",
-                                },
-                                new Segment
-                                {
                                     Text = "public",
                                     IsCode = true,
                                     IsKeyword = true,
@@ -307,7 +301,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " access modifier means the element is accessible from any assembly.",
+                                    Text = " elements are accessible from any assembly.",
                                 },
                             ]
                         },
@@ -397,10 +391,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                             [
                                 new Segment
                                 {
-                                    Text = "The ",
-                                },
-                                new Segment
-                                {
                                     Text = "private",
                                     IsCode = true,
                                     IsKeyword = true,
@@ -409,7 +399,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " access modifier means the element is accessible only within the containing class or struct.",
+                                    Text = " elements are accessible only within the containing class or struct.",
                                 },
                             ]
                         },
@@ -448,10 +438,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                             [
                                 new Segment
                                 {
-                                    Text = "The ",
-                                },
-                                new Segment
-                                {
                                     Text = "protected",
                                     IsCode = true,
                                     IsKeyword = true,
@@ -460,7 +446,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " access modifier means the element is accessible from within the containing class or any derived class.",
+                                    Text = " elements are accessible from within the containing class or any derived class.",
                                 },
                             ]
                         },
@@ -499,10 +485,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                             [
                                 new Segment
                                 {
-                                    Text = "The ",
-                                },
-                                new Segment
-                                {
                                     Text = "internal",
                                     IsCode = true,
                                     IsKeyword = true,
@@ -511,7 +493,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                                 },
                                 new Segment
                                 {
-                                    Text = " access modifier means the element is accessible from anywhere within the same assembly.",
+                                    Text = " elements are accessible from anywhere within the same assembly.",
                                 },
                             ]
                         },
@@ -625,7 +607,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 }
             ];
-            HowToReadEntries =
+            KeyPointsEntries =
             [
                 new TagEntry
                 {
@@ -709,7 +691,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 },
             ];
-            HowToReadEntries =
+            KeyPointsEntries =
             [
                 new TagEntry
                 {
@@ -745,7 +727,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 },
             ];
-            LearnMoreEntries =
+            ExploreEntries =
             [
                 new TagEntry
                 {
@@ -794,7 +776,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 },
             ];
-            HowToReadEntries =
+            KeyPointsEntries =
             [
                 new TagEntry
                 {
@@ -818,7 +800,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 },
             ];
-            LearnMoreEntries =
+            ExploreEntries =
             [
                 new TagEntry
                 {
@@ -906,7 +888,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 },
             ];
-            HowToReadEntries =
+            KeyPointsEntries =
             [
                 new TagEntry
                 {
@@ -955,7 +937,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 },
             ];
-            HowToReadEntries =
+            KeyPointsEntries =
             [
                 new TagEntry
                 {
@@ -969,7 +951,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 },
             ];
-            LearnMoreEntries =
+            ExploreEntries =
             [
                 new TagEntry
                 {
@@ -1030,7 +1012,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 },
             ];
-            LearnMoreEntries =
+            ExploreEntries =
             [
                 new TagEntry
                 {
@@ -1149,7 +1131,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             //        ]
             //    },
             //];
-            LearnMoreEntries =
+            ExploreEntries =
             [
                 new TagEntry
                 {
@@ -1312,7 +1294,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 },
             ];
-            LearnMoreEntries =
+            ExploreEntries =
             [
                 new TagEntry
                 {
@@ -1423,7 +1405,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     Segments = GetModifierDefinitionSegments(text),
                 },
             ];
-            HowToReadEntries =
+            KeyPointsEntries =
             [
                 new TagEntry
                 {
@@ -1431,7 +1413,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     Segments = GetModifierHowToReadSegments(text),
                 },
             ];
-            HowToUseEntries = GetModifierHowToUseEntries(text);
+            UseForEntries = GetModifierHowToUseEntries(text);
             BorderClass = "tag-border-blue";
             BgColorClass = "tag-bg-blue";
 
@@ -2143,7 +2125,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 },
             ];
-            HowToReadEntries =
+            KeyPointsEntries =
             [
                 new TagEntry
                 {
@@ -2236,7 +2218,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 },
             ];
-            HowToReadEntries =
+            KeyPointsEntries =
             [
                 new TagEntry
                 {
@@ -2360,7 +2342,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     ]
                 },
             ];
-            HowToReadEntries =
+            KeyPointsEntries =
             [
                 new TagEntry
                 {
