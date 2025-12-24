@@ -4,6 +4,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 {
     public class TokenTag
     {
+        public Guid TagIdentifier { get; init; } = Guid.NewGuid();
+
         public string Label { get; init; }
 
         public List<TagEntry> TheBasicsEntries { get; init; } = [];

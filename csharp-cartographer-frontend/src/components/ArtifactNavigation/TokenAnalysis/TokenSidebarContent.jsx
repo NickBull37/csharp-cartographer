@@ -5,7 +5,6 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExploreIcon from '@mui/icons-material/Explore';
-import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
 import KeyIcon from '@mui/icons-material/Key';
 import CodeIcon from '@mui/icons-material/Code';
 import LinkIcon from '@mui/icons-material/Link';
@@ -28,27 +27,13 @@ const OrangeBox = styled(Box)(() => ({
     borderRadius: '4px',
     backgroundColor: 'rgba(204, 82, 0, 0.175)',
     marginBottom: '4px',
-}));
-
-const TealBox = styled(Box)(() => ({
-    padding: '4px 8px',
-    border: '1px solid rgba(0, 204, 184, 0.7)',
-    borderRadius: '3px',
-    backgroundColor: 'rgba(0, 204, 184, 0.05)'
-}));
+}))
 
 const GrayBox = styled(Box)(() => ({
     padding: '12px 12px',
     borderRadius: '4px',
     backgroundColor: 'rgba(51, 51, 51, 0.575)',
     marginBottom: '4px',
-}));
-
-const TagDefinitionBox = styled(Box)(() => ({
-    padding: '12px 12px',
-    borderRadius: '4px',
-    backgroundColor: colors.gray30,
-    border: '1px solid #333333',
 }));
 
 const TokenText = styled(Typography)(() => ({
@@ -107,7 +92,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
     const handleNextTokenClick = () => {
 
         // Clear insight highlighting
-        //setInsightHighlightIndexes([]);
+        setActiveHighlightIndices([]);
 
         let nextIndex = activeTokenIndex + 1;
 
@@ -127,7 +112,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
     const handlePrevTokenClick = () => {
 
         // Clear insight highlighting
-        //setInsightHighlightIndexes([]);
+        setActiveHighlightIndices([]);
 
         let prevIndex = activeTokenIndex - 1;
 
@@ -148,12 +133,16 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
         setTokenChartExpanded(prev => !prev);
     };
 
+    const handleExpandTokenTagClick = (identifier) => {
+        
+    };
+
     const handleTagClick = (tag) => {
         if (activeTag === tag) {
             setActiveTag(null);
         }
         else {
-            setActiveTag(tag); // update the active tag on click
+            setActiveTag(tag);
         }
     };
 
@@ -162,7 +151,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
             setActiveHighlightIndices([]);
         }
         else {
-            console.log(tag.highlightIndices);
             setActiveHighlightIndices(tag.highlightIndices);
         }
     };
@@ -172,13 +160,13 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
             setActiveChart(null);
         }
         else {
-            setActiveChart(chart); // update the active chart on click
+            setActiveChart(chart);
         }
     };
 
     // Use Effects
     useEffect(() => {
-        if (activeToken) { // check activeToken is not null or undefined
+        if (activeToken) {
             setTokenText(activeToken.text || '');
             setTokenLabel(activeToken.label || '');
             setUpdatedClassification(activeToken.updatedClassification || '');
@@ -189,7 +177,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
             setTokenTags(activeToken.tags || []);
             setCharts(activeToken.charts || []);
         } else {
-            // if activeToken is null or undefined, reset states
             setTokenText('');
             setTokenLabel('');
             setUpdatedClassification('');
@@ -319,9 +306,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                 display="flex"
                                 alignItems="center"
                             >
-                                {/* <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" className="bi bi-book bootstrap-icon-fill-gray" viewBox="0 0 16 16">
-                                    <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
-                                </svg> */}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" className="bi bi-pin-map bootstrap-icon-fill-gray" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8z"/>
                                     <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
@@ -373,24 +357,49 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.20), 0 2px 6px 0 rgba(0, 0, 0, 0.20)',
                                             }}
                                         >
-                                            <Typography
-                                                key={index}
+
+                                            <Box
                                                 className={`${tag.bgColorClass}`}
-                                                onClick={() => handleTagClick(tag)}
-                                                flexGrow={1}
                                                 sx={{
-                                                    fontSize: '14px',
-                                                    fontWeight: 'bold',
-                                                    letterSpacing: '0.9px',
-                                                    color: '#fff',
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
                                                     borderRadius: '4px 4px 0 0',
                                                     mb: '5px',
                                                     pl: '8px',
-                                                    py: '4px',
+                                                    pr: '8px',
+                                                    py: '5px',
                                                 }}
                                             >
-                                                {tag.label}
-                                            </Typography>
+                                                <Typography
+                                                    key={index}
+                                                    //onClick={() => handleTagClick(tag)}
+                                                    sx={{
+                                                        fontSize: '14px',
+                                                        fontWeight: 'bold',
+                                                        letterSpacing: '0.9px',
+                                                        color: '#fff',
+                                                        
+                                                    }}
+                                                >
+                                                    {tag.label}
+                                                </Typography>
+
+                                                <IconButton
+                                                    onClick={() => handleExpandTokenTagClick(tag.tagIdentifier)}
+                                                    sx={{
+                                                        p: 0,
+                                                        m: 0
+                                                    }}
+                                                >
+                                                    <ExpandMoreIcon
+                                                        fontSize='small'
+                                                        sx={{
+                                                            color: colors.gray70
+                                                        }}
+                                                    />
+                                                </IconButton>
+                                            </Box>
 
                                             <Box
                                                 sx={{
@@ -399,7 +408,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                             >
                                                 <Typography
                                                     sx={{
-                                                        //textAlign: 'center',
                                                         fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
                                                         fontSize: '12px',
                                                         letterSpacing: '0.04em',
@@ -431,9 +439,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                                 .filter(Boolean)
                                                                 .join(' ')
                                                             }
-                                                            sx={{
-                                                                //whiteSpace: 'pre-wrap'
-                                                            }}
                                                         >
                                                             {entry.isInsight
                                                                 ?
@@ -506,7 +511,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 >
                                                     <Typography
                                                         sx={{
-                                                            //textAlign: 'center',
                                                             fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
                                                             fontSize: '12px',
                                                             letterSpacing: '0.04em',
@@ -663,7 +667,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 >
                                                     <Typography
                                                         sx={{
-                                                            //textAlign: 'center',
                                                             fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
                                                             fontSize: '12px',
                                                             letterSpacing: '0.04em',
@@ -688,20 +691,10 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                                 display="flex"
                                                                 gap={1}
                                                             >
-                                                                {/* <ExploreOutlinedIcon
-                                                                    //fontSize='small'
-                                                                    sx={{
-                                                                        color: '#00e6cf',
-                                                                        fontSize : '16px',
-                                                                        mt: '2px'
-                                                                    }}
-                                                                /> */}
                                                                 <LinkIcon
                                                                     fontSize='small'
                                                                     sx={{
                                                                         color: '#00e6cf',
-                                                                        // fontSize : '16px',
-                                                                        // mt: '2px'
                                                                     }}
                                                                 />
                                                                 <BoxText>

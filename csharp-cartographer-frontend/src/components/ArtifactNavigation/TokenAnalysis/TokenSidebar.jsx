@@ -55,7 +55,7 @@ const TokenSidebar = ({ navTokens, activeToken, setActiveToken, activeHighlightI
                         backgroundColor: colors.gray25,
                         color: '#fff',
                         borderRadius: '4px 0px 0px 0px', // rounded right edge
-                        boxShadow: '0px 3px 5px -1px rgba(0, 0, 0, 0.6), 0px 5px 6px 0px rgba(0, 0, 0, 0.36), 1px 2px 11px 0px rgba(0, 0, 0, 0.32)',
+                        boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.4), 0px 4px 5px 0px rgba(0, 0, 0, 0.28), 0px 1px 10px 0px rgba(0, 0, 0, 0.24)',
                         overflow: 'auto'
                     },
                 }}

@@ -14,7 +14,7 @@ const TitleBoxContainer = styled(Box)(() => ({
 const StyledPaper = styled(Paper)(() => ({
     display: 'flex',
     backgroundColor: colors.gray25,
-    boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.4), 0px 4px 5px 0px rgba(0, 0, 0, 0.28), 0px 1px 10px 0px rgba(0, 0, 0, 0.24)',
+    boxShadow: '0px 2px 2px -1px rgba(0, 0, 0, 0.4), 0px 2px 5px 0px rgba(0, 0, 0, 0.28), 0px 1px 10px 0px rgba(0, 0, 0, 0.24)',
     padding: "0 8px 0 12px",
     color: "#fff",
     minHeight: '50px',
