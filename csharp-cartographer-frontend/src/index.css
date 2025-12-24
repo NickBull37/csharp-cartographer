@@ -482,10 +482,18 @@ body {
     background-color: rgba(204, 163, 0, 0.2);
 }
 
-.tag-code-segment {
-    /* background-color: #4d4d4d;
+.tag-entry-example {
+    background-color: #4d4d4d;
     border-radius: 3px;
-    padding: 2px 3px; */
+    padding: 1px 5px;
+    margin-top: -2px!important;
+    margin-bottom: 8px!important;
+}
+.tag-entry-insight {
+    /* background-color: rgba(204, 82, 0, 0.275); */
+    background-color: rgba(153, 153, 255, 0.25);
+    border-radius: 3px;
+    padding: 5px 10px;
 }
 
 .tag-link-segment {

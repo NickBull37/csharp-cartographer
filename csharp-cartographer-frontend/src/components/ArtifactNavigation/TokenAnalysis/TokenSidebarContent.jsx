@@ -5,6 +5,10 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExploreIcon from '@mui/icons-material/Explore';
+import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
+import KeyIcon from '@mui/icons-material/Key';
+import CodeIcon from '@mui/icons-material/Code';
+import LinkIcon from '@mui/icons-material/Link';
 
 import colors from '../../../utils/colors';
 
@@ -411,10 +415,21 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                     p: '8px 10px 8px 10px',
                                                 }}
                                             >
-                                                {tag.facts.map((fact) => (
-                                                    <Box key={fact.id} display="flex">
-                                                        <BoxText>
-                                                            {fact.segments.map((segment) => (
+                                                {tag.theBasicsEntries.map((entry) => (
+                                                    <Box
+                                                        key={entry.id}
+                                                        display="flex"
+                                                    >
+                                                        <BoxText
+                                                            className={[
+                                                                entry.isExample && 'tag-entry-example',
+                                                                entry.isInsight && 'tag-entry-insight',
+                                                            ]
+                                                                .filter(Boolean)
+                                                                .join(' ')
+                                                            }
+                                                        >
+                                                            {entry.segments.map((segment) => (
                                                                 <Box
                                                                     key={segment.id}
                                                                     component={segment.ref?.url ? 'a' : 'span'}
@@ -425,7 +440,10 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                                     sx={{
                                                                         fontWeight: segment.isBold ? 700 : 'inherit',
                                                                         fontStyle: segment.isItalic ? 'italic' : 'inherit',
-                                                                        fontFamily: segment.isCode ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace" : 'inherit',
+                                                                        fontFamily: segment.isCode
+                                                                            ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace"
+                                                                            : 'inherit',
+                                                                        display: 'inline'
                                                                     }}
                                                                 >
                                                                     {segment.text}
@@ -436,37 +454,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 ))}
                                             </Stack>
 
-                                            {tag.definitionSegments.length > 0 && (
-                                                <Box
-                                                    sx={{
-                                                        p: '4px 10px 12px 10px',
-                                                    }}
-                                                >
-                                                    {tag.definitionSegments.map((segment) => (
-                                                        <BoxText
-                                                            key={segment.id}
-                                                            component="span"
-                                                            className={[
-                                                                segment.isKeyword && segment.highlightColor,
-                                                                segment.isCode && 'tag-code-segment',
-                                                            ]
-                                                                .filter(Boolean)
-                                                                .join(' ')
-                                                            }
-                                                            sx={{
-                                                                fontWeight: segment.isBold ? 700 : 'inherit',
-                                                                fontStyle: segment.isItalic ? 'italic' : 'inherit',
-                                                                fontFamily: segment.isCode ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace" : "'Roboto','Helvetica','Arial',sans-serif'",
-                                                                display: 'inline',
-                                                            }}
-                                                        >
-                                                            {segment.text}
-                                                        </BoxText>
-                                                    ))}
-                                                </Box>
-                                            )}
-
-                                            {tag.insights.length > 0 && (
+                                            {tag.howToReadEntries.length > 0 && (
                                                 <Box
                                                     sx={{
                                                         mt: '0.5rem'
@@ -483,7 +471,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                             borderBottom: '1px solid #808080'
                                                         }}
                                                     >
-                                                        How to use
+                                                        Key points
                                                     </Typography>
 
                                                     <Stack
@@ -492,10 +480,28 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                             p: '8px 10px 12px 10px',
                                                         }}
                                                     >
-                                                        {tag.insights.map((insight) => (
-                                                            <Box key={insight.id} display="flex">
-                                                                <BoxText>
-                                                                    {insight.segments.map((segment) => (
+                                                        {tag.howToReadEntries.map((entry) => (
+                                                            <Box
+                                                                key={entry.id}
+                                                                display="flex"
+                                                                gap={1}
+                                                            >
+                                                                <KeyIcon
+                                                                    fontSize='small'
+                                                                    sx={{
+                                                                        color: '#ac7339'
+                                                                    }}
+                                                                />
+                                                                <BoxText
+                                                                    className={[
+                                                                        entry.isExample && 'tag-entry-example',
+                                                                        entry.isInsight && 'tag-entry-insight',
+                                                                    ]
+                                                                        .filter(Boolean)
+                                                                        .join(' ')
+                                                                    }
+                                                                >
+                                                                    {entry.segments.map((segment) => (
                                                                         <Box
                                                                             key={segment.id}
                                                                             component={segment.ref?.url ? 'a' : 'span'}
@@ -527,7 +533,85 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 </Box>
                                             )}
 
-                                            {tag.tips.length > 0 && (
+                                            {tag.howToUseEntries.length > 0 && (
+                                                <Box
+                                                    sx={{
+                                                        mt: '0.5rem'
+                                                    }}
+                                                >
+                                                    <Typography
+                                                        sx={{
+                                                            fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
+                                                            fontSize: '12px',
+                                                            letterSpacing: '0.04em',
+                                                            color: colors.gray60,
+                                                            pl: '9px',
+                                                            borderBottom: '1px solid #808080'
+                                                        }}
+                                                    >
+                                                        Use for
+                                                    </Typography>
+
+                                                    <Stack
+                                                        gap={1.5}
+                                                        sx={{
+                                                            p: '8px 10px 12px 10px',
+                                                        }}
+                                                    >
+                                                        {tag.howToUseEntries.map((entry) => (
+                                                            <Box
+                                                                key={entry.id}
+                                                                display="flex"
+                                                                gap={1}
+                                                            >
+                                                                <CodeIcon
+                                                                    fontSize='small'
+                                                                    sx={{
+                                                                        color: '#00FF41',
+                                                                    }}
+                                                                />
+                                                                <BoxText
+                                                                    className={[
+                                                                        entry.isExample && 'tag-entry-example',
+                                                                        entry.isInsight && 'tag-entry-insight',
+                                                                    ]
+                                                                        .filter(Boolean)
+                                                                        .join(' ')
+                                                                    }
+                                                                >
+                                                                    {entry.segments.map((segment) => (
+                                                                        <Box
+                                                                            key={segment.id}
+                                                                            component={segment.ref?.url ? 'a' : 'span'}
+                                                                            href={segment.ref?.url}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className={[
+                                                                                segment.isKeyword && segment.highlightColor,
+                                                                                segment.isCode && 'tag-code-segment',
+                                                                                segment.ref && 'tag-link-segment',
+                                                                            ]
+                                                                                .filter(Boolean)
+                                                                                .join(' ')
+                                                                            }
+                                                                            sx={{
+                                                                                fontWeight: segment.isBold ? 700 : 'inherit',
+                                                                                fontStyle: segment.isItalic ? 'italic' : 'inherit',
+                                                                                fontFamily: segment.isCode ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace" : 'inherit',
+                                                                                display: 'inline',
+                                                                            }}
+                                                                        >
+                                                                            {segment.text}
+                                                                        </Box>
+                                                                    ))}
+                                                                </BoxText>
+                                                            </Box>
+                                                        ))}
+                                                    </Stack>
+                                                </Box>
+                                            )}
+
+                                            {tag.learnMoreEntries.length > 0 && (
                                                 <Box
                                                     sx={{
                                                         mt: '0.5rem'
@@ -544,7 +628,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                             borderBottom: '1px solid #808080'
                                                         }}
                                                     >
-                                                        Learn more
+                                                        Explore
                                                     </Typography>
 
                                                     <Stack
@@ -554,11 +638,32 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                             px: '10px'
                                                         }}
                                                     >
-                                                        {tag.tips.map((tip) => (
-                                                            <Box key={tip.id} display="flex">
+                                                        {tag.learnMoreEntries.map((entry) => (
+                                                            <Box
+                                                                key={entry.id}
+                                                                display="flex"
+                                                                gap={1}
+                                                            >
+                                                                {/* <ExploreOutlinedIcon
+                                                                    //fontSize='small'
+                                                                    sx={{
+                                                                        color: '#00e6cf',
+                                                                        fontSize : '16px',
+                                                                        mt: '2px'
+                                                                    }}
+                                                                /> */}
+                                                                <LinkIcon
+                                                                    fontSize='small'
+                                                                    sx={{
+                                                                        color: '#00e6cf',
+                                                                        // fontSize : '16px',
+                                                                        // mt: '2px'
+                                                                    }}
+                                                                />
                                                                 <BoxText>
-                                                                    {tip.segments.map((segment) => (
+                                                                    {entry.segments.map((segment) => (
                                                                         <Box
+                                                                            gap={1}
                                                                             key={segment.id}
                                                                             component={segment.ref?.url ? 'a' : 'span'}
                                                                             href={segment.ref?.url}
@@ -580,6 +685,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                                                     ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace"
                                                                                     : 'inherit',
                                                                                 backgroundColor: segment.highlightColor ?? 'transparent',
+                                                                                display: 'inline'
                                                                             }}
                                                                         >
                                                                             {segment.text}
@@ -599,143 +705,9 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                 <></>
                         }
 
-
-                        {/* {tokenTags.map((tag, index) => (
-                            <Stack
-                                className={`${tag.borderClass} ${tag.bgColorClass}`}
-                                sx={{
-                                    mt: 2,
-                                    boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.20), 0 2px 6px 0 rgba(0, 0, 0, 0.20)',
-                                    borderRadius: '4px',
-                                    mx: 2,
-                                    px: '12px',
-                                    pt: '8px',
-                                    pb: tag == activeTag ? '12px' : '8px',
-                                }}
-                            >
-                                <Box
-                                    display="flex"
-                                    justifyContent="flex-start"
-                                    alignItems="center"
-                                    sx={{
-                                        mb: tag == activeTag ? '0.75rem' : '0'
-                                    }}
-                                >
-                                    <Typography
-                                        key={index}
-                                        className='text'
-                                        onClick={() => handleTagClick(tag)}
-                                        flexGrow={1}
-                                        sx={{
-                                            fontSize: '14px',
-                                            fontWeight: 'bold',
-                                            letterSpacing: '0.75px',
-                                            color: colors.gray90,
-                                            borderRadius: '4px',
-                                            '&:hover': {
-                                                cursor: 'pointer'
-                                            },
-                                        }}
-                                    >
-                                        {tag.label}
-                                    </Typography>
-                                    <IconButton
-                                        onClick={() => handleTagClick(tag)}
-                                        sx={{
-                                            p: 0,
-                                            m: 0,
-                                        }}
-                                    >
-                                        <ExpandMoreIcon
-                                            fontSize='small'
-                                            sx={{
-                                                color: colors.white
-                                            }}
-                                        />
-                                    </IconButton>
-                                </Box>
-                                { activeTag === tag
-                                    ?
-                                        <>
-                                            <Stack>
-                                                {tag.facts.length > 0
-                                                    ?
-                                                        <TagDefinitionBox>
-                                                            <Stack
-                                                                gap={1.75}
-                                                            >
-                                                                {tag.facts.map((fact, index) => (
-                                                                    <Box
-                                                                        display="flex"
-                                                                        alignItems="baseline"
-                                                                        gap={2}
-                                                                    >
-                                                                        <Box>
-                                                                            <Tooltip title="Tag Definition">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" className="bi bi-map bootstrap-icon-fill" viewBox="0 0 16 16">
-                                                                                    <path d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"/>
-                                                                                </svg>
-                                                                            </Tooltip>
-                                                                        </Box>
-                                                                        <BoxText
-                                                                            key={index}
-                                                                        >
-                                                                            {fact}
-                                                                        </BoxText>
-                                                                    </Box>
-                                                                ))}
-                                                            </Stack>
-                                                        </TagDefinitionBox>
-                                                    :
-                                                        <></>
-                                                }
-                                            </Stack>
-
-                                            <Box sx={{ minHeight: '12px' }}></Box>
-
-                                            <Stack>
-                                                {tag.insights.length > 0
-                                                    ?
-                                                        <TagDefinitionBox>
-                                                            <Stack gap={1.75}>
-                                                                {tag.insights.map((insight, index) => (
-                                                                    <Box
-                                                                        display="flex"
-                                                                        alignItems="baseline"
-                                                                        gap={2}
-                                                                    >
-                                                                        <Box>
-                                                                            <Tooltip title="Tag Insights">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" className="bi bi-compass bootstrap-icon-fill" viewBox="0 0 16 16">
-                                                                                    <path d="M8 16.016a7.5 7.5 0 0 0 1.962-14.74A1 1 0 0 0 9 0H7a1 1 0 0 0-.962 1.276A7.5 7.5 0 0 0 8 16.016m6.5-7.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"/>
-                                                                                    <path d="m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z"/>
-                                                                                </svg>
-                                                                            </Tooltip>
-                                                                        </Box>
-                                                                        <BoxText
-                                                                            key={index}
-                                                                        >
-                                                                            {insight}
-                                                                        </BoxText>
-                                                                    </Box>
-                                                                ))}
-                                                            </Stack>
-                                                        </TagDefinitionBox>
-                                                    :
-                                                        <></>
-                                                }
-                                            </Stack>
-                                        </>
-                                    :
-                                    <></>
-                                }
-                            </Stack>
-                        ))} */}
                     </Stack>
 
-                    <Stack
-                        // my={1.75}
-                    >
+                    <Stack>
                         <Stack>
                             <Divider sx={{ bgcolor: '#808080' }} />
                             

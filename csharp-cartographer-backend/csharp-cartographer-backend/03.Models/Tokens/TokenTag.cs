@@ -1,4 +1,6 @@
-﻿namespace csharp_cartographer_backend._03.Models.Tokens
+﻿using csharp_cartographer_backend._01.Configuration.Enums;
+
+namespace csharp_cartographer_backend._03.Models.Tokens
 {
     public class TokenTag
     {
@@ -6,11 +8,13 @@
 
         public List<Segment> DefinitionSegments { get; init; } = [];
 
-        public List<TagEntry> Facts { get; init; } = [];
+        public List<TagEntry> TheBasicsEntries { get; init; } = [];
 
-        public List<TagEntry> Insights { get; init; } = [];
+        public List<TagEntry> HowToReadEntries { get; init; } = [];
 
-        public List<TagEntry> Tips { get; init; } = [];
+        public List<TagEntry> HowToUseEntries { get; init; } = [];
+
+        public List<TagEntry> LearnMoreEntries { get; init; } = [];
 
         public string? BorderClass { get; init; }
 
@@ -24,7 +28,7 @@
         public KeywordTag()
         {
             Label = $"C# Keyword";
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -44,21 +48,46 @@
                     [
                         new Segment
                         {
-                            Text = "Keywords can't be used as identifiers in your program unless they include @ as a prefix (i.e. "
+                            Text = "Keywords can't be used as identifiers in your program unless they include @ as a prefix."
                         },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "C# Keyword",
+                    IsExample = true,
+                    Segments =
+                    [
                         new Segment
                         {
-                            Text = "@if",
+                            Text = "int @class = 10;",
                             IsCode = true,
                         },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "C# Keyword",
+                    IsInsight = true,
+                    Segments =
+                    [
                         new Segment
                         {
-                            Text = " is a valid identifier)."
+                            Text = "As new keywords are added to the C# language, they're added as "
+                        },
+                        new Segment
+                        {
+                            Text = "contextual",
+                            IsItalic = true,
+                        },
+                        new Segment
+                        {
+                            Text = " keywords to avoid breaking older programs."
                         },
                     ]
                 }
             ];
-            Tips =
+            LearnMoreEntries =
             [
                 new TagEntry
                 {
@@ -67,33 +96,14 @@
                     [
                         new Segment
                         {
-                            Text = "Some keywords are ",
-                        },
-                        new Segment
-                        {
-                            Text = "contextual",
+                            Text = "Contextual Keywords",
                             Ref = new SegmentRef
                             {
                                 Url = "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/#contextual-keywords"
                             }
                         },
-                        new Segment
-                        {
-                            Text = " — they have special meaning only in a limited program context.",
-                        },
                     ]
                 },
-                new TagEntry
-                {
-                    TagType = "C# Keyword",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Generally, as new keywords are added to the C# language, they're added as contextual keywords in order to avoid breaking programs written in earlier versions."
-                        },
-                    ]
-                }
             ];
             BorderClass = "tag-border-purple";
             BgColorClass = "tag-bg-purple";
@@ -105,8 +115,7 @@
         public AccessorTag(string text)
         {
             Label = $"Accessor - {text}";
-            DefinitionSegments = GetAccessorDefinitionSegments(text);
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -115,9 +124,14 @@
                     [
                         new Segment
                         {
-                            Text = "Accessors are special methods that implement properties enabling easy access while promoting data safety and flexibility."
+                            Text = "Accessors are special methods that implement properties, enabling easy access while promoting data safety and flexibility."
                         },
                     ]
+                },
+                new TagEntry
+                {
+                    TagType = "Accessor",
+                    Segments = GetAccessorDefinitionSegments(text),
                 },
             ];
             BorderClass = "tag-border-blue";
@@ -208,109 +222,76 @@
     {
         public AccessModifierTag(string text)
         {
+            var tagEntries = GetGeneralTagEntries();
+            tagEntries.AddRange(GetIndividualTagEntries(text));
+
             Label = $"Access Modifier - {text}";
-            DefinitionSegments = GetAccessModifierDefinitionSegments(text);
-            Facts =
-            [
-                new TagEntry
-                {
-                    TagType = "AccessModifier",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "All types and type members have an accessibility level that determines what assemblies they can be accessed from. This level is specified using an access modifier keyword."
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "AccessModifier",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Not all access modifiers are valid for all types or members in all contexts."
-                        },
-                    ]
-                }
-            ];
-            Insights =
-            [
-                new TagEntry
-                {
-                    TagType = "AccessModifier",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "An assembly is a "
-                        },
-                        new Segment
-                        {
-                            Text = ".dll",
-                            IsCode = true
-                        },
-                        new Segment
-                        {
-                            Text = " or "
-                        },
-                        new Segment
-                        {
-                            Text = ".exe",
-                            IsCode = true
-                        },
-                        new Segment
-                        {
-                            Text = " created by compiling one or more "
-                        },
-                        new Segment
-                        {
-                            Text = ".cs",
-                            IsCode = true
-                        },
-                        new Segment
-                        {
-                            Text = " files into a single compilation."
-                        },
-                    ]
-                }
-            ];
-            Tips =
-            [
-                new TagEntry
-                {
-                    TagType = "AccessModifier",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Access modifiers help developers communicate an element's intended use. You can expect private elements to have low versatility or highly specific design parameters."
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "AccessModifier",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Before changing an element's access modifer, consider what it was designed for. If you can't access it, it may not have been written with your context in mind."
-                        },
-                    ]
-                }
-            ];
+            TheBasicsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.TheBasics).ToList();
+            HowToReadEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.KeyPoints).ToList();
+            HowToUseEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.UseFor).ToList();
+            LearnMoreEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.Explore).ToList();
             BorderClass = "tag-border-blue";
             BgColorClass = "tag-bg-blue";
             KeywordClass = "tag-keyword-blue";
 
-            static List<Segment> GetAccessModifierDefinitionSegments(string text)
+            // applicable to all access modifiers
+            static List<TagEntry> GetGeneralTagEntries()
             {
-                switch (text)
+                return
+                [
+                    new TagEntry
+                    {
+                        TagType = "AccessModifier",
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "All types and type members have an accessibility level that determines where they can be accessed from. This level is specified using an access modifier."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "AccessModifier",
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Not all access modifiers are valid for all types or members in all contexts."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "AccessModifier",
+                        Section = TokenTagSection.Explore,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Access Modifiers (C# programming guide)",
+                                Ref = new SegmentRef
+                                {
+                                    Url = "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/access-modifiers",
+                                }
+                            },
+                        ]
+                    },
+                ];
+            }
+
+            // applicable to individual access modifiers
+            static List<TagEntry> GetIndividualTagEntries(string text)
+            {
+                return text switch
                 {
-                    case "public":
-                        return
+                    "public" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
                                 new Segment
                                 {
@@ -328,9 +309,91 @@
                                 {
                                     Text = " access modifier means the element is accessible from any assembly.",
                                 },
-                            ];
-                    case "private":
-                        return
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            IsInsight = true,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "An assembly is a "
+                                },
+                                new Segment
+                                {
+                                    Text = ".dll",
+                                    IsCode = true
+                                },
+                                new Segment
+                                {
+                                    Text = " or "
+                                },
+                                new Segment
+                                {
+                                    Text = ".exe",
+                                    IsCode = true
+                                },
+                                new Segment
+                                {
+                                    Text = " created by compiling one or more "
+                                },
+                                new Segment
+                                {
+                                    Text = ".cs",
+                                    IsCode = true
+                                },
+                                new Segment
+                                {
+                                    Text = " files into a single compilation."
+                                },
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.KeyPoints,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "this entity can be accessed from anywhere"
+                                },
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.UseFor,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "class methods that need to be called from other classes"
+                                },
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.UseFor,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "class properties that can be modified by other classes"
+                                },
+                            ]
+                        },
+                    ],
+                    "private" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
                                 new Segment
                                 {
@@ -348,9 +411,40 @@
                                 {
                                     Text = " access modifier means the element is accessible only within the containing class or struct.",
                                 },
-                            ];
-                    case "protected":
-                        return
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.KeyPoints,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "this entity can only be accessed from in the containing scope"
+                                },
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.UseFor,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "dependencies using the Dependancy Injection (DI) design pattern"
+                                },
+                            ]
+                        },
+                    ],
+                    "protected" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
                                 new Segment
                                 {
@@ -368,9 +462,40 @@
                                 {
                                     Text = " access modifier means the element is accessible from within the containing class or any derived class.",
                                 },
-                            ];
-                    case "internal":
-                        return
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.KeyPoints,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "find a key point to add later"
+                                },
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.UseFor,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "find a use case later"
+                                },
+                            ]
+                        },
+                    ],
+                    "internal" =>
+                    [
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.TheBasics,
+                            Segments =
                             [
                                 new Segment
                                 {
@@ -388,10 +513,74 @@
                                 {
                                     Text = " access modifier means the element is accessible from anywhere within the same assembly.",
                                 },
-                            ];
-                    default:
-                        return [];
-                }
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            IsInsight = true,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "An assembly is a "
+                                },
+                                new Segment
+                                {
+                                    Text = ".dll",
+                                    IsCode = true
+                                },
+                                new Segment
+                                {
+                                    Text = " or "
+                                },
+                                new Segment
+                                {
+                                    Text = ".exe",
+                                    IsCode = true
+                                },
+                                new Segment
+                                {
+                                    Text = " created by compiling one or more "
+                                },
+                                new Segment
+                                {
+                                    Text = ".cs",
+                                    IsCode = true
+                                },
+                                new Segment
+                                {
+                                    Text = " files into a single compilation."
+                                },
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.KeyPoints,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "find a key point to add later"
+                                },
+                            ]
+                        },
+                        new TagEntry
+                        {
+                            TagType = "AccessModifier",
+                            Section = TokenTagSection.UseFor,
+                            Segments =
+                            [
+                                new Segment
+                                {
+                                    Text = "find a use case later"
+                                },
+                            ]
+                        },
+                    ],
+                    _ => [],
+                };
             }
         }
     }
@@ -411,7 +600,7 @@
             //    "Attributes let you quickly add powerful behavior without changing your actual code logic, such as data validation or serialization.",
             //    "Many frameworks (like ASP.NET) use attributes heavily and there are many options available to take advantage of."
             //];
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -436,7 +625,7 @@
                     ]
                 }
             ];
-            Insights =
+            HowToReadEntries =
             [
                 new TagEntry
                 {
@@ -484,7 +673,7 @@
             //    "C# allows for multiple-interface inheritance, meaning a class or interface can inherit from multiple interfaces at the same time.",
             //    "A class can inherit from a single base class while also implementing multiple interfaces."
             //];
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -520,7 +709,7 @@
                     ]
                 },
             ];
-            Insights =
+            HowToReadEntries =
             [
                 new TagEntry
                 {
@@ -556,7 +745,7 @@
                     ]
                 },
             ];
-            Tips =
+            LearnMoreEntries =
             [
                 new TagEntry
                 {
@@ -580,7 +769,7 @@
         public InterfaceBaseTypeTag()
         {
             Label = $"BaseType - interface";
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -605,7 +794,7 @@
                     ]
                 },
             ];
-            Insights =
+            HowToReadEntries =
             [
                 new TagEntry
                 {
@@ -629,7 +818,7 @@
                     ]
                 },
             ];
-            Tips =
+            LearnMoreEntries =
             [
                 new TagEntry
                 {
@@ -653,7 +842,7 @@
         public ClassTag()
         {
             Label = $"Class";
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -717,7 +906,7 @@
                     ]
                 },
             ];
-            Insights =
+            HowToReadEntries =
             [
                 new TagEntry
                 {
@@ -741,7 +930,7 @@
         public ConstructorTag()
         {
             Label = $"Constructor";
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -766,7 +955,7 @@
                     ]
                 },
             ];
-            Insights =
+            HowToReadEntries =
             [
                 new TagEntry
                 {
@@ -780,7 +969,7 @@
                     ]
                 },
             ];
-            Tips =
+            LearnMoreEntries =
             [
                 new TagEntry
                 {
@@ -827,7 +1016,7 @@
         public DelimiterTag()
         {
             Label = $"Delimiter";
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -841,7 +1030,7 @@
                     ]
                 },
             ];
-            Tips =
+            LearnMoreEntries =
             [
                 new TagEntry
                 {
@@ -894,7 +1083,7 @@
         public FieldTag()
         {
             Label = $"Field";
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -960,7 +1149,7 @@
             //        ]
             //    },
             //];
-            Tips =
+            LearnMoreEntries =
             [
                 new TagEntry
                 {
@@ -1029,7 +1218,7 @@
             //    "This reduces duplication because one generic class or method can work with many different types.",
             //    "If a method requires a generic type constraint, any type that inherits from that constraint will also work.",
             //];
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -1109,7 +1298,7 @@
         public IdentifierTag()
         {
             Label = $"Identifier";
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -1123,7 +1312,7 @@
                     ]
                 },
             ];
-            Tips =
+            LearnMoreEntries =
             [
                 new TagEntry
                 {
@@ -1170,7 +1359,7 @@
         public MethodTag()
         {
             Label = $"Method";
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -1214,8 +1403,8 @@
         public ModifierTag(string text)
         {
             Label = $"Modifier - {text}";
-            DefinitionSegments = GetModifierDefinitionSegments(text);
-            Facts =
+            //DefinitionSegments = GetModifierDefinitionSegments(text);
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -1228,23 +1417,28 @@
                         },
                     ]
                 },
+                new TagEntry
+                {
+                    TagType = "Modifier",
+                    Segments = GetModifierDefinitionSegments(text),
+                },
             ];
-            Insights =
+            HowToReadEntries =
             [
                 new TagEntry
                 {
                     TagType = "Modifier",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Modifiers help make your intent obvious to other developers."
-                        },
-                    ]
+                    Segments = GetModifierHowToReadSegments(text),
                 },
             ];
+            HowToUseEntries = GetModifierHowToUseEntries(text);
             BorderClass = "tag-border-blue";
             BgColorClass = "tag-bg-blue";
+
+            static void GetModifierEntrySegments(string text)
+            {
+
+            }
 
             static List<Segment> GetModifierDefinitionSegments(string text)
             {
@@ -1373,10 +1567,22 @@
                     case "readonly":
                         return
                             [
-                                new Segment
-                                {
-                                    Text = "The ",
-                                },
+                                //new Segment
+                                //{
+                                //    Text = "The ",
+                                //},
+                                //new Segment
+                                //{
+                                //    Text = "readonly",
+                                //    IsCode = true,
+                                //    IsKeyword = true,
+                                //    IsBold = true,
+                                //    HighlightColor = "tag-keyword-blue",
+                                //},
+                                //new Segment
+                                //{
+                                //    Text = " modifier means that a field can only be assigned a value during initialization or in a constructor.",
+                                //},
                                 new Segment
                                 {
                                     Text = "readonly",
@@ -1387,7 +1593,7 @@
                                 },
                                 new Segment
                                 {
-                                    Text = " modifier means that a field can only be assigned a value during initialization or in a constructor.",
+                                    Text = " fields can only be assigned a value during initialization or in a constructor.",
                                 },
                             ];
                     case "required":
@@ -1506,6 +1712,299 @@
                         return [];
                 }
             }
+
+            static List<Segment> GetModifierHowToReadSegments(string text)
+            {
+                switch (text)
+                {
+                    case "abstract":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ];
+                    case "async":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ];
+                    case "const":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ];
+                    case "override":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ];
+                    case "partial":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ];
+                    case "readonly":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "this element's value will never change",
+                                },
+                            ];
+                    case "required":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ];
+                    case "sealed":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ];
+                    case "static":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ];
+                    case "virtual":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ];
+                    case "volatile":
+                        return
+                            [
+                                new Segment
+                                {
+                                    Text = "",
+                                },
+                            ];
+                    default:
+                        return [];
+                }
+            }
+
+            static List<TagEntry> GetModifierHowToUseEntries(string text)
+            {
+                return text switch
+                {
+                    "abstract" =>
+                        [
+                            new TagEntry
+                            {
+                                TagType = "Modifier",
+                                Segments =
+                                [
+                                    new Segment
+                                    {
+                                        Text = "",
+                                    },
+                                ]
+                            },
+                        ],
+                    "async" =>
+                        [
+                            new TagEntry
+                            {
+                                TagType = "Modifier",
+                                Segments =
+                                [
+                                    new Segment
+                                    {
+                                        Text = "",
+                                    },
+                                ]
+                            },
+                        ],
+                    "const" =>
+                        [
+                            new TagEntry
+                            {
+                                TagType = "Modifier",
+                                Segments =
+                                [
+                                    new Segment
+                                    {
+                                        Text = "",
+                                    },
+                                ]
+                            },
+                        ],
+                    "override" =>
+                        [
+                            new TagEntry
+                            {
+                                TagType = "Modifier",
+                                Segments =
+                                [
+                                    new Segment
+                                    {
+                                        Text = "",
+                                    },
+                                ]
+                            },
+                        ],
+                    "partial" =>
+                        [
+                            new TagEntry
+                            {
+                                TagType = "Modifier",
+                                Segments =
+                                [
+                                    new Segment
+                                    {
+                                        Text = "",
+                                    },
+                                ]
+                            },
+                        ],
+                    "readonly" =>
+                        [
+                            //new TagEntry
+                            //{
+                            //    TagType = "Modifier",
+                            //    Segments =
+                            //    [
+                            //        new Segment
+                            //        {
+                            //            Text = "Modifiers help make your intent obvious to other developers."
+                            //        },
+                            //    ]
+                            //},
+                            new TagEntry
+                            {
+                                TagType = "Modifier",
+                                Segments =
+                                [
+                                    new Segment
+                                    {
+                                        Text = "dependencies using the ",
+                                    },
+                                    new Segment
+                                    {
+                                        Text = "Dependancy Injection",
+                                        Ref = new SegmentRef
+                                        {
+                                            Url = "https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection"
+                                        }
+                                    },
+                                    new Segment
+                                    {
+                                        Text = " (DI) design pattern",
+                                    },
+                                ]
+                            },
+                            new TagEntry
+                            {
+                                TagType = "Modifier",
+                                Segments =
+                                [
+                                    new Segment
+                                    {
+                                        Text = "hardcoded file paths",
+                                    },
+                                ]
+                            }
+                        ],
+                    "required" =>
+                        [
+                            new TagEntry
+                            {
+                                TagType = "Modifier",
+                                Segments =
+                                [
+                                    new Segment
+                                    {
+                                        Text = "",
+                                    },
+                                ]
+                            },
+                        ],
+                    "sealed" =>
+                        [
+                            new TagEntry
+                            {
+                                TagType = "Modifier",
+                                Segments =
+                                [
+                                    new Segment
+                                    {
+                                        Text = "",
+                                    },
+                                ]
+                            },
+                        ],
+                    "static" =>
+                        [
+                            new TagEntry
+                            {
+                                TagType = "Modifier",
+                                Segments =
+                                [
+                                    new Segment
+                                    {
+                                        Text = "",
+                                    },
+                                ]
+                            },
+                        ],
+                    "virtual" =>
+                        [
+                            new TagEntry
+                            {
+                                TagType = "Modifier",
+                                Segments =
+                                [
+                                    new Segment
+                                    {
+                                        Text = "",
+                                    },
+                                ]
+                            },
+                        ],
+                    "volatile" =>
+                        [
+                            new TagEntry
+                            {
+                                TagType = "Modifier",
+                                Segments =
+                                [
+                                    new Segment
+                                    {
+                                        Text = "",
+                                    },
+                                ]
+                            },
+                        ],
+                    _ => [],
+                };
+            }
         }
     }
 
@@ -1523,7 +2022,7 @@
             //    "They can be integers (e.g., 42), floating-point numbers (e.g., 3.14), or use suffixes to specify types (e.g., 42L for long, 3.14f for float, 2.71m for decimal).",
             //    "Numeric literals can also be written in different formats like hexadecimal (0x1A) or binary (0b1010)."
             //];
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -1547,7 +2046,7 @@
         public OperatorTag()
         {
             Label = $"Operator";
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -1601,7 +2100,7 @@
             //    "Parameters can also have modifiers like \"ref\" or \"out\" to modify their behavior.",
             //    "Parameters only refer to values in the method/constructor where they are defined. The values passed in for parameters are called arguments."
             //];
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -1644,7 +2143,7 @@
                     ]
                 },
             ];
-            Insights =
+            HowToReadEntries =
             [
                 new TagEntry
                 {
@@ -1689,7 +2188,7 @@
         public PredefinedTypeTag()
         {
             Label = $"Predefined Type";
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -1737,7 +2236,7 @@
                     ]
                 },
             ];
-            Insights =
+            HowToReadEntries =
             [
                 new TagEntry
                 {
@@ -1783,7 +2282,7 @@
             //    "Properties can help protect data by adding rules or checks before a value is returned or updated.",
             //    "A property can have a getter, a setter, or both, and you can control access to each one independently."
             //];
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -1861,7 +2360,7 @@
                     ]
                 },
             ];
-            Insights =
+            HowToReadEntries =
             [
                 new TagEntry
                 {
@@ -1885,7 +2384,7 @@
         public PunctuationTag()
         {
             Label = $"Punctuation";
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -1909,7 +2408,7 @@
         public StringLiteralTag()
         {
             Label = $"String Literal";
-            Facts =
+            TheBasicsEntries =
             [
                 new TagEntry
                 {
@@ -1930,6 +2429,19 @@
                 new TagEntry
                 {
                     TagType = "String Literal",
+                    IsExample = true,
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "string message = \"Hello, world!\";",
+                            IsCode = true,
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "String Literal",
                     Segments =
                     [
                         new Segment
@@ -1940,6 +2452,19 @@
                         new Segment
                         {
                             Text = " are prefixed with the @ symbol and are convenient for multi-line strings, strings that contain backslash characters, or strings that contain embedded double quotes."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "String Literal",
+                    IsExample = true,
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "string path = @\"C:\\Projects\\Demo\";",
+                            IsCode = true,
                         },
                     ]
                 },
@@ -1965,6 +2490,19 @@
                         new Segment
                         {
                             Text = " character and allow you to insert dynamic values inside braces."
+                        },
+                    ]
+                },
+                new TagEntry
+                {
+                    TagType = "String Literal",
+                    IsExample = true,
+                    Segments =
+                    [
+                        new Segment
+                        {
+                            Text = "string text = $\"You have {count} messages.\";",
+                            IsCode = true,
                         },
                     ]
                 },
