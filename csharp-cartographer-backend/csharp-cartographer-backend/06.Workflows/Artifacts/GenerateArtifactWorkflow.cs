@@ -122,13 +122,24 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             // Step 14. Build & return artifact.
             var artifact = new Artifact(fileData.FileName, stopwatch.Elapsed, navTokens);
 
-            // Bonus: Log artifact (optional)
-            if (_config.LogArtifact)
-            {
-                TokenLogger.LogArtifact(artifact);
-            }
+            // Bonus: Log artifact data (optional)
+            LogArtifactData(artifact);
 
             return artifact;
+        }
+
+        private void LogArtifactData(Artifact artifact)
+        {
+            if (_config.ShouldLogArtifact)
+            {
+                CartographerLogger.LogArtifact(artifact);
+            }
+
+            if (_config.ShouldLogUnidentifiedTokens)
+            {
+                var unidentifiedTokens = artifact.NavTokens.Where(token => token.HighlightColor == "color-red");
+                CartographerLogger.LogTokens(unidentifiedTokens);
+            }
         }
     }
 }

@@ -10,13 +10,13 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
 
         public string Language { get; } = "C#";
 
-        public string ArtifactType { get; set; } = string.Empty;
+        public string ArtifactType { get; init; } = string.Empty;
 
-        public int NumTokensAnalyzed { get; set; }
+        public int NumTokensAnalyzed { get; init; }
 
-        public int NumLanguageElementTags { get; set; }
+        public int NumLanguageElementTags { get; init; }
 
-        public int NumAncestorsMapped { get; set; }
+        public int NumAncestorsMapped { get; init; }
 
         public string TimeToGenerate { get; set; } = string.Empty;
 

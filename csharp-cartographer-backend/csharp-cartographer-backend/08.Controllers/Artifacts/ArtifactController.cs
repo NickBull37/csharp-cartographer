@@ -1,4 +1,5 @@
-﻿using csharp_cartographer_backend._06.Workflows.Artifacts;
+﻿using csharp_cartographer_backend._02.Utilities.Logging;
+using csharp_cartographer_backend._06.Workflows.Artifacts;
 using csharp_cartographer_backend._08.Controllers.Artifacts.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +38,8 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
             }
             catch (Exception ex)
             {
+                CartographerLogger.LogException(ex);
+
                 return Problem(
                     type: "Internal Server Error",
                     detail: ex.Message,
@@ -67,6 +70,8 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
             }
             catch (Exception ex)
             {
+                CartographerLogger.LogException(ex);
+
                 return Problem(
                     type: "Internal Server Error",
                     detail: ex.Message,

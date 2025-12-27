@@ -1,6 +1,5 @@
 ﻿using csharp_cartographer_backend._01.Configuration.ReservedText;
 using csharp_cartographer_backend._02.Utilities.Charts;
-using csharp_cartographer_backend._02.Utilities.Logging;
 using csharp_cartographer_backend._03.Models.Tokens;
 
 namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
@@ -172,13 +171,10 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static void HighlightUnidentifiedTokensRed(List<NavToken> navTokens)
         {
-            TokenLogger.ClearLogFile(LogType.TokenLog);
-
             foreach (var token in navTokens)
             {
                 if (string.IsNullOrEmpty(token.HighlightColor))
                 {
-                    TokenLogger.LogToken(token);
                     token.HighlightColor = "color-red";
                 }
             }

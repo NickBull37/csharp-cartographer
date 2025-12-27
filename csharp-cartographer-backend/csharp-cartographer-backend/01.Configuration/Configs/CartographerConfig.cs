@@ -3,14 +3,14 @@
     public class CartographerConfig
     {
         /// <summary>
-        ///     Will log the full list of tokens to 02.Utilities/Logging/Logs/TokenListLog.txt if true.
+        ///     Will log the artifact data to 02.Utilities/Logging/Logs/ArtifactLog.txt if true.
         /// </summary>
-        public bool LogArtifact { get; set; }
+        public bool ShouldLogArtifact { get; set; }
 
         /// <summary>
         ///     Will log any unidentified (red) tokens to 02.Utilities/Logging/Logs/TokenLog.txt if true.
         /// </summary>
-        public bool LogUnidentifiedTokens { get; set; }
+        public bool ShouldLogUnidentifiedTokens { get; set; }
 
         // TODO: Move to ChatGpt client config
         /// <summary>

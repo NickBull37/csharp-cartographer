@@ -7,9 +7,41 @@ using System.Text.Json;
 
 namespace csharp_cartographer_backend._07.Clients.ChatGpt
 {
+    public record CodeAnalysisResult
+    {
+        public bool IsSuccess { get; init; }
+
+        public string? Analysis { get; init; }
+
+        public string? ErrorMessage { get; init; }
+
+        private CodeAnalysisResult() { }
+
+        public static CodeAnalysisResult Ok(string analysis) =>
+            new()
+            {
+                IsSuccess = true,
+                Analysis = analysis
+            };
+
+        public static CodeAnalysisResult Fail(string errorMessage) =>
+            new()
+            {
+                IsSuccess = false,
+                ErrorMessage = errorMessage
+            };
+
+        public static CodeAnalysisResult Canceled() =>
+            new()
+            {
+                IsSuccess = false,
+                ErrorMessage = "The operation was canceled."
+            };
+    }
+
     public class ChatGptClient : IChatGptClient
     {
-        private readonly string _defaultErrorMsg = "An error occured while retrieving data. Please try again.";
+        private const string DefaultErrorMsg = "An error occurred while retrieving data. Please try again.";
 
         private readonly CartographerConfig _config;
         private readonly HttpClient _httpClient;
@@ -20,7 +52,7 @@ namespace csharp_cartographer_backend._07.Clients.ChatGpt
             _httpClient = httpClient;
         }
 
-        public async Task<string> GetCodeAnalysis(string code, CancellationToken cancellationToken)
+        public async Task<CodeAnalysisResult> GetCodeAnalysis(string code, CancellationToken cancellationToken)
         {
             try
             {
@@ -41,26 +73,21 @@ namespace csharp_cartographer_backend._07.Clients.ChatGpt
                 var responseContent = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
                 var response = JsonSerializer.Deserialize<ChatCompletionResponse>(responseContent);
 
-                return ExtractAnalysisFromResponse(response);
+                return CodeAnalysisResult.Ok(ExtractAnalysisFromResponse(response));
             }
             catch (HttpRequestException ex)
             {
-                ExceptionLogger.LogException(ex, "ChatGptProvider - HTTP Request Error");
-                return _defaultErrorMsg;
+                CartographerLogger.LogException(ex);
+                return CodeAnalysisResult.Fail("An error occurred while retrieving data. Please try again.");
             }
             catch (JsonException ex)
             {
-                ExceptionLogger.LogException(ex, "ChatGptProvider - Serialization Error");
-                return _defaultErrorMsg;
+                CartographerLogger.LogException(ex);
+                return CodeAnalysisResult.Fail("A deserialization error occurred while processing the response.");
             }
             catch (OperationCanceledException)
             {
-                return "The operation was canceled.";
-            }
-            catch (Exception ex)
-            {
-                ExceptionLogger.LogException(ex, "ChatGptProvider - General Error");
-                return _defaultErrorMsg;
+                return CodeAnalysisResult.Canceled();
             }
         }
 
@@ -81,11 +108,11 @@ namespace csharp_cartographer_backend._07.Clients.ChatGpt
             };
         }
 
-        private string ExtractAnalysisFromResponse(ChatCompletionResponse? response)
+        private static string ExtractAnalysisFromResponse(ChatCompletionResponse? response)
         {
             return response is not null
                 ? response.Choices.First().Message.Content
-                : _defaultErrorMsg;
+                : DefaultErrorMsg;
         }
     }
 }

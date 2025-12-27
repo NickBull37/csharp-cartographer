@@ -2,6 +2,6 @@
 {
     public interface IChatGptClient
     {
-        Task<string> GetCodeAnalysis(string code, CancellationToken cancellationToken);
+        Task<CodeAnalysisResult> GetCodeAnalysis(string code, CancellationToken cancellationToken);
     }
 }
