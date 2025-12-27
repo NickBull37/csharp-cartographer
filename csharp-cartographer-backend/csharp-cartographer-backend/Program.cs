@@ -1,4 +1,5 @@
 using csharp_cartographer_backend._01.Configuration.Configs;
+using csharp_cartographer_backend._05.Services.AiAnalysis;
 using csharp_cartographer_backend._05.Services.Charts;
 using csharp_cartographer_backend._05.Services.Files;
 using csharp_cartographer_backend._05.Services.Roslyn;
@@ -6,6 +7,7 @@ using csharp_cartographer_backend._05.Services.SyntaxHighlighting;
 using csharp_cartographer_backend._05.Services.Tags;
 using csharp_cartographer_backend._05.Services.Tokens;
 using csharp_cartographer_backend._06.Workflows.Artifacts;
+using csharp_cartographer_backend._07.Clients.ChatGpt;
 using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +41,7 @@ builder.Services.Configure<FormOptions>(options =>
 });
 
 // configure DI for csharp-cartographer services
+builder.Services.AddScoped<IAiAnalysisService, AiAnalysisService>();
 builder.Services.AddScoped<IClassificationWizard, ClassificationWizard>();
 builder.Services.AddScoped<IFileProcessor, FileProcessor>();
 builder.Services.AddScoped<INavTokenGenerator, NavTokenGenerator>();
@@ -47,6 +50,12 @@ builder.Services.AddScoped<ISyntaxHighlighter, SyntaxHighlighter>();
 builder.Services.AddScoped<ITokenChartGenerator, TokenChartGenerator>();
 builder.Services.AddScoped<ITokenChartWizard, TokenChartWizard>();
 builder.Services.AddScoped<ITokenTagGenerator, TokenTagGenerator>();
+
+// configure DI for csharp-cartographer clients
+builder.Services.AddHttpClient<IChatGptClient, ChatGptClient>((client) =>
+{
+    client.Timeout = TimeSpan.FromSeconds(60);
+});
 
 // configure DI for csharp-cartographer workflows
 builder.Services.AddScoped<IGenerateArtifactWorkflow, GenerateArtifactWorkflow>();

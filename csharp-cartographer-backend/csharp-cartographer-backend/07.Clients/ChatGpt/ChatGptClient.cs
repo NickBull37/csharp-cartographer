@@ -1,5 +1,6 @@
 ﻿using csharp_cartographer_backend._01.Configuration.Configs;
 using csharp_cartographer_backend._02.Utilities.Logging;
+using csharp_cartographer_backend._05.Services.AiAnalysis.Models;
 using csharp_cartographer_backend._07.Clients.ChatGpt.Dtos;
 using Microsoft.Extensions.Options;
 using System.Text;
@@ -7,38 +8,6 @@ using System.Text.Json;
 
 namespace csharp_cartographer_backend._07.Clients.ChatGpt
 {
-    public record CodeAnalysisResult
-    {
-        public bool IsSuccess { get; init; }
-
-        public string? Analysis { get; init; }
-
-        public string? ErrorMessage { get; init; }
-
-        private CodeAnalysisResult() { }
-
-        public static CodeAnalysisResult Ok(string analysis) =>
-            new()
-            {
-                IsSuccess = true,
-                Analysis = analysis
-            };
-
-        public static CodeAnalysisResult Fail(string errorMessage) =>
-            new()
-            {
-                IsSuccess = false,
-                ErrorMessage = errorMessage
-            };
-
-        public static CodeAnalysisResult Canceled() =>
-            new()
-            {
-                IsSuccess = false,
-                ErrorMessage = "The operation was canceled."
-            };
-    }
-
     public class ChatGptClient : IChatGptClient
     {
         private const string DefaultErrorMsg = "An error occurred while retrieving data. Please try again.";

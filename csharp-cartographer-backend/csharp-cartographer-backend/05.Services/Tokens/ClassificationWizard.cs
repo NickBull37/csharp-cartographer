@@ -105,11 +105,25 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             }
             if (token.RoslynClassification == "class name" && token.ParentNodeKind == "ConstructorDeclaration")
             {
-                return "identifier - constructor";
+                return "identifier - class constructor";
             }
             if (token.RoslynClassification == "class name")
             {
                 return "identifier - class name";
+            }
+
+            // correct record identifiers
+            if (token.RoslynClassification == "record class name" && token.ParentNodeKind == "RecordDeclaration")
+            {
+                return "identifier - record declaration";
+            }
+            if (token.RoslynClassification == "record class name" && token.ParentNodeKind == "ConstructorDeclaration")
+            {
+                return "identifier - record constructor";
+            }
+            if (token.RoslynClassification == "record class name")
+            {
+                return "identifier - record name";
             }
 
             // correct property identifiers
@@ -168,12 +182,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             if (token.RoslynClassification == "identifier" && token.GrandParentNodeKind == "Attribute")
             {
                 return "identifier - attribute";
-            }
-
-            // correct record identifiers
-            if (token.RoslynClassification == "record class name" && token.ParentNodeKind == "RecordDeclaration")
-            {
-                return "identifier - record declaration";
             }
 
             return token.RoslynClassification;

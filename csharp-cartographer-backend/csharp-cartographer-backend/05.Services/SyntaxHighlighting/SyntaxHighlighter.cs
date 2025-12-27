@@ -54,9 +54,11 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                         token.HighlightColor = "color-yellow";
                         break;
                     case "identifier - class declaration":
+                    case "identifier - class constructor":
                     case "identifier - class name":
-                    case "identifier - constructor":
                     case "identifier - record declaration":
+                    case "identifier - record constructor":
+                    case "identifier - record name":
                         token.HighlightColor = "color-green";
                         break;
                     case "numeric literal":

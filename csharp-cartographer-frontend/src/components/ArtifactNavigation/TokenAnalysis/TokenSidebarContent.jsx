@@ -134,7 +134,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
     };
 
     const handleExpandTokenTagClick = (identifier) => {
-        
+
     };
 
     const handleTagClick = (tag) => {
@@ -241,8 +241,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                 : 'default-text-class'
                         }
                     >
-                        {tokenText}
-                        {/* {tokenText} - {activeTokenIndex} */}
+                        {/* {tokenText} */}
+                        {tokenText} - {activeTokenIndex}
                     </TokenText>
                     <Tooltip title="Next Token">
                         <NextTokenButton
@@ -263,8 +263,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
 
                     <Stack>
 
-                        {/* <Divider sx={{ bgcolor: '#808080' }} /> */}
-                        {/* <Typography
+                        <Divider sx={{ bgcolor: '#808080' }} />
+                        <Typography
                             className='code'
                             sx={{
                                 px: 1,
@@ -289,7 +289,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             }}
                         >
                             {updatedClassification}
-                        </Typography> */}
+                        </Typography>
 
                         <Divider sx={{ bgcolor: '#808080' }} />
 
