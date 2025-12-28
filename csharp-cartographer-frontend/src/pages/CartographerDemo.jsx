@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from "axios";
 import { Box } from '@mui/material';
-import { TitleBox, AiSidebar, TokenSidebar, CodeWindow } from "../components";
+import { TitleBox, ArtifactBanner, AiSidebar, LeftSidebar, TokenSidebar, RightSidebar, CodeWindow } from "../components";
 
 const CartographerDemo = () => {
 
@@ -70,7 +70,7 @@ const CartographerDemo = () => {
     return (
         <Box>
 
-            <TitleBox
+            {/* <TitleBox
                 artifactTitle={artifactTitle}
                 leftSidebarOpen={leftSidebarOpen}
                 numTokens={numTokens}
@@ -78,11 +78,6 @@ const CartographerDemo = () => {
                 numAncestors={numAncestors}
                 generationTime={generationTime}
             />
-
-            {/* <StructureDrawer
-                leftSidebarOpen={leftSidebarOpen}
-                setLeftSidebarOpen={setLeftSidebarOpen}
-            /> */}
 
             <AiSidebar
                 navTokens={navTokens}
@@ -104,6 +99,42 @@ const CartographerDemo = () => {
             />
 
             <TokenSidebar
+                navTokens={navTokens}
+                activeToken={activeToken}
+                setActiveToken={setActiveToken}
+                activeHighlightIndices={activeHighlightIndices}
+                setActiveHighlightIndices={setActiveHighlightIndices}
+            /> */}
+
+            <ArtifactBanner
+                artifactTitle={artifactTitle}
+                leftSidebarOpen={leftSidebarOpen}
+                numTokens={numTokens}
+                numTags={numTags}
+                numAncestors={numAncestors}
+                generationTime={generationTime}
+            />
+
+            <LeftSidebar
+                navTokens={navTokens}
+                leftSidebarOpen={leftSidebarOpen}
+                setLeftSidebarOpen={setLeftSidebarOpen}
+                selectedTokens={selectedTokens}
+                setSelectedTokens={setSelectedTokens}
+            />
+
+            <CodeWindow
+                leftSidebarOpen={leftSidebarOpen}
+                tokenList={navTokens}
+                activeToken={activeToken}
+                setActiveToken={setActiveToken}
+                activeHighlightIndices={activeHighlightIndices}
+                setActiveHighlightIndices={setActiveHighlightIndices}
+                selectedTokens={selectedTokens}
+                setSelectedTokens={setSelectedTokens}
+            />
+
+            <RightSidebar
                 navTokens={navTokens}
                 activeToken={activeToken}
                 setActiveToken={setActiveToken}

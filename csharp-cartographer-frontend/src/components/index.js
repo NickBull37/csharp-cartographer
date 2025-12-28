@@ -20,6 +20,7 @@ export { default as StagingLeftSidebarContent } from '../components/UserCodeStag
 //#########################     NAVIGATION COMPONENTS     ###########################//
 //###################################################################################//
 export { default as TitleBox } from '../components/ArtifactNavigation/TitleBox/TitleBox';
+export { default as ArtifactBanner } from '../components/ArtifactNavigation/ArtifactBanner/ArtifactBanner';
 
 export { default as AiSidebar } from '../components/ArtifactNavigation/AiAnalysis/AiSidebar';
 export { default as AiSidebarContent } from '../components/ArtifactNavigation/AiAnalysis/AiSidebarContent';
@@ -29,6 +30,9 @@ export { default as StructureSidebarContent } from '../components/ArtifactNaviga
 
 export { default as TokenSidebar } from '../components/ArtifactNavigation/TokenAnalysis/TokenSidebar';
 export { default as TokenSidebarContent } from '../components/ArtifactNavigation/TokenAnalysis/TokenSidebarContent';
+
+export { default as RightSidebar } from '../components/ArtifactNavigation/RightSidebar/RightSidebar';
+export { default as LeftSidebar } from '../components/ArtifactNavigation/LeftSidebar/LeftSidebar';
 
 export { default as CodeWindow } from '../components/ArtifactNavigation/CodeAnalysis/CodeWindow';
 export { default as TokenMapper } from '../components/ArtifactNavigation/CodeAnalysis/TokenMapper';

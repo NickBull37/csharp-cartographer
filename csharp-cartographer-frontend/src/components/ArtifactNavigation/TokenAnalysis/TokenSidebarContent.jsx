@@ -352,7 +352,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                         <Stack
                                             sx={{
                                                 // backgroundColor: 'rgba(51, 51, 51, 0.575)',
-                                                backgroundColor: 'rgba(51, 51, 51, 0.6)',
+                                                backgroundColor: colors.tokenTagBg,
                                                 borderRadius: '4px',
                                                 boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.20), 0 2px 6px 0 rgba(0, 0, 0, 0.20)',
                                             }}

@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 
 const CodeContainer = styled(Box)(() => ({
     display: 'flex',
-    paddingTop: '6rem',
+    paddingTop: '7.75rem',
 }));
 
 const FlexBox = styled(Box)(() => ({

@@ -9,10 +9,11 @@ import { compass3, newCartographer } from '../../../utils/constants';
 import colors from '../../../utils/colors';
 
 const StyledAppBar = styled(AppBar)(() => ({
-    backgroundColor: colors.gray15,
+    backgroundColor: colors.navbarBg,
     minHeight: '55px',
     justifyContent: 'center',
     boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.4), 0px 4px 5px 0px rgba(0, 0, 0, 0.28), 0px 1px 10px 0px rgba(0, 0, 0, 0.24)',
+    zIndex: '1200'
 }));
 
 const FlexBox = styled(Box)(() => ({
@@ -35,84 +36,78 @@ const NavLinkBtn = styled(Button)(() => ({
 const Navbar = () => {
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <StyledAppBar position="fixed">
-                <Toolbar
-                    variant="dense"
+        <StyledAppBar position="fixed">
+            <Toolbar variant="dense">
+
+                <Link to="/">
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        sx={{
+                            
+                        }}
+                    >
+                        <img className='nav-logo' src={compass3} height={33} />
+                        <img className='cartographer-logo' src={newCartographer} height={33} />
+                    </Box>
+                </Link>
+
+                <FlexBox
+                    flexGrow={1}
+                    justifyContent="flex-end"
+                    alignItems="center"
                 >
-                    <Link to="/">
-                        <Box
-                            display="flex"
-                            alignItems="center"
-                            sx={{
-                                
-                            }}
+                    <FlexBox
+                        gap={4}
+                        sx={{
+                            mr: 2
+                        }}
+                    >
+                        <NavLinkBtn
+                            size='small'
+                            startIcon={<MapOutlinedIcon fontSize='small' sx={{ color: '#fff' }} />}
+                            href='/demo-options'
                         >
-                            <img className='nav-logo' src={compass3} height={33} />
-                            <img className='cartographer-logo' src={newCartographer} height={33} />
-                        </Box>
-                    </Link>
+                            Demo
+                        </NavLinkBtn>
+                        <NavLinkBtn
+                            size='small'
+                            startIcon={<AddIcon fontSize='small' sx={{ color: '#fff' }} />}
+                            href='/upload'
+                        >
+                            Upload
+                        </NavLinkBtn>
+                    </FlexBox>
+                    
+                    <Box
+                        sx={{
+                            height: '35px',
+                            //borderRight: '2px solid #4d4d4d',
+                            mx: 1
+                        }}
+                    >
+                    </Box>
 
                     <FlexBox
-                        flexGrow={1}
-                        justifyContent="flex-end"
                         alignItems="center"
+                        gap={3}
                     >
-                        <FlexBox
-                            gap={4}
-                            sx={{
-                                mr: 2
-                            }}
+                        <IconButton
+                            size="small"
                         >
-                            <NavLinkBtn
-                                size='small'
-                                startIcon={<MapOutlinedIcon fontSize='small' sx={{ color: '#fff' }} />}
-                                href='/demo-options'
-                            >
-                                Demo
-                            </NavLinkBtn>
-                            <NavLinkBtn
-                                size='small'
-                                startIcon={<AddIcon fontSize='small' sx={{ color: '#fff' }} />}
-                                href='/upload'
-                            >
-                                Upload
-                            </NavLinkBtn>
-                        </FlexBox>
-                        
-                        <Box
-                            sx={{
-                                height: '35px',
-                                borderRight: '2px solid #4d4d4d',
-                                mx: 2
-                            }}
+                            <SettingsIcon sx={{ color: '#fff' }} />
+                        </IconButton>
+                        <Avatar
+                            alt="Remy Sharp"
+                            src="/broken-image.jpg"
+                            sx={{ width: 24, height: 24, bgcolor: '#cc33ff' }}
                         >
-                        </Box>
-
-                        <FlexBox
-                            alignItems="center"
-                            gap={3}
-                        >
-                            <IconButton
-                                size="small"
-                            >
-                                <SettingsIcon sx={{ color: '#fff' }} />
-                            </IconButton>
-                            <Avatar
-                                alt="Remy Sharp"
-                                src="/broken-image.jpg"
-                                sx={{ width: 24, height: 24, bgcolor: '#cc33ff' }}
-                            >
-                                N
-                            </Avatar>
-                        </FlexBox>
+                            N
+                        </Avatar>
                     </FlexBox>
-
-                </Toolbar>
-            </StyledAppBar>
-
-            <Toolbar variant="dense" />
-        </Box>
+                </FlexBox>
+            </Toolbar>
+        </StyledAppBar>
     );
 }
 

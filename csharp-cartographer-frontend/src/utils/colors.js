@@ -1,6 +1,11 @@
 const colors = {
 
     code: "#00e6cf",
+    navbarBg: "#262626",
+    bannerBg: "#404040",
+    sidebarBg: "#404040",
+
+    tokenTagBg: "#333333",
     
     white: "#FFFFFF",
     black: "#000000",
