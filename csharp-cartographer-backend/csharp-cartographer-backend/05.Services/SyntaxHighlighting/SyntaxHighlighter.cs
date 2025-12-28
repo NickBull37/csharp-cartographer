@@ -65,7 +65,15 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case "type parameter name":
                         token.HighlightColor = "color-light-green";
                         break;
-                    case "string literal":
+                    case "character literal":
+                    case "quoted string":
+                    case "verbatim string":
+                    case "interpolated string - start":
+                    case "interpolated string - text":
+                    case "interpolated string - end":
+                    case "interpolated verbatim string - start":
+                    case "interpolated verbatim string - text":
+                    case "interpolated verbatim string - end":
                         token.HighlightColor = "color-orange";
                         break;
                     case string classification when classification.Contains("identifier"):

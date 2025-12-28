@@ -35,10 +35,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 return GetPunctuationCorrection(token);
             }
 
-            // correct literal classifications
-            if (token.RoslynClassification == "string" || token.RoslynClassification == "number")
+            // correct string literal classifications
+            if (token.RoslynClassification == "string" || token.RoslynClassification == "string - verbatim")
             {
-                return GetLiteralCorrection(token);
+                return GetStringLiteralCorrection(token);
+            }
+
+            // correct number literal classifications
+            if (token.RoslynClassification == "number")
+            {
+                return "numeric literal";
             }
 
             return token.RoslynClassification;
@@ -219,17 +225,28 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             return token.RoslynClassification;
         }
 
-        private static string? GetLiteralCorrection(NavToken token)
+        private static string? GetStringLiteralCorrection(NavToken token)
         {
-            if (token.RoslynClassification == "string")
+            if (token.RoslynClassification == "string" && token.RoslynKind == "CharacterLiteralToken")
             {
-                return "string literal";
+                return "character literal";
             }
-            if (token.RoslynClassification == "number")
+
+            return (token.RoslynClassification, token.RoslynKind) switch
             {
-                return "numeric literal";
-            }
-            return token.RoslynClassification;
+                ("string", "InterpolatedStringStartToken") => "interpolated string - start",
+                ("string", "InterpolatedStringTextToken") => "interpolated string - text",
+                ("string", "InterpolatedStringEndToken") => "interpolated string - end",
+
+                ("string - verbatim", "InterpolatedVerbatimStringStartToken") => "interpolated verbatim string - start",
+                ("string - verbatim", "InterpolatedStringTextToken") => "interpolated verbatim string - text",
+                ("string - verbatim", "InterpolatedStringEndToken") => "interpolated verbatim string - end",
+
+                ("string - verbatim", _) => "verbatim string",
+                ("string", _) => "quoted string",
+
+                _ => token.RoslynClassification
+            };
         }
 
         private static bool IsDelimiterTokenText(string text) =>

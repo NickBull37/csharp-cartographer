@@ -65,7 +65,37 @@
                 }
             }
 
-            return new string(' ', count); // Create a string of spaces
+            return new string(' ', count);
+        }
+
+
+        /*
+         *  Demo for string types
+         */
+
+        public static string QuotedStringDemo(string name)
+        {
+            return "Hello " + name + "! Welcome to the Cartographer tool.";
+        }
+
+        public static string QuotedStringWithEscapeSequencesDemo(string name)
+        {
+            return "Hello \"" + name + "\"! Welcome to the Cartographer tool.";
+        }
+
+        public static string VerbatimStringDemo()
+        {
+            return @"C:\Projects\Cartographer\Logs\analysis.log";
+        }
+
+        public static string InterpolatedStringDemo(int tokenCount)
+        {
+            return $"Artifact contains {tokenCount} tokens.";
+        }
+
+        public static string VerbatimInterpolatedStringDemo(string fileName)
+        {
+            return $@"C:\Projects\Cartographer\Artifacts\{fileName}";
         }
     }
 }

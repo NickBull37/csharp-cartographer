@@ -2610,110 +2610,316 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
     public class StringLiteralTag : TokenTag
     {
-        public StringLiteralTag()
+        public StringLiteralTag(string classification)
         {
-            Label = $"String Literal";
-            TheBasicsEntries =
+            var tagEntries = GetGeneralTagEntries(classification);
+            tagEntries.AddRange(GetIndividualTagEntries(classification));
+            var labelInsert = GetTagLabelInsert(classification);
+
+            Label = $"String Literal - {labelInsert}";
+            TheBasicsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.TheBasics).ToList();
+            KeyPointsEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.KeyPoints).ToList();
+            UseForEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.UseFor).ToList();
+            ExploreEntries = tagEntries.Where(entry => entry.Section == TokenTagSection.Explore).ToList();
+            BorderClass = "tag-border-orange";
+            BgColorClass = "tag-bg-orange";
+        }
+
+        static string GetTagLabelInsert(string classification)
+        {
+            switch (classification)
+            {
+                case "quoted string":
+                    return "quoted";
+                case "verbatim string":
+                    return "verbatim";
+                case "interpolated string - start":
+                case "interpolated string - text":
+                case "interpolated string - end":
+                    return "interpolated";
+                case "interpolated verbatim string - start":
+                case "interpolated verbatim string - text":
+                case "interpolated verbatim string - end":
+                    return "interpolated verbatim";
+                default:
+                    return string.Empty;
+            }
+        }
+
+        // applicable to all strings
+        static List<TagEntry> GetGeneralTagEntries(string classification)
+        {
+            return
             [
                 new TagEntry
                 {
-                    TagType = "String Literal",
+                    TagType = $"String Literal",
+                    Section = TokenTagSection.Explore,
                     Segments =
                     [
                         new Segment
                         {
-                            Text = "Quoted string literals",
-                            IsBold = true,
-                        },
-                        new Segment
-                        {
-                            Text = " start and end with a single double quote character (\") on the same line and are best for strings that fit on a single line and don't include any escape sequences."
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "String Literal",
-                    IsExample = true,
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "string message = \"Hello, world!\";",
-                            IsCode = true,
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "String Literal",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Verbatim string literals",
-                            IsBold = true,
-                        },
-                        new Segment
-                        {
-                            Text = " are prefixed with the @ symbol and are convenient for multi-line strings, strings that contain backslash characters, or strings that contain embedded double quotes."
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "String Literal",
-                    IsExample = true,
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "string path = @\"C:\\Projects\\Demo\";",
-                            IsCode = true,
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "String Literal",
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "Interpolated strings",
-                            IsBold = true,
-                        },
-                        new Segment
-                        {
-                            Text = " are prefixed with the "
-                        },
-                        new Segment
-                        {
-                            Text = "$",
-                            IsCode = true,
-                        },
-                        new Segment
-                        {
-                            Text = " character and allow you to insert dynamic values inside braces."
-                        },
-                    ]
-                },
-                new TagEntry
-                {
-                    TagType = "String Literal",
-                    IsExample = true,
-                    Segments =
-                    [
-                        new Segment
-                        {
-                            Text = "string text = $\"You have {count} messages.\";",
-                            IsCode = true,
+                            Text = "Strings and string literals",
+                            Ref = new SegmentRef
+                            {
+                                Url = "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/",
+                            }
                         },
                     ]
                 },
             ];
-            BorderClass = "tag-border-orange";
-            BgColorClass = "tag-bg-orange";
+        }
+
+        // applicable to individual string types
+        static List<TagEntry> GetIndividualTagEntries(string classification)
+        {
+            return classification switch
+            {
+                "quoted string" =>
+                [
+                    new TagEntry
+                    {
+                        TagType = $"String Literal - quoted",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Quoted strings",
+                                IsBold = true,
+                            },
+                            new Segment
+                            {
+                                Text = " start and end with a single double quote character (\") on the same line."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "String Literal - quoted",
+                        Section = TokenTagSection.TheBasics,
+                        IsExample = true,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "string message = \"Hello, world!\";",
+                                IsCode = true,
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "String Literal - quoted",
+                        Section = TokenTagSection.UseFor,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "strings that fit on a single line",
+                                IsCode = true,
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "String Literal - quoted",
+                        Section = TokenTagSection.UseFor,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "strings that don't contain any escape sequences",
+                                IsCode = true,
+                            },
+                        ]
+                    },
+                ],
+                "verbatim string" =>
+                [
+                    new TagEntry
+                    {
+                        TagType = "String Literal - verbatim",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Verbatim strings",
+                                IsBold = true,
+                            },
+                            new Segment
+                            {
+                                Text = " are prefixed with the @ symbol and preserve new line characters as part of the string text."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "String Literal - verbatim",
+                        Section = TokenTagSection.TheBasics,
+                        IsExample = true,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "string path = @\"C:\\Projects\\Demo\";",
+                                IsCode = true,
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "String Literal - verbatim",
+                        Section = TokenTagSection.UseFor,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "multi-line strings",
+                                IsCode = true,
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "String Literal - verbatim",
+                        Section = TokenTagSection.UseFor,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "strings that contain backslash characters or embedded double quotes",
+                                IsCode = true,
+                            },
+                        ]
+                    },
+                ],
+                "interpolated string - start"
+                    or "interpolated string - text"
+                    or "interpolated string - end" =>
+                [
+                    new TagEntry
+                    {
+                        TagType = "String Literal - interpolated",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Interpolated strings",
+                                IsBold = true,
+                            },
+                            new Segment
+                            {
+                                Text = " are prefixed with the "
+                            },
+                            new Segment
+                            {
+                                Text = "$",
+                                IsCode = true,
+                            },
+                            new Segment
+                            {
+                                Text = " character and allow you to insert dynamic values inside braces."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "String Literal - interpolated",
+                        Section = TokenTagSection.TheBasics,
+                        IsExample = true,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "string text = $\"You have {count} messages.\";",
+                                IsCode = true,
+                            },
+                        ]
+                    },
+                ],
+                "interpolated verbatim string - start"
+                    or "interpolated verbatim string - text"
+                    or "interpolated verbatim string - end" =>
+                [
+                    new TagEntry
+                    {
+                        TagType = "String Literal - interpolated verbatim",
+                        Section = TokenTagSection.TheBasics,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "Interpolated verbatim strings",
+                                IsBold = true,
+                            },
+                            new Segment
+                            {
+                                Text = " are prefixed with both "
+                            },
+                            new Segment
+                            {
+                                Text = "$",
+                                IsCode = true,
+                            },
+                            new Segment
+                            {
+                                Text = " and "
+                            },
+                            new Segment
+                            {
+                                Text = "@",
+                                IsCode = true,
+                            },
+                            new Segment
+                            {
+                                Text = " characters and allow you to bypass escape sequences while also inserting dynamic values inside braces."
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "String Literal - interpolated verbatim",
+                        Section = TokenTagSection.TheBasics,
+                        IsExample = true,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "string text = $@\"C:\\Projects\\Cartographer\\Artifacts\\{fileName}\";",
+                                IsCode = true,
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "String Literal - interpolated verbatim",
+                        Section = TokenTagSection.UseFor,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "you want to bypass escape sequences",
+                            },
+                        ]
+                    },
+                    new TagEntry
+                    {
+                        TagType = "String Literal - interpolated verbatim",
+                        Section = TokenTagSection.UseFor,
+                        Segments =
+                        [
+                            new Segment
+                            {
+                                Text = "you need to insert dynamic values into a string",
+                            },
+                        ]
+                    },
+                ],
+                _ => [],
+            };
         }
     }
 }

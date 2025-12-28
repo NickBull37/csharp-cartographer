@@ -41,7 +41,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void TryAddAccessorTag(NavToken token)
         {
-            if (token.RoslynKind == "GetKeyword" || token.RoslynKind == "SetKeyword")
+            if (token.RoslynKind == "GetKeyword" || token.RoslynKind == "SetKeyword" || token.RoslynKind == "InitKeyword")
             {
                 token.Tags.Add(new AccessorTag(token.Text));
             }
@@ -98,9 +98,14 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void TryAddStringLiteralTag(NavToken token)
         {
-            if (token.RoslynKind == "StringLiteralToken")
+            //if (token.RoslynKind == "StringLiteralToken")
+            //{
+            //    token.Tags.Add(new StringLiteralTag());
+            //}
+
+            if (token.UpdatedClassification is not null && token.UpdatedClassification.Contains("string"))
             {
-                token.Tags.Add(new StringLiteralTag());
+                token.Tags.Add(new StringLiteralTag(token.UpdatedClassification));
             }
         }
 

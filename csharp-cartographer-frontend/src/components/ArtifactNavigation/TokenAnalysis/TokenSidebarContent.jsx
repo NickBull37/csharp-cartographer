@@ -241,8 +241,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                 : 'default-text-class'
                         }
                     >
-                        {/* {tokenText} */}
-                        {tokenText} - {activeTokenIndex}
+                        {tokenText}
+                        {/* {tokenText} - {activeTokenIndex} */}
                     </TokenText>
                     <Tooltip title="Next Token">
                         <NextTokenButton
@@ -263,7 +263,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
 
                     <Stack>
 
-                        <Divider sx={{ bgcolor: '#808080' }} />
+                        {/* <Divider sx={{ bgcolor: '#808080' }} />
                         <Typography
                             className='code'
                             sx={{
@@ -289,7 +289,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             }}
                         >
                             {updatedClassification}
-                        </Typography>
+                        </Typography> */}
 
                         <Divider sx={{ bgcolor: '#808080' }} />
 
@@ -375,7 +375,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                     key={index}
                                                     //onClick={() => handleTagClick(tag)}
                                                     sx={{
-                                                        fontSize: '14px',
+                                                        fontSize: '15px',
                                                         fontWeight: 'bold',
                                                         letterSpacing: '0.9px',
                                                         color: '#fff',
@@ -506,7 +506,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                             {tag.keyPointsEntries.length > 0 && (
                                                 <Box
                                                     sx={{
-                                                        mt: '0.5rem'
+                                                        mt: '1rem'
                                                     }}
                                                 >
                                                     <Typography
@@ -532,7 +532,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                             <Box
                                                                 key={entry.id}
                                                                 display="flex"
-                                                                gap={1}
+                                                                gap={1.5}
                                                             >
                                                                 <KeyIcon
                                                                     fontSize='small'
@@ -584,7 +584,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                             {tag.useForEntries.length > 0 && (
                                                 <Box
                                                     sx={{
-                                                        mt: '0.5rem'
+                                                        mt: '1rem'
                                                     }}
                                                 >
                                                     <Typography
@@ -610,7 +610,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                             <Box
                                                                 key={entry.id}
                                                                 display="flex"
-                                                                gap={1}
+                                                                gap={1.5}
                                                             >
                                                                 <CodeIcon
                                                                     fontSize='small'
@@ -662,7 +662,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                             {tag.exploreEntries.length > 0 && (
                                                 <Box
                                                     sx={{
-                                                        mt: '0.5rem'
+                                                        mt: '1rem',
+                                                        mb: '0.25rem'
                                                     }}
                                                 >
                                                     <Typography
@@ -689,7 +690,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                             <Box
                                                                 key={entry.id}
                                                                 display="flex"
-                                                                gap={1}
+                                                                gap={1.5}
                                                             >
                                                                 <LinkIcon
                                                                     fontSize='small'
