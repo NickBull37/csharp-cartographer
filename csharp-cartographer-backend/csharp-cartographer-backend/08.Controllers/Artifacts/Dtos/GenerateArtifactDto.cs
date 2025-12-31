@@ -15,5 +15,14 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts.Dtos
         [Required]
         [JsonPropertyName("fileContent")]
         public string FileContent { get; init; } = default!;
+
+        public List<GenerateArtifactDto> TestRecords = [];
+
+        public List<GenerateArtifactDto?> TestNullableRecords = [];
+
+        // constructor only used for testing
+        public GenerateArtifactDto()
+        {
+        }
     }
 }

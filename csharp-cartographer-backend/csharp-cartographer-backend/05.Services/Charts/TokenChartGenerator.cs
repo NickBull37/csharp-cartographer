@@ -9,7 +9,7 @@ namespace csharp_cartographer_backend._05.Services.Charts
         private static readonly List<SyntaxKind> _KindsToSkip =
         [
             SyntaxKind.CompilationUnit,
-            SyntaxKind.QualifiedName,
+            //SyntaxKind.QualifiedName,
             //SyntaxKind.Block,
             //SyntaxKind.IdentifierToken,
             //SyntaxKind.PredefinedType,

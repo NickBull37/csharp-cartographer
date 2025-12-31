@@ -8,6 +8,7 @@ namespace csharp_cartographer_backend._05.Services.Files
     public class FileProcessor : IFileProcessor
     {
         private readonly string projectRoot = Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.FullName;
+        private readonly string solutionRoot = Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName;
 
         private readonly string _modelDefinitionDemoFilePath = @"03.Models\Tokens\NavToken.cs";
         private readonly string _workflowDemoFilePath = @"06.Workflows\Artifacts\GenerateArtifactWorkflow.cs";
@@ -17,7 +18,8 @@ namespace csharp_cartographer_backend._05.Services.Files
         private readonly string _helperClassDemoFilePath = @"02.Utilities\Helpers\StringHelpers.cs";
         private readonly string _configDemoFilePath = @"01.Configuration\Configs\CartographerConfig.cs";
         private readonly string _dtoDemoFilePath = @"08.Controllers\Artifacts\Dtos\GenerateArtifactDto.cs";
-        private readonly string _providerDemoFilePath = @"07.Clients\ChatGpt\ChatGptClient.cs";
+        private readonly string _clientDemoFilePath = @"07.Clients\ChatGpt\ChatGptClient.cs";
+        private readonly string _unitTestDemoFilePath = @"csharp-cartographer-backend.tests\05.Services\SyntaxHighlighting\SyntaxHighlighterTests.cs";
 
         private readonly string _operatorDemoFilePath = @"01.Configuration\TestFiles\OperatorDemo.cs";
         private readonly string _collectionDemoFilePath = @"01.Configuration\TestFiles\CollectionDemo.cs";
@@ -34,7 +36,8 @@ namespace csharp_cartographer_backend._05.Services.Files
                 "StringHelpers.cs" => Path.Combine(projectRoot, _helperClassDemoFilePath),
                 "CartographerConfig.cs" => Path.Combine(projectRoot, _configDemoFilePath),
                 "GenerateArtifactDto.cs" => Path.Combine(projectRoot, _dtoDemoFilePath),
-                "ChatGptProvider.cs" => Path.Combine(projectRoot, _providerDemoFilePath),
+                "ChatGptProvider.cs" => Path.Combine(projectRoot, _clientDemoFilePath),
+                "SyntaxHighlighterTests.cs" => Path.Combine(solutionRoot, _unitTestDemoFilePath),
                 "OperatorDemo.cs" => Path.Combine(projectRoot, _operatorDemoFilePath),
                 "CollectionDemo.cs" => Path.Combine(projectRoot, _collectionDemoFilePath),
                 _ => string.Empty

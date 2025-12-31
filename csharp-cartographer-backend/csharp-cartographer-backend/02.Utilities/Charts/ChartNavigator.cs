@@ -4,7 +4,7 @@ namespace csharp_cartographer_backend._02.Utilities.Charts
 {
     public static class ChartNavigator
     {
-        // TODO: put this method somewhere else and deprecate this class
+        // TODO: deprecate this class
         public static bool IsUsingDirectiveIdentifier(NavToken token)
         {
             return token.Charts.Count > 2 &&

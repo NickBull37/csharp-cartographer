@@ -1,4 +1,6 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using csharp_cartographer_backend._03.Models.Tokens;
+using csharp_cartographer_backend._06.Workflows.Artifacts;
+using Microsoft.CodeAnalysis;
 
 namespace csharp_cartographer_backend._01.Configuration.TestFiles
 {
@@ -133,6 +135,34 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
     public class NodeFinder
     {
+        public string DemoTest(TestClass demoParam)
+        {
+            return default;
+        }
+
+        public T GetValue<T>()
+        {
+            return default;
+        }
+
+        public T? Find<T>() where T : class
+        {
+            return null;
+        }
+
+        public Nullable<T> Get<T>() where T : struct
+        {
+            return null;
+        }
+
+        public T? GetTest<T>() where T : struct
+            => default;
+
+        public T? FindTest<T>() where T : class?
+        {
+            return null;
+        }
+
         /// <summary>
         /// Finds all descendant syntax nodes of the specified type.
         /// </summary>
@@ -148,7 +178,7 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
         public TSyntax? FindFirstNode<TSyntax>(SyntaxNode root)
             where TSyntax : SyntaxNode
         {
-            return root.DescendantNodes().OfType<TSyntax>().FirstOrDefault();
+            return root.DescendantNodes().OfType<TSyntax?>().FirstOrDefault();
         }
 
         /// <summary>
@@ -159,5 +189,24 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
         {
             return root.DescendantNodes().OfType<TSyntax>().Count();
         }
+
+        public TSyntax? FindFirstNodeTest<TSyntax>(SyntaxNode root)
+            where TSyntax : SyntaxNode
+        {
+            return root.DescendantNodes().OfType<TSyntax>().FirstOrDefault();
+        }
+    }
+
+    public class TestClass
+    {
+        private readonly IGenerateArtifactWorkflow? _generateArtifactWorkflow;
+
+        private readonly IEnumerable<NavToken> Tokens = [];
+
+        private readonly IEnumerable<NavToken>? TestTokens = [];
+
+        private readonly IEnumerable<NavToken?> DemoTokens = [];
+
+        private readonly IEnumerable<NavToken?>? FakeTokens = [];
     }
 }

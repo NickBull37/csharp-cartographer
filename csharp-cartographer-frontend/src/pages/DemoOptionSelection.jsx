@@ -144,6 +144,14 @@ const DemoOptionSelection = () => {
                                 [GenerateArtifactDto.cs]
                             </BtnText>
                             <BtnText
+                                onClick={() => handleFileClick("SyntaxHighlighterTests.cs")}
+                                sx={{
+                                    color: selectedFile === 'SyntaxHighlighterTests.cs' ? colors.code : '#fff'
+                                }}
+                            >
+                                [SyntaxHighlighterTests.cs]
+                            </BtnText>
+                            <BtnText
                                 onClick={() => handleFileClick("OperatorDemo.cs")}
                                 sx={{
                                     color: selectedFile === 'OperatorDemo.cs' ? colors.code : '#fff'
@@ -475,6 +483,43 @@ const DemoOptionSelection = () => {
                                     </InfoText>
                                     <InfoText>
                                         They often represent a subset or a projection of the underlying data to avoid overfetching or exposing sensitive internal fields.
+                                    </InfoText>
+                                </Stack>
+                            </Stack>
+                        )
+                        : selectedFile === "SyntaxHighlighterTests.cs"
+                        ? (
+                            <Stack
+                                width={'40%'}
+                                gap={3}
+                                sx={{
+                                    px: 8
+                                }}
+                            >
+                                <InfoText
+                                    className='color-code'
+                                    textAlign={"center"}
+                                    sx={{
+                                        fontSize: '1.65rem'
+                                    }}
+                                >
+                                    UnitTest Class
+                                </InfoText>
+                                <Stack
+                                    display={'flex'}
+                                    gap={4}
+                                    sx={{
+                                        bgcolor: colors.gray25,
+                                        padding: 2,
+                                        borderRadius: '5px'
+                                    }}
+                                >
+                                    <InfoText>
+                                        A unit test class...
+                                    </InfoText>
+                                    <InfoText>
+                                    </InfoText>
+                                    <InfoText>
                                     </InfoText>
                                 </Stack>
                             </Stack>

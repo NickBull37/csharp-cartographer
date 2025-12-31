@@ -1,5 +1,4 @@
 ﻿using csharp_cartographer_backend._01.Configuration.ReservedText;
-using csharp_cartographer_backend._02.Utilities.Charts;
 using csharp_cartographer_backend._03.Models.Tokens;
 
 namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
@@ -27,63 +26,122 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case string classification when classification.Contains("keyword"):
                         AddClassificationHighlighting(token, ReservedTextColors.Keywords);
                         break;
-                    case "punctuation":
+                    case string classification when classification.Contains("punctuation"):
                         AddClassificationHighlighting(token, ReservedTextColors.Punctuators);
                         break;
-                    case "delimiter":
+                    case string classification when classification.Contains("delimiter"):
                         AddClassificationHighlighting(token, ReservedTextColors.Delimiters);
                         break;
-                    case "operator":
+                    case string classification when classification.Contains("operator"):
                         AddClassificationHighlighting(token, ReservedTextColors.Operators);
                         break;
-                    case "identifier - namespace":
+                    case "identifier - constant":
                     case "identifier - field declaration":
                     case "identifier - field reference":
+                    case "identifier - namespace segment":
                     case "identifier - property declaration":
                     case "identifier - property reference":
-                    case "identifier - constant":
+                    case "identifier - using directive segment":
                         token.HighlightColor = "color-white";
                         break;
-                    case "identifier - parameter":
+                    case "identifier - local variable declaration":
+                    case "identifier - local variable reference":
+                    case "identifier - local variable - for":
+                    case "identifier - local variable - foreach":
+                    case "identifier - parameter declaration":
+                    case "identifier - parameter reference":
                     case "identifier - parameter prefix":
-                    case "identifier - local variable":
                         token.HighlightColor = "color-light-blue";
                         break;
                     case "identifier - method declaration":
+                    case "identifier - method declaration - generic":
                     case "identifier - method invocation":
+                    case "identifier - method invocation - generic":
                         token.HighlightColor = "color-yellow";
                         break;
+                    case "identifier - attribute":
+                    case "identifier - base type - class":
                     case "identifier - class declaration":
                     case "identifier - class constructor":
-                    case "identifier - class name":
+                    case "identifier - class reference":
+                    case "identifier - field type - class":
+                    case "identifier - field type - class - nullable":
+                    case "identifier - generic type argument - class":
+                    case "identifier - generic type argument - class - nullable":
+                    case "identifier - generic type argument - record":
+                    case "identifier - generic type argument - record - nullable":
+                    case "identifier - local variable type - class":
+                    case "identifier - local variable type - class - nullable":
+                    case "identifier - parameter type - class":
+                    case "identifier - parameter type - class - nullable":
+                    case "identifier - property type - class":
+                    case "identifier - property type - class - generic":
+                    case "identifier - property type - class - nullable":
+                    case "identifier - property type - class - generic - nullable":
                     case "identifier - record declaration":
                     case "identifier - record constructor":
-                    case "identifier - record name":
+                    case "identifier - record reference":
                         token.HighlightColor = "color-green";
                         break;
-                    case "numeric literal":
-                    case "type parameter name":
+                    case "identifier - base type - interface":
+                    case "identifier - field type - interface":
+                    case "identifier - field type - interface - nullable":
+                    case "identifier - generic type argument - interface":
+                    case "identifier - generic type argument - interface - nullable":
+                    case "identifier - generic type parameter":
+                    case "identifier - generic type parameter - constraint":
+                    case "identifier - generic type parameter - nullable":
+                    case "identifier - interface declaration":
+                    case "identifier - interface reference":
+                    case "identifier - local variable type - interface":
+                    case "identifier - local variable type - interface - nullable":
+                    case "identifier - parameter type - interface":
+                    case "identifier - parameter type - interface - nullable":
+                    case "identifier - property type - interface":
+                    case "identifier - property type - interface - generic":
+                    case "identifier - property type - interface - nullable":
+                    case "identifier - property type - interface - generic - nullable":
+                    case "identifier - type parameter":
+                    case "literal - numeric":
                         token.HighlightColor = "color-light-green";
                         break;
-                    case "character literal":
-                    case "quoted string":
-                    case "verbatim string":
-                    case "interpolated string - start":
-                    case "interpolated string - text":
-                    case "interpolated string - end":
-                    case "interpolated verbatim string - start":
-                    case "interpolated verbatim string - text":
-                    case "interpolated verbatim string - end":
+                    case "literal - char":
+                    case "literal - quoted string":
+                    case "literal - verbatim string":
+                    case "literal - interpolated string - start":
+                    case "literal - interpolated string - text":
+                    case "literal - interpolated string - end":
+                    case "literal - interpolated verbatim string - start":
+                    case "literal - interpolated verbatim string - text":
+                    case "literal - interpolated verbatim string - end":
                         token.HighlightColor = "color-orange";
                         break;
+                    //case "identifier - property type":
+                    //case "identifier - property type - nullable":
+                    //    token.HighlightColor = GetFinalColorChoice(token);
+                    //    break;
                     case string classification when classification.Contains("identifier"):
-                        AddIdentifierHighlighting(token);
+                        //AddIdentifierHighlighting(token);
                         break;
                 }
             }
 
             HighlightUnidentifiedTokensRed(navTokens);
         }
+
+        private static string GetFinalColorChoice(NavToken token)
+        {
+            // Color Interface identifier refs light green
+            if (char.IsUpper(token.Text[0])
+                && char.IsUpper(token.Text[1])
+                && token.Text.StartsWith('I'))
+            {
+                return "color-light-green";
+            }
+
+            return "color-red";
+        }
+
 
         private static void AddClassificationHighlighting(NavToken token, List<ReservedTextColor> list)
         {
@@ -106,12 +164,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 return;
             }
 
-            if (ChartNavigator.IsUsingDirectiveIdentifier(token))
-            {
-                token.HighlightColor = "color-white";
-                return;
-            }
-
             // Color Interface identifier refs light green
             if (char.IsUpper(token.Text[0])
                 && char.IsUpper(token.Text[1])
@@ -125,7 +177,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             if (token.NextToken?.Text == "(" && token.GrandParentNodeKind != "ObjectCreationExpression" && token.GrandParentNodeKind != "Attribute")
             {
                 token.HighlightColor = "color-yellow";
-                token.UpdatedClassification = "method identifier - invocation";
+                token.UpdatedClassification = "identifier - method invocation";
                 return;
             }
             // generic methods that need types applied

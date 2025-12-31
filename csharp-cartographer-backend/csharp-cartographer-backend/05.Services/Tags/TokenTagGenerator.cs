@@ -229,22 +229,31 @@ namespace csharp_cartographer_backend._05.Services.Tags
 
         private static void TryAddBaseTypeTag(NavToken token)
         {
-            if (token.RoslynKind == "IdentifierToken"
-                && token.ParentNodeKind == "IdentifierName"
-                && token.GrandParentNodeKind == "SimpleBaseType"
-                && token.GreatGrandParentNodeKind == "BaseList")
+            if (token.UpdatedClassification is not null && token.UpdatedClassification.Contains("base type - interface"))
             {
-                if (char.IsUpper(token.Text[0])
-                    && char.IsUpper(token.Text[1])
-                    && token.Text.StartsWith('I'))
-                {
-                    token.Tags.Add(new InterfaceBaseTypeTag());
-                }
-                else
-                {
-                    token.Tags.Add(new ClassBaseTypeTag());
-                }
+                token.Tags.Add(new InterfaceBaseTypeTag());
             }
+            if (token.UpdatedClassification is not null && token.UpdatedClassification.Contains("base type - class"))
+            {
+                token.Tags.Add(new ClassBaseTypeTag());
+            }
+
+            //if (token.RoslynKind == "IdentifierToken"
+            //    && token.ParentNodeKind == "IdentifierName"
+            //    && token.GrandParentNodeKind == "SimpleBaseType"
+            //    && token.GreatGrandParentNodeKind == "BaseList")
+            //{
+            //    if (char.IsUpper(token.Text[0])
+            //        && char.IsUpper(token.Text[1])
+            //        && token.Text.StartsWith('I'))
+            //    {
+            //        token.Tags.Add(new InterfaceBaseTypeTag());
+            //    }
+            //    else
+            //    {
+            //        token.Tags.Add(new ClassBaseTypeTag());
+            //    }
+            //}
         }
     }
 }
