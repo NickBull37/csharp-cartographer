@@ -26,6 +26,9 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         private readonly IClassificationWizard _classificationWizard;
         private readonly CartographerConfig _config;
 
+        private readonly IOptions<CartographerConfig> _testConfig;
+        private readonly IOptions<CartographerConfig>? _testConfigTwo;
+
         public GenerateArtifactWorkflow(
             IFileProcessor fileProcessor,
             INavTokenGenerator navTokenGenerator,

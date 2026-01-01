@@ -7,16 +7,32 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 {
     public class ClassificationWizard : IClassificationWizard
     {
+        // attributes
         private static readonly HashSet<string> AttributeClassifications =
         [
             "identifier"
         ];
 
+        // base types
         private static readonly HashSet<string> BaseTypeClassifications =
         [
             "identifier"
         ];
 
+        // classes
+        private static readonly HashSet<string> ClassClassifications =
+        [
+            "class name",
+            "static symbol"
+        ];
+
+        // interfaces
+        private static readonly HashSet<string> InterfaceClassifications =
+        [
+            "interface name"
+        ];
+
+        // methods
         private static readonly HashSet<string> MethodDeclarationClassifications =
         [
             "method name",
@@ -27,6 +43,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         [
             "method name",
             "static symbol",
+            "identifier"
+        ];
+
+        private static readonly HashSet<string> MethodReturnTypeClassifications =
+        [
+            "class name",
+            "interface name",
+            "record class name",
             "identifier"
         ];
 
@@ -63,6 +87,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             "identifier",
         ];
 
+        // generic type args
         private static readonly HashSet<string> GenericTypeArgumentClassifications =
         [
             "class name",
@@ -85,6 +110,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             "identifier",
         ];
 
+        // namespaces
         private static readonly HashSet<string> NamespaceClassifications =
         [
             "namespace name"
@@ -109,23 +135,23 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             "identifier"
         ];
 
+        // records
+        private static readonly HashSet<string> RecordClassifications =
+        [
+            "record class name"
+        ];
+
+        // using directives
         private static readonly HashSet<string> UsingDirectiveClassifications =
         [
-            // Roslyn will classify some using directive segments as namespace
-            // name if that namespace is referenced in the uploaded file
+            /*
+             *  Roslyn will classify some using directive segments as namespace name
+             *  if that namespace is referenced in the uploaded file
+             */
+
             "namespace name",
             "identifier"
         ];
-
-        private const string AttributeKind = "Attribute";
-        private const string BaseListKind = "BaseList";
-        private const string SimpleBaseTypeKind = "SimpleBaseType";
-        private const string PropertyDeclarationKind = "PropertyDeclaration";
-        private const string TypeArgumentListKind = "TypeArgumentList";
-        private const string IdentifierNameKind = "IdentifierName";
-        private const string QualifiedNameKind = "QualifiedName";
-        private const string UsingDirectiveKind = "UsingDirective";
-        private const string FieldDeclarationKind = "FieldDeclaration";
 
         /// <summary>Updates classifications that are misleading or don't provide enough info to be helpful.</summary>
         public void CorrectTokenClassifications(List<NavToken> navTokens)
@@ -209,111 +235,93 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 
         private static string? GetIdentifierCorrection(NavToken token)
         {
-            // correct constant identifiers
+            // constant identifiers
             if (token.FieldSymbol?.IsConst == true)
             {
                 return "identifier - constant";
             }
 
-            // correct class identifiers
-            if (token.RoslynClassification == "class name" && token.ParentNodeKind == "ClassDeclaration")
+            // class identifiers
+            if (TryGetClassCorrection(token) is { } classCorrection)
             {
-                return "identifier - class declaration";
-            }
-            if (token.RoslynClassification == "class name" && token.ParentNodeKind == "ConstructorDeclaration")
-            {
-                return "identifier - class constructor";
+                return classCorrection;
             }
 
-            // correct interface identifiers
-            if (token.RoslynClassification == "interface name" && token.ParentNodeKind == "InterfaceDeclaration")
+            // interface identifiers
+            if (TryGetInterfaceCorrection(token) is { } interfaceCorrection)
             {
-                return "identifier - interface declaration";
+                return interfaceCorrection;
             }
 
-            // correct record identifiers
-            if (token.RoslynClassification == "record class name" && token.ParentNodeKind == "RecordDeclaration")
+            // record identifiers
+            if (TryGetRecordCorrection(token) is { } recordCorrection)
             {
-                return "identifier - record declaration";
-            }
-            if (token.RoslynClassification == "record class name" && token.ParentNodeKind == "ConstructorDeclaration")
-            {
-                return "identifier - record constructor";
+                return recordCorrection;
             }
 
-            // correct property identifiers
-            var propertyCorrection = TryGetPropertyCorrection(token);
-            if (propertyCorrection is not null)
+            // property identifiers
+            if (TryGetPropertyCorrection(token) is { } propertyCorrection)
             {
                 return propertyCorrection;
             }
 
-            // correct parameter identifiers
-            var parameterCorrection = TryGetParameterCorrection(token);
-            if (parameterCorrection is not null)
+            // parameter identifiers
+            if (TryGetParameterCorrection(token) is { } parameterCorrection)
             {
                 return parameterCorrection;
             }
 
-            // correct local identifiers
-            var localVarCorrection = TryGetLocalVariableCorrection(token);
-            if (localVarCorrection is not null)
+            // local identifiers
+            if (TryGetLocalVariableCorrection(token) is { } localVarCorrection)
             {
                 return localVarCorrection;
             }
 
-            // correct field identifiers
-            var fieldCorrection = TryGetFieldCorrection(token);
-            if (fieldCorrection is not null)
+            // field identifiers
+            if (TryGetFieldCorrection(token) is { } fieldCorrection)
             {
                 return fieldCorrection;
             }
 
-            // correct namespace identifiers
-            var namespaceCorrection = TryGetNamespaceCorrection(token);
-            if (namespaceCorrection is not null)
+            // namespace identifiers
+            if (TryGetNamespaceCorrection(token) is { } namespaceCorrection)
             {
                 return namespaceCorrection;
             }
 
-            // correct attribute identifiers
-            var attributeCorrection = TryGetAttributeCorrection(token);
-            if (attributeCorrection is not null)
+            // attribute identifiers
+            if (TryGetAttributeCorrection(token) is { } attributeCorrection)
             {
                 return attributeCorrection;
             }
 
-            // correct base type identifiers
-            var baseTypeCorrection = TryGetBaseTypeCorrection(token);
-            if (baseTypeCorrection is not null)
+            // base type identifiers
+            if (TryGetBaseTypeCorrection(token) is { } baseTypeCorrection)
             {
                 return baseTypeCorrection;
             }
 
-            // correct method identifiers
-            var methodCorrection = TryGetMethodCorrection(token);
-            if (methodCorrection is not null)
+            // method identifiers
+            if (TryGetMethodCorrection(token) is { } methodCorrection)
             {
                 return methodCorrection;
             }
 
-            // correct using directive identifiers
-            var usingDirectiveCorrection = TryGetUsingDirectiveCorrection(token);
-            if (usingDirectiveCorrection is not null)
+            // using directive identifiers
+            if (TryGetUsingDirectiveCorrection(token) is { } usingDirectiveCorrection)
             {
                 return usingDirectiveCorrection;
             }
 
-            // correct generic type parameters
-            var genericTypeParameterCorrection = TryGetGenericTypeParameterCorrection(token);
-            if (genericTypeParameterCorrection is not null)
+            // generic type parameters
+            // TODO: move this out of identifier highlighting (maybe to methods for return types)
+            if (TryGetGenericTypeParameterCorrection(token) is { } genericTypeParameterCorrection)
             {
                 return genericTypeParameterCorrection;
             }
 
-            // correct generic type arguments
-            var genericTypeArgumentCorrection = TryGetGenericTypeArgumentCorrection(token);
-            if (genericTypeArgumentCorrection is not null)
+            // generic type arguments
+            if (TryGetGenericTypeArgumentCorrection(token) is { } genericTypeArgumentCorrection)
             {
                 return genericTypeArgumentCorrection;
             }
@@ -321,13 +329,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             return token.RoslynClassification;
         }
 
-        // attributes
-        // [DONE]
+        // [x] attributes
         private static string? TryGetAttributeCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
 
-            var hasAttributeAncestor = token.GrandParentNodeKind == AttributeKind;
+            var hasAttributeAncestor = token.GrandParentNodeKind == RoslynKind.Attribute.ToString();
 
             if (classification is null
                 || !hasAttributeAncestor
@@ -339,15 +346,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             return $"identifier - attribute";
         }
 
-        // base types
-        // [DONE]
+        // [x] base types
         private static string? TryGetBaseTypeCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
 
             var hasBaseTypeAncestor =
-                token.GrandParentNodeKind == SimpleBaseTypeKind &&
-                token.GreatGrandParentNodeKind == BaseListKind;
+                token.GrandParentNodeKind == RoslynKind.SimpleBaseType.ToString() &&
+                token.GreatGrandParentNodeKind == RoslynKind.BaseList.ToString();
 
             if (classification is null
                 || !hasBaseTypeAncestor
@@ -363,10 +369,37 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             return $"identifier - base type{typeExtenstion}";
         }
 
-        // field declarations
-        // field references
-        // field types
-        // [DONE]
+        // [x] class declarations
+        // [x] class constructors
+        private static string? TryGetClassCorrection(NavToken token)
+        {
+            var classification = token.RoslynClassification;
+            bool isClassRelated = classification is not null
+                && ClassClassifications.Contains(classification);
+
+            if (!isClassRelated)
+            {
+                return null;
+            }
+
+            // declarations
+            if (token.ParentNodeKind == RoslynKind.ClassDeclaration.ToString())
+            {
+                return $"identifier - class declaration";
+            }
+
+            // constructors
+            if (token.ParentNodeKind == RoslynKind.ConstructorDeclaration.ToString())
+            {
+                return $"identifier - class constructor";
+            }
+
+            return null;
+        }
+
+        // [x] field declarations
+        // [x] field references
+        // [x] field types
         private static string? TryGetFieldCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
@@ -402,22 +435,25 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 ? " - interface"
                 : " - class";
 
+            var genericExtension = token.ParentNodeKind == RoslynKind.GenericName.ToString()
+                ? " - generic"
+                : string.Empty;
+
             var nullableExtension = token.GrandParentNodeKind == RoslynKind.NullableType.ToString()
                 ? " - nullable"
                 : string.Empty;
 
-            return $"identifier - field type{typeExtenstion}{nullableExtension}";
+            return $"identifier - field data type{typeExtenstion}{genericExtension}{nullableExtension}";
         }
 
-        // generic type arguments
-        // [DONE]
+        // [x] generic type arguments
         private static string? TryGetGenericTypeArgumentCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
 
             var hasTypeArgumentListAncestor =
-                token.GrandParentNodeKind == TypeArgumentListKind ||
-                token.GreatGrandParentNodeKind == TypeArgumentListKind;
+                token.GrandParentNodeKind == RoslynKind.TypeArgumentList.ToString() ||
+                token.GreatGrandParentNodeKind == RoslynKind.TypeArgumentList.ToString();
 
             if (classification is null
                 || !hasTypeArgumentListAncestor
@@ -431,38 +467,63 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 "class name" => " - class",
                 "interface name" => " - interface",
                 "record class name" => " - record",
-                "identifier" => LooksLikeInterface(token.Text) ? " - interface" : " - class",
+                "identifier" => LooksLikeInterface(token.Text)
+                    ? " - interface"
+                    : " - class",
                 _ => string.Empty
             };
 
-            var nullableExtension = token.NextToken?.Text == "?" ? " - nullable" : string.Empty;
+            var nullableExtension = token.NextToken?.Text == "?"
+                ? " - nullable"
+                : string.Empty;
 
             return $"identifier - generic type argument{typeExtension}{nullableExtension}";
         }
 
-        // generic type parameters
-        // [DONE]
+        // [x] generic type parameters
         private static string? TryGetGenericTypeParameterCorrection(NavToken token)
         {
             if (token.RoslynClassification != "type parameter name")
                 return null;
 
-            var constraintExtension = token.GrandParentNodeKind == "TypeParameterConstraintClause"
+            var constraintExtension = token.GrandParentNodeKind == RoslynKind.TypeParameterConstraintClause.ToString()
                 ? " - constraint"
                 : string.Empty;
 
-            var nullableExtension = token.GrandParentNodeKind == "NullableType"
+            var nullableExtension = token.GrandParentNodeKind == RoslynKind.NullableType.ToString()
                 ? " - nullable"
                 : string.Empty;
 
             return $"identifier - generic type parameter{constraintExtension}{nullableExtension}";
         }
 
-        // local var declarations
-        // local var references
-        // local var - for
-        // local var - foreach
-        // local var types
+        // [x] interface declarations
+        private static string? TryGetInterfaceCorrection(NavToken token)
+        {
+            var classification = token.RoslynClassification;
+            bool isInterfaceRelated = classification is not null
+                && InterfaceClassifications.Contains(classification);
+
+            if (!isInterfaceRelated)
+            {
+                return null;
+            }
+
+            // declarations
+            if (classification == "interface name"
+                && token.ParentNodeKind == RoslynKind.InterfaceDeclaration.ToString())
+            {
+                return $"identifier - interface declaration";
+            }
+
+            return null;
+        }
+
+        // [x] local var declarations
+        // [x] local var references
+        // [x] local var - for
+        // [x] local var - foreach
+        // [x] local var types
         // TODO: tweak for & foreach variables
         private static string? TryGetLocalVariableCorrection(NavToken token)
         {
@@ -500,9 +561,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 return $"identifier - local variable {extension}";
             }
 
+            bool hasVariableDeclarationAncestor = token.GrandParentNodeKind == RoslynKind.VariableDeclaration.ToString()
+                || token.GreatGrandParentNodeKind == RoslynKind.VariableDeclaration.ToString();
 
-            if (token.GrandParentNodeKind != RoslynKind.VariableDeclaration.ToString()
-                && token.GreatGrandParentNodeKind != RoslynKind.VariableDeclaration.ToString())
+            bool hasLocalDeclarationStatementAncestor = token.GreatGrandParentNodeKind == RoslynKind.LocalDeclarationStatement.ToString()
+                || token.GreatGreatGrandParentNodeKind == RoslynKind.LocalDeclarationStatement.ToString();
+
+            if (!hasVariableDeclarationAncestor || !hasLocalDeclarationStatementAncestor)
             {
                 return null;
             }
@@ -512,27 +577,42 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 ? " - interface"
                 : " - class";
 
+            var genericExtension = token.ParentNodeKind == RoslynKind.GenericName.ToString()
+                ? " - generic"
+                : string.Empty;
+
             var nullableExtension = token.GrandParentNodeKind == RoslynKind.NullableType.ToString()
                 ? " - nullable"
                 : string.Empty;
 
-            return $"identifier - local variable type{typeExtenstion}{nullableExtension}";
+            return $"identifier - local variable type{typeExtenstion}{genericExtension}{nullableExtension}";
         }
 
-        // method declarations
-        // method invocations
-        // [DONE]
+        // [x] method declarations
+        // [x] method invocations
+        // [x] method return types
+        // TODO: look into converting generic type params into return types
         private static string? TryGetMethodCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
-            if (classification is null)
+            bool isMethodRelated = classification is not null &&
+                (
+                    MethodDeclarationClassifications.Contains(classification) ||
+                    MethodInvocationClassifications.Contains(classification) ||
+                    MethodReturnTypeClassifications.Contains(classification)
+                );
+
+            if (!isMethodRelated)
             {
                 return null;
             }
 
             // declarations
-            var isDeclaration = token.ParentNodeKind == RoslynKind.MethodDeclaration.ToString();
-            if (isDeclaration && MethodDeclarationClassifications.Contains(classification))
+            if (token.ParentNodeKind == RoslynKind.MethodDeclaration.ToString() &&
+                (
+                    classification == "method name" ||
+                    classification == "static symbol")
+                )
             {
                 string genExtension = string.Empty;
                 if (token.NextToken?.Text == "<")
@@ -543,18 +623,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             }
 
             // invocations
-            bool isInvocation = token.GrandParentNodeKind == RoslynKind.InvocationExpression.ToString()
-                || token.GreatGrandParentNodeKind == RoslynKind.InvocationExpression.ToString();
-
             var nextTokenText = token.NextToken?.Text;
             var hasPermittedNextToken = nextTokenText == "(" || nextTokenText == "<";
+            var hasInvocationAncestor = token.GrandParentNodeKind == RoslynKind.InvocationExpression.ToString()
+                || token.GreatGrandParentNodeKind == RoslynKind.InvocationExpression.ToString();
 
-            if (!isInvocation
-                || !hasPermittedNextToken
-                || !MethodInvocationClassifications.Contains(classification))
-            {
-                return null;
-            }
+            bool isInvocation = hasInvocationAncestor
+                && hasPermittedNextToken
+                && MethodInvocationClassifications.Contains(classification);
 
             var hasGenericAncestor = token.NextToken?.ParentNodeKind == RoslynKind.TypeArgumentList.ToString()
                 || token.NextToken?.ParentNodeKind == RoslynKind.TypeParameterList.ToString();
@@ -563,17 +639,39 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 ? " - generic"
                 : string.Empty;
 
-            return $"identifier - method invocation{genericExtension}";
+            if (isInvocation)
+            {
+                return $"identifier - method invocation{genericExtension}";
+            }
+
+            // return types
+            bool hasDeclarationAncestor = token.GrandParentNodeKind == RoslynKind.MethodDeclaration.ToString()
+                || token.GreatGrandParentNodeKind == RoslynKind.MethodDeclaration.ToString();
+
+            bool isReturnType = hasDeclarationAncestor && MethodReturnTypeClassifications.Contains(classification);
+            if (isReturnType)
+            {
+                var typeExtenstion = LooksLikeInterface(token.Text)
+                    ? " - interface"
+                    : " - class";
+
+                var nullableExtension = token.GrandParentNodeKind == RoslynKind.NullableType.ToString()
+                    ? " - nullable"
+                    : string.Empty;
+
+                return $"identifier - method return type{typeExtenstion}{genericExtension}{nullableExtension}";
+            }
+
+            return null;
         }
 
-        // namespace segments
-        // [DONE]
+        // [x] namespace segments
         private static string? TryGetNamespaceCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
             var prevTokenText = token.PrevToken?.Text;
 
-            var hasQualifiedNameAncestor = token.GrandParentNodeKind == QualifiedNameKind;
+            var hasQualifiedNameAncestor = token.GrandParentNodeKind == RoslynKind.QualifiedName.ToString();
             var isMistakingUsingDirForNamespace = prevTokenText == "using";
 
             if (classification is null
@@ -587,11 +685,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             return $"identifier - namespace segment";
         }
 
-        // parameter declarations
-        // parameter references
-        // parameter types
-        // parameter prefixes
-        // [DONE]
+        // [x] parameter declarations
+        // [x] parameter references
+        // [x] parameter types
+        // [x] parameter prefixes
         private static string? TryGetParameterCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
@@ -636,18 +733,21 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 ? " - interface"
                 : " - class";
 
+            var genericExtension = token.ParentNodeKind == RoslynKind.GenericName.ToString()
+                ? " - generic"
+                : string.Empty;
+
             var nullableExtension = token.GrandParentNodeKind == RoslynKind.NullableType.ToString()
                 && token.GreatGrandParentNodeKind == RoslynKind.Parameter.ToString()
                     ? " - nullable"
                     : string.Empty;
 
-            return $"identifier - parameter type{typeExtenstion}{nullableExtension}";
+            return $"identifier - parameter data type{typeExtenstion}{genericExtension}{nullableExtension}";
         }
 
-        // property declarations
-        // property references
-        // property types
-        // [DONE]
+        // [x] property declarations
+        // [x] property references
+        // [x] property types
         private static string? TryGetPropertyCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
@@ -671,8 +771,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 
             // types
             var hasPropertyDeclarationAncestor =
-                token.GrandParentNodeKind == PropertyDeclarationKind ||
-                token.GreatGrandParentNodeKind == PropertyDeclarationKind;
+                token.GrandParentNodeKind == RoslynKind.PropertyDeclaration.ToString() ||
+                token.GreatGrandParentNodeKind == RoslynKind.PropertyDeclaration.ToString();
 
             if (!hasPropertyDeclarationAncestor
                 || !PropertyDeclarationTypeClassifications.Contains(classification))
@@ -684,27 +784,56 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 ? " - interface"
                 : " - class";
 
-            var genericExtension = token.ParentNodeKind == "GenericName"
+            var genericExtension = token.ParentNodeKind == RoslynKind.GenericName.ToString()
                 ? " - generic"
                 : string.Empty;
 
-            var nullableExtension = token.GrandParentNodeKind == "NullableType"
-                && token.GreatGrandParentNodeKind == PropertyDeclarationKind
+            var nullableExtension = token.GrandParentNodeKind == RoslynKind.NullableType.ToString()
+                && token.GreatGrandParentNodeKind == RoslynKind.PropertyDeclaration.ToString()
                     ? " - nullable"
                     : string.Empty;
 
-            return $"identifier - property type{typeExtenstion}{genericExtension}{nullableExtension}";
+            return $"identifier - property data type{typeExtenstion}{genericExtension}{nullableExtension}";
         }
 
-        // using directive segments
-        // [DONE]
+        // [x] record declarations
+        // [x] record constructors
+        private static string? TryGetRecordCorrection(NavToken token)
+        {
+            var classification = token.RoslynClassification;
+            bool isRecordRelated = classification is not null
+                && RecordClassifications.Contains(classification);
+
+            if (!isRecordRelated)
+            {
+                return null;
+            }
+
+            // declarations
+            if (classification == "record class name"
+                && token.ParentNodeKind == RoslynKind.RecordDeclaration.ToString())
+            {
+                return $"identifier - record declaration";
+            }
+
+            // constructors
+            if (classification == "record class name"
+                && token.ParentNodeKind == RoslynKind.ConstructorDeclaration.ToString())
+            {
+                return $"identifier - record constructor";
+            }
+
+            return null;
+        }
+
+        // [x] using directive segments
         private static string? TryGetUsingDirectiveCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
             var prevTokenText = token.PrevToken?.Text;
             var nextTokenText = token.NextToken?.Text;
 
-            var hasQualifiedNameAncestor = token.GrandParentNodeKind == QualifiedNameKind;
+            var hasQualifiedNameAncestor = token.GrandParentNodeKind == RoslynKind.QualifiedName.ToString();
             bool hasPermittedNextAndPrevTokens = (nextTokenText, prevTokenText) switch
             {
                 (".", ".") => true,
@@ -724,31 +853,32 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             return $"identifier - using directive segment";
         }
 
+        // correct any tokens Roslyn classifies as punctuation
         private static string? GetPunctuationCorrection(NavToken token)
         {
-            // correct range operator
+            // range operator
             if (token.Text == "..")
             {
                 return $"operator - {token.Text}";
             }
 
-            // correct delimiters
+            // delimiters
             if (IsDelimiterTokenText(token.Text))
             {
                 return $"delimiter - {token.Text}";
             }
 
-            // correct angle brackets
+            // angle brackets (can be delimiters or operators)
             if (IsAngleBracketTokenText(token.Text))
             {
                 var parent = token.RoslynToken.Parent;
                 if (parent is null) return null;
 
-                // Generic type delimiters: List<T>
+                // generic type delimiters: List<T>
                 if (parent.IsKind(SyntaxKind.TypeArgumentList) || parent.IsKind(SyntaxKind.TypeParameterList))
                     return $"delimiter - {token.Text}";
 
-                // Comparison operators: a < b, a > b
+                // comparison operators: a < b, a > b
                 if (parent.IsKind(SyntaxKind.GreaterThanExpression) || parent.IsKind(SyntaxKind.LessThanExpression))
                     return $"operator - {token.Text}";
             }
@@ -756,11 +886,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             return $"{token.RoslynClassification} - {token.Text}";
         }
 
+        // correct any tokens Roslyn classifies as operator (none found yet)
         private static string? GetOperatorCorrection(NavToken token)
         {
             return $"{token.RoslynClassification} - {token.Text}";
         }
 
+        // correct any tokens Roslyn classifies as string
         private static string? GetStringLiteralCorrection(NavToken token)
         {
             if (token.RoslynClassification == "string" && token.RoslynKind == "CharacterLiteralToken")

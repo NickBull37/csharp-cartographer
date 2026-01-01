@@ -63,44 +63,60 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case "identifier - base type - class":
                     case "identifier - class declaration":
                     case "identifier - class constructor":
-                    case "identifier - class reference":
-                    case "identifier - field type - class":
-                    case "identifier - field type - class - nullable":
+                    case "identifier - field data type - class":
+                    case "identifier - field data type - class - generic":
+                    case "identifier - field data type - class - nullable":
+                    case "identifier - field data type - class - generic - nullable":
                     case "identifier - generic type argument - class":
                     case "identifier - generic type argument - class - nullable":
                     case "identifier - generic type argument - record":
                     case "identifier - generic type argument - record - nullable":
                     case "identifier - local variable type - class":
+                    case "identifier - local variable type - class - generic":
                     case "identifier - local variable type - class - nullable":
-                    case "identifier - parameter type - class":
-                    case "identifier - parameter type - class - nullable":
-                    case "identifier - property type - class":
-                    case "identifier - property type - class - generic":
-                    case "identifier - property type - class - nullable":
-                    case "identifier - property type - class - generic - nullable":
+                    case "identifier - local variable type - class - generic - nullable":
+                    case "identifier - method return type - class":
+                    case "identifier - method return type - class - generic":
+                    case "identifier - method return type - class - nullable":
+                    case "identifier - method return type - class - generic - nullable":
+                    case "identifier - parameter data type - class":
+                    case "identifier - parameter data type - class - generic":
+                    case "identifier - parameter data type - class - nullable":
+                    case "identifier - parameter data type - class - generic - nullable":
+                    case "identifier - property data type - class":
+                    case "identifier - property data type - class - generic":
+                    case "identifier - property data type - class - nullable":
+                    case "identifier - property data type - class - generic - nullable":
                     case "identifier - record declaration":
                     case "identifier - record constructor":
-                    case "identifier - record reference":
                         token.HighlightColor = "color-green";
                         break;
                     case "identifier - base type - interface":
-                    case "identifier - field type - interface":
-                    case "identifier - field type - interface - nullable":
+                    case "identifier - field data type - interface":
+                    case "identifier - field data type - interface - generic":
+                    case "identifier - field data type - interface - nullable":
+                    case "identifier - field data type - interface - generic - nullable":
                     case "identifier - generic type argument - interface":
                     case "identifier - generic type argument - interface - nullable":
                     case "identifier - generic type parameter":
                     case "identifier - generic type parameter - constraint":
                     case "identifier - generic type parameter - nullable":
                     case "identifier - interface declaration":
-                    case "identifier - interface reference":
                     case "identifier - local variable type - interface":
+                    case "identifier - local variable type - interface - generic":
                     case "identifier - local variable type - interface - nullable":
-                    case "identifier - parameter type - interface":
-                    case "identifier - parameter type - interface - nullable":
-                    case "identifier - property type - interface":
-                    case "identifier - property type - interface - generic":
-                    case "identifier - property type - interface - nullable":
-                    case "identifier - property type - interface - generic - nullable":
+                    case "identifier - local variable type - interface - generic - nullable":
+                    case "identifier - method return type - interface - generic":
+                    case "identifier - method return type - interface - nullable":
+                    case "identifier - method return type - interface - generic - nullable":
+                    case "identifier - parameter data type - interface":
+                    case "identifier - parameter data type - interface - generic":
+                    case "identifier - parameter data type - interface - nullable":
+                    case "identifier - parameter data type - interface - generic - nullable":
+                    case "identifier - property data type - interface":
+                    case "identifier - property data type - interface - generic":
+                    case "identifier - property data type - interface - nullable":
+                    case "identifier - property data type - interface - generic - nullable":
                     case "identifier - type parameter":
                     case "literal - numeric":
                         token.HighlightColor = "color-light-green";
