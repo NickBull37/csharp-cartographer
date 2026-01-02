@@ -35,11 +35,14 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case string classification when classification.Contains("operator"):
                         HighlightReservedTextTokens(token, ReservedTextColors.Operators);
                         break;
+                    case "identifier - namespace reference segment":
+                        token.HighlightColor = "color-gray";
+                        break;
                     case "identifier - attribute argument":
                     case "identifier - constant":
                     case "identifier - field declaration":
                     case "identifier - field reference":
-                    case "identifier - namespace segment":
+                    case "identifier - namespace declaration segment":
                     case "identifier - property access":
                     case "identifier - property declaration":
                     case "identifier - property initialization":

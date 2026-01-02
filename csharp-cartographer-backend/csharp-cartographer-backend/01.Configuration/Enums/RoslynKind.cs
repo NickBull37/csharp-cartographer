@@ -2,6 +2,7 @@
 {
     public enum RoslynKind
     {
+        AliasQualifiedName,
         Argument,
         AttributeArgument,
         Attribute,

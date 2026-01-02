@@ -106,7 +106,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         // namespaces
         private static readonly HashSet<string> NamespaceClassifications =
         [
-            "namespace name"
+            "namespace name",
+            "identifier"
         ];
 
         // object creations
@@ -183,7 +184,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         public void CorrectTokenClassifications(List<NavToken> navTokens)
         {
             /*
-             *  The first time through, only classify tokens when success is guarenteed.
+             *  The first time through, only classify tokens when they can be classified
+             *  with 100% accuracy.
              */
             foreach (var token in navTokens)
             {
@@ -191,14 +193,42 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             }
 
             /*
-             *  The remaining tokens are much harder to classify correctly. Only set these
-             *  after all other tokens have been classified to reduce the chance of classifying
-             *  tokens unintentionally
+             *  The remaining tokens are much harder to classify correctly and the rule
+             *  sets tend to apply to more tokens than intended. Do these last.
              */
             var unclassifiedTokens = navTokens.Where(token => string.IsNullOrEmpty(token.UpdatedClassification));
-            foreach (var token in unclassifiedTokens)
+
+            for (int i = 0; i < navTokens.Count() - 1; i++)
             {
-                token.UpdatedClassification = GetRemainingCorrections(token);
+                var token = navTokens[i];
+                var roslynClassification = token.RoslynClassification;
+                var updatedClassificationAlreadySet = !string.IsNullOrEmpty(token.UpdatedClassification);
+
+                if (roslynClassification is null || updatedClassificationAlreadySet)
+                {
+                    continue;
+                }
+
+                // property access refs
+                var prevPrevToken = navTokens.ElementAt(token.Index - 2);
+                var prevPrevTokenClassification = prevPrevToken.UpdatedClassification ?? string.Empty;
+                if (PropertyAccessClassifications.Contains(roslynClassification)
+                    && token.PrevToken?.Text == "."
+                    && !prevPrevTokenClassification.Contains("namespace"))
+                {
+                    token.UpdatedClassification = "identifier - property access";
+                    continue;
+                }
+
+                // static classes, interfaces, structs, & enums
+                if (LooksLikeInterface(token.Text))
+                {
+                    token.UpdatedClassification = "identifier - interface reference";
+                }
+                else
+                {
+                    token.UpdatedClassification = "identifier - class reference";
+                }
             }
         }
 
@@ -243,40 +273,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             return null;
         }
 
-        private static string? GetRemainingCorrections(NavToken token)
-        {
-            var classification = token.RoslynClassification;
-            if (classification is null)
-            {
-                return null;
-            }
-
-            // property access refs
-            if (PropertyAccessClassifications.Contains(classification)
-                && token.PrevToken?.Text == ".")
-            {
-                return "identifier - property access";
-            }
-
-            // object creations
-            //if (token.GrandParentNodeKind == RoslynKind.ObjectCreationExpression.ToString())
-            //{
-            //    return "identifier - class creation";
-            //}
-
-            //// static classes, interfaces, structs, & enums
-            //if (LooksLikeInterface(token.Text))
-            //{
-            //    return "identifier - interface reference";
-            //}
-            //else
-            //{
-            //    return "identifier - class reference";
-            //}
-
-            return token.RoslynClassification;
-        }
-
         private static string? GetKeywordCorrection(NavToken token)
         {
             if (token.Text is "public" or "protected" or "private" or "internal")
@@ -314,8 +310,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             {
                 return "identifier - constant";
             }
-
-
 
             // class identifiers
             if (TryGetClassCorrection(token) is { } classCorrection)
@@ -463,6 +457,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             var typeExtenstion = LooksLikeInterface(token.Text)
                 ? " - interface"
                 : " - class";
+
+            // TODO: add generic extension option (see CollectionDemo.cs)
 
             return $"identifier - base type{typeExtenstion}";
         }
@@ -803,24 +799,41 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             return null;
         }
 
-        // [x] namespace segments
+        // [x] namespace declaration segments
+        // [x] namespace reference segments
         private static string? TryGetNamespaceCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
-            var prevTokenText = token.PrevToken?.Text;
+            bool isNamespaceRelated = classification is not null
+                && NamespaceClassifications.Contains(classification);
 
-            var hasQualifiedNameAncestor = token.GrandParentNodeKind == RoslynKind.QualifiedName.ToString();
-            var isMistakingUsingDirForNamespace = prevTokenText == "using";
-
-            if (classification is null
-                || !hasQualifiedNameAncestor
-                || isMistakingUsingDirForNamespace
-                || !NamespaceClassifications.Contains(classification))
+            if (!isNamespaceRelated)
             {
                 return null;
             }
 
-            return $"identifier - namespace segment";
+            // declaration segments
+            var prevTokenText = token.PrevToken?.Text;
+            var hasQualifiedNameAncestor = token.GrandParentNodeKind == RoslynKind.QualifiedName.ToString();
+            var mistakingUsingDirForNamespace = prevTokenText == "using";
+
+            if (hasQualifiedNameAncestor
+                && !mistakingUsingDirForNamespace
+                && NamespaceClassifications.Contains(classification))
+            {
+                return $"identifier - namespace declaration segment";
+            }
+
+            // reference segments
+            var hasAliasQualifiedNameAncestor = token.GrandParentNodeKind == RoslynKind.AliasQualifiedName.ToString();
+
+            if (hasAliasQualifiedNameAncestor
+                && NamespaceClassifications.Contains(classification))
+            {
+                return $"identifier - namespace reference segment";
+            }
+
+            return null;
         }
 
         // [x] object creations
@@ -837,6 +850,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 return null;
             }
 
+            // TODO: add generic tag for generic constructors (see CollectionDemo.cs)
+            // TODO: fix parameterless constructor tag so it applies even with empty ()
+
+            // object creations
             if (token.GrandParentNodeKind == RoslynKind.ObjectCreationExpression.ToString()
                 && token.PrevToken?.Text == "new")
             {
@@ -847,6 +864,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 return $"identifier - constructor invocation{parameterlessExtension}";
             }
 
+            // property initialization
             if (token.GreatGrandParentNodeKind == RoslynKind.ObjectInitializerExpression.ToString())
             {
                 return $"identifier - property initialization";
