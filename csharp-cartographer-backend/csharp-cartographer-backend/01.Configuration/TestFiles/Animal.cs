@@ -67,4 +67,20 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             Name = TEST_LITERAL;
         }
     }
+
+    public class TestClass
+    {
+        public void DoSomething()
+        {
+            Animal animal = new("testType")
+            {
+                Name = "Holly"
+            };
+
+            if (animal.Name == "Johnny")
+            {
+
+            }
+        }
+    }
 }

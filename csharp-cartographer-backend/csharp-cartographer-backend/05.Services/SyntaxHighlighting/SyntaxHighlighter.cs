@@ -24,22 +24,25 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 switch (token.UpdatedClassification)
                 {
                     case string classification when classification.Contains("keyword"):
-                        AddClassificationHighlighting(token, ReservedTextColors.Keywords);
+                        HighlightReservedTextTokens(token, ReservedTextColors.Keywords);
                         break;
                     case string classification when classification.Contains("punctuation"):
-                        AddClassificationHighlighting(token, ReservedTextColors.Punctuators);
+                        HighlightReservedTextTokens(token, ReservedTextColors.Punctuators);
                         break;
                     case string classification when classification.Contains("delimiter"):
-                        AddClassificationHighlighting(token, ReservedTextColors.Delimiters);
+                        HighlightReservedTextTokens(token, ReservedTextColors.Delimiters);
                         break;
                     case string classification when classification.Contains("operator"):
-                        AddClassificationHighlighting(token, ReservedTextColors.Operators);
+                        HighlightReservedTextTokens(token, ReservedTextColors.Operators);
                         break;
+                    case "identifier - attribute argument":
                     case "identifier - constant":
                     case "identifier - field declaration":
                     case "identifier - field reference":
                     case "identifier - namespace segment":
+                    case "identifier - property access":
                     case "identifier - property declaration":
+                    case "identifier - property initialization":
                     case "identifier - property reference":
                     case "identifier - using directive segment":
                         token.HighlightColor = "color-white";
@@ -61,8 +64,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                         break;
                     case "identifier - attribute":
                     case "identifier - base type - class":
-                    case "identifier - class declaration":
                     case "identifier - class constructor":
+                    case "identifier - class declaration":
+                    case "identifier - class reference":
+                    case "identifier - constructor invocation":
+                    case "identifier - constructor invocation - parameterless":
+                    case "identifier - exception type":
                     case "identifier - field data type - class":
                     case "identifier - field data type - class - generic":
                     case "identifier - field data type - class - nullable":
@@ -71,6 +78,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case "identifier - generic type argument - class - nullable":
                     case "identifier - generic type argument - record":
                     case "identifier - generic type argument - record - nullable":
+                    case "identifier - generic type parameter constraint - class":
                     case "identifier - local variable type - class":
                     case "identifier - local variable type - class - generic":
                     case "identifier - local variable type - class - nullable":
@@ -99,9 +107,10 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case "identifier - generic type argument - interface":
                     case "identifier - generic type argument - interface - nullable":
                     case "identifier - generic type parameter":
-                    case "identifier - generic type parameter - constraint":
                     case "identifier - generic type parameter - nullable":
+                    case "identifier - generic type parameter constraint - interface":
                     case "identifier - interface declaration":
+                    case "identifier - interface reference":
                     case "identifier - local variable type - interface":
                     case "identifier - local variable type - interface - generic":
                     case "identifier - local variable type - interface - nullable":
@@ -132,34 +141,15 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case "literal - interpolated verbatim string - end":
                         token.HighlightColor = "color-orange";
                         break;
-                    //case "identifier - property type":
-                    //case "identifier - property type - nullable":
-                    //    token.HighlightColor = GetFinalColorChoice(token);
-                    //    break;
-                    case string classification when classification.Contains("identifier"):
-                        //AddIdentifierHighlighting(token);
-                        break;
                 }
             }
+
+            // TODO: add manual override of highlight color for common structs & enums
 
             HighlightUnidentifiedTokensRed(navTokens);
         }
 
-        private static string GetFinalColorChoice(NavToken token)
-        {
-            // Color Interface identifier refs light green
-            if (char.IsUpper(token.Text[0])
-                && char.IsUpper(token.Text[1])
-                && token.Text.StartsWith('I'))
-            {
-                return "color-light-green";
-            }
-
-            return "color-red";
-        }
-
-
-        private static void AddClassificationHighlighting(NavToken token, List<ReservedTextColor> list)
+        private static void HighlightReservedTextTokens(NavToken token, List<ReservedTextColor> list)
         {
             foreach (var element in list)
             {
@@ -169,83 +159,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 }
             }
         }
-
-        private static void AddIdentifierHighlighting(NavToken token)
-        {
-            // Roslyn cannot tell the difference between class, struct, or enum identifier
-            // references when they are defined outside of the uploaded file. 
-
-            if (HighlightColorAlreadySet(token))
-            {
-                return;
-            }
-
-            // Color Interface identifier refs light green
-            if (char.IsUpper(token.Text[0])
-                && char.IsUpper(token.Text[1])
-                && token.Text.StartsWith('I'))
-            {
-                token.HighlightColor = "color-light-green";
-                return;
-            }
-
-            // regular method calls [works]
-            if (token.NextToken?.Text == "(" && token.GrandParentNodeKind != "ObjectCreationExpression" && token.GrandParentNodeKind != "Attribute")
-            {
-                token.HighlightColor = "color-yellow";
-                token.UpdatedClassification = "identifier - method invocation";
-                return;
-            }
-            // generic methods that need types applied
-            // still have preceeding . token
-            // next token is type argument opener <
-            if (token.PrevToken?.Text == "." && token.NextToken?.Text == "<")
-            {
-                if (token.NextToken?.ParentNodeKind == "TypeArgumentList" || token.NextToken?.ParentNodeKind == "TypeParameterList")
-                {
-                    if (token.GrandParentNodeKind == "InvocationExpression" || token.GreatGrandParentNodeKind == "InvocationExpression")
-                    {
-                        token.HighlightColor = "color-yellow";
-                        return;
-                    }
-                }
-            }
-
-            // color property identifier refs white
-            if (token.PrevToken?.Text == "." && token.NextToken?.Text != "<")
-            {
-                token.HighlightColor = "color-white";
-                return;
-            }
-
-            // color inline assignment class property identifiers
-            if (token.NextToken?.Text == "=")
-            {
-                token.HighlightColor = "color-white";
-                return;
-            }
-
-            // color inline namespace identifiers white
-            if (token.ParentNodeKind == "AliasQualifiedName"
-                || token.GrandParentNodeKind == "AliasQualifiedName"
-                || token.GreatGrandParentNodeKind == "AliasQualifiedName")
-            {
-                token.HighlightColor = "color-white";
-                return;
-            }
-
-            // color class, enum, & struct refs green
-            token.HighlightColor = "color-green";
-            return;
-        }
-
-        private static string GetDefaultKeywordColor(NavToken token) =>
-            token.Text == "default" && token.Charts[1].Label == "DefaultSwitchLabel"
-                ? "color-purple"
-                : "color-blue";
-
-        private static bool HighlightColorAlreadySet(NavToken token) =>
-            !string.IsNullOrEmpty(token.HighlightColor);
 
         private static void HighlightUnidentifiedTokensRed(List<NavToken> navTokens)
         {
@@ -257,5 +170,10 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 }
             }
         }
+
+        private static string GetDefaultKeywordColor(NavToken token) =>
+            token.Text == "default" && token.Charts[1].Label == "DefaultSwitchLabel"
+                ? "color-purple"
+                : "color-blue";
     }
 }

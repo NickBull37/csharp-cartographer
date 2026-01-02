@@ -197,7 +197,7 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
         }
     }
 
-    public class TestClass
+    public class TestClass2
     {
         private readonly IGenerateArtifactWorkflow? _generateArtifactWorkflow;
 

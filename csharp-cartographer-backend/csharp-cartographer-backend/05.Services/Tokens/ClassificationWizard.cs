@@ -19,6 +19,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             "identifier"
         ];
 
+        // catch declarations
+        private static readonly HashSet<string> CatchDeclarationClassifications =
+        [
+            "identifier"
+        ];
+
         // classes
         private static readonly HashSet<string> ClassClassifications =
         [
@@ -26,10 +32,53 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             "static symbol"
         ];
 
+        // fields
+        private static readonly HashSet<string> FieldClassifications =
+        [
+            "field name"
+        ];
+
+        private static readonly HashSet<string> FieldTypeClassifications =
+        [
+            "class name",
+            "interface name",
+            "record class name",
+            "identifier",
+        ];
+
         // interfaces
         private static readonly HashSet<string> InterfaceClassifications =
         [
             "interface name"
+        ];
+
+        // generic types
+        private static readonly HashSet<string> GenericTypeArgumentClassifications =
+        [
+            "class name",
+            "interface name",
+            "record class name",
+            "identifier"
+        ];
+
+        private static readonly HashSet<string> GenericTypeParameterClassifications =
+        [
+            "type parameter name",
+            "identifier"
+        ];
+
+        // local vars
+        private static readonly HashSet<string> LocalVariableClassifications =
+        [
+            "local name"
+        ];
+
+        private static readonly HashSet<string> LocalVariableTypeClassifications =
+        [
+            "class name",
+            "interface name",
+            "record class name",
+            "identifier",
         ];
 
         // methods
@@ -54,6 +103,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             "identifier"
         ];
 
+        // namespaces
+        private static readonly HashSet<string> NamespaceClassifications =
+        [
+            "namespace name"
+        ];
+
+        // object creations
+        private static readonly HashSet<string> ObjectCreationClassifications =
+        [
+            "class name",
+            "record class name",
+            "identifier"
+        ];
+
         // parameters
         private static readonly HashSet<string> ParameterClassifications =
         [
@@ -73,49 +136,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             "identifier",
         ];
 
-        // fields
-        private static readonly HashSet<string> FieldClassifications =
-        [
-            "field name"
-        ];
-
-        private static readonly HashSet<string> FieldTypeClassifications =
-        [
-            "class name",
-            "interface name",
-            "record class name",
-            "identifier",
-        ];
-
-        // generic type args
-        private static readonly HashSet<string> GenericTypeArgumentClassifications =
-        [
-            "class name",
-            "interface name",
-            "record class name",
-            "identifier"
-        ];
-
-        // local vars
-        private static readonly HashSet<string> LocalVariableClassifications =
-        [
-            "local name"
-        ];
-
-        private static readonly HashSet<string> LocalVariableTypeClassifications =
-        [
-            "class name",
-            "interface name",
-            "record class name",
-            "identifier",
-        ];
-
-        // namespaces
-        private static readonly HashSet<string> NamespaceClassifications =
-        [
-            "namespace name"
-        ];
-
         // properties
         private static readonly HashSet<string> PropertyDeclarationIdentifierClassifications =
         [
@@ -132,6 +152,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             "class name",
             "interface name",
             "record class name",
+            "identifier"
+        ];
+
+        private static readonly HashSet<string> PropertyAccessClassifications =
+        [
+            "property name",
             "identifier"
         ];
 
@@ -156,9 +182,23 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         /// <summary>Updates classifications that are misleading or don't provide enough info to be helpful.</summary>
         public void CorrectTokenClassifications(List<NavToken> navTokens)
         {
+            /*
+             *  The first time through, only classify tokens when success is guarenteed.
+             */
             foreach (var token in navTokens)
             {
                 token.UpdatedClassification = GetCorrectedClassification(token);
+            }
+
+            /*
+             *  The remaining tokens are much harder to classify correctly. Only set these
+             *  after all other tokens have been classified to reduce the chance of classifying
+             *  tokens unintentionally
+             */
+            var unclassifiedTokens = navTokens.Where(token => string.IsNullOrEmpty(token.UpdatedClassification));
+            foreach (var token in unclassifiedTokens)
+            {
+                token.UpdatedClassification = GetRemainingCorrections(token);
             }
         }
 
@@ -171,7 +211,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             }
 
             // correct identifier classifications
-            if (token.RoslynKind == "IdentifierToken")
+            if (token.RoslynKind == RoslynKind.IdentifierToken.ToString())
             {
                 return GetIdentifierCorrection(token);
             }
@@ -199,6 +239,40 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             {
                 return "literal - numeric";
             }
+
+            return null;
+        }
+
+        private static string? GetRemainingCorrections(NavToken token)
+        {
+            var classification = token.RoslynClassification;
+            if (classification is null)
+            {
+                return null;
+            }
+
+            // property access refs
+            if (PropertyAccessClassifications.Contains(classification)
+                && token.PrevToken?.Text == ".")
+            {
+                return "identifier - property access";
+            }
+
+            // object creations
+            //if (token.GrandParentNodeKind == RoslynKind.ObjectCreationExpression.ToString())
+            //{
+            //    return "identifier - class creation";
+            //}
+
+            //// static classes, interfaces, structs, & enums
+            //if (LooksLikeInterface(token.Text))
+            //{
+            //    return "identifier - interface reference";
+            //}
+            //else
+            //{
+            //    return "identifier - class reference";
+            //}
 
             return token.RoslynClassification;
         }
@@ -240,6 +314,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             {
                 return "identifier - constant";
             }
+
+
 
             // class identifiers
             if (TryGetClassCorrection(token) is { } classCorrection)
@@ -326,24 +402,46 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 return genericTypeArgumentCorrection;
             }
 
-            return token.RoslynClassification;
+            // catch exceptions
+            if (TryGetCatchDeclarationCorrection(token) is { } catchCorrection)
+            {
+                return catchCorrection;
+            }
+
+            //TODO: object creation expressions
+            if (TryGetObjectCreationCorrection(token) is { } objCreationCorrection)
+            {
+                return objCreationCorrection;
+            }
+
+            return null;
         }
 
         // [x] attributes
+        // [x] attribute arguments
         private static string? TryGetAttributeCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
 
-            var hasAttributeAncestor = token.GrandParentNodeKind == RoslynKind.Attribute.ToString();
-
             if (classification is null
-                || !hasAttributeAncestor
                 || !AttributeClassifications.Contains(classification))
             {
                 return null;
             }
 
-            return $"identifier - attribute";
+            var hasAttributeAncestor = token.GrandParentNodeKind == RoslynKind.Attribute.ToString();
+            if (hasAttributeAncestor)
+            {
+                return $"identifier - attribute";
+            }
+
+            var hasAttributeArgumentAncestor = token.GreatGrandParentNodeKind == RoslynKind.AttributeArgument.ToString();
+            if (hasAttributeArgumentAncestor)
+            {
+                return $"identifier - attribute argument";
+            }
+
+            return null;
         }
 
         // [x] base types
@@ -367,6 +465,28 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 : " - class";
 
             return $"identifier - base type{typeExtenstion}";
+        }
+
+        // [x] catch exceptions
+        private static string? TryGetCatchDeclarationCorrection(NavToken token)
+        {
+            var classification = token.RoslynClassification;
+            bool isCatchDeclarationRelated = classification is not null
+                && CatchDeclarationClassifications.Contains(classification);
+
+            if (!isCatchDeclarationRelated)
+            {
+                return null;
+            }
+
+            // exceptions
+            if (token.GrandParentNodeKind == RoslynKind.CatchDeclaration.ToString()
+                && token.GreatGrandParentNodeKind == RoslynKind.CatchClause.ToString())
+            {
+                return $"identifier - exception type";
+            }
+
+            return null;
         }
 
         // [x] class declarations
@@ -481,20 +601,38 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         }
 
         // [x] generic type parameters
+        // [x] generic type parameter constraints
         private static string? TryGetGenericTypeParameterCorrection(NavToken token)
         {
-            if (token.RoslynClassification != "type parameter name")
+            var classification = token.RoslynClassification;
+            if (classification is not null
+                && !GenericTypeParameterClassifications.Contains(classification))
+            {
                 return null;
+            }
 
-            var constraintExtension = token.GrandParentNodeKind == RoslynKind.TypeParameterConstraintClause.ToString()
-                ? " - constraint"
-                : string.Empty;
+            // constraints
+            if (token.RoslynClassification == "identifier"
+                && token.GrandParentNodeKind == RoslynKind.TypeConstraint.ToString())
+            {
+                var typeExtension = LooksLikeInterface(token.Text)
+                    ? " - interface"
+                    : " - class";
 
-            var nullableExtension = token.GrandParentNodeKind == RoslynKind.NullableType.ToString()
-                ? " - nullable"
-                : string.Empty;
+                return $"identifier - generic type parameter constraint{typeExtension}";
+            }
 
-            return $"identifier - generic type parameter{constraintExtension}{nullableExtension}";
+            // parameters
+            if (classification == "type parameter name")
+            {
+                var nullableExtension = token.GrandParentNodeKind == RoslynKind.NullableType.ToString()
+                    ? " - nullable"
+                    : string.Empty;
+
+                return $"identifier - generic type parameter{nullableExtension}";
+            }
+
+            return null;
         }
 
         // [x] interface declarations
@@ -685,6 +823,38 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             return $"identifier - namespace segment";
         }
 
+        // [x] object creations
+        // [x] object property initialization
+        private static string? TryGetObjectCreationCorrection(NavToken token)
+        {
+            var classification = token.RoslynClassification;
+
+            bool isObjCreationRelated = classification is not null
+                && ObjectCreationClassifications.Contains(classification);
+
+            if (!isObjCreationRelated)
+            {
+                return null;
+            }
+
+            if (token.GrandParentNodeKind == RoslynKind.ObjectCreationExpression.ToString()
+                && token.PrevToken?.Text == "new")
+            {
+                var parameterlessExtension = token.NextToken?.Text == "{"
+                    ? " - parameterless"
+                    : string.Empty;
+
+                return $"identifier - constructor invocation{parameterlessExtension}";
+            }
+
+            if (token.GreatGrandParentNodeKind == RoslynKind.ObjectInitializerExpression.ToString())
+            {
+                return $"identifier - property initialization";
+            }
+
+            return null;
+        }
+
         // [x] parameter declarations
         // [x] parameter references
         // [x] parameter types
@@ -748,6 +918,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         // [x] property declarations
         // [x] property references
         // [x] property types
+        // [x] property access refs
         private static string? TryGetPropertyCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
