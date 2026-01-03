@@ -144,6 +144,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case "literal - interpolated verbatim string - end":
                         token.HighlightColor = "color-orange";
                         break;
+                    case "identifier - struct declaration":
+                    case "identifier - struct constructor":
+                    case "identifier - record struct declaration":
+                    case "identifier - record struct constructor":
+                        token.HighlightColor = "color-jade";
+                        break;
                 }
             }
 

@@ -130,16 +130,6 @@
                 Text = "enum",
                 HighlightColor = _blue,
             },
-            //new ReservedTextColor
-            //{
-            //    Text = "Equals",
-            //    HighlightColor = _yellow,
-            //},
-            //new ReservedTextColor
-            //{
-            //    Text = "Exception",
-            //    HighlightColor = _green,
-            //},
             new ReservedTextColor
             {
                 Text = "explicit",

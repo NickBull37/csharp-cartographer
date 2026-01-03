@@ -153,6 +153,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             "class name",
             "interface name",
             "record class name",
+            "record struct name",
+            "struct name",
             "identifier"
         ];
 
@@ -166,6 +168,18 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         private static readonly HashSet<string> RecordClassifications =
         [
             "record class name"
+        ];
+
+        // record structs
+        private static readonly HashSet<string> RecordStructClassifications =
+        [
+            "record struct name"
+        ];
+
+        // structs
+        private static readonly HashSet<string> StructClassifications =
+        [
+            "struct name"
         ];
 
         // using directives
@@ -315,6 +329,18 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             if (TryGetClassCorrection(token) is { } classCorrection)
             {
                 return classCorrection;
+            }
+
+            // struct identifiers
+            if (TryGetStructCorrection(token) is { } structCorrection)
+            {
+                return structCorrection;
+            }
+
+            // record struct identifiers
+            if (TryGetRecordStructCorrection(token) is { } recordStructCorrection)
+            {
+                return recordStructCorrection;
             }
 
             // interface identifiers
@@ -1017,6 +1043,64 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 && token.ParentNodeKind == RoslynKind.ConstructorDeclaration.ToString())
             {
                 return $"identifier - record constructor";
+            }
+
+            return null;
+        }
+
+        // [ ] struct declarations
+        // [ ] struct constructors
+        private static string? TryGetStructCorrection(NavToken token)
+        {
+            var classification = token.RoslynClassification;
+            bool isStructRelated = classification is not null
+                && StructClassifications.Contains(classification);
+
+            if (!isStructRelated)
+            {
+                return null;
+            }
+
+            // declarations
+            if (classification == "struct name"
+                && token.ParentNodeKind == RoslynKind.StructDeclaration.ToString())
+            {
+                return $"identifier - struct declaration";
+            }
+
+            // constructors
+            if (classification == "struct name"
+                && token.ParentNodeKind == RoslynKind.ConstructorDeclaration.ToString())
+            {
+                return $"identifier - struct constructor";
+            }
+
+            return null;
+        }
+
+        // [ ] record struct declarations
+        // [ ] record struct constructors
+        private static string? TryGetRecordStructCorrection(NavToken token)
+        {
+            var classification = token.RoslynClassification;
+            bool isRecordStructRelated = classification is not null
+                && RecordStructClassifications.Contains(classification);
+
+            if (!isRecordStructRelated)
+            {
+                return null;
+            }
+
+            // declarations
+            if (token.ParentNodeKind == RoslynKind.RecordStructDeclaration.ToString())
+            {
+                return $"identifier - record struct declaration";
+            }
+
+            // constructors
+            if (token.ParentNodeKind == RoslynKind.ConstructorDeclaration.ToString())
+            {
+                return $"identifier - record struct constructor";
             }
 
             return null;
