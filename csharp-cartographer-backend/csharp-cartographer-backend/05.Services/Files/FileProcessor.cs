@@ -53,6 +53,7 @@ namespace csharp_cartographer_backend._05.Services.Files
                 }
             }
 
+            // TODO: move workspace and document generation to RoslynAnalyzer.cs
             var workspace = new AdhocWorkspace();
             var sourceCode = File.ReadAllText(demoFile);
             var projectInfo = ProjectInfo.Create(

@@ -19,10 +19,8 @@
         Enum,
     }
 
-    public class TokenClassification
+    public struct TokenClassification
     {
-        // TODO: implement this
-
         public ObjectEntity EntityType { get; set; }
 
         public bool IsDataType { get; set; }

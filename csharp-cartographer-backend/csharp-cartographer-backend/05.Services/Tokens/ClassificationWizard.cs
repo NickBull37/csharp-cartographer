@@ -290,17 +290,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 return $"keyword - predefined type - {token.Text}";
             }
 
+            if (token.Text is "get" or "set" or "init")
+            {
+                return $"keyword - accessor - {token.Text}";
+            }
+
             if (token.RoslynClassification == "keyword - control")
             {
                 return $"keyword - control - {token.Text}";
             }
 
-            if (token.RoslynClassification == "keyword")
-            {
-                return $"keyword - {token.Text}";
-            }
-
-            return token.RoslynClassification;
+            return $"keyword - {token.Text}";
         }
 
         private static string? GetIdentifierCorrection(NavToken token)
@@ -353,6 +353,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 return fieldCorrection;
             }
 
+            // using directive identifiers (must come before namespace)
+            if (TryGetUsingDirectiveCorrection(token) is { } usingDirectiveCorrection)
+            {
+                return usingDirectiveCorrection;
+            }
+
             // namespace identifiers
             if (TryGetNamespaceCorrection(token) is { } namespaceCorrection)
             {
@@ -377,12 +383,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 return methodCorrection;
             }
 
-            // using directive identifiers
-            if (TryGetUsingDirectiveCorrection(token) is { } usingDirectiveCorrection)
-            {
-                return usingDirectiveCorrection;
-            }
-
             // generic type parameters
             // TODO: move this out of identifier highlighting (maybe to methods for return types)
             if (TryGetGenericTypeParameterCorrection(token) is { } genericTypeParameterCorrection)
@@ -402,7 +402,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 return catchCorrection;
             }
 
-            //TODO: object creation expressions
+            // object creation expressions
             if (TryGetObjectCreationCorrection(token) is { } objCreationCorrection)
             {
                 return objCreationCorrection;
@@ -877,6 +877,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         // [x] parameter references
         // [x] parameter types
         // [x] parameter prefixes
+        // Confidence: [HIGH]
         private static string? TryGetParameterCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
@@ -910,33 +911,39 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 return $"identifier - parameter prefix";
             }
 
-            if (token.GrandParentNodeKind != RoslynKind.Parameter.ToString()
-                && token.GreatGrandParentNodeKind != RoslynKind.Parameter.ToString())
-            {
-                return null;
-            }
-
             // types
-            var typeExtenstion = LooksLikeInterface(token.Text)
+            if (token.GrandParentNodeKind == RoslynKind.Parameter.ToString()
+                || token.GreatGrandParentNodeKind == RoslynKind.Parameter.ToString())
+            {
+                var typeExtenstion = LooksLikeInterface(token.Text)
                 ? " - interface"
                 : " - class";
 
-            var genericExtension = token.ParentNodeKind == RoslynKind.GenericName.ToString()
-                ? " - generic"
-                : string.Empty;
-
-            var nullableExtension = token.GrandParentNodeKind == RoslynKind.NullableType.ToString()
-                && token.GreatGrandParentNodeKind == RoslynKind.Parameter.ToString()
-                    ? " - nullable"
+                var genericExtension = token.ParentNodeKind == RoslynKind.GenericName.ToString()
+                    ? " - generic"
                     : string.Empty;
 
-            return $"identifier - parameter data type{typeExtenstion}{genericExtension}{nullableExtension}";
+                var nullableExtension = token.GrandParentNodeKind == RoslynKind.NullableType.ToString()
+                    && token.GreatGrandParentNodeKind == RoslynKind.Parameter.ToString()
+                        ? " - nullable"
+                        : string.Empty;
+
+                return $"identifier - parameter data type{typeExtenstion}{genericExtension}{nullableExtension}";
+            }
+
+            //if (token.GrandParentNodeKind != RoslynKind.Parameter.ToString()
+            //    && token.GreatGrandParentNodeKind != RoslynKind.Parameter.ToString())
+            //{
+            //    return null;
+            //}
+
+            return null;
         }
 
         // [x] property declarations
         // [x] property references
         // [x] property types
-        // [x] property access refs
+        // [ ] property access refs
         private static string? TryGetPropertyCorrection(NavToken token)
         {
             var classification = token.RoslynClassification;
