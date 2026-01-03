@@ -5,6 +5,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 {
     public static class ClassificationHelper
     {
+        const int Parent = 0;
+        const int GrandParent = 1;
+        const int GreatGrandParent = 2;
+        const int GreatGreatGrandParent = 3;
+
         // these declaration kinds will always appear at the "parent" level
         public static bool IsDeclarationIdentifierForEntity(SyntaxKind entityKind, NavToken token)
         {
@@ -55,44 +60,28 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         #region Fields
         public static bool IsFieldDeclarationIdentifier(NavToken token)
         {
-            if (token.AncestorKinds.GreatGrandParent == SyntaxKind.FieldDeclaration)
+            if (token.AncestorKinds.Ancestors[GreatGrandParent] == SyntaxKind.FieldDeclaration)
             {
                 return true;
             }
-
-            return false;
-        }
-
-        public static bool IsFieldReferenceIdentifier(NavToken token)
-        {
-            if (token.RoslynClassification == "field name" &&
-                token.AncestorKinds.Parent == SyntaxKind.IdentifierName)
-            {
-                return true;
-            }
-
             return false;
         }
 
         public static bool IsFieldDataTypeIdentifier(NavToken token)
         {
-            var greatGrandParentKind = token.AncestorKinds.GreatGrandParent;
-            var greatGreatGrandParentKind = token.AncestorKinds.GreatGreatGrandParent;
-
             // field declaration kind will be 3rd level if non-nullable, 4th level if nullable
-            if (greatGrandParentKind == SyntaxKind.FieldDeclaration ||
-                greatGreatGrandParentKind == SyntaxKind.FieldDeclaration)
+            if (token.AncestorKinds.Ancestors[GreatGrandParent] == SyntaxKind.FieldDeclaration ||
+                token.AncestorKinds.Ancestors[GreatGreatGrandParent] == SyntaxKind.FieldDeclaration)
             {
                 return true;
             }
-
             return false;
         }
         #endregion
 
         public static bool IsGenericDataTypeIdentifier(NavToken token)
         {
-            if (token.AncestorKinds.Parent == SyntaxKind.GenericName)
+            if (token.AncestorKinds.Ancestors[Parent] == SyntaxKind.GenericName)
             {
                 return true;
             }
@@ -101,7 +90,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 
         public static bool IsNullableDataTypeIdentifier(NavToken token)
         {
-            if (token.AncestorKinds.GrandParent == SyntaxKind.NullableType)
+            if (token.AncestorKinds.Ancestors[GrandParent] == SyntaxKind.NullableType)
             {
                 return true;
             }
@@ -113,8 +102,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         {
             SyntaxKind[] declarationKinds =
             [
+                // 3rd level
                 SyntaxKind.ClassDeclaration,
-                SyntaxKind.FieldDeclaration,
                 SyntaxKind.InterfaceDeclaration,
                 SyntaxKind.MethodDeclaration,
                 SyntaxKind.NamespaceDeclaration,
@@ -122,24 +111,24 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 SyntaxKind.RecordDeclaration,
                 SyntaxKind.RecordStructDeclaration,
                 SyntaxKind.StructDeclaration,
-                SyntaxKind.VariableDeclaration,
+                // 4th level
+                SyntaxKind.FieldDeclaration,
+                SyntaxKind.LocalDeclarationStatement,
             ];
 
-            var grandParentNodeKind = token.AncestorKinds.GrandParent;
-            var greatGrandParentNodeKind = token.AncestorKinds.GreatGrandParent;
-
-            // Prefer the closest ancestor (grandparent)
-            if (declarationKinds.Contains(grandParentNodeKind))
+            var grandParentKind = token.AncestorKinds.Ancestors[GrandParent];
+            if (declarationKinds.Contains(grandParentKind))
             {
-                return grandParentNodeKind;
+                return grandParentKind;
             }
 
-            if (declarationKinds.Contains(greatGrandParentNodeKind))
+            var greatGrandParentKind = token.AncestorKinds.Ancestors[GreatGrandParent];
+            if (declarationKinds.Contains(greatGrandParentKind))
             {
-                return greatGrandParentNodeKind;
+                return greatGrandParentKind;
             }
 
-            return SyntaxKind.None;
+            throw new Exception();
         }
     }
 }

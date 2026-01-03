@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
 namespace csharp_cartographer_backend._03.Models.Tokens
@@ -342,35 +343,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <returns>The ancestor node kinds.</returns>
         private static AncestorNodeKinds GetAncestorKinds(SyntaxToken roslynToken)
         {
-            SyntaxKind parentKind = SyntaxKind.None;
-            SyntaxKind grandParentKind = SyntaxKind.None;
-            SyntaxKind greatGrandParentKind = SyntaxKind.None;
-            SyntaxKind greatGreatGrandParentKind = SyntaxKind.None;
+            var builder = ImmutableArray.CreateBuilder<SyntaxKind>();
+            SyntaxNode? currentNode = roslynToken.Parent;
 
-            var currentNode = roslynToken.Parent;
+            while (currentNode is not null)
+            {
+                builder.Add(currentNode.Kind());
+                currentNode = currentNode.Parent;
+            }
 
-            if (currentNode == null)
-                return new(parentKind, grandParentKind, greatGrandParentKind, greatGreatGrandParentKind);
-
-            parentKind = currentNode.Kind();
-            currentNode = currentNode.Parent;
-
-            if (currentNode == null)
-                return new(parentKind, grandParentKind, greatGrandParentKind, greatGreatGrandParentKind);
-
-            grandParentKind = currentNode.Kind();
-            currentNode = currentNode.Parent;
-
-            if (currentNode == null)
-                return new(parentKind, grandParentKind, greatGrandParentKind, greatGreatGrandParentKind);
-
-            greatGrandParentKind = currentNode.Kind();
-            currentNode = currentNode.Parent;
-
-            if (currentNode != null)
-                greatGreatGrandParentKind = currentNode.Kind();
-
-            return new(parentKind, grandParentKind, greatGrandParentKind, greatGreatGrandParentKind);
+            return new AncestorNodeKinds(builder.ToImmutable());
         }
 
         /// <summary>Returns the SyntaxKind of the ancestor nodes in a struct.</summary>
