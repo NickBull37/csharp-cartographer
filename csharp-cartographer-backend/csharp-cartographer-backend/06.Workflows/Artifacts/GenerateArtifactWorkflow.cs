@@ -1,4 +1,5 @@
 ﻿using csharp_cartographer_backend._01.Configuration.Configs;
+using csharp_cartographer_backend._01.Configuration.Enums;
 using csharp_cartographer_backend._02.Utilities.Logging;
 using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._03.Models.Files;
@@ -133,6 +134,16 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
         private void LogArtifactData(Artifact artifact)
         {
+            //CartographerLogger.ClearLogFile(LogType.TextLog);
+
+            foreach (var token in artifact.NavTokens)
+            {
+                if (token.RoslynClassification is not null && !RoslynClassification.Classifications.Contains(token.RoslynClassification))
+                {
+                    CartographerLogger.LogText(token.RoslynClassification);
+                }
+            }
+
             if (_config.ShouldLogArtifact)
             {
                 CartographerLogger.LogArtifact(artifact);

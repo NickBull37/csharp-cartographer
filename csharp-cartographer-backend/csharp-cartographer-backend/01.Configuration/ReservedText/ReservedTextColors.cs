@@ -112,6 +112,11 @@
             },
             new ReservedTextColor
             {
+                Text = "delegate",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "do",
                 HighlightColor = _purple,
             },
@@ -128,6 +133,11 @@
             new ReservedTextColor
             {
                 Text = "enum",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "event",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -388,6 +398,11 @@
             new ReservedTextColor
             {
                 Text = "using",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "value",
                 HighlightColor = _blue,
             },
             new ReservedTextColor

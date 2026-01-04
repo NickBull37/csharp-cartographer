@@ -70,7 +70,7 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
             writer.WriteLine($"{text}");
         }
 
-        private static void ClearLogFile(LogType logType)
+        public static void ClearLogFile(LogType logType)
         {
             string? logPath = logType switch
             {
