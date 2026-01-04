@@ -65,6 +65,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <summary>The updated token classification.</summary>
         public string? UpdatedClassification { get; set; }
 
+        public TestEnum TestEnum { get; set; }
+
         /// <summary>The TextSpan of the token text.</summary>
         [JsonIgnore]
         public TextSpan Span { get; set; }
@@ -144,6 +146,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public NavToken(SyntaxToken roslynToken, SemanticModel semanticModel, SyntaxTree syntaxTree, int index, string? classification)
         {
             List<int>? test = [];
+            TestEnum = TestEnum.Camaro;
 
             ID = Guid.NewGuid();
             Index = index;

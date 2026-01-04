@@ -13,9 +13,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         // these declaration kinds will always appear at the "parent" level
         public static bool IsDeclarationIdentifierForEntity(SyntaxKind entityKind, NavToken token)
         {
-            var parentKind = token.AncestorKinds.Parent;
-            var grandParentKind = token.AncestorKinds.GrandParent;
-            var greatGrandParentKind = token.AncestorKinds.GreatGrandParent;
+            var parentKind = token.AncestorKinds.Ancestors[Parent];
+            var grandParentKind = token.AncestorKinds.Ancestors[GrandParent];
+            var greatGrandParentKind = token.AncestorKinds.Ancestors[GreatGrandParent];
 
             List<SyntaxKind> parentLevelKinds =
             [

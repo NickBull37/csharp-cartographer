@@ -40,6 +40,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                         break;
                     case "identifier - attribute argument":
                     case "identifier - constant":
+                    case "identifier - enum member declaration":
+                    case "identifier - enum member reference":
                     case "identifier - field declaration":
                     case "identifier - field reference":
                     case "identifier - namespace declaration segment":
@@ -103,6 +105,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                         token.HighlightColor = "color-green";
                         break;
                     case "identifier - base type - interface":
+                    case "identifier - enum declaration":
+                    case "identifier - enum reference":
                     case "identifier - field data type - interface":
                     case "identifier - field data type - interface - generic":
                     case "identifier - field data type - interface - nullable":

@@ -32,6 +32,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             "static symbol"
         ];
 
+        // enums
+        private static readonly HashSet<string> EnumClassifications =
+        [
+            "enum name",
+            "enum member name",
+        ];
+
         // fields
         private static readonly HashSet<string> FieldClassifications =
         [
@@ -320,15 +327,21 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         private static string? GetIdentifierCorrection(NavToken token)
         {
             // constant identifiers
-            if (token.FieldSymbol?.IsConst == true)
-            {
-                return "identifier - constant";
-            }
+            //if (token.FieldSymbol?.IsConst == true)
+            //{
+            //    return "identifier - constant";
+            //}
 
             // class identifiers
             if (TryGetClassCorrection(token) is { } classCorrection)
             {
                 return classCorrection;
+            }
+
+            // class identifiers
+            if (TryGetEnumCorrection(token) is { } enumCorrection)
+            {
+                return enumCorrection;
             }
 
             // struct identifiers
@@ -534,6 +547,48 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             if (token.ParentNodeKind == RoslynKind.ConstructorDeclaration.ToString())
             {
                 return $"identifier - class constructor";
+            }
+
+            return null;
+        }
+
+        // [x] enum declarations
+        // [x] enum member declarations
+        // [ ] enum references
+        // [x] enum member references
+        private static string? TryGetEnumCorrection(NavToken token)
+        {
+            var classification = token.RoslynClassification;
+            bool isEnumRelated = classification is not null
+                && EnumClassifications.Contains(classification);
+
+            if (!isEnumRelated)
+            {
+                return null;
+            }
+
+            // declarations
+            if (token.ParentNodeKind == SyntaxKind.EnumDeclaration.ToString())
+            {
+                return $"identifier - enum declaration";
+            }
+
+            // members
+            if (token.ParentNodeKind == SyntaxKind.EnumMemberDeclaration.ToString())
+            {
+                return $"identifier - enum member declaration";
+            }
+
+            //// enum refs
+            //if (token.RoslynClassification == "enum name")
+            //{
+            //    return $"identifier - enum reference";
+            //}
+
+            // enum member refs
+            if (token.RoslynClassification == "enum member name")
+            {
+                return $"identifier - enum member reference";
             }
 
             return null;
