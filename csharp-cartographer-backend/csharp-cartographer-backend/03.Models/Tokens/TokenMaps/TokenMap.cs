@@ -1,92 +1,174 @@
 ﻿namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 {
-    public enum TokenType
+    // a general class based on the original Roslyn classification
+    public enum TokenPrimaryKind
     {
+        Unknown,
         Keyword,
         Delimiter,
         Operator,
-        Punctuator,
+        Punctuation,
         Identifier,
         Literal
     }
 
-    public enum IdentifierType
+    // What the token actually being used for
+    public enum SemanticRole
     {
-        Attribute,
-        Class,
-        Struct,
-        Interface,
-        Record,
-        RecordStruct,
-        Enum,
-        Method,
-        LocalVariable,
-        Parameter,
-        Property,
-        Field,
-        Namespace
+        None,
+
+        // Declarations
+        NamespaceDeclaration,
+        TypeDeclaration,
+        MethodDeclaration,
+        ConstructorDeclaration,
+        PropertyDeclaration,
+        FieldDeclaration,
+        EventDeclaration,
+        ParameterDeclaration,
+        LocalVariableDeclaration,
+        EnumMemberDeclaration,
+        DelegateDeclaration,
+        AttributeDeclaration,
+
+        // References
+        NamespaceReference,
+        TypeReference,
+        MethodReference,
+        ConstructorReference,
+        PropertyReference,
+        FieldReference,
+        EventReference,
+        ParameterReference,
+        LocalVariableReference,
+        EnumMemberReference,
+        DelegateReference,
+
+        // Invocations & access
+        MethodInvocation,
+        ConstructorInvocation,
+        PropertyAccess,
+        FieldAccess,
+        EventSubscription,
+        EventUnsubscription,
+        IndexerAccess,
+
+        // Type positions (where a type appears)
+        ReturnType,
+        ParameterType,
+        LocalVariableType,
+        FieldType,
+        PropertyType,
+        GenericTypeArgument,
+        GenericTypeParameter,
+        ConstraintType,
+        CastType,
+
+        // Control flow
+        ControlFlow,
+        Conditional,
+        Loop,
+        Jump,
+        ExceptionHandling,
+
+        // Expressions & operations
+        Assignment,
+        Comparison,
+        Arithmetic,
+        Logical,
+        UnaryOperation,
+        BinaryOperation,
+        IncrementDecrement,
+
+        // Literals & values
+        LiteralValue,
+        DefaultValue,
+        NullValue,
+
+        // Structural / non-semantic (still useful)
+        Grouping,
+        Separator,
+        BlockBoundary,
     }
 
-    public enum EntityType
+    public enum SemanticModifiers
     {
+        None,
+    }
+
+    public enum Color
+    {
+        Blue,
+        Gray,
+        Green,
+        Jade,
+        LightBlue,
+        LightGreen,
+        Orange,
+        Purple,
+        Red,
+        White,
+        Yellow,
+    }
+
+    public enum ColorAs
+    {
+        // white
+        Field,
+        Namespace,
+        Property,
+
+        // light blue
+        LocalVaraible,
+        Parameter,
+
+        // yellow
+        Method,
+
+        // green
+        Attribute,
+        BaseType,
         Class,
+        Delegate,
+        Event,
+        GenericType,
+        Record,
+
+        // light green
+        Interface,
+        Enum,
+        GenericTypeParameter,
+        NumericLiteral,
+
+        // blue
         Keyword,
-        Delimiter,
-        Operator,
-        Punctuator,
-        Interface,
-        Record,
+
+        // purple
+        KeywordControl,
+
+        // jade
         Struct,
-        LocalVariable,
-        Parameter,
-        Field,
-        Method,
-        Property,
-        Attribute,
-        Enum,
-        RecordStruct
+        RecordStruct,
+
+        // orange
+        StringLiteral,
+
+        // red
+        Unknown,
     }
 
-    public class TokenMap
-    {
-        public TokenType TokenType { get; set; }
+    public sealed record TokenTypeInfo(
+        bool IsPredefinedType = false,
+        bool IsNullable = false,
+        bool IsGeneric = false
+    );
 
-        public IdentifierType? IdentifierDataType { get; set; }
-
-
-
-
-
-
-        public string Label { get; set; }
-
-        public bool HasExternalDefinition { get; init; }
-
-        public bool HasInternalDefinition { get; init; }
-
-        public EntityType EntityType { get; set; }
-
-        public bool IsKeyword { get; set; }
-
-        public bool IsDataType { get; set; }
-
-        public bool IsPreDefinedType { get; set; }
-
-        public bool IsGeneric { get; set; }
-
-        public bool IsConstant { get; set; }
-
-        public bool IsNullable { get; set; }
-
-        public bool IsIdentifier { get; set; }
-
-        public bool IsDeclaration { get; set; }
-
-        public bool IsReference { get; set; }
-
-        public bool IsInvocation { get; set; }
-
-        public bool IsLiteral { get; set; }
-
-    }
+    public sealed record TokenMap(
+        TokenPrimaryKind PrimaryKind,                       // Keyword / Identifier / Operator / etc.
+        SemanticRole Role = SemanticRole.None,              // ParameterDeclaration / MethodInvocation / etc.
+        IReadOnlySet<SemanticModifiers>? Modifiers = null,
+        Color Color = Color.Red,
+        TokenTypeInfo? TypeInfo = null,
+        string? Raw = null
+    );
 }
