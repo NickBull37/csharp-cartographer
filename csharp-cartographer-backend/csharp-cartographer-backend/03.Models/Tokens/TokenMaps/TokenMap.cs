@@ -1,6 +1,6 @@
 ﻿namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 {
-    // a general class based on the original Roslyn classification
+    // A general class based on the original Roslyn classification
     public enum TokenPrimaryKind
     {
         Unknown,
@@ -136,21 +136,24 @@
         FileScoped,
 
         // Member behavior
-        Static,
-        Instance,
         Abstract,
-        Virtual,
-        Override,
-        Sealed,
-        Readonly,
+        Async,
         Const,
+        Override,
+        Partial,
+        Readonly,
         Required,
+        Sealed,
+        Static,
+        Virtual,
+        Volatile,
 
         // Identifier types
         Class,
         Delegate,
         Enum,
         Interface,
+        PredefinedType,
         Record,
         RecordStruct,
         Struct,
@@ -162,12 +165,6 @@
         Pointer,
         Tuple,
         GenericTypeParameter,
-
-        // Method-specific modifiers
-        Async,
-        Iterator,
-        Extension,
-        Partial,
 
         // Property / accessor modifiers
         Getter,

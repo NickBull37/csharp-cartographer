@@ -318,7 +318,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                         fontSize: '14px'
                                     }}
                                 >
-                                    Token Pins
+                                    Token Map
                                 </Typography>
                             </Box>
                             <IconButton
@@ -340,17 +340,96 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                         {tokenChartExpanded
                             ?
                                 <Stack
-                                    gap={1}
+                                    gap={2}
                                     sx={{
                                         p: '1.25rem'
                                     }}
                                 >
-                                    <Typography>
-                                        Primary Kind: {activeToken.map.primaryKindString}
-                                    </Typography>
-                                    <Typography>
-                                        Semantic Role: {activeToken.map.semanticRoleString}
-                                    </Typography>
+                                    <Stack
+                                        display="flex"
+                                        gap={0.25}
+                                    >
+                                        <Typography
+                                            className="code"
+                                            sx={{
+                                                fontSize: '13px',
+                                                color: colors.gray70
+                                            }}
+                                        >
+                                            Primary Kind:
+                                        </Typography>
+                                        <Typography
+                                            className="code"
+                                            sx={{
+                                                fontSize: '16px'
+                                            }}
+                                        >
+                                            {activeToken.map.primaryKindString}
+                                        </Typography>
+                                    </Stack>
+                                    <Stack
+                                        display="flex"
+                                        gap={0.25}
+                                    >
+                                        <Typography
+                                            className="code"
+                                            sx={{
+                                                fontSize: '13px',
+                                                color: colors.gray70
+                                            }}
+                                        >
+                                            Semantic Role:
+                                        </Typography>
+                                        <Typography
+                                            className="code"
+                                            sx={{
+                                                fontSize: '16px'
+                                            }}
+                                        >
+                                            {activeToken.map.semanticRoleString}
+                                        </Typography>
+                                    </Stack>
+
+                                    {activeToken?.map.modifiers?.length > 0 && (
+                                        <Stack
+                                            gap={0.5}
+                                        >
+                                            <Box
+                                                display="flex"
+                                            >
+                                                <Typography
+                                                    className="code"
+                                                    sx={{
+                                                        fontSize: '14px',
+                                                        color: colors.gray70
+                                                    }}
+                                                >
+                                                    Semantic Modifiers:
+                                                </Typography>
+                                            </Box>
+                                            <Box
+                                                display="flex"
+                                                gap={1}
+                                                flexWrap="wrap"
+                                            >
+                                                {activeToken.map.modifiers.map((modifier) => (
+                                                    <Typography
+                                                        key={modifier}
+                                                        className="code"
+                                                        sx={{
+                                                            fontSize: '16px',
+                                                            px: '6px',
+                                                            py: '2px',
+                                                            borderRadius: '4px',
+                                                            backgroundColor: colors.gray20,
+                                                        }}
+                                                    >
+                                                        {modifier}
+                                                    </Typography>
+                                                ))}
+                                            </Box>
+                                        </Stack>
+                                    )}
                                 </Stack>
                             :
                                 <></>

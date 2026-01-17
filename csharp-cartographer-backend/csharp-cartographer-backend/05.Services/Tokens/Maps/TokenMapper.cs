@@ -1,4 +1,5 @@
-﻿using csharp_cartographer_backend._03.Models.Tokens;
+﻿using csharp_cartographer_backend._01.Configuration;
+using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 
 namespace csharp_cartographer_backend._05.Services.Tokens.Maps
@@ -33,6 +34,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             );
         }
 
+        #region Primary Kind
         private static TokenPrimaryKind GetPrimaryKind(NavToken token)
         {
             switch (token.RoslynClassification)
@@ -73,6 +75,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     return TokenPrimaryKind.Unknown;
             }
         }
+        #endregion
 
         #region Semantic Roles
         private static SemanticRole GetSemanticRole(NavToken token, NavToken? previous, NavToken? next)
@@ -113,16 +116,27 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return literalRole;
 
 
+            // --- Accessor keywords ---
+            if (GlobalConstants.Accessors.Contains(token.Text))
+                return SemanticRole.Accessor;
+
+            // --- Access modifier keywords ---
+            if (GlobalConstants.AccessModifiers.Contains(token.Text))
+                return SemanticRole.AccessModifier;
+
+            // --- Modifier keywords ---
+            if (GlobalConstants.Modifiers.Contains(token.Text))
+                return SemanticRole.Modifier;
+
             // --- Control flow keywords ---
-            if (token.IsKeyword("if") || token.IsKeyword("else"))
+            if (GlobalConstants.ConditionalKeywords.Contains(token.Text))
                 return SemanticRole.Conditional;
 
-            if (token.IsKeyword("foreach") || token.IsKeyword("for") || token.IsKeyword("while"))
+            if (GlobalConstants.LoopKeywords.Contains(token.Text))
                 return SemanticRole.Loop;
 
-            if (token.IsKeyword("return") || token.IsKeyword("break") || token.IsKeyword("continue"))
+            if (GlobalConstants.JumpKeywords.Contains(token.Text))
                 return SemanticRole.Jump;
-
 
             return SemanticRole.None;
         }
@@ -344,22 +358,85 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             var modifiers = new HashSet<SemanticModifiers>();
 
+            // Pre-defined types
+            if (GlobalConstants.PredefinedTypes.Contains(token.Text))
+                modifiers.Add(SemanticModifiers.PredefinedType);
+
+
             // Generic type parameters
             if (token.IsGenericTypeParameter())
                 modifiers.Add(SemanticModifiers.GenericTypeParameter);
 
-            if (token.IsKeyword("static"))
-                modifiers.Add(SemanticModifiers.Static);
+
+            // Accessor modifiers
+            if (token.IsKeyword("get"))
+                modifiers.Add(SemanticModifiers.Getter);
+
+            if (token.IsKeyword("set"))
+                modifiers.Add(SemanticModifiers.Setter);
+
+            if (token.IsKeyword("init"))
+                modifiers.Add(SemanticModifiers.InitOnly);
+
+
+            // Access modifiers
+            if (token.IsKeyword("public"))
+                modifiers.Add(SemanticModifiers.Public);
+
+            if (token.IsKeyword("private"))
+                modifiers.Add(SemanticModifiers.Private);
+
+            if (token.IsKeyword("protected"))
+                modifiers.Add(SemanticModifiers.Protected);
+
+            if (token.IsKeyword("internal"))
+                modifiers.Add(SemanticModifiers.Internal);
+
+
+            // Member modifiers
+            if (token.IsKeyword("abstract"))
+                modifiers.Add(SemanticModifiers.Abstract);
 
             if (token.IsKeyword("async"))
                 modifiers.Add(SemanticModifiers.Async);
 
+            if (token.IsKeyword("const"))
+                modifiers.Add(SemanticModifiers.Const);
+
+            if (token.IsKeyword("override"))
+                modifiers.Add(SemanticModifiers.Override);
+
+            if (token.IsKeyword("partial"))
+                modifiers.Add(SemanticModifiers.Partial);
+
+            if (token.IsKeyword("readonly"))
+                modifiers.Add(SemanticModifiers.Readonly);
+
+            if (token.IsKeyword("required"))
+                modifiers.Add(SemanticModifiers.Required);
+
+            if (token.IsKeyword("sealed"))
+                modifiers.Add(SemanticModifiers.Sealed);
+
+            if (token.IsKeyword("static"))
+                modifiers.Add(SemanticModifiers.Static);
+
+            if (token.IsKeyword("virtual"))
+                modifiers.Add(SemanticModifiers.Virtual);
+
+            if (token.IsKeyword("volatile"))
+                modifiers.Add(SemanticModifiers.Volatile);
+
+
+            // Literal modifiers
             if (token.IsQuotedString())
                 modifiers.Add(SemanticModifiers.QuotedString);
 
             if (token.IsVerbatimString())
                 modifiers.Add(SemanticModifiers.VerbatimString);
 
+
+            // Type modifiers
             if (token.IsNullableType())
                 modifiers.Add(SemanticModifiers.Nullable);
 

@@ -43,6 +43,13 @@
             "dynamic",
         ];
 
+        public static readonly List<string> Accessors =
+        [
+            "get",
+            "set",
+            "init",
+        ];
+
         public static readonly List<string> AccessModifiers =
         [
             "public",
@@ -64,6 +71,27 @@
             "static",
             "virtual",
             "volatile"
+        ];
+
+        public static readonly List<string> ConditionalKeywords =
+        [
+            "if",
+            "else",
+        ];
+
+        public static readonly List<string> LoopKeywords =
+        [
+            "do",
+            "for",
+            "foreach",
+            "while",
+        ];
+
+        public static readonly List<string> JumpKeywords =
+        [
+            "return",
+            "break",
+            "continue",
         ];
 
         public static readonly List<string> _operators =
