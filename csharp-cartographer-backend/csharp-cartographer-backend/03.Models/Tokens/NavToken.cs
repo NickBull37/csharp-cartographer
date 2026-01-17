@@ -450,6 +450,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.NumericLiteralExpression);
         }
 
+        public bool IsCharacterLiteral()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "string"
+                && Kind == SyntaxKind.CharacterLiteralToken
+                && HasAncestorAt(0, SyntaxKind.CharacterLiteralExpression);
+        }
+
         public bool IsQuotedString()
         {
             return RoslynClassification is not null
@@ -464,6 +472,30 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && RoslynClassification == "string - verbatim"
                 && Kind == SyntaxKind.StringLiteralToken
                 && HasAncestorAt(0, SyntaxKind.StringLiteralExpression);
+        }
+
+        public bool IsInterpolatedString()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "string"
+                &&
+                    (
+                        Kind == SyntaxKind.InterpolatedStringStartToken ||
+                        Kind == SyntaxKind.InterpolatedStringTextToken ||
+                        Kind == SyntaxKind.InterpolatedStringEndToken
+                    );
+        }
+
+        public bool IsInterpolatedVerbatimString()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "string - verbatim"
+                &&
+                    (
+                        Kind == SyntaxKind.InterpolatedVerbatimStringStartToken ||
+                        Kind == SyntaxKind.InterpolatedStringTextToken ||
+                        Kind == SyntaxKind.InterpolatedStringEndToken
+                    );
         }
 
         public bool IsNullableType() => HasAncestorAt(1, SyntaxKind.NullableType);

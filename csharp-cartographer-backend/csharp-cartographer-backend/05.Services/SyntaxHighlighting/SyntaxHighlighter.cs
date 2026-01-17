@@ -95,6 +95,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case SemanticRole.MethodInvocation:
                         token.HighlightColor = "color-yellow";
                         break;
+                    case SemanticRole.CharacterLiteral:
                     case SemanticRole.StringLiteral:
                         token.HighlightColor = "color-orange";
                         break;

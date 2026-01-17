@@ -115,6 +115,7 @@
         // Literals & values
         NumericLiteral,
         StringLiteral,
+        CharacterLiteral,
         DefaultValue,
         NullValue,
 
@@ -182,6 +183,7 @@
         QuotedString,
         VerbatimString,
         InterpolatedString,
+        InterpolatedVerbatimString,
         Boolean,
         Character,
 

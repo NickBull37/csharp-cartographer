@@ -346,8 +346,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.NumericLiteral;
 
             // String literals
-            if (token.IsQuotedString() || token.IsVerbatimString())
+            if (token.IsQuotedString() || token.IsVerbatimString() || token.IsInterpolatedString() || token.IsInterpolatedVerbatimString())
                 return SemanticRole.StringLiteral;
+
+            // Char literals
+            if (token.IsCharacterLiteral())
+                return SemanticRole.CharacterLiteral;
 
             return SemanticRole.None;
         }
@@ -434,6 +438,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsVerbatimString())
                 modifiers.Add(SemanticModifiers.VerbatimString);
+
+            if (token.IsInterpolatedString())
+                modifiers.Add(SemanticModifiers.InterpolatedString);
+
+            if (token.IsInterpolatedVerbatimString())
+                modifiers.Add(SemanticModifiers.InterpolatedVerbatimString);
 
 
             // Type modifiers
