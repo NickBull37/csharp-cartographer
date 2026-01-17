@@ -126,9 +126,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return genTypeArgRole;
 
             // --- Identifier Base Types ---
-            var baseType = GetSemanticRoleForBaseTypes(token);
-            if (baseType != SemanticRole.None)
-                return baseType;
+            var baseTypeRole = GetSemanticRoleForBaseTypes(token);
+            if (baseTypeRole != SemanticRole.None)
+                return baseTypeRole;
+
+            // --- Identifier Constraint Types ---
+            var typeConstraintRole = GetSemanticRoleForTypeConstraints(token);
+            if (typeConstraintRole != SemanticRole.None)
+                return typeConstraintRole;
 
             // --- Literals ---
             var literalRole = GetSemanticRoleForLiterals(token);
@@ -166,20 +171,52 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!GlobalConstants.Punctuators.Contains(token.Text))
                 return SemanticRole.None;
 
+            // --- Seperators ---
+            if (token.IsArgumentSeperator())
+                return SemanticRole.ArgumentSeperator;
+
+            if (token.IsTypeArgumentSeperator())
+                return SemanticRole.TypeArgumentSeperator;
+
             if (token.IsBaseTypeSeperator())
                 return SemanticRole.BaseTypeSeperation;
 
+            //if (token.IsCaseLabelSeperator())
+            //    return SemanticRole.CaseLabelSeperator;
+
+            if (token.IsEnumMemberSeparator())
+                return SemanticRole.EnumMemberSeparator;
+
+            //if (token.IsGenericTypeSeperator())
+            //    return SemanticRole.GenericTypeSeperator;
+
+            if (token.IsParameterSeparator())
+                return SemanticRole.ParameterSeparator;
+
+            //if (token.IsPatternSeparator())
+            //    return SemanticRole.PatternSeparator;
+
+            if (token.IsSwitchClauseSeperator())
+                return SemanticRole.SwitchClauseSeperator;
+
+            //if (token.IsTupleElementSeperator())
+            //    return SemanticRole.TupleElementSeperator;
+
+            if (token.IsTypeParameterConstraintClauseSeperator())
+                return SemanticRole.TypeParameterConstraintClauseSeperator;
+
+            //if (token.IsVariableDeclaratorSeparator())
+            //    return SemanticRole.VariableDeclaratorSeparator;
+
+            //if (token.IsVariableSeperator())
+            //    return SemanticRole.VariableSeperator;
+
+            // --- Terminators ---
             if (token.IsStatementTerminator())
                 return SemanticRole.StatementTermination;
 
             if (token.IsLabelTerminator())
                 return SemanticRole.ParameterLabelTermination;
-
-            if (token.IsSwitchClauseSeperator())
-                return SemanticRole.SwitchClauseSeperator;
-
-            if (token.IsTypeParameterConstraintClauseSeperator())
-                return SemanticRole.TypeParameterConstraintClauseSeperator;
 
             return SemanticRole.None;
         }
@@ -448,6 +485,15 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.None;
         }
 
+        private static SemanticRole GetSemanticRoleForTypeConstraints(NavToken token)
+        {
+            // Type constraints
+            if (token.IsTypeConstraint())
+                return SemanticRole.ConstraintType;
+
+            return SemanticRole.None;
+        }
+
         private static SemanticRole GetSemanticRoleForLiterals(NavToken token)
         {
             // Numeric literals
@@ -470,11 +516,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         private static HashSet<SemanticModifiers> GetSemanticModifiers(NavToken token)
         {
             var modifiers = new HashSet<SemanticModifiers>();
-
-            // Pre-defined types
-            if (GlobalConstants.PredefinedTypes.Contains(token.Text))
-                modifiers.Add(SemanticModifiers.PredefinedType);
-
 
             // Generic type parameters
             if (token.IsGenericTypeParameter())
@@ -556,11 +597,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
 
             // Type modifiers
+            if (GlobalConstants.PredefinedTypes.Contains(token.Text))
+                modifiers.Add(SemanticModifiers.PredefinedType);
+
+            if (token.IsNullableType() || token.IsNullableConstraintType())
+                modifiers.Add(SemanticModifiers.Nullable);
+
             if (token.IsKeyword("var"))
                 modifiers.Add(SemanticModifiers.ImplicitlyTyped);
-
-            if (token.IsNullableType())
-                modifiers.Add(SemanticModifiers.Nullable);
 
             if (token.IsGenericType())
                 modifiers.Add(SemanticModifiers.Generic);

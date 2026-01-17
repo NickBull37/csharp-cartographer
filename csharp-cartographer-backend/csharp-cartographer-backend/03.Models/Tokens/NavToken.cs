@@ -196,12 +196,44 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         }
 
         #region Punctuation Checks
+        public bool IsArgumentSeperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.ArgumentList)
+                && Text == ",";
+        }
+
         public bool IsBaseTypeSeperator()
         {
             return RoslynClassification is not null
                 && RoslynClassification == "punctuation"
                 && HasAncestorAt(0, SyntaxKind.BaseList)
                 && Text == ":";
+        }
+
+        public bool IsEnumMemberSeparator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.EnumDeclaration)
+                && Text == ",";
+        }
+
+        public bool IsParameterSeparator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.ParameterList)
+                && Text == ",";
+        }
+
+        public bool IsTypeArgumentSeperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.TypeArgumentList)
+                && Text == ",";
         }
 
         public bool IsStatementTerminator()
@@ -379,10 +411,182 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         }
         #endregion
 
+        #region Identifier Checks
+        public bool IsTypeConstraint()
+        {
+            return HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause)
+                || HasAncestorAt(2, SyntaxKind.TypeParameterConstraintClause);
+        }
+
+        /*
+         *  -----------------------------------------------------------------------
+         *      Declaration Identifiers
+         *  -----------------------------------------------------------------------
+         */
+        public bool IsAttributeDeclaration() =>
+            HasAncestorAt(1, SyntaxKind.Attribute);
+
+        public bool IsClassDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.ClassDeclaration);
+
+        public bool IsClassConstructorDeclaration() =>
+            RoslynClassification is not null &&
+            RoslynClassification == "class name" &&
+            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
+
+        public bool IsDelegateDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.DelegateDeclaration);
+
+        public bool IsEnumDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.EnumDeclaration);
+
+        public bool IsEnumMemberDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.EnumMemberDeclaration);
+
+        public bool IsEventDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.EventDeclaration);
+
+        public bool IsEventFieldDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.EventFieldDeclaration);
+
+        public bool IsFieldDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.VariableDeclarator) &&
+            HasAncestorAt(2, SyntaxKind.FieldDeclaration);
+
+        public bool IsLocalVariableDeclaration() =>
+            HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
+            && !HasAncestorAt(0, SyntaxKind.GenericName)
+            && !HasAncestorAt(0, SyntaxKind.IdentifierName);
+
+        public bool IsLocalForLoopVariableDeclaration() =>
+            HasAncestorAt(2, SyntaxKind.ForStatement);
+
+        public bool IsLocalForeachLoopVariableDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.ForEachStatement);
+
+        public bool IsMethodDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.MethodDeclaration);
+
+        public bool IsParameterDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.Parameter);
+
+        public bool IsPropertyDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.PropertyDeclaration);
+
+        public bool IsRecordDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.RecordDeclaration);
+
+        public bool IsRecordConstructorDeclaration() =>
+            RoslynClassification is not null &&
+            RoslynClassification == "record class name" &&
+            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
+
+        public bool IsRecordStructDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.RecordStructDeclaration);
+
+        public bool IsRecordStructConstructorDeclaration() =>
+            RoslynClassification is not null &&
+            RoslynClassification == "record struct name" &&
+            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
+
+        public bool IsStructDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.StructDeclaration);
+
+        public bool IsStructConstructorDeclaration() =>
+            RoslynClassification is not null &&
+            RoslynClassification == "struct name" &&
+            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
+
+        /*
+         *  -----------------------------------------------------------------------
+         *      DataType Identifiers
+         *  -----------------------------------------------------------------------
+         */
+        public bool IsFieldDataType() =>
+            HasAncestorAt(2, SyntaxKind.FieldDeclaration) ||
+            HasAncestorAt(3, SyntaxKind.FieldDeclaration);
+
+        public bool IsLocalVariableDataType() =>
+            HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement) ||
+            HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
+
+        public bool IsMethodReturnType() =>
+            HasAncestorAt(1, SyntaxKind.MethodDeclaration) ||
+            HasAncestorAt(2, SyntaxKind.MethodDeclaration);
+
+        public bool IsParameterDataType() =>
+            HasAncestorAt(1, SyntaxKind.Parameter) ||
+            HasAncestorAt(2, SyntaxKind.Parameter);
+
+        public bool IsPropertyDataType() =>
+            HasAncestorAt(1, SyntaxKind.PropertyDeclaration) ||
+            HasAncestorAt(2, SyntaxKind.PropertyDeclaration);
+        #endregion
+
+        #region Type Checks
         public bool IsPredefinedType()
         {
             return SyntaxFacts.IsPredefinedType(Kind);
         }
+        #endregion
+
+        #region Literal Checks
+        public bool IsNumericLiteral()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "number"
+                && Kind == SyntaxKind.NumericLiteralToken
+                && HasAncestorAt(0, SyntaxKind.NumericLiteralExpression);
+        }
+
+        public bool IsCharacterLiteral()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "string"
+                && Kind == SyntaxKind.CharacterLiteralToken
+                && HasAncestorAt(0, SyntaxKind.CharacterLiteralExpression);
+        }
+
+        public bool IsQuotedString()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "string"
+                && Kind == SyntaxKind.StringLiteralToken
+                && HasAncestorAt(0, SyntaxKind.StringLiteralExpression);
+        }
+
+        public bool IsVerbatimString()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "string - verbatim"
+                && Kind == SyntaxKind.StringLiteralToken
+                && HasAncestorAt(0, SyntaxKind.StringLiteralExpression);
+        }
+
+        public bool IsInterpolatedString()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "string"
+                &&
+                    (
+                        Kind == SyntaxKind.InterpolatedStringStartToken ||
+                        Kind == SyntaxKind.InterpolatedStringTextToken ||
+                        Kind == SyntaxKind.InterpolatedStringEndToken
+                    );
+        }
+
+        public bool IsInterpolatedVerbatimString()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "string - verbatim"
+                &&
+                    (
+                        Kind == SyntaxKind.InterpolatedVerbatimStringStartToken ||
+                        Kind == SyntaxKind.InterpolatedStringTextToken ||
+                        Kind == SyntaxKind.InterpolatedStringEndToken
+                    );
+        }
+        #endregion
 
         public bool IsOpenParen()
         {
@@ -484,100 +688,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && ancestors[index] == kind;
         }
 
-        public bool IsAttributeDeclaration() =>
-            HasAncestorAt(1, SyntaxKind.Attribute);
-
-        public bool IsClassDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.ClassDeclaration);
-
-        public bool IsClassConstructorDeclaration() =>
-            RoslynClassification is not null &&
-            RoslynClassification == "class name" &&
-            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
-
-        public bool IsDelegateDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.DelegateDeclaration);
-
-        public bool IsEnumDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.EnumDeclaration);
-
-        public bool IsEnumMemberDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.EnumMemberDeclaration);
-
-        public bool IsEventDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.EventDeclaration);
-
-        public bool IsEventFieldDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.EventFieldDeclaration);
-
-        public bool IsFieldDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.VariableDeclarator) &&
-            HasAncestorAt(2, SyntaxKind.FieldDeclaration);
-
-        public bool IsLocalVariableDeclaration() =>
-            HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
-            && !HasAncestorAt(0, SyntaxKind.GenericName)
-            && !HasAncestorAt(0, SyntaxKind.IdentifierName);
-
-        public bool IsLocalForLoopVariableDeclaration() =>
-            HasAncestorAt(2, SyntaxKind.ForStatement);
-
-        public bool IsLocalForeachLoopVariableDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.ForEachStatement);
-
-        public bool IsMethodDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.MethodDeclaration);
-
-        public bool IsParameterDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.Parameter);
-
-        public bool IsPropertyDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.PropertyDeclaration);
-
-        public bool IsRecordDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.RecordDeclaration);
-
-        public bool IsRecordConstructorDeclaration() =>
-            RoslynClassification is not null &&
-            RoslynClassification == "record class name" &&
-            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
-
-        public bool IsRecordStructDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.RecordStructDeclaration);
-
-        public bool IsRecordStructConstructorDeclaration() =>
-            RoslynClassification is not null &&
-            RoslynClassification == "record struct name" &&
-            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
-
-        public bool IsStructDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.StructDeclaration);
-
-        public bool IsStructConstructorDeclaration() =>
-            RoslynClassification is not null &&
-            RoslynClassification == "struct name" &&
-            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
-
-        public bool IsFieldDataType() =>
-            HasAncestorAt(2, SyntaxKind.FieldDeclaration) ||
-            HasAncestorAt(3, SyntaxKind.FieldDeclaration);
-
-        public bool IsLocalVariableDataType() =>
-            HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement) ||
-            HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
-
-        public bool IsMethodReturnType() =>
-            HasAncestorAt(1, SyntaxKind.MethodDeclaration) ||
-            HasAncestorAt(2, SyntaxKind.MethodDeclaration);
-
-        public bool IsParameterDataType() =>
-            HasAncestorAt(1, SyntaxKind.Parameter) ||
-            HasAncestorAt(2, SyntaxKind.Parameter);
-
-        public bool IsPropertyDataType() =>
-            HasAncestorAt(1, SyntaxKind.PropertyDeclaration) ||
-            HasAncestorAt(2, SyntaxKind.PropertyDeclaration);
-
         public bool IsMethodInvocation()
         {
             var nextTokenText = NextToken?.Text;
@@ -625,63 +735,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return RoslynClassification is not null && RoslynClassification == "type parameter name";
         }
 
-        public bool IsNumericLiteral()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "number"
-                && Kind == SyntaxKind.NumericLiteralToken
-                && HasAncestorAt(0, SyntaxKind.NumericLiteralExpression);
-        }
-
-        public bool IsCharacterLiteral()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "string"
-                && Kind == SyntaxKind.CharacterLiteralToken
-                && HasAncestorAt(0, SyntaxKind.CharacterLiteralExpression);
-        }
-
-        public bool IsQuotedString()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "string"
-                && Kind == SyntaxKind.StringLiteralToken
-                && HasAncestorAt(0, SyntaxKind.StringLiteralExpression);
-        }
-
-        public bool IsVerbatimString()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "string - verbatim"
-                && Kind == SyntaxKind.StringLiteralToken
-                && HasAncestorAt(0, SyntaxKind.StringLiteralExpression);
-        }
-
-        public bool IsInterpolatedString()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "string"
-                &&
-                    (
-                        Kind == SyntaxKind.InterpolatedStringStartToken ||
-                        Kind == SyntaxKind.InterpolatedStringTextToken ||
-                        Kind == SyntaxKind.InterpolatedStringEndToken
-                    );
-        }
-
-        public bool IsInterpolatedVerbatimString()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "string - verbatim"
-                &&
-                    (
-                        Kind == SyntaxKind.InterpolatedVerbatimStringStartToken ||
-                        Kind == SyntaxKind.InterpolatedStringTextToken ||
-                        Kind == SyntaxKind.InterpolatedStringEndToken
-                    );
-        }
-
         public bool IsNullableType() => HasAncestorAt(1, SyntaxKind.NullableType);
+
+        public bool IsNullableConstraintType()
+        {
+            return IsTypeConstraint() && NextToken?.Text == "?";
+        }
 
         public bool IsGenericType() => HasAncestorAt(0, SyntaxKind.GenericName);
 

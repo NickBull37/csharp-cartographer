@@ -110,16 +110,32 @@
         DefaultValue,
         NullValue,
 
-        // Punctuation
+        // ------------ PUNCTUATION ------------ //
+
+        // Seperation
+        ArgumentSeperator,
         BaseTypeSeperation,
-        ParameterLabelTermination,
-        NamespaceAliasQualifier,
-        StatementTermination,
+        CaseLabelSeperator,
+        EnumMemberSeparator,
+        GenericTypeSeperator,
+        ParameterSeparator,
+        PatternSeparator,
         SwitchClauseSeperator,
+        TupleElementSeperator,
+        TypeArgumentSeperator,
         TypeParameterConstraintClauseSeperator,
+        VariableDeclaratorSeparator,
+        VariableSeperator,
 
+        // Termination
+        ParameterLabelTermination,
+        StatementTermination,
 
-        // Delimiters
+        // Qualification
+        NamespaceAliasQualifier,
+
+        // ------------ DELIMITERS ------------ //
+
         ArgumentListBoundary,
         AttributeListBoundary,
         AttributeArgumentListBoundary,
