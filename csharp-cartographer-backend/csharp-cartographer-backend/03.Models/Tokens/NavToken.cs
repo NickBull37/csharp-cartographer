@@ -62,7 +62,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <summary>The updated token classification.</summary>
         public string? UpdatedClassification { get; set; }
 
-        public TokenMap Map { get; set; }
+        public TokenMap? Map { get; set; }
 
         public TestEnum TestEnum { get; set; }
 
@@ -144,7 +144,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <param name="index">The index of the token in the list.</param>
         public NavToken(SyntaxToken roslynToken, SemanticModel semanticModel, SyntaxTree syntaxTree, int index, string? classification)
         {
+            int a, b, c;
+
             List<int>? test = [];
+
             TestEnum = TestEnum.Camaro;
 
             ID = Guid.NewGuid();
@@ -236,6 +239,30 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Text == ",";
         }
 
+        public bool IsSwitchClauseSeperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.CaseSwitchLabel)
+                && Text == ":";
+        }
+
+        public bool IsTypeParameterConstraintClauseSeperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.TypeParameterConstraintClause)
+                && Text == ":";
+        }
+
+        public bool IsVariableDeclaratorSeparator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.VariableDeclaration)
+                && Text == ",";
+        }
+
         public bool IsStatementTerminator()
         {
             return RoslynClassification is not null
@@ -255,22 +282,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return RoslynClassification is not null
                 && RoslynClassification == "punctuation"
                 && HasAncestorAt(0, SyntaxKind.NameColon)
-                && Text == ":";
-        }
-
-        public bool IsSwitchClauseSeperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.CaseSwitchLabel)
-                && Text == ":";
-        }
-
-        public bool IsTypeParameterConstraintClauseSeperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.TypeParameterConstraintClause)
                 && Text == ":";
         }
         #endregion
@@ -418,6 +429,27 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 || HasAncestorAt(2, SyntaxKind.TypeParameterConstraintClause);
         }
 
+        public bool IsBaseType()
+        {
+            return Kind == SyntaxKind.IdentifierToken &&
+                HasAncestorAt(1, SyntaxKind.SimpleBaseType);
+        }
+
+        public bool IsMethodInvocation()
+        {
+            var nextTokenText = NextToken?.Text;
+            var hasPermittedNextToken = nextTokenText == "(" || nextTokenText == "<";
+            var hasInvocationAncestor = HasAncestorAt(1, SyntaxKind.InvocationExpression) ||
+                HasAncestorAt(2, SyntaxKind.InvocationExpression);
+
+            return hasPermittedNextToken && hasInvocationAncestor;
+        }
+
+        public bool IsObjectCreationExpression()
+        {
+            return HasAncestorAt(1, SyntaxKind.ObjectCreationExpression);
+        }
+
         /*
          *  -----------------------------------------------------------------------
          *      Declaration Identifiers
@@ -524,10 +556,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Type Checks
-        public bool IsPredefinedType()
-        {
-            return SyntaxFacts.IsPredefinedType(Kind);
-        }
+        public bool IsGenericType() => HasAncestorAt(0, SyntaxKind.GenericName);
+
+        public bool IsGenericTypeParameter() => RoslynClassification is not null
+            && RoslynClassification == "type parameter name";
+
+        public bool IsNullableType() => HasAncestorAt(1, SyntaxKind.NullableType);
+
+        public bool IsNullableConstraintType() => IsTypeConstraint() && NextToken?.Text == "?";
+
+        public bool IsPredefinedType() => SyntaxFacts.IsPredefinedType(Kind);
         #endregion
 
         #region Literal Checks
@@ -587,31 +625,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     );
         }
         #endregion
-
-        public bool IsOpenParen()
-        {
-            return Text.Equals("(");
-        }
-
-        public bool IsDot()
-        {
-            return Text.Equals(".");
-        }
-
-        public bool IsTypeKeywordOrIdentifier()
-        {
-            var kind = RoslynToken.Kind();
-
-            // Predefined C# type keywords: int, string, bool, object, etc.
-            if (SyntaxFacts.IsPredefinedType(kind))
-                return true;
-
-            // Identifiers that could be types: List, MyClass, IFoo
-            if (kind == SyntaxKind.IdentifierToken)
-                return true;
-
-            return false;
-        }
 
         /*
          *   Does this token logically end a declaration or separate a declarator?
@@ -688,21 +701,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && ancestors[index] == kind;
         }
 
-        public bool IsMethodInvocation()
-        {
-            var nextTokenText = NextToken?.Text;
-            var hasPermittedNextToken = nextTokenText == "(" || nextTokenText == "<";
-            var hasInvocationAncestor = HasAncestorAt(1, SyntaxKind.InvocationExpression) ||
-                HasAncestorAt(2, SyntaxKind.InvocationExpression);
-
-            return hasPermittedNextToken && hasInvocationAncestor;
-        }
-
-        public bool IsObjectCreationExpression()
-        {
-            return HasAncestorAt(1, SyntaxKind.ObjectCreationExpression);
-        }
-
         public bool IsUsingDirectiveSegment()
         {
             if (RoslynClassification is not ("namespace name" or "identifier"))
@@ -724,25 +722,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 HasAncestorAt(2, SyntaxKind.TypeArgumentList);
         }
 
-        public bool IsBaseType()
-        {
-            return Kind == SyntaxKind.IdentifierToken &&
-                HasAncestorAt(1, SyntaxKind.SimpleBaseType);
-        }
 
-        public bool IsGenericTypeParameter()
-        {
-            return RoslynClassification is not null && RoslynClassification == "type parameter name";
-        }
 
-        public bool IsNullableType() => HasAncestorAt(1, SyntaxKind.NullableType);
 
-        public bool IsNullableConstraintType()
-        {
-            return IsTypeConstraint() && NextToken?.Text == "?";
-        }
 
-        public bool IsGenericType() => HasAncestorAt(0, SyntaxKind.GenericName);
+
 
         /// <summary>Gets the token's leading trivia.</summary>
         /// <param name="roslynToken">The SyntaxToken generated by the Roslyn code analysis library.</param>

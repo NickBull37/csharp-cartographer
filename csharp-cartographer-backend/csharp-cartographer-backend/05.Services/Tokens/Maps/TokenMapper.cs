@@ -23,14 +23,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             var primaryKind = GetPrimaryKind(token);
             var role = GetSemanticRole(token, previous, next);
             var modifiers = GetSemanticModifiers(token);
-            var typeInfo = GetTypeInfo(token);
 
             return new TokenMap(
                 primaryKind: primaryKind,
                 semanticRole: role,
                 modifiers: modifiers.Count > 0 ? modifiers : null
-            //typeInfo: typeInfo,
-            //Raw: token.UpdatedClassification
             );
         }
 
@@ -106,7 +103,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return dataTypeRole;
 
             // --- Identifier References ---
-            var referenceRole = GetSemanticRoleIdentifierReferences(token);
+            var referenceRole = GetSemanticRoleForIdentifierReferences(token);
             if (referenceRole != SemanticRole.None)
                 return referenceRole;
 
@@ -205,8 +202,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsTypeParameterConstraintClauseSeperator())
                 return SemanticRole.TypeParameterConstraintClauseSeperator;
 
-            //if (token.IsVariableDeclaratorSeparator())
-            //    return SemanticRole.VariableDeclaratorSeparator;
+            if (token.IsVariableDeclaratorSeparator())
+                return SemanticRole.VariableDeclaratorSeparator;
 
             //if (token.IsVariableSeperator())
             //    return SemanticRole.VariableSeperator;
@@ -394,7 +391,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.None;
         }
 
-        private static SemanticRole GetSemanticRoleIdentifierReferences(NavToken token)
+        private static SemanticRole GetSemanticRoleForIdentifierReferences(NavToken token)
         {
             if (!token.IsIdentifier())
                 return SemanticRole.None;
@@ -612,17 +609,5 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return modifiers;
         }
         #endregion
-
-        private TokenTypeInfo? GetTypeInfo(NavToken token)
-        {
-            if (!token.IsTypeKeywordOrIdentifier())
-                return null;
-
-            return new TokenTypeInfo(
-                IsPredefinedType: token.IsPredefinedType(),
-                IsNullable: token.IsNullableType(),
-                IsGeneric: token.IsGenericType()
-            );
-        }
     }
 }
