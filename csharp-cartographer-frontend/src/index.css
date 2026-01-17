@@ -284,6 +284,9 @@ body {
 .color-red {
     color: #ff0000;
 }
+.color-pink {
+    color: #ff33ff;
+}
 
 /* ------------------- 5.2 Active Token Styling ------------------- */
 .token-active {

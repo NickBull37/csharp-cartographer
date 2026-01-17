@@ -1,5 +1,4 @@
 ﻿using csharp_cartographer_backend._01.Configuration.Configs;
-using csharp_cartographer_backend._02.Utilities.Logging;
 using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._03.Models.Files;
 using csharp_cartographer_backend._05.Services.Charts;
@@ -8,6 +7,7 @@ using csharp_cartographer_backend._05.Services.Roslyn;
 using csharp_cartographer_backend._05.Services.SyntaxHighlighting;
 using csharp_cartographer_backend._05.Services.Tags;
 using csharp_cartographer_backend._05.Services.Tokens;
+using csharp_cartographer_backend._05.Services.Tokens.Maps;
 using csharp_cartographer_backend._08.Controllers.Artifacts.Dtos;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
@@ -24,6 +24,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         private readonly ITokenChartWizard _tokenChartWizard;
         private readonly ITokenTagGenerator _tokenTagGenerator;
         private readonly IClassificationWizard _classificationWizard;
+        private readonly ITokenMapper _tokenMapper;
         private readonly CartographerConfig _config;
 
         private readonly IOptions<CartographerConfig> _testConfig;
@@ -38,6 +39,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             ITokenChartWizard tokenChartWizard,
             ITokenTagGenerator tokenTagGenerator,
             IClassificationWizard classificationWizard,
+            ITokenMapper tokenMapper,
             IOptions<CartographerConfig> config)
         {
             _fileProcessor = fileProcessor;
@@ -48,6 +50,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _tokenChartWizard = tokenChartWizard;
             _tokenTagGenerator = tokenTagGenerator;
             _classificationWizard = classificationWizard;
+            _tokenMapper = tokenMapper;
             _config = config.Value;
         }
 
@@ -74,9 +77,9 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
              *   3. Generate CompilationUnit with SyntaxTree.
              *   4. Generate SemanticModel with CompilationUnit & SyntaxTree.
              *   5. Turn the Roslyn data into a list of NavTokens.
-             *   6. Correct roslyn generated classifications that don't provide much info
-             *   7. Generate TokenTags.
-             *   8. Generate TokenCharts.
+             *   6. Generate TokenCharts.
+             *   7. Correct roslyn generated classifications that don't provide much info
+             *   8. Generate TokenTags.
              *   9. Add TokenCharts highlight indices for highlighting in the code viewer.
              *   10. Add TokenTags definitions & insights.
              *   11. Add syntax highlighting for all NavTokens (should be last step in workflow).
@@ -98,14 +101,16 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             // Step 5. Turn the Roslyn data into a list of NavTokens.
             var navTokens = await _navTokenGenerator.GenerateNavTokens(semanticModel, syntaxTree, fileData.Document);
 
-            // Step 6. Correct roslyn generated classifications that don't provide much info
+            // Step 6. Generate TokenCharts.
+            _tokenChartGenerator.GenerateTokenCharts(navTokens);
+
+            _tokenMapper.MapNavTokens(navTokens);
+
+            // Step 7. Correct roslyn generated classifications that don't provide much info
             _classificationWizard.CorrectTokenClassifications(navTokens);
 
-            // Step 7. Generate TokenTags.
+            // Step 8. Generate TokenTags.
             _tokenTagGenerator.GenerateTokenTags(navTokens);
-
-            // Step 8. Generate TokenCharts.
-            _tokenChartGenerator.GenerateTokenCharts(navTokens);
 
             // Step 9. Add TokenCharts highlight indices for highlighting in the code viewer.
             _tokenChartWizard.AddHighlightValuesToNavTokenCharts(navTokens);
@@ -136,34 +141,34 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             //CartographerLogger.ClearLogFile(LogType.TextLog);
             var loggedClassifications = new HashSet<string>();
 
-            foreach (var token in artifact.NavTokens)
-            {
-                //if (token.RoslynClassification is not null && !RoslynClassification.Classifications.Contains(token.RoslynClassification))
-                //{
-                //    CartographerLogger.LogText(token.RoslynClassification);
-                //}
+            //foreach (var token in artifact.NavTokens)
+            //{
+            //    //if (token.RoslynClassification is not null && !RoslynClassification.Classifications.Contains(token.RoslynClassification))
+            //    //{
+            //    //    CartographerLogger.LogText(token.RoslynClassification);
+            //    //}
 
-                if (token.UpdatedClassification is null)
-                {
-                    continue;
-                }
+            //    if (token.UpdatedClassification is null)
+            //    {
+            //        continue;
+            //    }
 
-                if (loggedClassifications.Add(token.UpdatedClassification))
-                {
-                    CartographerLogger.LogText(token.UpdatedClassification);
-                }
-            }
+            //    if (loggedClassifications.Add(token.UpdatedClassification))
+            //    {
+            //        CartographerLogger.LogText(token.UpdatedClassification);
+            //    }
+            //}
 
-            if (_config.ShouldLogArtifact)
-            {
-                CartographerLogger.LogArtifact(artifact);
-            }
+            //if (_config.ShouldLogArtifact)
+            //{
+            //    CartographerLogger.LogArtifact(artifact);
+            //}
 
-            if (_config.ShouldLogUnidentifiedTokens)
-            {
-                var unidentifiedTokens = artifact.NavTokens.Where(token => token.HighlightColor == "color-red");
-                CartographerLogger.LogTokens(unidentifiedTokens);
-            }
+            //if (_config.ShouldLogUnidentifiedTokens)
+            //{
+            //    var unidentifiedTokens = artifact.NavTokens.Where(token => token.HighlightColor == "color-red");
+            //    CartographerLogger.LogTokens(unidentifiedTokens);
+            //}
         }
     }
 }

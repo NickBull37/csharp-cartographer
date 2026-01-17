@@ -340,6 +340,25 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                         {tokenChartExpanded
                             ?
                                 <Stack
+                                    gap={1}
+                                    sx={{
+                                        p: '1.25rem'
+                                    }}
+                                >
+                                    <Typography>
+                                        Primary Kind: {activeToken.map.primaryKindString}
+                                    </Typography>
+                                    <Typography>
+                                        Semantic Role: {activeToken.map.semanticRoleString}
+                                    </Typography>
+                                </Stack>
+                            :
+                                <></>
+                        }
+
+                        {/* {tokenChartExpanded
+                            ?
+                                <Stack
                                     gap={2.5}
                                     sx={{
                                         mt: 0.75,
@@ -741,7 +760,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                 </Stack>
                             :
                                 <></>
-                        }
+                        } */}
 
                     </Stack>
 

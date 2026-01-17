@@ -1,4 +1,5 @@
 ﻿using csharp_cartographer_backend._02.Utilities.Helpers;
+using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -51,10 +52,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <summary>The Roslyn SyntaxKind of the token as a string.</summary>
         public string RoslynKind { get; set; }
 
-        /// <summary>True if the token is an identifier, false otherwise.</summary>
-        [JsonIgnore]
-        public bool IsIdentifier { get; set; }
-
         /// <summary>The token field symbol.</summary>
         [JsonIgnore]
         public IFieldSymbol? FieldSymbol { get; set; }
@@ -64,6 +61,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         /// <summary>The updated token classification.</summary>
         public string? UpdatedClassification { get; set; }
+
+        public TokenMap Map { get; set; }
 
         public TestEnum TestEnum { get; set; }
 
@@ -157,7 +156,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             RoslynKind = roslynToken.Kind().ToString();
             FieldSymbol = TryGetFieldSymbol(semanticModel, roslynToken);
             RoslynClassification = classification;
-            IsIdentifier = roslynToken.Kind().ToString().Contains("Identifier");
             Span = roslynToken.Span;
             LeadingTrivia = GetLeadingTrivia(roslynToken);
             TrailingTrivia = GetTrailingTrivia(roslynToken);
@@ -184,6 +182,293 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             References = GetContextualData(semanticModel, syntaxTree, roslynToken);
             #endregion
         }
+
+        public NavToken IsNavToken()
+        {
+            return new NavToken();
+        }
+
+        public bool IsKeyword(string keyword)
+        {
+            return RoslynClassification is not null
+                && RoslynClassification.Contains("keyword")
+                && string.Equals(Text, keyword, StringComparison.Ordinal);
+        }
+
+        public bool IsIdentifier()
+        {
+            return RoslynToken.IsKind(SyntaxKind.IdentifierToken);
+        }
+
+
+
+        public bool IsPredefinedType()
+        {
+            return SyntaxFacts.IsPredefinedType(Kind);
+        }
+
+        public bool IsOpenParen()
+        {
+            return Text.Equals("(");
+        }
+
+        public bool IsDot()
+        {
+            return Text.Equals(".");
+        }
+
+        public bool IsTypeKeywordOrIdentifier()
+        {
+            var kind = RoslynToken.Kind();
+
+            // Predefined C# type keywords: int, string, bool, object, etc.
+            if (SyntaxFacts.IsPredefinedType(kind))
+                return true;
+
+            // Identifiers that could be types: List, MyClass, IFoo
+            if (kind == SyntaxKind.IdentifierToken)
+                return true;
+
+            return false;
+        }
+
+        /*
+         *   Does this token logically end a declaration or separate a declarator?
+         *   
+         *   covers:
+         *       variable declarations with initializers
+         *       reassignment
+         *       compound assignments
+         * 
+         *   int x = 5;         pass
+         *   int x;             pass
+         *   Foo(a, b)          pass
+         *   Foo(a)             pass
+         *   
+         *   x + y              fail
+         *   if (x == y)        fail
+         *   
+         */
+        /// <summary>
+        /// Determines whether this token logically ends a declaration
+        /// or separates declarators.
+        /// </summary>
+        /// <remarks>
+        /// <para>Covered scenarios:</para>
+        /// <list type="bullet">
+        ///   <item>
+        ///     <description>Variable declarations with initializers</description>
+        ///   </item>
+        ///   <item>
+        ///     <description>Reassignment expressions</description>
+        ///   </item>
+        ///   <item>
+        ///     <description>Compound assignment expressions</description>
+        ///   </item>
+        /// </list>
+        /// <para>Examples that return <c>true</c>:</para>
+        /// <code>
+        /// int x = 5;
+        /// int x;
+        /// Foo(a, b)
+        /// Foo(a)
+        /// </code>
+        /// <para>Examples that return <c>false</c>:</para>
+        /// <code>
+        /// x + y
+        /// if (x == y)
+        /// </code>
+        /// </remarks>
+        public bool IsAssignmentOrDelimiter()
+        {
+            var kind = RoslynToken.Kind();
+
+            if (SyntaxFacts.IsAssignmentExpression(kind))
+                return true;
+
+            return kind switch
+            {
+                SyntaxKind.SemicolonToken => true,
+                SyntaxKind.CommaToken => true,
+                SyntaxKind.CloseParenToken => true,
+                SyntaxKind.CloseBracketToken => true,
+                _ => false
+            };
+        }
+
+        private bool HasAncestorAt(int index, SyntaxKind kind)
+        {
+            var ancestors = AncestorKinds.Ancestors;
+
+            // Use Count or Length depending on the type
+            return !ancestors.IsEmpty
+                && index >= 0
+                && index < ancestors.Length
+                && ancestors[index] == kind;
+        }
+
+        public bool IsAttributeDeclaration() =>
+            HasAncestorAt(1, SyntaxKind.Attribute);
+
+        public bool IsClassDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.ClassDeclaration);
+
+        public bool IsClassConstructorDeclaration() =>
+            RoslynClassification is not null &&
+            RoslynClassification == "class name" &&
+            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
+
+        public bool IsDelegateDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.DelegateDeclaration);
+
+        public bool IsEnumDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.EnumDeclaration);
+
+        public bool IsEnumMemberDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.EnumMemberDeclaration);
+
+        public bool IsEventDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.EventDeclaration);
+
+        public bool IsEventFieldDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.EventFieldDeclaration);
+
+        public bool IsFieldDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.VariableDeclarator) &&
+            HasAncestorAt(2, SyntaxKind.FieldDeclaration);
+
+        public bool IsLocalVariableDeclaration() =>
+            HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
+            && !HasAncestorAt(0, SyntaxKind.GenericName)
+            && !HasAncestorAt(0, SyntaxKind.IdentifierName);
+
+        public bool IsLocalForLoopVariableDeclaration() =>
+            HasAncestorAt(2, SyntaxKind.ForStatement);
+
+        public bool IsLocalForeachLoopVariableDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.ForEachStatement);
+
+        public bool IsMethodDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.MethodDeclaration);
+
+        public bool IsParameterDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.Parameter);
+
+        public bool IsPropertyDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.PropertyDeclaration);
+
+        public bool IsRecordDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.RecordDeclaration);
+
+        public bool IsRecordConstructorDeclaration() =>
+            RoslynClassification is not null &&
+            RoslynClassification == "record class name" &&
+            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
+
+        public bool IsRecordStructDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.RecordStructDeclaration);
+
+        public bool IsRecordStructConstructorDeclaration() =>
+            RoslynClassification is not null &&
+            RoslynClassification == "record struct name" &&
+            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
+
+        public bool IsStructDeclaration() =>
+            HasAncestorAt(0, SyntaxKind.StructDeclaration);
+
+        public bool IsStructConstructorDeclaration() =>
+            RoslynClassification is not null &&
+            RoslynClassification == "struct name" &&
+            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
+
+        public bool IsFieldDataType() =>
+            HasAncestorAt(2, SyntaxKind.FieldDeclaration) ||
+            HasAncestorAt(3, SyntaxKind.FieldDeclaration);
+
+        public bool IsLocalVariableDataType() =>
+            HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement) ||
+            HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
+
+        public bool IsMethodReturnType() =>
+            HasAncestorAt(1, SyntaxKind.MethodDeclaration) ||
+            HasAncestorAt(2, SyntaxKind.MethodDeclaration);
+
+        public bool IsParameterDataType() =>
+            HasAncestorAt(1, SyntaxKind.Parameter) ||
+            HasAncestorAt(2, SyntaxKind.Parameter);
+
+        public bool IsPropertyDataType() =>
+            HasAncestorAt(1, SyntaxKind.PropertyDeclaration) ||
+            HasAncestorAt(2, SyntaxKind.PropertyDeclaration);
+
+        public bool IsMethodInvocation()
+        {
+            var nextTokenText = NextToken?.Text;
+            var hasPermittedNextToken = nextTokenText == "(" || nextTokenText == "<";
+            var hasInvocationAncestor = HasAncestorAt(1, SyntaxKind.InvocationExpression) ||
+                HasAncestorAt(2, SyntaxKind.InvocationExpression);
+
+            return hasPermittedNextToken && hasInvocationAncestor;
+        }
+
+        public bool IsObjectCreationExpression()
+        {
+            return HasAncestorAt(1, SyntaxKind.ObjectCreationExpression);
+        }
+
+        public bool IsUsingDirectiveSegment()
+        {
+            if (RoslynClassification is not ("namespace name" or "identifier"))
+                return false;
+
+            var ancestors = AncestorKinds.Ancestors;
+            return ancestors.Length > 0 && ancestors.Last() == SyntaxKind.UsingDirective;
+        }
+
+        public bool IsNamespaceSegment()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "namespace name";
+        }
+
+        public bool IsGenericTypeArgument()
+        {
+            return HasAncestorAt(1, SyntaxKind.TypeArgumentList) ||
+                HasAncestorAt(2, SyntaxKind.TypeArgumentList);
+        }
+
+        public bool IsGenericTypeParameter()
+        {
+            return RoslynClassification is not null && RoslynClassification == "type parameter name";
+        }
+
+        public bool IsNumericLiteral()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "number"
+                && Kind == SyntaxKind.NumericLiteralToken
+                && HasAncestorAt(0, SyntaxKind.NumericLiteralExpression);
+        }
+
+        public bool IsQuotedString()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "string"
+                && Kind == SyntaxKind.StringLiteralToken
+                && HasAncestorAt(0, SyntaxKind.StringLiteralExpression);
+        }
+
+        public bool IsVerbatimString()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "string - verbatim"
+                && Kind == SyntaxKind.StringLiteralToken
+                && HasAncestorAt(0, SyntaxKind.StringLiteralExpression);
+        }
+
+        public bool IsNullableType() => HasAncestorAt(1, SyntaxKind.NullableType);
+
+        public bool IsGenericType() => HasAncestorAt(0, SyntaxKind.GenericName);
 
         /// <summary>Gets the token's leading trivia.</summary>
         /// <param name="roslynToken">The SyntaxToken generated by the Roslyn code analysis library.</param>
@@ -351,7 +636,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             while (currentNode is not null)
             {
-                builder.Add(currentNode.Kind());
+                if (!currentNode.IsKind(SyntaxKind.CompilationUnit))
+                {
+                    builder.Add(currentNode.Kind());
+                }
                 currentNode = currentNode.Parent;
             }
 

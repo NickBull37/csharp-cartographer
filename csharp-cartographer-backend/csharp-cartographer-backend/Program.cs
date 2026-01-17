@@ -6,6 +6,7 @@ using csharp_cartographer_backend._05.Services.Roslyn;
 using csharp_cartographer_backend._05.Services.SyntaxHighlighting;
 using csharp_cartographer_backend._05.Services.Tags;
 using csharp_cartographer_backend._05.Services.Tokens;
+using csharp_cartographer_backend._05.Services.Tokens.Maps;
 using csharp_cartographer_backend._06.Workflows.Artifacts;
 using csharp_cartographer_backend._07.Clients.ChatGpt;
 using Microsoft.AspNetCore.Http.Features;
@@ -49,6 +50,7 @@ builder.Services.AddScoped<IRoslynAnalyzer, RoslynAnalyzer>();
 builder.Services.AddScoped<ISyntaxHighlighter, SyntaxHighlighter>();
 builder.Services.AddScoped<ITokenChartGenerator, TokenChartGenerator>();
 builder.Services.AddScoped<ITokenChartWizard, TokenChartWizard>();
+builder.Services.AddScoped<ITokenMapper, TokenMapper>();
 builder.Services.AddScoped<ITokenTagGenerator, TokenTagGenerator>();
 
 // configure DI for csharp-cartographer clients

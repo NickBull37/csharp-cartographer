@@ -17,32 +17,64 @@
     {
         None,
 
+        Accessor,
+        AccessModifier,
+        Modifier,
+
         // Declarations
-        NamespaceDeclaration,
-        TypeDeclaration,
-        MethodDeclaration,
-        ConstructorDeclaration,
-        PropertyDeclaration,
-        FieldDeclaration,
-        EventDeclaration,
-        ParameterDeclaration,
-        LocalVariableDeclaration,
-        EnumMemberDeclaration,
-        DelegateDeclaration,
         AttributeDeclaration,
 
+        ClassDeclaration,
+        ClassConstructorDeclaration,
+
+        DelegateDeclaration,
+        EnumDeclaration,
+        EnumMemberDeclaration,
+        EventDeclaration,
+        EventFieldDeclaration,
+        FieldDeclaration,
+        InterfaceDeclaration,
+        LocalVariableDeclaration,
+        MethodDeclaration,
+        NamespaceDeclaration,
+        ParameterDeclaration,
+        PropertyDeclaration,
+
+        RecordDeclaration,
+        RecordConstructorDeclaration,
+
+        RecordStructDeclaration,
+        RecordStructConstructorDeclaration,
+
+        StructDeclaration,
+        StructConstructorDeclaration,
+
+        TypeDeclaration,
+        UsingDirective,
+
+        // ConstructorInvocations
+        ClassConstructorInvocation,
+        RecordConstructorInvocation,
+        RecordStructConstructorInvocation,
+        StructConstructorInvocation,
+
         // References
-        NamespaceReference,
-        TypeReference,
-        MethodReference,
+        ClassReference,
         ConstructorReference,
-        PropertyReference,
-        FieldReference,
-        EventReference,
-        ParameterReference,
-        LocalVariableReference,
-        EnumMemberReference,
         DelegateReference,
+        EnumReference,
+        EnumMemberReference,
+        EventReference,
+        FieldReference,
+        InterfaceReference,
+        LocalVariableReference,
+        NamespaceReference,
+        ParameterReference,
+        PropertyReference,
+        RecordReference,
+        RecordStructReference,
+        StructReference,
+        TypeReference,
 
         // Invocations & access
         MethodInvocation,
@@ -54,15 +86,15 @@
         IndexerAccess,
 
         // Type positions (where a type appears)
-        ReturnType,
-        ParameterType,
-        LocalVariableType,
-        FieldType,
-        PropertyType,
-        GenericTypeArgument,
-        GenericTypeParameter,
-        ConstraintType,
         CastType,
+        ConstraintType,
+        FieldDataType,
+        GenericTypeArgument,
+        //GenericTypeParameter,
+        LocalVariableDataType,
+        ParameterDataType,
+        PropertyDataType,
+        MethodReturnType,
 
         // Control flow
         ControlFlow,
@@ -81,7 +113,8 @@
         IncrementDecrement,
 
         // Literals & values
-        LiteralValue,
+        NumericLiteral,
+        StringLiteral,
         DefaultValue,
         NullValue,
 
@@ -94,6 +127,71 @@
     public enum SemanticModifiers
     {
         None,
+
+        // Accessibility & scope
+        Public,
+        Private,
+        Protected,
+        Internal,
+        FileScoped,
+
+        // Member behavior
+        Static,
+        Instance,
+        Abstract,
+        Virtual,
+        Override,
+        Sealed,
+        Readonly,
+        Const,
+        Required,
+
+        // Identifier types
+        Class,
+        Delegate,
+        Enum,
+        Interface,
+        Record,
+        RecordStruct,
+        Struct,
+
+        // Type form modifiers
+        Generic,
+        Nullable,
+        Array,
+        Pointer,
+        Tuple,
+        GenericTypeParameter,
+
+        // Method-specific modifiers
+        Async,
+        Iterator,
+        Extension,
+        Partial,
+
+        // Property / accessor modifiers
+        Getter,
+        Setter,
+        InitOnly,
+
+        // Variable behavior
+        ImplicitlyTyped,
+        Ref,
+        Out,
+        In,
+
+        // Literal modifiers
+        Numeric,
+        QuotedString,
+        VerbatimString,
+        InterpolatedString,
+        Boolean,
+        Character,
+
+        // Control-flow modifiers
+        ShortCircuit,
+        FallThrough,
+        ConditionalExecution,
     }
 
     public enum Color
@@ -163,12 +261,34 @@
         bool IsGeneric = false
     );
 
-    public sealed record TokenMap(
-        TokenPrimaryKind PrimaryKind,                       // Keyword / Identifier / Operator / etc.
-        SemanticRole Role = SemanticRole.None,              // ParameterDeclaration / MethodInvocation / etc.
-        IReadOnlySet<SemanticModifiers>? Modifiers = null,
-        Color Color = Color.Red,
-        TokenTypeInfo? TypeInfo = null,
-        string? Raw = null
-    );
+    public sealed record TokenMap
+    {
+        public TokenPrimaryKind PrimaryKind { get; set; }
+
+        public string PrimaryKindString { get; set; }
+
+        public SemanticRole SemanticRole { get; set; }
+
+        public string SemanticRoleString { get; set; }
+
+        public IReadOnlySet<string> Modifiers { get; set; }
+
+        public TokenMap(TokenPrimaryKind primaryKind, SemanticRole semanticRole, HashSet<SemanticModifiers>? modifiers)
+        {
+            HashSet<string> modifierStrings = [];
+            if (modifiers is not null)
+            {
+                foreach (var modifier in modifiers)
+                {
+                    modifierStrings.Add(modifier.ToString());
+                }
+            }
+
+            PrimaryKind = primaryKind;
+            SemanticRole = semanticRole;
+            PrimaryKindString = primaryKind.ToString();
+            SemanticRoleString = semanticRole.ToString();
+            Modifiers = modifierStrings;
+        }
+    }
 }
