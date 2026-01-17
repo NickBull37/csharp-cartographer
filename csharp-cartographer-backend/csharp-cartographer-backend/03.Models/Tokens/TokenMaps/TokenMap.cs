@@ -90,7 +90,6 @@
         ConstraintType,
         FieldDataType,
         GenericTypeArgument,
-        //GenericTypeParameter,
         LocalVariableDataType,
         ParameterDataType,
         PropertyDataType,
@@ -103,15 +102,6 @@
         Jump,
         ExceptionHandling,
 
-        // Expressions & operations
-        Assignment,
-        Comparison,
-        Arithmetic,
-        Logical,
-        UnaryOperation,
-        BinaryOperation,
-        IncrementDecrement,
-
         // Literals & values
         NumericLiteral,
         StringLiteral,
@@ -119,10 +109,39 @@
         DefaultValue,
         NullValue,
 
-        // Structural / non-semantic (still useful)
-        Grouping,
-        Separator,
+        // Punctuation
+        ParameterLabelTermination,
+        NamespaceAliasQualifier,
+        StatementTermination,
+        SwitchClauseSeperator,
+        TypeParameterConstraintClauseSeperator,
+
+
+        // Delimiters
+        ArgumentListBoundary,
+        AttributeListBoundary,
+        AttributeArgumentListBoundary,
         BlockBoundary,
+        CollectionExpressionBoundary,
+        InterpolatedValueBoundary,
+        ObjectInitializerBoundary,
+        ParameterListBoundary,
+        TypeArgumentListBoundary,
+        TypeParameterListBoundary,
+
+        // Expressions & operations
+        //Arithmetic,
+        //Assignment,
+        //BinaryOperation,
+        //Comparison,
+        //IncrementDecrement,
+        //Logical,
+        //MemberAccess,
+        //UnaryOperation,
+
+        // Operators
+        MemberAccess,
+        Range,
     }
 
     public enum SemanticModifiers

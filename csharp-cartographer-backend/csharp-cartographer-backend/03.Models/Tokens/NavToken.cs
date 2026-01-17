@@ -183,11 +183,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             #endregion
         }
 
-        public NavToken IsNavToken()
-        {
-            return new NavToken();
-        }
-
         public bool IsKeyword(string keyword)
         {
             return RoslynClassification is not null
@@ -200,7 +195,181 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return RoslynToken.IsKind(SyntaxKind.IdentifierToken);
         }
 
+        #region Punctuation Checks
+        public bool IsStatementTerminator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && Text == ";";
+            //&&
+            //    (
+            //        HasAncestorAt(0, SyntaxKind.ExpressionStatement) ||
+            //        HasAncestorAt(0, SyntaxKind.LocalDeclarationStatement) ||
+            //        HasAncestorAt(0, SyntaxKind.ReturnStatement) ||
+            //        HasAncestorAt(0, SyntaxKind.FieldDeclaration)
+            //    );
+        }
 
+        public bool IsLabelTerminator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.NameColon)
+                && Text == ":";
+        }
+
+        public bool IsSwitchClauseSeperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.CaseSwitchLabel)
+                && Text == ":";
+        }
+
+        public bool IsTypeParameterConstraintClauseSeperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.TypeParameterConstraintClause)
+                && Text == ":";
+        }
+        #endregion
+
+        #region Delimiter Checks
+        public bool IsArgumentListDelimiter()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.ArgumentList)
+                &&
+                    (
+                        Text == "(" ||
+                        Text == ")"
+                    );
+        }
+
+        public bool IsAttributeListDelimiter()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.AttributeList)
+                &&
+                    (
+                        Text == "[" ||
+                        Text == "]"
+                    );
+        }
+
+        public bool IsAttributeArgumentListDelimiter()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.AttributeArgumentList)
+                &&
+                    (
+                        Text == "(" ||
+                        Text == ")"
+                    );
+        }
+
+        public bool IsCollectionExpressionDelimiter()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.CollectionExpression)
+                &&
+                    (
+                        Text == "[" ||
+                        Text == "]"
+                    );
+        }
+
+        public bool IsTypeArgumentListDelimiter()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.TypeArgumentList)
+                &&
+                    (
+                        Text == "<" ||
+                        Text == ">"
+                    );
+        }
+
+        public bool IsTypeParameterListDelimiter()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.TypeParameterList)
+                &&
+                    (
+                        Text == "<" ||
+                        Text == ">"
+                    );
+        }
+
+        public bool IsParameterListDelimiter()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.ParameterList)
+                &&
+                    (
+                        Text == "(" ||
+                        Text == ")"
+                    );
+        }
+
+        public bool IsObjectInitializerDelimiter()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.ObjectInitializerExpression)
+                &&
+                    (
+                        Text == "{" ||
+                        Text == "}"
+                    );
+        }
+
+        public bool IsInterpolatedValueDelimiter()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.Interpolation)
+                &&
+                    (
+                        Text == "{" ||
+                        Text == "}"
+                    );
+        }
+        #endregion
+
+        #region Operator Checks
+        public bool IsMemberAccessOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && HasAncestorAt(0, SyntaxKind.SimpleMemberAccessExpression)
+                && Text == ".";
+        }
+
+        public bool IsNamespaceAliasQualifier()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && HasAncestorAt(0, SyntaxKind.AliasQualifiedName)
+                && Text == "::";
+        }
+
+        public bool IsRangeOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.RangeExpression)
+                && Text == "..";
+        }
+        #endregion
 
         public bool IsPredefinedType()
         {

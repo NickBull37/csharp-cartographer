@@ -2,7 +2,7 @@
 {
     public class GlobalConstants
     {
-        public static readonly List<string> _punctuations =
+        public static readonly List<string> Punctuators =
         [
             ".",
             ",",
@@ -11,7 +11,7 @@
             "?"
         ];
 
-        public static readonly List<string> _delimiters =
+        public static readonly List<string> Delimiters =
         [
             "(",
             ")",
@@ -23,78 +23,7 @@
             ">"
         ];
 
-        public static readonly List<string> PredefinedTypes =
-        [
-            "byte",
-            "sbyte",
-            "short",
-            "ushort",
-            "int",
-            "uint",
-            "long",
-            "ulong",
-            "char",
-            "float",
-            "double",
-            "decimal",
-            "bool",
-            "string",
-            "object",
-            "dynamic",
-        ];
-
-        public static readonly List<string> Accessors =
-        [
-            "get",
-            "set",
-            "init",
-        ];
-
-        public static readonly List<string> AccessModifiers =
-        [
-            "public",
-            "protected",
-            "internal",
-            "private",
-        ];
-
-        public static readonly List<string> Modifiers =
-        [
-            "abstract",
-            "async",
-            "const",
-            "override",
-            "partial",
-            "readonly",
-            "required",
-            "sealed",
-            "static",
-            "virtual",
-            "volatile"
-        ];
-
-        public static readonly List<string> ConditionalKeywords =
-        [
-            "if",
-            "else",
-        ];
-
-        public static readonly List<string> LoopKeywords =
-        [
-            "do",
-            "for",
-            "foreach",
-            "while",
-        ];
-
-        public static readonly List<string> JumpKeywords =
-        [
-            "return",
-            "break",
-            "continue",
-        ];
-
-        public static readonly List<string> _operators =
+        public static readonly List<string> Operators =
         [
             // arithmetic - unary
             "+",
@@ -189,6 +118,79 @@
             "nameof",
             "stackalloc"
         ];
+
+        public static readonly List<string> PredefinedTypes =
+        [
+            "byte",
+            "sbyte",
+            "short",
+            "ushort",
+            "int",
+            "uint",
+            "long",
+            "ulong",
+            "char",
+            "float",
+            "double",
+            "decimal",
+            "bool",
+            "string",
+            "object",
+            "dynamic",
+        ];
+
+        public static readonly List<string> Accessors =
+        [
+            "get",
+            "set",
+            "init",
+        ];
+
+        public static readonly List<string> AccessModifiers =
+        [
+            "public",
+            "protected",
+            "internal",
+            "private",
+        ];
+
+        public static readonly List<string> Modifiers =
+        [
+            "abstract",
+            "async",
+            "const",
+            "override",
+            "partial",
+            "readonly",
+            "required",
+            "sealed",
+            "static",
+            "virtual",
+            "volatile"
+        ];
+
+        public static readonly List<string> ConditionalKeywords =
+        [
+            "if",
+            "else",
+        ];
+
+        public static readonly List<string> LoopKeywords =
+        [
+            "do",
+            "for",
+            "foreach",
+            "while",
+        ];
+
+        public static readonly List<string> JumpKeywords =
+        [
+            "return",
+            "break",
+            "continue",
+        ];
+
+
 
         public static readonly List<string> _genericCollections =
         [

@@ -80,10 +80,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         #region Semantic Roles
         private static SemanticRole GetSemanticRole(NavToken token, NavToken? previous, NavToken? next)
         {
-            if (token.Index == 363)
-            {
+            // --- Punctuation ---
+            var punctuationRole = GetSemanticRoleForPunctuation(token);
+            if (punctuationRole != SemanticRole.None)
+                return punctuationRole;
 
-            }
+            // --- Operators ---
+            var operatorRole = GetSemanticRoleForOperators(token);
+            if (operatorRole != SemanticRole.None)
+                return operatorRole;
+
+            // --- Delimiters ---
+            var delimiterRole = GetSemanticRoleForDelimiters(token);
+            if (delimiterRole != SemanticRole.None)
+                return delimiterRole;
 
             // --- Identifier Declarations ---
             var declarationRole = GetSemanticRoleForDeclarations(token);
@@ -142,6 +152,81 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (GlobalConstants.JumpKeywords.Contains(token.Text))
                 return SemanticRole.Jump;
+
+            return SemanticRole.None;
+        }
+
+        private static SemanticRole GetSemanticRoleForPunctuation(NavToken token)
+        {
+            if (!GlobalConstants.Punctuators.Contains(token.Text))
+                return SemanticRole.None;
+
+            if (token.IsStatementTerminator())
+                return SemanticRole.StatementTermination;
+
+            if (token.IsLabelTerminator())
+                return SemanticRole.ParameterLabelTermination;
+
+            if (token.IsSwitchClauseSeperator())
+                return SemanticRole.SwitchClauseSeperator;
+
+            if (token.IsTypeParameterConstraintClauseSeperator())
+                return SemanticRole.TypeParameterConstraintClauseSeperator;
+
+            return SemanticRole.None;
+        }
+
+        private static SemanticRole GetSemanticRoleForOperators(NavToken token)
+        {
+            if (!GlobalConstants.Operators.Contains(token.Text))
+                return SemanticRole.None;
+
+            // Member access
+            if (token.IsMemberAccessOperator())
+                return SemanticRole.MemberAccess;
+
+            // Range
+            if (token.IsRangeOperator())
+                return SemanticRole.Range;
+
+            // Namespace alias
+            if (token.IsNamespaceAliasQualifier())
+                return SemanticRole.NamespaceAliasQualifier;
+
+            return SemanticRole.None;
+        }
+
+        private static SemanticRole GetSemanticRoleForDelimiters(NavToken token)
+        {
+            if (!GlobalConstants.Delimiters.Contains(token.Text))
+                return SemanticRole.None;
+
+            if (token.IsArgumentListDelimiter())
+                return SemanticRole.ArgumentListBoundary;
+
+            if (token.IsAttributeListDelimiter())
+                return SemanticRole.AttributeListBoundary;
+
+            if (token.IsAttributeArgumentListDelimiter())
+                return SemanticRole.AttributeArgumentListBoundary;
+
+            if (token.IsCollectionExpressionDelimiter())
+                return SemanticRole.CollectionExpressionBoundary;
+
+            if (token.IsTypeArgumentListDelimiter())
+                return SemanticRole.TypeArgumentListBoundary;
+
+            if (token.IsTypeParameterListDelimiter())
+                return SemanticRole.TypeParameterListBoundary;
+
+            if (token.IsParameterListDelimiter())
+                return SemanticRole.ParameterListBoundary;
+
+            if (token.IsObjectInitializerDelimiter())
+                return SemanticRole.ObjectInitializerBoundary;
+
+            if (token.IsInterpolatedValueDelimiter())
+                return SemanticRole.InterpolatedValueBoundary;
 
             return SemanticRole.None;
         }
