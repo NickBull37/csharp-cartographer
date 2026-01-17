@@ -17,9 +17,64 @@
     {
         None,
 
+        // ------------ PUNCTUATION ------------ //
+
+        // Seperation
+        ArgumentSeperator,
+        BaseTypeSeperation,
+        CaseLabelSeperator,
+        EnumMemberSeparator,
+        GenericTypeSeperator,
+        ParameterSeparator,
+        PatternSeparator,
+        SwitchClauseSeperator,
+        TupleElementSeperator,
+        TypeArgumentSeperator,
+        TypeParameterConstraintClauseSeperator,
+        VariableDeclaratorSeparator,
+        VariableSeperator,
+
+        // Termination
+        ParameterLabelTermination,
+        StatementTermination,
+
+        // Qualification
+        NamespaceAliasQualifier,
+
+        // ------------ DELIMITERS ------------ //
+
+        AccessorListBoundary,
+        ArgumentListBoundary,
+        AttributeListBoundary,
+        AttributeArgumentListBoundary,
+        BlockBoundary,
+        CollectionExpressionBoundary,
+        InterpolatedValueBoundary,
+        ObjectInitializerBoundary,
+        ParameterListBoundary,
+        TypeArgumentListBoundary,
+        TypeParameterListBoundary,
+
+        // Expressions & operations
+        //BinaryOperation,
+        //IncrementDecrement,
+        //Logical,
+        //UnaryOperation,
+
+        // ------------ OPERATORS ------------ //
+        ArithmeticOperator,
+        AssignmentOperator,
+        ComparisonOperator,
+        ConditionalOperator,
+        MemberAccessOperator,
+        RangeOperator,
+
+        // ------------ MODIFIERS ------------ //
         Accessor,
         AccessModifier,
         Modifier,
+
+        // ------------ IDENTIFIERS ------------ //
 
         // Declarations
         AttributeDeclaration,
@@ -85,6 +140,8 @@
         EventUnsubscription,
         IndexerAccess,
 
+        // ------------ TYPES ------------ //
+
         // Type positions (where a type appears)
         CastType,
         ConstraintType,
@@ -96,6 +153,8 @@
         MethodReturnType,
         SimpleBaseType,
 
+        // ------------ KEYWORDS ------------ //
+
         // Control flow
         ControlFlow,
         Conditional,
@@ -103,63 +162,15 @@
         Jump,
         ExceptionHandling,
 
+        // ------------ LITERALS ------------ //
+
         // Literals & values
-        NumericLiteral,
-        StringLiteral,
+        BooleanLiteral,
         CharacterLiteral,
         DefaultValue,
         NullValue,
-
-        // ------------ PUNCTUATION ------------ //
-
-        // Seperation
-        ArgumentSeperator,
-        BaseTypeSeperation,
-        CaseLabelSeperator,
-        EnumMemberSeparator,
-        GenericTypeSeperator,
-        ParameterSeparator,
-        PatternSeparator,
-        SwitchClauseSeperator,
-        TupleElementSeperator,
-        TypeArgumentSeperator,
-        TypeParameterConstraintClauseSeperator,
-        VariableDeclaratorSeparator,
-        VariableSeperator,
-
-        // Termination
-        ParameterLabelTermination,
-        StatementTermination,
-
-        // Qualification
-        NamespaceAliasQualifier,
-
-        // ------------ DELIMITERS ------------ //
-
-        ArgumentListBoundary,
-        AttributeListBoundary,
-        AttributeArgumentListBoundary,
-        BlockBoundary,
-        CollectionExpressionBoundary,
-        InterpolatedValueBoundary,
-        ObjectInitializerBoundary,
-        ParameterListBoundary,
-        TypeArgumentListBoundary,
-        TypeParameterListBoundary,
-
-        // Expressions & operations
-        //Arithmetic,
-        //Assignment,
-        //BinaryOperation,
-        //Comparison,
-        //IncrementDecrement,
-        //Logical,
-        //MemberAccess,
-        //UnaryOperation,
-
-        // Operators
-        MemberAccess,
-        Range,
+        NumericLiteral,
+        StringLiteral,
     }
 
     public enum SemanticModifiers

@@ -397,6 +397,34 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Operator Checks
+        public bool IsArithmeticOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && (Text is "+" or "-" or "++" or "--" or "*" or "/" or "%");
+        }
+
+        public bool IsAssignmentOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && (Text is "=" or "+=" or "-=" or "*=" or "/=" or "%=" or "&=" or "|=" or "^=" or "<<=" or ">>=" or ">>>=");
+        }
+
+        public bool IsComparisonOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && (Text is "<" or ">" or "<=" or ">=" or "==" or "!=");
+        }
+
+        public bool IsConditionalOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && (Text is "&&" or "||");
+        }
+
         public bool IsMemberAccessOperator()
         {
             return RoslynClassification is not null
@@ -577,12 +605,26 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.NumericLiteralExpression);
         }
 
+        public bool IsBooleanLiteral()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "keyword"
+                && (Kind == SyntaxKind.TrueKeyword || Kind == SyntaxKind.FalseKeyword);
+        }
+
         public bool IsCharacterLiteral()
         {
             return RoslynClassification is not null
                 && RoslynClassification == "string"
                 && Kind == SyntaxKind.CharacterLiteralToken
                 && HasAncestorAt(0, SyntaxKind.CharacterLiteralExpression);
+        }
+
+        public bool IsNullLiteral()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "keyword"
+                && Kind == SyntaxKind.NullKeyword;
         }
 
         public bool IsQuotedString()

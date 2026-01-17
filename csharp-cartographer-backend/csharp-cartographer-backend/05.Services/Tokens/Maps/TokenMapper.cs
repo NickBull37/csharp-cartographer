@@ -223,13 +223,29 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!GlobalConstants.Operators.Contains(token.Text))
                 return SemanticRole.None;
 
+            // Arithmetic
+            if (token.IsArithmeticOperator())
+                return SemanticRole.ArithmeticOperator;
+
+            // Assignment
+            if (token.IsAssignmentOperator())
+                return SemanticRole.AssignmentOperator;
+
+            // Comparison
+            if (token.IsComparisonOperator())
+                return SemanticRole.ComparisonOperator;
+
+            // Conditional
+            if (token.IsConditionalOperator())
+                return SemanticRole.ConditionalOperator;
+
             // Member access
             if (token.IsMemberAccessOperator())
-                return SemanticRole.MemberAccess;
+                return SemanticRole.MemberAccessOperator;
 
             // Range
             if (token.IsRangeOperator())
-                return SemanticRole.Range;
+                return SemanticRole.RangeOperator;
 
             // Namespace alias
             if (token.IsNamespaceAliasQualifier())
@@ -504,6 +520,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Char literals
             if (token.IsCharacterLiteral())
                 return SemanticRole.CharacterLiteral;
+
+            // Boolean literals
+            if (token.IsBooleanLiteral())
+                return SemanticRole.BooleanLiteral;
+
+            // Null literals
+            if (token.IsNullLiteral())
+                return SemanticRole.NullValue;
 
             return SemanticRole.None;
         }
