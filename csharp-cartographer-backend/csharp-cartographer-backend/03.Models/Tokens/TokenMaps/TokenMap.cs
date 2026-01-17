@@ -94,6 +94,7 @@
         ParameterDataType,
         PropertyDataType,
         MethodReturnType,
+        SimpleBaseType,
 
         // Control flow
         ControlFlow,
@@ -110,6 +111,7 @@
         NullValue,
 
         // Punctuation
+        BaseTypeSeperation,
         ParameterLabelTermination,
         NamespaceAliasQualifier,
         StatementTermination,

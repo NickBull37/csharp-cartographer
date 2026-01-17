@@ -196,6 +196,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         }
 
         #region Punctuation Checks
+        public bool IsBaseTypeSeperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.BaseList)
+                && Text == ":";
+        }
+
         public bool IsStatementTerminator()
         {
             return RoslynClassification is not null
@@ -604,6 +612,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return HasAncestorAt(1, SyntaxKind.TypeArgumentList) ||
                 HasAncestorAt(2, SyntaxKind.TypeArgumentList);
+        }
+
+        public bool IsBaseType()
+        {
+            return Kind == SyntaxKind.IdentifierToken &&
+                HasAncestorAt(1, SyntaxKind.SimpleBaseType);
         }
 
         public bool IsGenericTypeParameter()

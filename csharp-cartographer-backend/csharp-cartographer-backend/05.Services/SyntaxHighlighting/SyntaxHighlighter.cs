@@ -58,20 +58,20 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                         token.HighlightColor = "color-white";
                         break;
                     case SemanticRole.AttributeDeclaration:
-                    case SemanticRole.ClassDeclaration:
                     case SemanticRole.ClassConstructorDeclaration:
                     case SemanticRole.ClassConstructorInvocation:
+                    case SemanticRole.ClassDeclaration:
                     case SemanticRole.ClassReference:
-                    case SemanticRole.RecordDeclaration:
                     case SemanticRole.RecordConstructorDeclaration:
                     case SemanticRole.RecordConstructorInvocation:
+                    case SemanticRole.RecordDeclaration:
                     case SemanticRole.RecordReference:
                         token.HighlightColor = "color-green";
                         break;
-                    case SemanticRole.InterfaceDeclaration:
-                    case SemanticRole.InterfaceReference:
                     case SemanticRole.EnumDeclaration:
                     case SemanticRole.EnumReference:
+                    case SemanticRole.InterfaceDeclaration:
+                    case SemanticRole.InterfaceReference:
                     case SemanticRole.NumericLiteral:
                         token.HighlightColor = "color-light-green";
                         break;
@@ -100,11 +100,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                         token.HighlightColor = "color-orange";
                         break;
                     case SemanticRole.FieldDataType:
+                    case SemanticRole.GenericTypeArgument:
                     case SemanticRole.LocalVariableDataType:
                     case SemanticRole.MethodReturnType:
                     case SemanticRole.ParameterDataType:
                     case SemanticRole.PropertyDataType:
-                    case SemanticRole.GenericTypeArgument:
+                    case SemanticRole.SimpleBaseType:
                         token.HighlightColor = GetColorForDataTypeIdentifiers(token);
                         break;
                 }

@@ -125,6 +125,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (genTypeArgRole != SemanticRole.None)
                 return genTypeArgRole;
 
+            // --- Identifier Base Types ---
+            var baseType = GetSemanticRoleForBaseTypes(token);
+            if (baseType != SemanticRole.None)
+                return baseType;
+
             // --- Literals ---
             var literalRole = GetSemanticRoleForLiterals(token);
             if (literalRole != SemanticRole.None)
@@ -160,6 +165,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             if (!GlobalConstants.Punctuators.Contains(token.Text))
                 return SemanticRole.None;
+
+            if (token.IsBaseTypeSeperator())
+                return SemanticRole.BaseTypeSeperation;
 
             if (token.IsStatementTerminator())
                 return SemanticRole.StatementTermination;
@@ -427,6 +435,15 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Generic type arguments
             if (token.IsGenericTypeArgument())
                 return SemanticRole.GenericTypeArgument;
+
+            return SemanticRole.None;
+        }
+
+        private static SemanticRole GetSemanticRoleForBaseTypes(NavToken token)
+        {
+            // Base types
+            if (token.IsBaseType())
+                return SemanticRole.SimpleBaseType;
 
             return SemanticRole.None;
         }
