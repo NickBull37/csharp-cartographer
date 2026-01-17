@@ -49,6 +49,9 @@
         AttributeArgumentListBoundary,
         BlockBoundary,
         CollectionExpressionBoundary,
+        ForEachBlockBoundary,
+        IfBlockBoundary,
+        IfConditionBoundary,
         InterpolatedValueBoundary,
         ObjectInitializerBoundary,
         ParameterListBoundary,
@@ -57,7 +60,6 @@
 
         // Expressions & operations
         //BinaryOperation,
-        //IncrementDecrement,
         //Logical,
         //UnaryOperation,
 
@@ -66,6 +68,7 @@
         AssignmentOperator,
         ComparisonOperator,
         ConditionalOperator,
+        LogicalOperator,
         MemberAccessOperator,
         RangeOperator,
 
@@ -104,6 +107,7 @@
         StructDeclaration,
         StructConstructorDeclaration,
 
+        ParameterLabel,
         TypeDeclaration,
         UsingDirective,
 
@@ -145,6 +149,7 @@
         // Type positions (where a type appears)
         CastType,
         ConstraintType,
+        ExceptionType,
         FieldDataType,
         GenericTypeArgument,
         LocalVariableDataType,

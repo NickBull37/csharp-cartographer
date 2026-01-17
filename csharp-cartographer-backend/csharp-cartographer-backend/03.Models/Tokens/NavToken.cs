@@ -335,6 +335,32 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     );
         }
 
+        public bool IsForEachBlockDelimiter()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.ForEachStatement)
+                && (Text is "{" or "}");
+        }
+
+        public bool IsIfBlockDelimiter()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.IfStatement)
+                && (Text is "{" or "}");
+        }
+
+        public bool IsIfConditionDelimiter()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.IfStatement)
+                && (Text is "(" or ")");
+        }
+
         public bool IsTypeArgumentListDelimiter()
         {
             return RoslynClassification is not null
@@ -425,6 +451,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Text is "&&" or "||");
         }
 
+        public bool IsLogicalOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && (Text is "!" or "&" or "|" or "^");
+        }
+
         public bool IsMemberAccessOperator()
         {
             return RoslynClassification is not null
@@ -451,6 +484,21 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Identifier Checks
+        public bool IsUsingDirectiveSegment()
+        {
+            if (RoslynClassification is not ("namespace name" or "identifier"))
+                return false;
+
+            var ancestors = AncestorKinds.Ancestors;
+            return ancestors.Length > 0 && ancestors.Last() == SyntaxKind.UsingDirective;
+        }
+
+        public bool IsNamespaceSegment()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "namespace name";
+        }
+
         public bool IsTypeConstraint()
         {
             return HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause)
@@ -461,6 +509,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return Kind == SyntaxKind.IdentifierToken &&
                 HasAncestorAt(1, SyntaxKind.SimpleBaseType);
+        }
+
+        public bool IsCastType()
+        {
+            return Kind == SyntaxKind.IdentifierToken &&
+                HasAncestorAt(1, SyntaxKind.AsExpression) &&
+                PrevToken?.Text == "as";
+        }
+
+        public bool IsExceptionType()
+        {
+            return Kind == SyntaxKind.IdentifierToken &&
+                HasAncestorAt(1, SyntaxKind.CatchDeclaration);
         }
 
         public bool IsMethodInvocation()
@@ -476,6 +537,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsObjectCreationExpression()
         {
             return HasAncestorAt(1, SyntaxKind.ObjectCreationExpression);
+        }
+
+        public bool IsParameterLabel()
+        {
+            return Kind == SyntaxKind.IdentifierToken &&
+                HasAncestorAt(1, SyntaxKind.NameColon) &&
+                NextToken?.Text == ":";
         }
 
         /*
@@ -584,6 +652,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Type Checks
+        public bool IsGenericTypeArgument()
+        {
+            return HasAncestorAt(1, SyntaxKind.TypeArgumentList) ||
+                HasAncestorAt(2, SyntaxKind.TypeArgumentList);
+        }
+
         public bool IsGenericType() => HasAncestorAt(0, SyntaxKind.GenericName);
 
         public bool IsGenericTypeParameter() => RoslynClassification is not null
@@ -668,107 +742,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         }
         #endregion
 
-        /*
-         *   Does this token logically end a declaration or separate a declarator?
-         *   
-         *   covers:
-         *       variable declarations with initializers
-         *       reassignment
-         *       compound assignments
-         * 
-         *   int x = 5;         pass
-         *   int x;             pass
-         *   Foo(a, b)          pass
-         *   Foo(a)             pass
-         *   
-         *   x + y              fail
-         *   if (x == y)        fail
-         *   
-         */
-        /// <summary>
-        /// Determines whether this token logically ends a declaration
-        /// or separates declarators.
-        /// </summary>
-        /// <remarks>
-        /// <para>Covered scenarios:</para>
-        /// <list type="bullet">
-        ///   <item>
-        ///     <description>Variable declarations with initializers</description>
-        ///   </item>
-        ///   <item>
-        ///     <description>Reassignment expressions</description>
-        ///   </item>
-        ///   <item>
-        ///     <description>Compound assignment expressions</description>
-        ///   </item>
-        /// </list>
-        /// <para>Examples that return <c>true</c>:</para>
-        /// <code>
-        /// int x = 5;
-        /// int x;
-        /// Foo(a, b)
-        /// Foo(a)
-        /// </code>
-        /// <para>Examples that return <c>false</c>:</para>
-        /// <code>
-        /// x + y
-        /// if (x == y)
-        /// </code>
-        /// </remarks>
-        public bool IsAssignmentOrDelimiter()
-        {
-            var kind = RoslynToken.Kind();
-
-            if (SyntaxFacts.IsAssignmentExpression(kind))
-                return true;
-
-            return kind switch
-            {
-                SyntaxKind.SemicolonToken => true,
-                SyntaxKind.CommaToken => true,
-                SyntaxKind.CloseParenToken => true,
-                SyntaxKind.CloseBracketToken => true,
-                _ => false
-            };
-        }
-
         private bool HasAncestorAt(int index, SyntaxKind kind)
         {
             var ancestors = AncestorKinds.Ancestors;
-
-            // Use Count or Length depending on the type
             return !ancestors.IsEmpty
                 && index >= 0
                 && index < ancestors.Length
                 && ancestors[index] == kind;
         }
-
-        public bool IsUsingDirectiveSegment()
-        {
-            if (RoslynClassification is not ("namespace name" or "identifier"))
-                return false;
-
-            var ancestors = AncestorKinds.Ancestors;
-            return ancestors.Length > 0 && ancestors.Last() == SyntaxKind.UsingDirective;
-        }
-
-        public bool IsNamespaceSegment()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "namespace name";
-        }
-
-        public bool IsGenericTypeArgument()
-        {
-            return HasAncestorAt(1, SyntaxKind.TypeArgumentList) ||
-                HasAncestorAt(2, SyntaxKind.TypeArgumentList);
-        }
-
-
-
-
-
-
 
         /// <summary>Gets the token's leading trivia.</summary>
         /// <param name="roslynToken">The SyntaxToken generated by the Roslyn code analysis library.</param>

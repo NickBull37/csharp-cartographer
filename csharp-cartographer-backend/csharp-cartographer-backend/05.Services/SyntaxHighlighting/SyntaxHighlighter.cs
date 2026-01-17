@@ -62,6 +62,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case SemanticRole.ClassConstructorInvocation:
                     case SemanticRole.ClassDeclaration:
                     case SemanticRole.ClassReference:
+                    case SemanticRole.ExceptionType:
                     case SemanticRole.RecordConstructorDeclaration:
                     case SemanticRole.RecordConstructorInvocation:
                     case SemanticRole.RecordDeclaration:
@@ -88,6 +89,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case SemanticRole.LocalVariableDeclaration:
                     case SemanticRole.LocalVariableReference:
                     case SemanticRole.ParameterDeclaration:
+                    case SemanticRole.ParameterLabel:
                     case SemanticRole.ParameterReference:
                         token.HighlightColor = "color-light-blue";
                         break;
@@ -99,6 +101,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case SemanticRole.StringLiteral:
                         token.HighlightColor = "color-orange";
                         break;
+                    case SemanticRole.CastType:
                     case SemanticRole.ConstraintType:
                     case SemanticRole.FieldDataType:
                     case SemanticRole.GenericTypeArgument:

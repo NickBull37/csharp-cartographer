@@ -127,10 +127,25 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (baseTypeRole != SemanticRole.None)
                 return baseTypeRole;
 
+            // --- Identifier Cast Types ---
+            var castTypeRole = GetSemanticRoleForCastTypes(token);
+            if (castTypeRole != SemanticRole.None)
+                return castTypeRole;
+
+            // --- Identifier Exception Types ---
+            var exceptionTypeRole = GetSemanticRoleForExceptionTypes(token);
+            if (exceptionTypeRole != SemanticRole.None)
+                return exceptionTypeRole;
+
             // --- Identifier Constraint Types ---
             var typeConstraintRole = GetSemanticRoleForTypeConstraints(token);
             if (typeConstraintRole != SemanticRole.None)
                 return typeConstraintRole;
+
+            // --- Identifier Parameter Labels ---
+            var parameterLabelRole = GetSemanticRoleForParameterLabels(token);
+            if (parameterLabelRole != SemanticRole.None)
+                return parameterLabelRole;
 
             // --- Literals ---
             var literalRole = GetSemanticRoleForLiterals(token);
@@ -239,6 +254,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsConditionalOperator())
                 return SemanticRole.ConditionalOperator;
 
+            // Logical
+            if (token.IsLogicalOperator())
+                return SemanticRole.LogicalOperator;
+
             // Member access
             if (token.IsMemberAccessOperator())
                 return SemanticRole.MemberAccessOperator;
@@ -270,6 +289,15 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsCollectionExpressionDelimiter())
                 return SemanticRole.CollectionExpressionBoundary;
+
+            if (token.IsForEachBlockDelimiter())
+                return SemanticRole.ForEachBlockBoundary;
+
+            if (token.IsIfBlockDelimiter())
+                return SemanticRole.IfBlockBoundary;
+
+            if (token.IsIfConditionDelimiter())
+                return SemanticRole.IfConditionBoundary;
 
             if (token.IsTypeArgumentListDelimiter())
                 return SemanticRole.TypeArgumentListBoundary;
@@ -498,11 +526,38 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.None;
         }
 
+        private static SemanticRole GetSemanticRoleForCastTypes(NavToken token)
+        {
+            // Cast types
+            if (token.IsCastType())
+                return SemanticRole.CastType;
+
+            return SemanticRole.None;
+        }
+
+        private static SemanticRole GetSemanticRoleForExceptionTypes(NavToken token)
+        {
+            // Cast types
+            if (token.IsExceptionType())
+                return SemanticRole.ExceptionType;
+
+            return SemanticRole.None;
+        }
+
         private static SemanticRole GetSemanticRoleForTypeConstraints(NavToken token)
         {
             // Type constraints
             if (token.IsTypeConstraint())
                 return SemanticRole.ConstraintType;
+
+            return SemanticRole.None;
+        }
+
+        private static SemanticRole GetSemanticRoleForParameterLabels(NavToken token)
+        {
+            // Parameter labels
+            if (token.IsParameterLabel())
+                return SemanticRole.ParameterLabel;
 
             return SemanticRole.None;
         }
