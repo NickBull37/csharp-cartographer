@@ -277,7 +277,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             {roslynClassification}
                         </Typography>
 
-                        <Divider sx={{ bgcolor: '#808080' }} />
+                        {/* <Divider sx={{ bgcolor: '#808080' }} />
                         <Typography
                             className='code'
                             sx={{
@@ -289,7 +289,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             }}
                         >
                             {updatedClassification}
-                        </Typography>
+                        </Typography> */}
 
                         <Divider sx={{ bgcolor: '#808080' }} />
 

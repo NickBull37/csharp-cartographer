@@ -80,6 +80,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         #region Semantic Roles
         private static SemanticRole GetSemanticRole(NavToken token, NavToken? previous, NavToken? next)
         {
+            if (token.Index == 363)
+            {
+
+            }
+
             // --- Identifier Declarations ---
             var declarationRole = GetSemanticRoleForDeclarations(token);
             if (declarationRole != SemanticRole.None)
@@ -231,7 +236,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole GetSemanticRoleForIdentifierTypes(NavToken token)
         {
-            if (!token.IsIdentifier())
+            // Only let through identifiers & pre-defined types; otherwise other
+            // tokens get incorrect semantic roles assigned.
+            if (!token.IsIdentifier() && !GlobalConstants.PredefinedTypes.Contains(token.Text))
                 return SemanticRole.None;
 
             // Field data type
@@ -447,6 +454,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
 
             // Type modifiers
+            if (token.IsKeyword("var"))
+                modifiers.Add(SemanticModifiers.ImplicitlyTyped);
+
             if (token.IsNullableType())
                 modifiers.Add(SemanticModifiers.Nullable);
 
