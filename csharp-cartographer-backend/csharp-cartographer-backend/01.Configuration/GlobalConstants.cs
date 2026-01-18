@@ -190,7 +190,17 @@
             "continue",
         ];
 
-
+        public static readonly List<string> PatternMatchingKeywords =
+        [
+            "and",
+            "as",
+            "case",
+            "is",
+            "not",
+            "or",
+            "switch",
+            "when",
+        ];
 
         public static readonly List<string> _genericCollections =
         [

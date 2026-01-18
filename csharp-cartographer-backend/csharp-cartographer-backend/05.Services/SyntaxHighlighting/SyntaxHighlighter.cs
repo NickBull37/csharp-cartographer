@@ -100,6 +100,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                         token.HighlightColor = "color-orange";
                         break;
                     case SemanticRole.CastType:
+                    case SemanticRole.CastTargetType:
                     case SemanticRole.ConstraintType:
                     case SemanticRole.FieldDataType:
                     case SemanticRole.GenericTypeArgument:
@@ -108,6 +109,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case SemanticRole.ParameterDataType:
                     case SemanticRole.PropertyDataType:
                     case SemanticRole.SimpleBaseType:
+                    case SemanticRole.TypePatternType:
                         token.HighlightColor = GetColorForDataTypeIdentifiers(token);
                         break;
                 }

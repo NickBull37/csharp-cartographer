@@ -24,6 +24,7 @@
         AttributeListBoundary,
         AttributeArgumentListBoundary,
         BlockBoundary,
+        CastTypeBoundary,
         CollectionExpressionBoundary,
         ForEachBlockBoundary,
         IfBlockBoundary,
@@ -83,6 +84,7 @@
         NamespaceReference,
         ParameterReference,
         PropertyReference,
+        PropertyOrEnumMemberReference,
         RecordReference,
         RecordStructReference,
         StructReference,
@@ -105,6 +107,7 @@
         Loop,
         Jump,
         ExceptionHandling,
+        PatternMatching,
 
 
         // ------------ LITERALS ------------ //
@@ -168,6 +171,7 @@
 
         // Type positions (where a type appears)
         CastType,
+        CastTargetType,
         ConstraintType,
         ExceptionType,
         FieldDataType,
@@ -177,6 +181,7 @@
         PropertyDataType,
         MethodReturnType,
         SimpleBaseType,
+        TypePatternType,
     }
 
     public enum SemanticModifiers

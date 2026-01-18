@@ -244,6 +244,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     );
         }
 
+        public bool IsCastTypeDelimiter()
+        {
+            return HasAncestorAt(0, SyntaxKind.CastExpression)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
         public bool IsCollectionExpressionDelimiter()
         {
             return RoslynClassification is not null
@@ -376,6 +382,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsCastType()
         {
+            return (Kind == SyntaxKind.IdentifierToken || IsPredefinedType())
+                && HasAncestorAt(1, SyntaxKind.CastExpression);
+        }
+
+        public bool IsCastTargetType()
+        {
             return Kind == SyntaxKind.IdentifierToken &&
                 HasAncestorAt(1, SyntaxKind.AsExpression) &&
                 PrevToken?.Text == "as";
@@ -407,6 +419,34 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Kind == SyntaxKind.IdentifierToken &&
                 HasAncestorAt(1, SyntaxKind.NameColon) &&
                 NextToken?.Text == ":";
+        }
+
+        public bool IsPropertyOrEnumMemberReference()
+        {
+            return Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
+                && !HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression)
+                && PrevToken?.Kind == SyntaxKind.DotToken;
+        }
+
+        private bool HasIdenticalAncestorsAsNextIdentifier()
+        {
+            var nextIdentifier = NextToken?.NextToken;
+
+            if (nextIdentifier is null)
+                return false;
+
+            return AncestorKinds.Equals(nextIdentifier.AncestorKinds);
+        }
+
+        private bool HasIdenticalAncestorsAsPrevIdentifier()
+        {
+            var prevIdentifier = PrevToken?.PrevToken;
+
+            if (prevIdentifier is null)
+                return false;
+
+            return AncestorKinds.Equals(prevIdentifier.AncestorKinds);
         }
 
         /*
@@ -775,6 +815,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsNullableConstraintType() => IsTypeConstraint() && NextToken?.Text == "?";
 
         public bool IsPredefinedType() => SyntaxFacts.IsPredefinedType(Kind);
+
+        public bool IsTypePatternType() => HasAncestorAt(1, SyntaxKind.DeclarationPattern);
         #endregion
 
         /// <summary>Gets the token's leading trivia.</summary>
@@ -1091,6 +1133,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             var memberAccess = roslynToken.Parent?.AncestorsAndSelf()
                 .OfType<MemberAccessExpressionSyntax>()
                 .FirstOrDefault();
+
+            var test = "";
+
+            var test2 = (string)test;
 
             if (memberAccess != null
                 && memberAccess.Name is IdentifierNameSyntax nameId

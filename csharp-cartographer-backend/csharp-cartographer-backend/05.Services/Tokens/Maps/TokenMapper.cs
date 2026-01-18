@@ -148,10 +148,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (typeConstraintRole != SemanticRole.None)
                 return typeConstraintRole;
 
+            // --- Identifier Type Pattern Types ---
+            var typePatternTypeRole = GetSemanticRoleForTypePatternTypes(token);
+            if (typePatternTypeRole != SemanticRole.None)
+                return typePatternTypeRole;
+
             // --- Identifier Parameter Labels ---
             var parameterLabelRole = GetSemanticRoleForParameterLabels(token);
             if (parameterLabelRole != SemanticRole.None)
                 return parameterLabelRole;
+
+            // --- Identifier Property Refs ---
+            //var propertyRefRole = GetSemanticRoleForPropertyReferences(token);
+            //if (propertyRefRole != SemanticRole.None)
+            //    return propertyRefRole;
 
             // --- Literals ---
             var literalRole = GetSemanticRoleForLiterals(token);
@@ -180,6 +190,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (GlobalConstants.JumpKeywords.Contains(token.Text))
                 return SemanticRole.Jump;
+
+            // --- Pattern matching keywords ---
+            if (GlobalConstants.PatternMatchingKeywords.Contains(token.Text))
+                return SemanticRole.PatternMatching;
 
             return SemanticRole.None;
         }
@@ -293,6 +307,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsAttributeArgumentListDelimiter())
                 return SemanticRole.AttributeArgumentListBoundary;
+
+            if (token.IsCastTypeDelimiter())
+                return SemanticRole.CastTypeBoundary;
 
             if (token.IsCollectionExpressionDelimiter())
                 return SemanticRole.CollectionExpressionBoundary;
@@ -539,6 +556,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsCastType())
                 return SemanticRole.CastType;
 
+            // Cast target types
+            if (token.IsCastTargetType())
+                return SemanticRole.CastTargetType;
+
             return SemanticRole.None;
         }
 
@@ -560,11 +581,29 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.None;
         }
 
+        private static SemanticRole GetSemanticRoleForTypePatternTypes(NavToken token)
+        {
+            // Type pattern types
+            if (token.IsTypePatternType())
+                return SemanticRole.TypePatternType;
+
+            return SemanticRole.None;
+        }
+
         private static SemanticRole GetSemanticRoleForParameterLabels(NavToken token)
         {
             // Parameter labels
             if (token.IsParameterLabel())
                 return SemanticRole.ParameterLabel;
+
+            return SemanticRole.None;
+        }
+
+        private static SemanticRole GetSemanticRoleForPropertyReferences(NavToken token)
+        {
+            // Property refs
+            if (token.IsPropertyOrEnumMemberReference())
+                return SemanticRole.PropertyOrEnumMemberReference;
 
             return SemanticRole.None;
         }
