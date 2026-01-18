@@ -18,7 +18,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             }
         }
 
-        private TokenMap MapToken(NavToken token, NavToken? previous, NavToken? next)
+        private static TokenMap MapToken(NavToken token, NavToken? previous, NavToken? next)
         {
             var primaryKind = GetPrimaryKind(token);
             var role = GetSemanticRole(token, previous, next);
@@ -31,7 +31,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             );
         }
 
-        #region Primary Kind
         private static TokenPrimaryKind GetPrimaryKind(NavToken token)
         {
             // Special cases - update manually
@@ -78,149 +77,101 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     return TokenPrimaryKind.Unknown;
             }
         }
-        #endregion
 
         #region Semantic Roles
         private static SemanticRole GetSemanticRole(NavToken token, NavToken? previous, NavToken? next)
         {
-            // --- Punctuation ---
-            var punctuationRole = GetSemanticRoleForPunctuation(token);
-            if (punctuationRole != SemanticRole.None)
-                return punctuationRole;
-
-            // --- Operators ---
-            var operatorRole = GetSemanticRoleForOperators(token);
-            if (operatorRole != SemanticRole.None)
-                return operatorRole;
+            var semanticRole = SemanticRole.None;
 
             // --- Delimiters ---
-            var delimiterRole = GetSemanticRoleForDelimiters(token);
-            if (delimiterRole != SemanticRole.None)
-                return delimiterRole;
+            semanticRole = GetSemanticRoleForDelimiters(token);
+            if (semanticRole != SemanticRole.None)
+                return semanticRole;
 
-            // --- Identifier Declarations ---
-            var declarationRole = GetSemanticRoleForDeclarations(token);
-            if (declarationRole != SemanticRole.None)
-                return declarationRole;
+            // --- Punctuation ---
+            semanticRole = GetSemanticRoleForPunctuation(token);
+            if (semanticRole != SemanticRole.None)
+                return semanticRole;
 
-            // --- Identifier Data Types ---
-            var dataTypeRole = GetSemanticRoleForIdentifierTypes(token);
-            if (dataTypeRole != SemanticRole.None)
-                return dataTypeRole;
+            // --- Operators ---
+            semanticRole = GetSemanticRoleForOperators(token);
+            if (semanticRole != SemanticRole.None)
+                return semanticRole;
 
-            // --- Identifier References ---
-            var referenceRole = GetSemanticRoleForIdentifierReferences(token);
-            if (referenceRole != SemanticRole.None)
-                return referenceRole;
+            // --- Keywords ---
+            semanticRole = GetSemanticRoleForKeywords(token);
+            if (semanticRole != SemanticRole.None)
+                return semanticRole;
 
-            // --- Identifier Invocations ---
-            var invocationRole = GetSemanticRoleForInvocations(token);
-            if (invocationRole != SemanticRole.None)
-                return invocationRole;
-
-            // --- Identifier Using Directives & Namespaces ---
-            var namespaceRole = GetSemanticRoleForNamespaces(token);
-            if (namespaceRole != SemanticRole.None)
-                return namespaceRole;
-
-            // --- Identifier Generic Type Arguments ---
-            var genTypeArgRole = GetSemanticRoleForGenericTypeArguments(token);
-            if (genTypeArgRole != SemanticRole.None)
-                return genTypeArgRole;
-
-            // --- Identifier Generic Type Parameter ---
-            var genTypeParamRole = GetSemanticRoleForGenericTypeParameters(token);
-            if (genTypeParamRole != SemanticRole.None)
-                return genTypeParamRole;
-
-            // --- Identifier Tuple Types ---
-            var tupleTypeRole = GetSemanticRoleForTupleTypes(token);
-            if (tupleTypeRole != SemanticRole.None)
-                return tupleTypeRole;
-
-            // --- Identifier Base Types ---
-            var baseTypeRole = GetSemanticRoleForBaseTypes(token);
-            if (baseTypeRole != SemanticRole.None)
-                return baseTypeRole;
-
-            // --- Identifier Cast Types ---
-            var castTypeRole = GetSemanticRoleForCastTypes(token);
-            if (castTypeRole != SemanticRole.None)
-                return castTypeRole;
-
-            // --- Identifier Exception Types ---
-            var exceptionTypeRole = GetSemanticRoleForExceptionTypes(token);
-            if (exceptionTypeRole != SemanticRole.None)
-                return exceptionTypeRole;
-
-            // --- Object Creation Identifiers ---
-            var objCreationRole = GetSemanticRoleForObjectCreationIdentifiers(token);
-            if (objCreationRole != SemanticRole.None)
-                return objCreationRole;
-
-            // --- Object Creation Property Assignment Identifiers ---
-            var objCreationPropAssignmentRole = GetSemanticRoleForObjCreationPropertyIdentifiers(token);
-            if (objCreationPropAssignmentRole != SemanticRole.None)
-                return objCreationPropAssignmentRole;
-
-            // --- Identifier Constraint Types ---
-            var typeConstraintRole = GetSemanticRoleForTypeConstraints(token);
-            if (typeConstraintRole != SemanticRole.None)
-                return typeConstraintRole;
-
-            // --- Identifier Type Pattern Types ---
-            var typePatternTypeRole = GetSemanticRoleForTypePatternTypes(token);
-            if (typePatternTypeRole != SemanticRole.None)
-                return typePatternTypeRole;
-
-            // --- Identifier Parameter Labels ---
-            var parameterLabelRole = GetSemanticRoleForParameterLabels(token);
-            if (parameterLabelRole != SemanticRole.None)
-                return parameterLabelRole;
-
-            // --- Identifier Property Refs ---
-            //var propertyRefRole = GetSemanticRoleForPropertyReferences(token);
-            //if (propertyRefRole != SemanticRole.None)
-            //    return propertyRefRole;
+            // --- Identifiers ---
+            semanticRole = GetSemanticRoleForIdentifiers(token);
+            if (semanticRole != SemanticRole.None)
+                return semanticRole;
 
             // --- Literals ---
-            var literalRole = GetSemanticRoleForLiterals(token);
-            if (literalRole != SemanticRole.None)
-                return literalRole;
+            semanticRole = GetSemanticRoleForLiterals(token);
+            if (semanticRole != SemanticRole.None)
+                return semanticRole;
 
+            return SemanticRole.None;
+        }
 
-            // --- Accessor keywords ---
-            if (GlobalConstants.Accessors.Contains(token.Text))
-                return SemanticRole.Accessor;
+        private static SemanticRole GetSemanticRoleForDelimiters(NavToken token)
+        {
+            if (!token.IsDelimiter())
+                return SemanticRole.None;
 
-            // --- Access modifier keywords ---
-            if (GlobalConstants.AccessModifiers.Contains(token.Text))
-                return SemanticRole.AccessModifier;
+            if (token.IsAccessorListDelimiter())
+                return SemanticRole.AccessorListBoundary;
 
-            // --- Modifier keywords ---
-            if (GlobalConstants.Modifiers.Contains(token.Text))
-                return SemanticRole.Modifier;
+            if (token.IsArgumentListDelimiter())
+                return SemanticRole.ArgumentListBoundary;
 
-            // --- Control flow keywords ---
-            if (GlobalConstants.ConditionalKeywords.Contains(token.Text))
-                return SemanticRole.Conditional;
+            if (token.IsAttributeListDelimiter())
+                return SemanticRole.AttributeListBoundary;
 
-            if (GlobalConstants.LoopKeywords.Contains(token.Text))
-                return SemanticRole.Loop;
+            if (token.IsAttributeArgumentListDelimiter())
+                return SemanticRole.AttributeArgumentListBoundary;
 
-            if (GlobalConstants.JumpKeywords.Contains(token.Text))
-                return SemanticRole.Jump;
+            if (token.IsCastTypeDelimiter())
+                return SemanticRole.CastTypeBoundary;
 
-            // --- Pattern matching keywords ---
-            if (GlobalConstants.PatternMatchingKeywords.Contains(token.Text))
-                return SemanticRole.PatternMatching;
+            if (token.IsCollectionExpressionDelimiter())
+                return SemanticRole.CollectionExpressionBoundary;
+
+            if (token.IsForEachBlockDelimiter())
+                return SemanticRole.ForEachBlockBoundary;
+
+            if (token.IsIfBlockDelimiter())
+                return SemanticRole.IfBlockBoundary;
+
+            if (token.IsIfConditionDelimiter())
+                return SemanticRole.IfConditionBoundary;
+
+            if (token.IsInterpolatedValueDelimiter())
+                return SemanticRole.InterpolatedValueBoundary;
+
+            if (token.IsObjectInitializerDelimiter())
+                return SemanticRole.ObjectInitializerBoundary;
+
+            if (token.IsParameterListDelimiter())
+                return SemanticRole.ParameterListBoundary;
+
+            if (token.IsTupleTypeDelimiter())
+                return SemanticRole.TupleTypeBoundary;
+
+            if (token.IsTypeArgumentListDelimiter())
+                return SemanticRole.TypeArgumentListBoundary;
+
+            if (token.IsTypeParameterListDelimiter())
+                return SemanticRole.TypeParameterListBoundary;
 
             return SemanticRole.None;
         }
 
         private static SemanticRole GetSemanticRoleForPunctuation(NavToken token)
         {
-            if (!GlobalConstants.Punctuators.Contains(token.Text))
+            if (!token.IsPunctuation())
                 return SemanticRole.None;
 
             // --- Separators ---
@@ -276,7 +227,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole GetSemanticRoleForOperators(NavToken token)
         {
-            if (!GlobalConstants.Operators.Contains(token.Text))
+            if (!token.IsOperator())
                 return SemanticRole.None;
 
             // Arithmetic
@@ -314,347 +265,234 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.None;
         }
 
-        private static SemanticRole GetSemanticRoleForDelimiters(NavToken token)
+        private static SemanticRole GetSemanticRoleForKeywords(NavToken token)
         {
-            if (!GlobalConstants.Delimiters.Contains(token.Text))
+            if (!token.IsKeyword())
                 return SemanticRole.None;
 
-            if (token.IsArgumentListDelimiter())
-                return SemanticRole.ArgumentListBoundary;
+            // --- Accessor keywords ---
+            if (GlobalConstants.Accessors.Contains(token.Text))
+                return SemanticRole.Accessor;
 
-            if (token.IsAttributeListDelimiter())
-                return SemanticRole.AttributeListBoundary;
+            // --- Access modifier keywords ---
+            if (GlobalConstants.AccessModifiers.Contains(token.Text))
+                return SemanticRole.AccessModifier;
 
-            if (token.IsAttributeArgumentListDelimiter())
-                return SemanticRole.AttributeArgumentListBoundary;
+            // --- Modifier keywords ---
+            if (GlobalConstants.Modifiers.Contains(token.Text))
+                return SemanticRole.Modifier;
 
-            if (token.IsCastTypeDelimiter())
-                return SemanticRole.CastTypeBoundary;
+            // --- Control flow keywords ---
+            if (GlobalConstants.ConditionalKeywords.Contains(token.Text))
+                return SemanticRole.Conditional;
 
-            if (token.IsCollectionExpressionDelimiter())
-                return SemanticRole.CollectionExpressionBoundary;
+            if (GlobalConstants.LoopKeywords.Contains(token.Text))
+                return SemanticRole.Loop;
 
-            if (token.IsForEachBlockDelimiter())
-                return SemanticRole.ForEachBlockBoundary;
+            if (GlobalConstants.JumpKeywords.Contains(token.Text))
+                return SemanticRole.Jump;
 
-            if (token.IsIfBlockDelimiter())
-                return SemanticRole.IfBlockBoundary;
+            // --- Pattern matching keywords ---
+            if (GlobalConstants.PatternMatchingKeywords.Contains(token.Text))
+                return SemanticRole.PatternMatching;
 
-            if (token.IsIfConditionDelimiter())
-                return SemanticRole.IfConditionBoundary;
-
-            if (token.IsTupleTypeDelimiter())
-                return SemanticRole.TupleTypeBoundary;
-
-            if (token.IsTypeArgumentListDelimiter())
-                return SemanticRole.TypeArgumentListBoundary;
-
-            if (token.IsTypeParameterListDelimiter())
-                return SemanticRole.TypeParameterListBoundary;
-
-            if (token.IsParameterListDelimiter())
-                return SemanticRole.ParameterListBoundary;
-
-            if (token.IsObjectInitializerDelimiter())
-                return SemanticRole.ObjectInitializerBoundary;
-
-            if (token.IsInterpolatedValueDelimiter())
-                return SemanticRole.InterpolatedValueBoundary;
-
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForDeclarations(NavToken token)
-        {
-            if (!token.IsIdentifier())
-                return SemanticRole.None;
-
-            // Attribute declarations: [MyAttr] or [MyAttr(...)]
-            if (token.IsAttributeDeclaration())
-                return SemanticRole.AttributeDeclaration;
-
-            // Class & class constructor declarations
-            if (token.IsClassDeclaration())
-                return SemanticRole.ClassDeclaration;
-
-            if (token.IsClassConstructorDeclaration())
-                return SemanticRole.ClassConstructorDeclaration;
-
-            // Delegate declarations
-            if (token.IsDelegateDeclaration())
-                return SemanticRole.DelegateDeclaration;
-
-            // Enum declarations
-            if (token.IsEnumDeclaration())
-                return SemanticRole.EnumDeclaration;
-
-            // Enum member declarations
-            if (token.IsEnumMemberDeclaration())
-                return SemanticRole.EnumMemberDeclaration;
-
-            // Event declarations
-            if (token.IsEventDeclaration())
-                return SemanticRole.EventDeclaration;
-
-            // Event field declarations
-            if (token.IsEventFieldDeclaration())
-                return SemanticRole.EventFieldDeclaration;
-
-            // Field declarations
-            if (token.IsFieldDeclaration())
-                return SemanticRole.FieldDeclaration;
-
-            // Local variable declarations
-            if (token.IsLocalVariableDeclaration())
-                return SemanticRole.LocalVariableDeclaration;
-
-            // Local for-loop variable declarations
-            if (token.IsLocalForLoopVariableDeclaration())
-                return SemanticRole.LocalVariableDeclaration;
-
-            // Local foreach-loop variable declarations
-            if (token.IsLocalForeachLoopVariableDeclaration())
-                return SemanticRole.LocalVariableDeclaration;
-
-            // Method declarations
-            if (token.IsMethodDeclaration())
-                return SemanticRole.MethodDeclaration;
-
-            // Parameter declarations
-            if (token.IsParameterDeclaration())
-                return SemanticRole.ParameterDeclaration;
-
-            // Property declarations
-            if (token.IsPropertyDeclaration())
-                return SemanticRole.PropertyDeclaration;
-
-            // Records & record constructor declarations
-            if (token.IsRecordDeclaration())
-                return SemanticRole.RecordDeclaration;
-
-            if (token.IsRecordConstructorDeclaration())
-                return SemanticRole.RecordConstructorDeclaration;
-
-            // Record structs & record struct declarations
-            if (token.IsRecordStructDeclaration())
-                return SemanticRole.RecordStructDeclaration;
-
-            if (token.IsRecordStructConstructorDeclaration())
-                return SemanticRole.RecordStructConstructorDeclaration;
-
-            // Structs & struct constructor declarations
-            if (token.IsStructDeclaration())
-                return SemanticRole.StructDeclaration;
-
-            if (token.IsStructConstructorDeclaration())
-                return SemanticRole.StructConstructorDeclaration;
-
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForIdentifierTypes(NavToken token)
-        {
-            // Only let through identifiers & pre-defined types; otherwise other
-            // tokens get incorrect semantic roles assigned.
-            if (!token.IsIdentifier() && !GlobalConstants.PredefinedTypes.Contains(token.Text))
-                return SemanticRole.None;
-
-            // Field data type
+            // --- Keyword: data types ---
             if (token.IsFieldDataType())
                 return SemanticRole.FieldDataType;
 
-            // Local variable data type
             if (token.IsLocalVariableDataType())
                 return SemanticRole.LocalVariableDataType;
 
-            // Method return type
             if (token.IsMethodReturnType())
                 return SemanticRole.MethodReturnType;
 
-            // Parameter data types
             if (token.IsParameterDataType())
                 return SemanticRole.ParameterDataType;
 
-            // Property data types
             if (token.IsPropertyDataType())
                 return SemanticRole.PropertyDataType;
 
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForIdentifierReferences(NavToken token)
-        {
-            if (!token.IsIdentifier())
-                return SemanticRole.None;
-
-            // Enum references
-            if (token.RoslynClassification == "enum name")
-                return SemanticRole.EnumReference;
-
-            // Enum member references
-            if (token.RoslynClassification == "enum member name")
-                return SemanticRole.EnumMemberReference;
-
-            // Field references
-            if (token.RoslynClassification == "field name")
-                return SemanticRole.FieldReference;
-
-            // Local variable references
-            if (token.RoslynClassification == "local name")
-                return SemanticRole.LocalVariableReference;
-
-            // Parameter references
-            if (token.RoslynClassification == "parameter name")
-                return SemanticRole.ParameterReference;
-
-            // Property references
-            if (token.RoslynClassification == "property name")
-                return SemanticRole.PropertyReference;
-
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForInvocations(NavToken token)
-        {
-            if (!token.IsIdentifier())
-                return SemanticRole.None;
-
-            // Method invocations
-            if (token.IsMethodInvocation())
-                return SemanticRole.MethodInvocation;
-
-            // Class constructor invocations
-            if (token.RoslynClassification == "class name" && token.IsObjectCreationExpression())
-                return SemanticRole.ClassConstructorInvocation;
-
-            // Record constructor invocations
-            if (token.RoslynClassification == "record class name" && token.IsObjectCreationExpression())
-                return SemanticRole.RecordConstructorInvocation;
-
-            // Record struct constructor invocations
-            if (token.RoslynClassification == "record struct name" && token.IsObjectCreationExpression())
-                return SemanticRole.RecordStructConstructorInvocation;
-
-            // Struct constructor invocations
-            if (token.RoslynClassification == "struct name" && token.IsObjectCreationExpression())
-                return SemanticRole.StructConstructorInvocation;
-
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForNamespaces(NavToken token)
-        {
-            // Using directives
-            if (token.IsUsingDirectiveSegment())
-                return SemanticRole.UsingDirective;
-
-            // Namespaces
-            if (token.IsNamespaceSegment())
-                return SemanticRole.NamespaceDeclaration;
-
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForGenericTypeArguments(NavToken token)
-        {
-            // Generic type arguments
+            // --- Keyword: generic types ---
             if (token.IsGenericTypeArgument())
                 return SemanticRole.GenericTypeArgument;
 
             return SemanticRole.None;
         }
 
-        private static SemanticRole GetSemanticRoleForGenericTypeParameters(NavToken token)
+        private static SemanticRole GetSemanticRoleForIdentifiers(NavToken token)
         {
-            // Generic type parameters
+            if (!token.IsIdentifier())
+                return SemanticRole.None;
+
+            // --- Identifiers: Declarations ---
+            if (token.IsAttributeDeclaration())
+                return SemanticRole.AttributeDeclaration;
+
+            if (token.IsClassDeclaration())
+                return SemanticRole.ClassDeclaration;
+
+            if (token.IsClassConstructorDeclaration())
+                return SemanticRole.ClassConstructorDeclaration;
+
+            if (token.IsDelegateDeclaration())
+                return SemanticRole.DelegateDeclaration;
+
+            if (token.IsEnumDeclaration())
+                return SemanticRole.EnumDeclaration;
+
+            if (token.IsEnumMemberDeclaration())
+                return SemanticRole.EnumMemberDeclaration;
+
+            if (token.IsEventDeclaration())
+                return SemanticRole.EventDeclaration;
+
+            if (token.IsEventFieldDeclaration())
+                return SemanticRole.EventFieldDeclaration;
+
+            if (token.IsFieldDeclaration())
+                return SemanticRole.FieldDeclaration;
+
+            if (token.IsLocalVariableDeclaration())
+                return SemanticRole.LocalVariableDeclaration;
+
+            if (token.IsLocalForLoopVariableDeclaration())
+                return SemanticRole.LocalVariableDeclaration;
+
+            if (token.IsLocalForeachLoopVariableDeclaration())
+                return SemanticRole.LocalVariableDeclaration;
+
+            if (token.IsMethodDeclaration())
+                return SemanticRole.MethodDeclaration;
+
+            if (token.IsParameterDeclaration())
+                return SemanticRole.ParameterDeclaration;
+
+            if (token.IsPropertyDeclaration())
+                return SemanticRole.PropertyDeclaration;
+
+            if (token.IsRecordDeclaration())
+                return SemanticRole.RecordDeclaration;
+
+            if (token.IsRecordConstructorDeclaration())
+                return SemanticRole.RecordConstructorDeclaration;
+
+            if (token.IsRecordStructDeclaration())
+                return SemanticRole.RecordStructDeclaration;
+
+            if (token.IsRecordStructConstructorDeclaration())
+                return SemanticRole.RecordStructConstructorDeclaration;
+
+            if (token.IsStructDeclaration())
+                return SemanticRole.StructDeclaration;
+
+            if (token.IsStructConstructorDeclaration())
+                return SemanticRole.StructConstructorDeclaration;
+
+            // --- Identifiers: data types ---
+            if (token.IsFieldDataType())
+                return SemanticRole.FieldDataType;
+
+            if (token.IsLocalVariableDataType())
+                return SemanticRole.LocalVariableDataType;
+
+            if (token.IsMethodReturnType())
+                return SemanticRole.MethodReturnType;
+
+            if (token.IsParameterDataType())
+                return SemanticRole.ParameterDataType;
+
+            if (token.IsPropertyDataType())
+                return SemanticRole.PropertyDataType;
+
+            // Identifier references
+            if (token.RoslynClassification == "enum name")
+                return SemanticRole.EnumReference;
+
+            if (token.RoslynClassification == "enum member name")
+                return SemanticRole.EnumMemberReference;
+
+            if (token.RoslynClassification == "field name")
+                return SemanticRole.FieldReference;
+
+            if (token.RoslynClassification == "local name")
+                return SemanticRole.LocalVariableReference;
+
+            if (token.RoslynClassification == "parameter name")
+                return SemanticRole.ParameterReference;
+
+            if (token.RoslynClassification == "property name")
+                return SemanticRole.PropertyReference;
+
+            // Identifier invocations
+            if (token.IsMethodInvocation())
+                return SemanticRole.MethodInvocation;
+
+            if (token.RoslynClassification == "class name" && token.IsObjectCreationExpression())
+                return SemanticRole.ClassConstructorInvocation;
+
+            if (token.RoslynClassification == "record class name" && token.IsObjectCreationExpression())
+                return SemanticRole.RecordConstructorInvocation;
+
+            if (token.RoslynClassification == "record struct name" && token.IsObjectCreationExpression())
+                return SemanticRole.RecordStructConstructorInvocation;
+
+            if (token.RoslynClassification == "struct name" && token.IsObjectCreationExpression())
+                return SemanticRole.StructConstructorInvocation;
+
+            // Identifier - namespaces
+            if (token.IsUsingDirectiveSegment())
+                return SemanticRole.UsingDirective;
+
+            if (token.IsNamespaceSegment())
+                return SemanticRole.NamespaceDeclaration;
+
+            // Identifier - generic type args
+            if (token.IsGenericTypeArgument())
+                return SemanticRole.GenericTypeArgument;
+
+            // Identifier - generic type params
             if (token.IsGenericTypeParameter())
                 return SemanticRole.GenericTypeParameter;
 
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForTupleTypes(NavToken token)
-        {
-            // Tuple types
+            // Identifier - tuple types
             if (token.IsTupleElementName())
                 return SemanticRole.TupleElementName;
 
             if (token.IsTupleElementType())
                 return SemanticRole.TupleElementType;
 
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForBaseTypes(NavToken token)
-        {
-            // Base types
+            // Identifier - base types
             if (token.IsBaseType())
                 return SemanticRole.SimpleBaseType;
 
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForCastTypes(NavToken token)
-        {
-            // Cast types
+            // Identifier - cast types
             if (token.IsCastType())
                 return SemanticRole.CastType;
 
-            // Cast target types
             if (token.IsCastTargetType())
                 return SemanticRole.CastTargetType;
 
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForExceptionTypes(NavToken token)
-        {
-            // Exception types
+            // Identifier - exception types
             if (token.IsExceptionType())
                 return SemanticRole.ExceptionType;
 
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForObjectCreationIdentifiers(NavToken token)
-        {
-            // Object creation identifiers
+            // Identifier - constructors
             if (token.IsExternallyDefinedObjectCreationExpression())
                 return SemanticRole.ConstructorInvocation;
 
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForObjCreationPropertyIdentifiers(NavToken token)
-        {
-            // Object creation property identifiers
+            // Identifier - property assignment on obj creation
             if (token.IsObjCreationPropertyAssignment())
                 return SemanticRole.ObjectPropertyAssignment;
 
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForTypeConstraints(NavToken token)
-        {
-            // Type constraints
+            // Identifier - type constraints
             if (token.IsTypeConstraint())
                 return SemanticRole.ConstraintType;
 
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForTypePatternTypes(NavToken token)
-        {
-            // Type pattern types
+            // Identifier - type pattern types
             if (token.IsTypePatternType())
                 return SemanticRole.TypePatternType;
 
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForParameterLabels(NavToken token)
-        {
-            // Parameter labels
+            // Identifier - param labels
             if (token.IsParameterLabel())
                 return SemanticRole.ParameterLabel;
 

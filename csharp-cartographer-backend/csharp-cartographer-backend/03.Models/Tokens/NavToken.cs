@@ -1,4 +1,5 @@
-﻿using csharp_cartographer_backend._02.Utilities.Helpers;
+﻿using csharp_cartographer_backend._01.Configuration;
+using csharp_cartographer_backend._02.Utilities.Helpers;
 using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -186,16 +187,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             #endregion
         }
 
+        public bool IsDelimiter() => GlobalConstants.Delimiters.Contains(Text);
+
+        public bool IsPunctuation() => GlobalConstants.Punctuators.Contains(Text);
+
+        public bool IsOperator() => GlobalConstants.Operators.Contains(Text);
+
+        public bool IsIdentifier() => RoslynToken.IsKind(SyntaxKind.IdentifierToken);
+
+        public bool IsKeyword() => SyntaxFacts.IsKeywordKind(Kind);
+
         public bool IsKeyword(string keyword)
         {
-            return RoslynClassification is not null
-                && RoslynClassification.Contains("keyword")
-                && string.Equals(Text, keyword, StringComparison.Ordinal);
-        }
-
-        public bool IsIdentifier()
-        {
-            return RoslynToken.IsKind(SyntaxKind.IdentifierToken);
+            return string.Equals(Text, keyword, StringComparison.Ordinal);
         }
 
         private bool HasAncestorAt(int index, SyntaxKind kind)
@@ -208,150 +212,111 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         }
 
         #region Delimiter Checks
+        public bool IsAccessorListDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.AccessorList)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsArgumentListDelimiter()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
+            return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.ArgumentList)
-                &&
-                    (
-                        Text == "(" ||
-                        Text == ")"
-                    );
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
         public bool IsAttributeListDelimiter()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
+            return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.AttributeList)
-                &&
-                    (
-                        Text == "[" ||
-                        Text == "]"
-                    );
+                && (Kind == SyntaxKind.OpenBracketToken || Kind == SyntaxKind.CloseBracketToken);
         }
 
         public bool IsAttributeArgumentListDelimiter()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
+            return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.AttributeArgumentList)
-                &&
-                    (
-                        Text == "(" ||
-                        Text == ")"
-                    );
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
         public bool IsCastTypeDelimiter()
         {
-            return HasAncestorAt(0, SyntaxKind.CastExpression)
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.CastExpression)
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
         public bool IsCollectionExpressionDelimiter()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
+            return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.CollectionExpression)
-                &&
-                    (
-                        Text == "[" ||
-                        Text == "]"
-                    );
+                && (Kind == SyntaxKind.OpenBracketToken || Kind == SyntaxKind.CloseBracketToken);
         }
 
         public bool IsForEachBlockDelimiter()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
+            return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.Block)
                 && HasAncestorAt(1, SyntaxKind.ForEachStatement)
-                && (Text is "{" or "}");
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
         public bool IsIfBlockDelimiter()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
+            return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.Block)
                 && HasAncestorAt(1, SyntaxKind.IfStatement)
-                && (Text is "{" or "}");
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
         public bool IsIfConditionDelimiter()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
+            return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.IfStatement)
-                && (Text is "(" or ")");
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
         public bool IsTupleTypeDelimiter()
         {
-            return (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken)
-                && HasAncestorAt(0, SyntaxKind.TupleType);
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.TupleType)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
         public bool IsTypeArgumentListDelimiter()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
+            return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.TypeArgumentList)
-                &&
-                    (
-                        Text == "<" ||
-                        Text == ">"
-                    );
+                && (Kind == SyntaxKind.LessThanToken || Kind == SyntaxKind.GreaterThanToken);
         }
 
         public bool IsTypeParameterListDelimiter()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
+            return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.TypeParameterList)
-                &&
-                    (
-                        Text == "<" ||
-                        Text == ">"
-                    );
+                && (Kind == SyntaxKind.LessThanToken || Kind == SyntaxKind.GreaterThanToken);
         }
 
         public bool IsParameterListDelimiter()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
+            return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.ParameterList)
-                &&
-                    (
-                        Text == "(" ||
-                        Text == ")"
-                    );
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
         public bool IsObjectInitializerDelimiter()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
+            return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.ObjectInitializerExpression)
-                &&
-                    (
-                        Text == "{" ||
-                        Text == "}"
-                    );
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
         public bool IsInterpolatedValueDelimiter()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
+            return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.Interpolation)
-                &&
-                    (
-                        Text == "{" ||
-                        Text == "}"
-                    );
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
         #endregion
 
