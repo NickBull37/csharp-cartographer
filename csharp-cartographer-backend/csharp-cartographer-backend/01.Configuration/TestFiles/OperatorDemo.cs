@@ -131,6 +131,32 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
     public class Test
     {
         public int TestInt { get; set; }
+
+        public static string NullConditionalOperatorTest()
+        {
+            int test = GetText().Length;
+
+            int? test2 = GetText()?.Length;
+
+            string? text = GetText()?.Trim()?.ToUpperInvariant();
+
+            int? length = text?.Split(' ', StringSplitOptions.RemoveEmptyEntries)?.FirstOrDefault()?.Length;
+
+            char? firstChar = text?.FirstOrDefault();
+
+            string? replaced = text?.Replace("A", "X")?.Replace("E", "Y");
+
+            string result =
+                $"Text: {text ?? "null"}, " +
+                $"Length: {length?.ToString() ?? "null"}, " +
+                $"FirstChar: {firstChar?.ToString() ?? "null"}, " +
+                $"Replaced: {replaced ?? "null"}";
+
+            return result;
+        }
+
+        private static string? GetText() =>
+            DateTime.Now.Second % 2 == 0 ? "hello world" : null;
     }
 
     public class NodeFinder

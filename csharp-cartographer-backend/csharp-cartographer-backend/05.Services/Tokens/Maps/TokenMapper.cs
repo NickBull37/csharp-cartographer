@@ -262,6 +262,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsMemberAccessOperator())
                 return SemanticRole.MemberAccessOperator;
 
+            // Member access - conditional
+            if (token.IsConditionalMemberAccessOperator())
+                return SemanticRole.ConditionalMemberAccess;
+
             // Range
             if (token.IsRangeOperator())
                 return SemanticRole.RangeOperator;
@@ -269,6 +273,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Namespace alias
             if (token.IsNamespaceAliasQualifier())
                 return SemanticRole.NamespaceAliasQualifier;
+
+            // Null-conditional guard
+            if (token.IsNullConditionalGuard())
+                return SemanticRole.NullConditionalGuard;
 
             return SemanticRole.None;
         }
@@ -537,7 +545,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole GetSemanticRoleForExceptionTypes(NavToken token)
         {
-            // Cast types
+            // Exception types
             if (token.IsExceptionType())
                 return SemanticRole.ExceptionType;
 

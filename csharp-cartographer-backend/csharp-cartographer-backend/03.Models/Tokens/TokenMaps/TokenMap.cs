@@ -25,6 +25,7 @@
         CaseLabelSeperator,
         EnumMemberSeparator,
         GenericTypeSeperator,
+
         ParameterSeparator,
         PatternSeparator,
         SwitchClauseSeperator,
@@ -67,9 +68,11 @@
         ArithmeticOperator,
         AssignmentOperator,
         ComparisonOperator,
+        ConditionalMemberAccess,
         ConditionalOperator,
         LogicalOperator,
         MemberAccessOperator,
+        NullConditionalGuard,
         RangeOperator,
 
         // ------------ MODIFIERS ------------ //
@@ -79,12 +82,14 @@
 
         // ------------ IDENTIFIERS ------------ //
 
+        ParameterLabel,
+        TypeDeclaration,
+        UsingDirective,
+
         // Declarations
         AttributeDeclaration,
-
         ClassDeclaration,
         ClassConstructorDeclaration,
-
         DelegateDeclaration,
         EnumDeclaration,
         EnumMemberDeclaration,
@@ -97,21 +102,14 @@
         NamespaceDeclaration,
         ParameterDeclaration,
         PropertyDeclaration,
-
         RecordDeclaration,
         RecordConstructorDeclaration,
-
         RecordStructDeclaration,
         RecordStructConstructorDeclaration,
-
         StructDeclaration,
         StructConstructorDeclaration,
 
-        ParameterLabel,
-        TypeDeclaration,
-        UsingDirective,
-
-        // ConstructorInvocations
+        // Constructor invocations
         ClassConstructorInvocation,
         RecordConstructorInvocation,
         RecordStructConstructorInvocation,
@@ -137,7 +135,6 @@
 
         // Invocations & access
         MethodInvocation,
-        ConstructorInvocation,
         PropertyAccess,
         FieldAccess,
         EventSubscription,

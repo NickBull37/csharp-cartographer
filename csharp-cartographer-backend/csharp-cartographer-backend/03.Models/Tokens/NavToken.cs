@@ -466,6 +466,22 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Text == ".";
         }
 
+        public bool IsConditionalMemberAccessOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && HasAncestorAt(0, SyntaxKind.MemberBindingExpression)
+                && Text == ".";
+        }
+
+        public bool IsNullConditionalGuard()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && HasAncestorAt(0, SyntaxKind.ConditionalAccessExpression)
+                && Text == "?";
+        }
+
         public bool IsNamespaceAliasQualifier()
         {
             return RoslynClassification is not null

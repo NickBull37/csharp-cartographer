@@ -107,7 +107,8 @@
 
             // member access
             ".",
-            "?.",
+            "?", // not real operator but needed for null-conditional since they are seperate tokens
+            "?.", // null-conditional
             "::",
 
             // misc
