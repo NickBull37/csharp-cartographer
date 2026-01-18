@@ -237,6 +237,11 @@
             },
             new ReservedTextColor
             {
+                Text = "long",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "nameof",
                 HighlightColor = _blue,
             },
@@ -253,6 +258,11 @@
             new ReservedTextColor
             {
                 Text = "not",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "notnull",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -328,6 +338,11 @@
             new ReservedTextColor
             {
                 Text = "set",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "short",
                 HighlightColor = _blue,
             },
             new ReservedTextColor

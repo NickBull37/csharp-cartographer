@@ -288,6 +288,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Text is "(" or ")");
         }
 
+        public bool IsTupleTypeDelimiter()
+        {
+            return (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken)
+                && HasAncestorAt(0, SyntaxKind.TupleType);
+        }
+
         public bool IsTypeArgumentListDelimiter()
         {
             return RoslynClassification is not null
@@ -412,6 +418,21 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsObjectCreationExpression()
         {
             return HasAncestorAt(1, SyntaxKind.ObjectCreationExpression);
+        }
+
+        public bool IsExternallyDefinedObjectCreationExpression()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "identifier"
+                && HasAncestorAt(1, SyntaxKind.ObjectCreationExpression);
+        }
+
+        public bool IsObjCreationPropertyAssignment()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "identifier"
+                && HasAncestorAt(1, SyntaxKind.SimpleAssignmentExpression)
+                && HasAncestorAt(2, SyntaxKind.ObjectInitializerExpression);
         }
 
         public bool IsParameterLabel()
@@ -541,9 +562,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement) ||
             HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
 
-        public bool IsMethodReturnType() =>
-            HasAncestorAt(1, SyntaxKind.MethodDeclaration) ||
-            HasAncestorAt(2, SyntaxKind.MethodDeclaration);
+        public bool IsTupleElementName() => HasAncestorAt(0, SyntaxKind.TupleElement);
+
+        public bool IsTupleElementType() => HasAncestorAt(1, SyntaxKind.TupleElement);
+
+        public bool IsMethodReturnType()
+        {
+            if (IsTupleElementName() || IsTupleElementType())
+                return false;
+
+            return HasAncestorAt(1, SyntaxKind.MethodDeclaration)
+                || HasAncestorAt(2, SyntaxKind.MethodDeclaration);
+        }
 
         public bool IsParameterDataType() =>
             HasAncestorAt(1, SyntaxKind.Parameter) ||
@@ -808,7 +838,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsGenericType() => HasAncestorAt(0, SyntaxKind.GenericName);
 
         public bool IsGenericTypeParameter() => RoslynClassification is not null
-            && RoslynClassification == "type parameter name";
+            && RoslynClassification == "type parameter name"
+            && HasAncestorAt(0, SyntaxKind.TypeParameter);
 
         public bool IsNullableType() => HasAncestorAt(1, SyntaxKind.NullableType);
 

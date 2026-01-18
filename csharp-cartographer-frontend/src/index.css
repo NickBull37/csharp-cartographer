@@ -287,6 +287,9 @@ body {
 .color-pink {
     color: #ff33ff;
 }
+.color-cart-green {
+    color: #00ffe5;
+}
 
 /* ------------------- 5.2 Active Token Styling ------------------- */
 .token-active {

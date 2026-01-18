@@ -32,12 +32,14 @@
         InterpolatedValueBoundary,
         ObjectInitializerBoundary,
         ParameterListBoundary,
+        TupleTypeBoundary,
         TypeArgumentListBoundary,
         TypeParameterListBoundary,
 
 
         // ------------ IDENTIFIERS ------------ //
 
+        ObjectPropertyAssignment,
         ParameterLabel,
         TypeDeclaration,
         UsingDirective,
@@ -66,6 +68,7 @@
         StructConstructorDeclaration,
 
         // Constructor invocations
+        ConstructorInvocation,
         ClassConstructorInvocation,
         RecordConstructorInvocation,
         RecordStructConstructorInvocation,
@@ -176,12 +179,15 @@
         ExceptionType,
         FieldDataType,
         GenericTypeArgument,
+        GenericTypeParameter,
         LocalVariableDataType,
         ParameterDataType,
         PropertyDataType,
         MethodReturnType,
         SimpleBaseType,
         TypePatternType,
+        TupleElementName,
+        TupleElementType,
     }
 
     public enum SemanticModifiers
@@ -223,7 +229,6 @@
         Nullable,
         Array,
         Pointer,
-        Tuple,
         GenericTypeParameter,
 
         // Property / accessor modifiers

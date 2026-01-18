@@ -13,6 +13,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 if (token.Map is null)
                     continue;
 
+                if (token.RoslynClassification == "type parameter name")
+                {
+                    token.HighlightColor = "color-light-green";
+                    continue;
+                }
+
                 if (token.Map.PrimaryKind == TokenPrimaryKind.Delimiter)
                 {
                     token.HighlightColor = "color-white";
@@ -50,8 +56,10 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case SemanticRole.FieldDeclaration:
                     case SemanticRole.FieldReference:
                     case SemanticRole.NamespaceDeclaration:
+                    case SemanticRole.ObjectPropertyAssignment:
                     case SemanticRole.PropertyDeclaration:
                     case SemanticRole.PropertyReference:
+                    case SemanticRole.TupleElementName:
                     case SemanticRole.UsingDirective:
                         token.HighlightColor = "color-white";
                         break;
@@ -69,6 +77,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                         break;
                     case SemanticRole.EnumDeclaration:
                     case SemanticRole.EnumReference:
+                    //case SemanticRole.GenericTypeParameter:
                     case SemanticRole.InterfaceDeclaration:
                     case SemanticRole.InterfaceReference:
                     case SemanticRole.NumericLiteral:
@@ -99,9 +108,13 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case SemanticRole.StringLiteral:
                         token.HighlightColor = "color-orange";
                         break;
+                    //case SemanticRole.ConstructorInvocation:
+                    //    token.HighlightColor = "color-cart-green";
+                    //    break;
                     case SemanticRole.CastType:
                     case SemanticRole.CastTargetType:
                     case SemanticRole.ConstraintType:
+                    case SemanticRole.ConstructorInvocation:
                     case SemanticRole.FieldDataType:
                     case SemanticRole.GenericTypeArgument:
                     case SemanticRole.LocalVariableDataType:
@@ -109,6 +122,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case SemanticRole.ParameterDataType:
                     case SemanticRole.PropertyDataType:
                     case SemanticRole.SimpleBaseType:
+                    case SemanticRole.TupleElementType:
                     case SemanticRole.TypePatternType:
                         token.HighlightColor = GetColorForDataTypeIdentifiers(token);
                         break;
@@ -129,7 +143,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     return "color-green";
                 case "enum name":
                 case "interface name":
-                case "type parameter name":
+                    //case "type parameter name":
                     return "color-light-green";
                 case "struct name":
                 case "record struct name":

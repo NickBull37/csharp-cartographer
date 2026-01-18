@@ -128,6 +128,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (genTypeArgRole != SemanticRole.None)
                 return genTypeArgRole;
 
+            // --- Identifier Generic Type Parameter ---
+            var genTypeParamRole = GetSemanticRoleForGenericTypeParameters(token);
+            if (genTypeParamRole != SemanticRole.None)
+                return genTypeParamRole;
+
+            // --- Identifier Tuple Types ---
+            var tupleTypeRole = GetSemanticRoleForTupleTypes(token);
+            if (tupleTypeRole != SemanticRole.None)
+                return tupleTypeRole;
+
             // --- Identifier Base Types ---
             var baseTypeRole = GetSemanticRoleForBaseTypes(token);
             if (baseTypeRole != SemanticRole.None)
@@ -142,6 +152,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             var exceptionTypeRole = GetSemanticRoleForExceptionTypes(token);
             if (exceptionTypeRole != SemanticRole.None)
                 return exceptionTypeRole;
+
+            // --- Object Creation Identifiers ---
+            var objCreationRole = GetSemanticRoleForObjectCreationIdentifiers(token);
+            if (objCreationRole != SemanticRole.None)
+                return objCreationRole;
+
+            // --- Object Creation Property Assignment Identifiers ---
+            var objCreationPropAssignmentRole = GetSemanticRoleForObjCreationPropertyIdentifiers(token);
+            if (objCreationPropAssignmentRole != SemanticRole.None)
+                return objCreationPropAssignmentRole;
 
             // --- Identifier Constraint Types ---
             var typeConstraintRole = GetSemanticRoleForTypeConstraints(token);
@@ -322,6 +342,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsIfConditionDelimiter())
                 return SemanticRole.IfConditionBoundary;
+
+            if (token.IsTupleTypeDelimiter())
+                return SemanticRole.TupleTypeBoundary;
 
             if (token.IsTypeArgumentListDelimiter())
                 return SemanticRole.TypeArgumentListBoundary;
@@ -541,6 +564,27 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.None;
         }
 
+        private static SemanticRole GetSemanticRoleForGenericTypeParameters(NavToken token)
+        {
+            // Generic type parameters
+            if (token.IsGenericTypeParameter())
+                return SemanticRole.GenericTypeParameter;
+
+            return SemanticRole.None;
+        }
+
+        private static SemanticRole GetSemanticRoleForTupleTypes(NavToken token)
+        {
+            // Tuple types
+            if (token.IsTupleElementName())
+                return SemanticRole.TupleElementName;
+
+            if (token.IsTupleElementType())
+                return SemanticRole.TupleElementType;
+
+            return SemanticRole.None;
+        }
+
         private static SemanticRole GetSemanticRoleForBaseTypes(NavToken token)
         {
             // Base types
@@ -572,6 +616,24 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.None;
         }
 
+        private static SemanticRole GetSemanticRoleForObjectCreationIdentifiers(NavToken token)
+        {
+            // Object creation identifiers
+            if (token.IsExternallyDefinedObjectCreationExpression())
+                return SemanticRole.ConstructorInvocation;
+
+            return SemanticRole.None;
+        }
+
+        private static SemanticRole GetSemanticRoleForObjCreationPropertyIdentifiers(NavToken token)
+        {
+            // Object creation property identifiers
+            if (token.IsObjCreationPropertyAssignment())
+                return SemanticRole.ObjectPropertyAssignment;
+
+            return SemanticRole.None;
+        }
+
         private static SemanticRole GetSemanticRoleForTypeConstraints(NavToken token)
         {
             // Type constraints
@@ -595,15 +657,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Parameter labels
             if (token.IsParameterLabel())
                 return SemanticRole.ParameterLabel;
-
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForPropertyReferences(NavToken token)
-        {
-            // Property refs
-            if (token.IsPropertyOrEnumMemberReference())
-                return SemanticRole.PropertyOrEnumMemberReference;
 
             return SemanticRole.None;
         }
@@ -640,8 +693,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             var modifiers = new HashSet<SemanticModifiers>();
 
             // Generic type parameters
-            if (token.IsGenericTypeParameter())
-                modifiers.Add(SemanticModifiers.GenericTypeParameter);
+            //if (token.IsGenericTypeParameter())
+            //    modifiers.Add(SemanticModifiers.GenericTypeParameter);
 
 
             // Accessor modifiers
