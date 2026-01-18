@@ -198,93 +198,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return RoslynToken.IsKind(SyntaxKind.IdentifierToken);
         }
 
-        #region Punctuation Checks
-        public bool IsArgumentSeperator()
+        private bool HasAncestorAt(int index, SyntaxKind kind)
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.ArgumentList)
-                && Text == ",";
+            var ancestors = AncestorKinds.Ancestors;
+            return !ancestors.IsEmpty
+                && index >= 0
+                && index < ancestors.Length
+                && ancestors[index] == kind;
         }
-
-        public bool IsBaseTypeSeperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.BaseList)
-                && Text == ":";
-        }
-
-        public bool IsEnumMemberSeparator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.EnumDeclaration)
-                && Text == ",";
-        }
-
-        public bool IsParameterSeparator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.ParameterList)
-                && Text == ",";
-        }
-
-        public bool IsTypeArgumentSeperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.TypeArgumentList)
-                && Text == ",";
-        }
-
-        public bool IsSwitchClauseSeperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.CaseSwitchLabel)
-                && Text == ":";
-        }
-
-        public bool IsTypeParameterConstraintClauseSeperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.TypeParameterConstraintClause)
-                && Text == ":";
-        }
-
-        public bool IsVariableDeclaratorSeparator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.VariableDeclaration)
-                && Text == ",";
-        }
-
-        public bool IsStatementTerminator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && Text == ";";
-            //&&
-            //    (
-            //        HasAncestorAt(0, SyntaxKind.ExpressionStatement) ||
-            //        HasAncestorAt(0, SyntaxKind.LocalDeclarationStatement) ||
-            //        HasAncestorAt(0, SyntaxKind.ReturnStatement) ||
-            //        HasAncestorAt(0, SyntaxKind.FieldDeclaration)
-            //    );
-        }
-
-        public bool IsLabelTerminator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.NameColon)
-                && Text == ":";
-        }
-        #endregion
 
         #region Delimiter Checks
         public bool IsArgumentListDelimiter()
@@ -422,83 +343,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         }
         #endregion
 
-        #region Operator Checks
-        public bool IsArithmeticOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && (Text is "+" or "-" or "++" or "--" or "*" or "/" or "%");
-        }
-
-        public bool IsAssignmentOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && (Text is "=" or "+=" or "-=" or "*=" or "/=" or "%=" or "&=" or "|=" or "^=" or "<<=" or ">>=" or ">>>=");
-        }
-
-        public bool IsComparisonOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && (Text is "<" or ">" or "<=" or ">=" or "==" or "!=");
-        }
-
-        public bool IsConditionalOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && (Text is "&&" or "||");
-        }
-
-        public bool IsLogicalOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && (Text is "!" or "&" or "|" or "^");
-        }
-
-        public bool IsMemberAccessOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && HasAncestorAt(0, SyntaxKind.SimpleMemberAccessExpression)
-                && Text == ".";
-        }
-
-        public bool IsConditionalMemberAccessOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && HasAncestorAt(0, SyntaxKind.MemberBindingExpression)
-                && Text == ".";
-        }
-
-        public bool IsNullConditionalGuard()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && HasAncestorAt(0, SyntaxKind.ConditionalAccessExpression)
-                && Text == "?";
-        }
-
-        public bool IsNamespaceAliasQualifier()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && HasAncestorAt(0, SyntaxKind.AliasQualifiedName)
-                && Text == "::";
-        }
-
-        public bool IsRangeOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.RangeExpression)
-                && Text == "..";
-        }
-        #endregion
-
         #region Identifier Checks
         public bool IsUsingDirectiveSegment()
         {
@@ -517,6 +361,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsTypeConstraint()
         {
+            if (Kind == SyntaxKind.QuestionToken)
+                return false;
+
             return HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause)
                 || HasAncestorAt(2, SyntaxKind.TypeParameterConstraintClause);
         }
@@ -667,25 +514,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             HasAncestorAt(2, SyntaxKind.PropertyDeclaration);
         #endregion
 
-        #region Type Checks
-        public bool IsGenericTypeArgument()
-        {
-            return HasAncestorAt(1, SyntaxKind.TypeArgumentList) ||
-                HasAncestorAt(2, SyntaxKind.TypeArgumentList);
-        }
-
-        public bool IsGenericType() => HasAncestorAt(0, SyntaxKind.GenericName);
-
-        public bool IsGenericTypeParameter() => RoslynClassification is not null
-            && RoslynClassification == "type parameter name";
-
-        public bool IsNullableType() => HasAncestorAt(1, SyntaxKind.NullableType);
-
-        public bool IsNullableConstraintType() => IsTypeConstraint() && NextToken?.Text == "?";
-
-        public bool IsPredefinedType() => SyntaxFacts.IsPredefinedType(Kind);
-        #endregion
-
         #region Literal Checks
         public bool IsNumericLiteral()
         {
@@ -758,14 +586,196 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         }
         #endregion
 
-        private bool HasAncestorAt(int index, SyntaxKind kind)
+        #region Operator Checks
+        public bool IsArithmeticOperator()
         {
-            var ancestors = AncestorKinds.Ancestors;
-            return !ancestors.IsEmpty
-                && index >= 0
-                && index < ancestors.Length
-                && ancestors[index] == kind;
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && (Text is "+" or "-" or "++" or "--" or "*" or "/" or "%");
         }
+
+        public bool IsAssignmentOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && (Text is "=" or "+=" or "-=" or "*=" or "/=" or "%=" or "&=" or "|=" or "^=" or "<<=" or ">>=" or ">>>=");
+        }
+
+        public bool IsComparisonOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && (Text is "<" or ">" or "<=" or ">=" or "==" or "!=");
+        }
+
+        public bool IsConditionalOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && (Text is "&&" or "||");
+        }
+
+        public bool IsLogicalOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && (Text is "!" or "&" or "|" or "^");
+        }
+
+        public bool IsMemberAccessOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && HasAncestorAt(0, SyntaxKind.SimpleMemberAccessExpression)
+                && Text == ".";
+        }
+
+        public bool IsConditionalMemberAccessOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && HasAncestorAt(0, SyntaxKind.MemberBindingExpression)
+                && Text == ".";
+        }
+
+        public bool IsNamespaceAliasQualifier()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "operator"
+                && HasAncestorAt(0, SyntaxKind.AliasQualifiedName)
+                && Text == "::";
+        }
+
+        public bool IsRangeOperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.RangeExpression)
+                && Text == "..";
+        }
+        #endregion
+
+        #region Punctuation Checks
+        public bool IsArgumentSeperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.ArgumentList)
+                && Text == ",";
+        }
+
+        public bool IsBaseTypeSeperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.BaseList)
+                && Text == ":";
+        }
+
+        public bool IsEnumMemberSeparator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.EnumDeclaration)
+                && Text == ",";
+        }
+
+        public bool IsNullConditionalGuard() => Kind == SyntaxKind.QuestionToken
+            && HasAncestorAt(0, SyntaxKind.ConditionalAccessExpression);
+
+        public bool IsNullableTypeMarker() => Kind == SyntaxKind.QuestionToken
+            && HasAncestorAt(0, SyntaxKind.NullableType);
+
+        public bool IsNullableConstraintTypeMarker()
+        {
+            if (Kind != SyntaxKind.QuestionToken)
+                return false;
+
+            return HasAncestorAt(0, SyntaxKind.ClassConstraint)
+                || HasAncestorAt(0, SyntaxKind.StructConstraint);
+        }
+
+
+        public bool IsParameterSeparator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.ParameterList)
+                && Text == ",";
+        }
+
+        public bool IsTypeArgumentSeperator() => Kind == SyntaxKind.CommaToken
+            && HasAncestorAt(0, SyntaxKind.TypeArgumentList);
+
+        public bool IsTypeParameterSeparator() => Kind == SyntaxKind.CommaToken
+            && HasAncestorAt(0, SyntaxKind.TypeParameterList);
+
+        public bool IsSwitchArmSeperator() => Kind == SyntaxKind.CommaToken
+            && HasAncestorAt(0, SyntaxKind.SwitchExpression);
+
+        public bool IsTupleElementSeperator() => Kind == SyntaxKind.CommaToken
+            && HasAncestorAt(0, SyntaxKind.TupleType);
+
+        public bool IsTypeParameterConstraintClauseSeperator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.TypeParameterConstraintClause)
+                && Text == ":";
+        }
+
+        public bool IsVariableDeclaratorSeparator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.VariableDeclaration)
+                && Text == ",";
+        }
+
+        public bool IsStatementTerminator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && Text == ";";
+            //&&
+            //    (
+            //        HasAncestorAt(0, SyntaxKind.ExpressionStatement) ||
+            //        HasAncestorAt(0, SyntaxKind.LocalDeclarationStatement) ||
+            //        HasAncestorAt(0, SyntaxKind.ReturnStatement) ||
+            //        HasAncestorAt(0, SyntaxKind.FieldDeclaration)
+            //    );
+        }
+
+        public bool IsSwitchCaseLabelTerminator() => Kind == SyntaxKind.ColonToken
+            && HasAncestorAt(0, SyntaxKind.CaseSwitchLabel);
+
+        public bool IsLabelTerminator()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "punctuation"
+                && HasAncestorAt(0, SyntaxKind.NameColon)
+                && Text == ":";
+        }
+        #endregion
+
+        #region Type Checks
+        public bool IsGenericTypeArgument()
+        {
+            return HasAncestorAt(1, SyntaxKind.TypeArgumentList) ||
+                HasAncestorAt(2, SyntaxKind.TypeArgumentList);
+        }
+
+        public bool IsGenericType() => HasAncestorAt(0, SyntaxKind.GenericName);
+
+        public bool IsGenericTypeParameter() => RoslynClassification is not null
+            && RoslynClassification == "type parameter name";
+
+        public bool IsNullableType() => HasAncestorAt(1, SyntaxKind.NullableType);
+
+        public bool IsNullableConstraintType() => IsTypeConstraint() && NextToken?.Text == "?";
+
+        public bool IsPredefinedType() => SyntaxFacts.IsPredefinedType(Kind);
+        #endregion
 
         /// <summary>Gets the token's leading trivia.</summary>
         /// <param name="roslynToken">The SyntaxToken generated by the Roslyn code analysis library.</param>

@@ -157,6 +157,40 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
         private static string? GetText() =>
             DateTime.Now.Second % 2 == 0 ? "hello world" : null;
+
+        public static (T Value, int Length) Describe<T>(T value)
+            where T : notnull
+        {
+            Dictionary<string, int> lookup;
+
+            return (value, value.ToString()!.Length);
+        }
+
+        static string Classify(object value) =>
+            value switch
+            {
+                int or long or short => "Integer number",
+                float or double or decimal => "Floating-point number",
+                string or char => "Text",
+                null => "Null",
+                _ => "Other"
+            };
+    }
+
+    public class Cache<TKey, TValue>
+    {
+        private readonly Dictionary<TKey, TValue> _items = new();
+
+        public TValue GetOrAdd(TKey key, Func<TKey, TValue> factory)
+        {
+            if (!_items.TryGetValue(key, out var value))
+            {
+                value = factory(key);
+                _items[key] = value;
+            }
+
+            return value;
+        }
     }
 
     public class NodeFinder

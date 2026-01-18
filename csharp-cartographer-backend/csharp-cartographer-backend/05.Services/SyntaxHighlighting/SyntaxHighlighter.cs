@@ -11,9 +11,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             foreach (var token in navTokens)
             {
                 if (token.Map is null)
-                {
                     continue;
-                }
 
                 if (token.Map.PrimaryKind == TokenPrimaryKind.Delimiter)
                 {

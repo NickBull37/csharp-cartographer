@@ -34,6 +34,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         #region Primary Kind
         private static TokenPrimaryKind GetPrimaryKind(NavToken token)
         {
+            // Special cases - update manually
+            if (token.Text == "?" && token.RoslynClassification == "operator")
+            {
+                return TokenPrimaryKind.Punctuation;
+            }
+
             switch (token.RoslynClassification)
             {
                 case "keyword":
@@ -183,52 +189,53 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!GlobalConstants.Punctuators.Contains(token.Text))
                 return SemanticRole.None;
 
-            // --- Seperators ---
+            // --- Separators ---
             if (token.IsArgumentSeperator())
-                return SemanticRole.ArgumentSeperator;
-
-            if (token.IsTypeArgumentSeperator())
-                return SemanticRole.TypeArgumentSeperator;
+                return SemanticRole.ArgumentSeparation;
 
             if (token.IsBaseTypeSeperator())
-                return SemanticRole.BaseTypeSeperation;
-
-            //if (token.IsCaseLabelSeperator())
-            //    return SemanticRole.CaseLabelSeperator;
+                return SemanticRole.BaseTypeSeparation;
 
             if (token.IsEnumMemberSeparator())
-                return SemanticRole.EnumMemberSeparator;
+                return SemanticRole.EnumMemberSeparation;
 
-            //if (token.IsGenericTypeSeperator())
-            //    return SemanticRole.GenericTypeSeperator;
+            if (token.IsTypeArgumentSeperator())
+                return SemanticRole.TypeArgumentSeparation;
+
+            if (token.IsTypeParameterSeparator())
+                return SemanticRole.TypeParameterSeparation;
 
             if (token.IsParameterSeparator())
-                return SemanticRole.ParameterSeparator;
+                return SemanticRole.ParameterSeparation;
 
-            //if (token.IsPatternSeparator())
-            //    return SemanticRole.PatternSeparator;
+            if (token.IsSwitchArmSeperator())
+                return SemanticRole.SwitchArmSeparation;
 
-            if (token.IsSwitchClauseSeperator())
-                return SemanticRole.SwitchClauseSeperator;
-
-            //if (token.IsTupleElementSeperator())
-            //    return SemanticRole.TupleElementSeperator;
+            if (token.IsTupleElementSeperator())
+                return SemanticRole.TupleElementSeparation;
 
             if (token.IsTypeParameterConstraintClauseSeperator())
-                return SemanticRole.TypeParameterConstraintClauseSeperator;
+                return SemanticRole.TypeParameterConstraintClauseSeparation;
 
             if (token.IsVariableDeclaratorSeparator())
-                return SemanticRole.VariableDeclaratorSeparator;
-
-            //if (token.IsVariableSeperator())
-            //    return SemanticRole.VariableSeperator;
+                return SemanticRole.VariableDeclaratorSeparation;
 
             // --- Terminators ---
             if (token.IsStatementTerminator())
                 return SemanticRole.StatementTermination;
 
+            if (token.IsSwitchCaseLabelTerminator())
+                return SemanticRole.CaseLabelTermination;
+
             if (token.IsLabelTerminator())
                 return SemanticRole.ParameterLabelTermination;
+
+            // --- Misc ---
+            if (token.IsNullConditionalGuard())
+                return SemanticRole.NullConditionalGuard;
+
+            if (token.IsNullableTypeMarker() || token.IsNullableConstraintTypeMarker())
+                return SemanticRole.NullableTypeMarker;
 
             return SemanticRole.None;
         }
@@ -259,12 +266,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.LogicalOperator;
 
             // Member access
-            if (token.IsMemberAccessOperator())
+            if (token.IsMemberAccessOperator() || token.IsConditionalMemberAccessOperator())
                 return SemanticRole.MemberAccessOperator;
-
-            // Member access - conditional
-            if (token.IsConditionalMemberAccessOperator())
-                return SemanticRole.ConditionalMemberAccess;
 
             // Range
             if (token.IsRangeOperator())
@@ -273,10 +276,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Namespace alias
             if (token.IsNamespaceAliasQualifier())
                 return SemanticRole.NamespaceAliasQualifier;
-
-            // Null-conditional guard
-            if (token.IsNullConditionalGuard())
-                return SemanticRole.NullConditionalGuard;
 
             return SemanticRole.None;
         }
@@ -692,6 +691,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsGenericType())
                 modifiers.Add(SemanticModifiers.Generic);
+
+            // Operator modifiers
+            if (token.IsConditionalMemberAccessOperator())
+                modifiers.Add(SemanticModifiers.Conditional);
 
             return modifiers;
         }
