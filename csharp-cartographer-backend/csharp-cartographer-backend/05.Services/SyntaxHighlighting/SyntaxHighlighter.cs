@@ -181,12 +181,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         }
 
         private static string GetDefaultKeywordColor(NavToken token) =>
-            token.Charts[1].Label == "DefaultSwitchLabel"
-                ? "color-purple"
-                : "color-blue";
+            token.Map?.SemanticRole == SemanticRole.LiteralValue
+                ? "color-blue"
+                : "color-purple";
 
         private static string GetInKeywordColor(NavToken token) =>
-            token.ParentNodeKind == "ForEachStatement"
+            token.Map?.SemanticRole == SemanticRole.LoopStatement
                 ? "color-purple"
                 : "color-blue";
 

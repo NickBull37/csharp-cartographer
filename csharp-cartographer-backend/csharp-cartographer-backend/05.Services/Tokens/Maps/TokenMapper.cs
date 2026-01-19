@@ -270,6 +270,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!token.IsKeyword())
                 return SemanticRole.None;
 
+            // Handle keywords that can fall into multiple semantic roles first
+            if (GlobalConstants.SpecialCaseKeywords.Contains(token.Text))
+                return GetSpecialCaseKeywordRole(token);
+
             // --- Access modifiers ---
             if (GlobalConstants.AccessModifiers.Contains(token.Text))
                 return SemanticRole.AccessModifier;
@@ -384,6 +388,51 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.GenericTypeArgument;
 
             return SemanticRole.None;
+        }
+
+        private static SemanticRole GetSpecialCaseKeywordRole(NavToken token)
+        {
+            string? parent = token.ParentNodeKind;
+
+            return token.Text switch
+            {
+                // switch case label, pattern case label
+                "case" => parent switch
+                {
+                    "CaseSwitchLabel" => SemanticRole.ControlFlow,
+                    "CasePatternSwitchLabel" => SemanticRole.PatternMatching,
+                    _ => SemanticRole.None
+                },
+                // switch label, default literal
+                "default" => parent switch
+                {
+                    "DefaultLiteralExpression" => SemanticRole.LiteralValue,
+                    "DefaultSwitchLabel" => SemanticRole.ControlFlow,
+                    _ => SemanticRole.None
+                },
+                // foreach loops, query expressions, param modifiers
+                "in" => parent switch
+                {
+                    "ForEachStatement" => SemanticRole.LoopStatement,
+                    "Parameter" => SemanticRole.ParameterModifier,
+                    _ when !string.IsNullOrEmpty(parent) && parent.Contains("Clause") => SemanticRole.QueryExpression,
+                    _ => SemanticRole.None
+                },
+                // object creation, member hiding
+                "new" => parent is "ObjectCreationExpression"
+                            or "ImplicitArrayCreationExpression"
+                            or "AnonymousObjectCreationExpression"
+                            ? SemanticRole.ObjectConstruction
+                            : SemanticRole.InheritanceModifier,
+                // query expressions, generic constraints
+                "where" => parent switch
+                {
+                    "WhereClause" => SemanticRole.QueryExpression,
+                    "TypeParameterConstraintClause" => SemanticRole.ConstraintType,
+                    _ => SemanticRole.None
+                },
+                _ => SemanticRole.None
+            };
         }
 
         private static SemanticRole GetSemanticRoleForIdentifiers(NavToken token)

@@ -2,6 +2,9 @@
 {
     public class GlobalConstants
     {
+        /// **************************************************
+        /// |                   PUNCTUATORS                  |
+        /// **************************************************
         public static readonly List<string> Punctuators =
         [
             ".",
@@ -12,6 +15,9 @@
             "_",
         ];
 
+        /// **************************************************
+        /// |                   DELIMITERS                   |
+        /// **************************************************
         public static readonly List<string> Delimiters =
         [
             "(",
@@ -24,6 +30,9 @@
             ">"
         ];
 
+        /// **************************************************
+        /// |                   OPERATORS                    |
+        /// **************************************************
         public static readonly List<string> Operators =
         [
             // arithmetic - unary
@@ -292,19 +301,22 @@
             "yield"
         ];
 
-        /*
-         *  Keywords that fall into multiple buckets
-         *  
-         *  new         (object creation and member hiding)
-         *  where       (LINQ query and generic constraints)
-         *  default     (switch label and default literal)
-         *  case        (switch section and pattern case)
-         *  in          (foreach loops and query expressions)
-         * 
-         */
+        /// **************************************************
+        /// |         KEYWORDS: Special Case Keywords        |
+        /// **************************************************
+        public static readonly List<string> SpecialCaseKeywords =
+        [
+            // Keywords that fall into multiple buckets
+
+            "case",         // switch section / pattern case
+            "default",      // switch label / default literal
+            "in",           // foreach loops / query expressions / param modifiers
+            "new",          // object creation / member hiding
+            "where",        // query expressions / generic constraints
+        ];
 
         /// **************************************************
-        /// |            KEYWORDS: Accessors           |
+        /// |               KEYWORDS: Accessors              |
         /// **************************************************
         public static readonly List<string> AccessorKeywords =
         [
@@ -315,7 +327,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Access Modifiers           |
+        /// |           KEYWORDS: Access Modifiers           |
         /// **************************************************
         public static readonly List<string> AccessModifiers =
         [
@@ -326,7 +338,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Concurrency           |
+        /// |              KEYWORDS: Concurrency             |
         /// **************************************************
         public static readonly List<string> ConcurrencyKeywords =
         [
@@ -336,7 +348,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Conditional Branching           |
+        /// |         KEYWORDS: Conditional Branching        |
         /// **************************************************
         public static readonly List<string> ConditionalBranchingKeywords =
         [
@@ -345,7 +357,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Constraints           |
+        /// |              KEYWORDS: Constraints             |
         /// **************************************************
         public static readonly List<string> ConstraintKeywords =
         [
@@ -356,7 +368,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Control Flow           |
+        /// |             KEYWORDS: Control Flow             |
         /// **************************************************
         public static readonly List<string> ControlFlowKeywords =
         [
@@ -366,7 +378,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Events           |
+        /// |                KEYWORDS: Events                |
         /// **************************************************
         public static readonly List<string> EventKeywords =
         [
@@ -376,7 +388,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Exception Handling           |
+        /// |          KEYWORDS: Exception Handling          |
         /// **************************************************
         public static readonly List<string> ExceptionHandlingKeywords =
         [
@@ -387,7 +399,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Inheritance Modifiers           |
+        /// |         KEYWORDS: Inheritance Modifiers        |
         /// **************************************************
         public static readonly List<string> InheritanceModifiers =
         [
@@ -399,7 +411,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Iterators           |
+        /// |               KEYWORDS: Iterators              |
         /// **************************************************
         public static readonly List<string> IteratorKeywords =
         [
@@ -418,17 +430,18 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Literals           |
+        /// |               KEYWORDS: Literals               |
         /// **************************************************
         public static readonly List<string> LiteralKeywords =
         [
             "true",
             "false",
             "null",
+            "default",
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Loop           |
+        /// |           KEYWORDS: Loop Statements            |
         /// **************************************************
         public static readonly List<string> LoopStatementKeywords =
         [
@@ -439,7 +452,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Member Modifiers           |
+        /// |           KEYWORDS: Member Modifiers           |
         /// **************************************************
         public static readonly List<string> MemberModifiers =
         [
@@ -452,7 +465,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Source Scope           |
+        /// |             KEYWORDS: Source Scope             |
         /// **************************************************
         public static readonly List<string> SourceScopeKeywords =
         [
@@ -464,7 +477,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Object Construction           |
+        /// |         KEYWORDS: Object Construction          |
         /// **************************************************
         public static readonly List<string> ObjectConstructionKeywords =
         [
@@ -474,7 +487,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Parameter Modifiers           |
+        /// |          KEYWORDS: Parameter Modifiers         |
         /// **************************************************
         public static readonly List<string> ParameterModifiers =
         [
@@ -485,7 +498,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Pattern Matching           |
+        /// |           KEYWORDS: Pattern Matching           |
         /// **************************************************
         public static readonly List<string> PatternMatchingKeywords =
         [
@@ -498,7 +511,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Pre-defined Types           |
+        /// |           KEYWORDS: Pre-defined Types          |
         /// **************************************************
         public static readonly List<string> PredefinedTypes =
         [
@@ -522,7 +535,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Query Expression           |
+        /// |           KEYWORDS: Query Expression           |
         /// **************************************************
         public static readonly List<string> QueryExpressionKeywords =
         [
@@ -542,7 +555,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Safety Context           |
+        /// |            KEYWORDS: Safety Context            |
         /// **************************************************
         public static readonly List<string> SafetyContextKeywords =
         [
@@ -556,7 +569,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Type Declarations           |
+        /// |           KEYWORDS: Type Declarations          |
         /// **************************************************
         public static readonly List<string> TypeDeclarationKeywords =
         [
@@ -570,31 +583,7 @@
         ];
 
         /// **************************************************
-        /// |            KEYWORDS: Type System           |
-        /// **************************************************
-        public static readonly List<string> TypeReferenceKeywords =
-        [
-            "bool",
-            "byte",
-            "char",
-            "decimal",
-            "double",
-            "float",
-            "int",
-            "long",
-            "nint",
-            "nuint",
-            "object",
-            "sbyte",
-            "short",
-            "string",
-            "uint",
-            "ulong",
-            "ushort",
-        ];
-
-        /// **************************************************
-        /// |            KEYWORDS: Type System           |
+        /// |              KEYWORDS: Type System             |
         /// **************************************************
         public static readonly List<string> TypeSystemKeywords =
         [

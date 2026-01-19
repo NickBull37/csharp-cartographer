@@ -155,6 +155,40 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             return result;
         }
 
+        static void ReadIn(in int value)
+        {
+            Console.WriteLine($"In value = {value}");
+            // value = 99; // ❌ compile error: cannot modify in parameter
+
+            var numbers = new[]
+            {
+                new { Id = 1, Value = 10 },
+                new { Id = 2, Value = 20 },
+                new { Id = 3, Value = 10 }
+            };
+
+            var labels = new[]
+            {
+                new { Id = 1, Label = "A" },
+                new { Id = 2, Label = "B" },
+                new { Id = 3, Label = "C" }
+            };
+
+            var query =
+                from n in numbers
+                join l in labels on n.Id equals l.Id
+                let doubled = n.Value * 2
+                where doubled > 15
+                group new { n, l, doubled } by n.Value
+                into g
+                orderby g.Key ascending, g.Count() descending
+                select new
+                {
+                    Key = g.Key,
+                    Count = g.Count()
+                };
+        }
+
         private static string? GetText() =>
             DateTime.Now.Second % 2 == 0 ? "hello world" : null;
 
@@ -268,5 +302,39 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
         private readonly IEnumerable<NavToken?> DemoTokens = [];
 
         private readonly IEnumerable<NavToken?>? FakeTokens = [];
+    }
+
+    public class Test3
+    {
+        public record Person(string Name, int Age);
+
+        public void DoSomething()
+        {
+
+            object input = new Person("Alice", 30);
+
+            switch (input)
+            {
+                // Type pattern + property pattern
+                case Person { Age: >= 18 } adult:
+                    Console.WriteLine($"Adult: {adult.Name}");
+                    break;
+
+                // Type pattern + when guard
+                case Person p when p.Age < 18:
+                    Console.WriteLine($"Minor: {p.Name}");
+                    break;
+
+                // Constant pattern
+                case null:
+                    Console.WriteLine("Input is null");
+                    break;
+
+                // Discard pattern
+                default:
+                    Console.WriteLine("Unknown input");
+                    break;
+            }
+        }
     }
 }
