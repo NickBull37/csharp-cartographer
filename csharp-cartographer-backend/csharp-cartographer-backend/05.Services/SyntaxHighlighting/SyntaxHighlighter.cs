@@ -77,7 +77,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                         break;
                     case SemanticRole.EnumDeclaration:
                     case SemanticRole.EnumReference:
-                    //case SemanticRole.GenericTypeParameter:
                     case SemanticRole.InterfaceDeclaration:
                     case SemanticRole.InterfaceReference:
                     case SemanticRole.NumericLiteral:
@@ -108,9 +107,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case SemanticRole.StringLiteral:
                         token.HighlightColor = "color-orange";
                         break;
-                    //case SemanticRole.ConstructorInvocation:
-                    //    token.HighlightColor = "color-cart-green";
-                    //    break;
                     case SemanticRole.CastType:
                     case SemanticRole.CastTargetType:
                     case SemanticRole.ConstraintType:
@@ -143,7 +139,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     return "color-green";
                 case "enum name":
                 case "interface name":
-                    //case "type parameter name":
                     return "color-light-green";
                 case "struct name":
                 case "record struct name":
@@ -153,11 +148,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        private static string GetColorForExternallyDefinedToken(NavToken token)
-        {
-            throw new NotImplementedException();
-        }
-
         private static void HighlightReservedTextTokens(NavToken token, List<ReservedTextColor> list)
         {
             foreach (var element in list)
@@ -165,6 +155,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 if (token.IsKeyword("default"))
                 {
                     token.HighlightColor = GetDefaultKeywordColor(token);
+                    continue;
+                }
+
+                if (token.IsKeyword("in"))
+                {
+                    token.HighlightColor = GetInKeywordColor(token);
                     continue;
                 }
 
@@ -185,7 +181,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         }
 
         private static string GetDefaultKeywordColor(NavToken token) =>
-            token.Text == "default" && token.Charts[1].Label == "DefaultSwitchLabel"
+            token.Charts[1].Label == "DefaultSwitchLabel"
+                ? "color-purple"
+                : "color-blue";
+
+        private static string GetInKeywordColor(NavToken token) =>
+            token.ParentNodeKind == "ForEachStatement"
                 ? "color-purple"
                 : "color-blue";
 

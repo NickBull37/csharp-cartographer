@@ -292,8 +292,217 @@
             "yield"
         ];
 
+        /*
+         *  Keywords that fall into multiple buckets
+         *  
+         *  new         (object creation and member hiding)
+         *  where       (LINQ query and generic constraints)
+         *  default     (switch label and default literal)
+         *  case        (switch section and pattern case)
+         *  in          (foreach loops and query expressions)
+         * 
+         */
+
+        /// **************************************************
+        /// |            KEYWORDS: Accessors           |
+        /// **************************************************
+        public static readonly List<string> AccessorKeywords =
+        [
+            "get",
+            "set",
+            "init",
+            "value",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Access Modifiers           |
+        /// **************************************************
+        public static readonly List<string> AccessModifiers =
+        [
+            "public",
+            "private",
+            "protected",
+            "internal",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Concurrency           |
+        /// **************************************************
+        public static readonly List<string> ConcurrencyKeywords =
+        [
+            "async",
+            "await",
+            "lock",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Conditional Branching           |
+        /// **************************************************
+        public static readonly List<string> ConditionalBranchingKeywords =
+        [
+            "if",
+            "else",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Constraints           |
+        /// **************************************************
+        public static readonly List<string> ConstraintKeywords =
+        [
+            "managed",
+            "notnull",
+            "unmanaged",
+            "where",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Control Flow           |
+        /// **************************************************
+        public static readonly List<string> ControlFlowKeywords =
+        [
+            "switch",
+            "case",
+            "default",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Events           |
+        /// **************************************************
+        public static readonly List<string> EventKeywords =
+        [
+            "event",
+            "add",
+            "remove",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Exception Handling           |
+        /// **************************************************
+        public static readonly List<string> ExceptionHandlingKeywords =
+        [
+            "try",
+            "catch",
+            "finally",
+            "throw",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Inheritance Modifiers           |
+        /// **************************************************
+        public static readonly List<string> InheritanceModifiers =
+        [
+            "abstract",
+            "new", // for member hiding
+            "override",
+            "sealed",
+            "virtual",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Iterators           |
+        /// **************************************************
+        public static readonly List<string> IteratorKeywords =
+        [
+            "yield",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Jump Statements           |
+        /// **************************************************
+        public static readonly List<string> JumpStatementKeywords =
+        [
+            "break",
+            "continue",
+            "goto",
+            "return",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Literals           |
+        /// **************************************************
+        public static readonly List<string> LiteralKeywords =
+        [
+            "true",
+            "false",
+            "null",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Loop           |
+        /// **************************************************
+        public static readonly List<string> LoopStatementKeywords =
+        [
+            "do",
+            "for",
+            "foreach",
+            "while",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Member Modifiers           |
+        /// **************************************************
+        public static readonly List<string> MemberModifiers =
+        [
+            "const",
+            "partial",
+            "readonly",
+            "required",
+            "static",
+            "volatile",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Source Scope           |
+        /// **************************************************
+        public static readonly List<string> SourceScopeKeywords =
+        [
+            "alias",
+            "file",
+            "global",
+            "namespace",
+            "using",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Object Construction           |
+        /// **************************************************
+        public static readonly List<string> ObjectConstructionKeywords =
+        [
+            "base",
+            "new",
+            "this",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Parameter Modifiers           |
+        /// **************************************************
+        public static readonly List<string> ParameterModifiers =
+        [
+            "in",
+            "out",
+            "params",
+            "ref",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Pattern Matching           |
+        /// **************************************************
+        public static readonly List<string> PatternMatchingKeywords =
+        [
+            "and",
+            "as",
+            "is",
+            "not",
+            "or",
+            "when",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Pre-defined Types           |
+        /// **************************************************
         public static readonly List<string> PredefinedTypes =
         [
+            "bool",
             "byte",
             "sbyte",
             "short",
@@ -306,78 +515,92 @@
             "float",
             "double",
             "decimal",
-            "bool",
             "string",
             "object",
+            "nint",
+            "nuint",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Query Expression           |
+        /// **************************************************
+        public static readonly List<string> QueryExpressionKeywords =
+        [
+            "ascending",
+            "by",
+            "descending",
+            "equals",
+            "from",
+            "group",
+            "into",
+            "join",
+            "let",
+            "on",
+            "orderby",
+            "select",
+            "where",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Safety Context           |
+        /// **************************************************
+        public static readonly List<string> SafetyContextKeywords =
+        [
+            "checked",
+            "fixed",
+            "sizeof",
+            "stackalloc",
+            "typeof",
+            "unchecked",
+            "unsafe",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Type Declarations           |
+        /// **************************************************
+        public static readonly List<string> TypeDeclarationKeywords =
+        [
+            "class",
+            "delegate",
+            "enum",
+            "interface",
+            "operator",
+            "record",
+            "struct",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Type System           |
+        /// **************************************************
+        public static readonly List<string> TypeReferenceKeywords =
+        [
+            "bool",
+            "byte",
+            "char",
+            "decimal",
+            "double",
+            "float",
+            "int",
+            "long",
+            "nint",
+            "nuint",
+            "object",
+            "sbyte",
+            "short",
+            "string",
+            "uint",
+            "ulong",
+            "ushort",
+        ];
+
+        /// **************************************************
+        /// |            KEYWORDS: Type System           |
+        /// **************************************************
+        public static readonly List<string> TypeSystemKeywords =
+        [
             "dynamic",
-        ];
-
-        public static readonly List<string> Accessors =
-        [
-            "get",
-            "set",
-            "init",
-        ];
-
-        public static readonly List<string> AccessModifiers =
-        [
-            "public",
-            "protected",
-            "internal",
-            "private",
-        ];
-
-        public static readonly List<string> Modifiers =
-        [
-            "abstract",
-            "async",
-            "const",
-            "override",
-            "partial",
-            "readonly",
-            "required",
-            "sealed",
-            "static",
-            "virtual",
-            "volatile"
-        ];
-
-        public static readonly List<string> ConditionalKeywords =
-        [
-            "if",
-            "else",
-        ];
-
-        public static readonly List<string> LoopKeywords =
-        [
-            "do",
-            "for",
-            "foreach",
-            "while",
-        ];
-
-        public static readonly List<string> JumpKeywords =
-        [
-            "return",
-            "break",
-            "continue",
-        ];
-
-        public static readonly List<string> PatternMatchingKeywords =
-        [
-            "and",
-            "as",
-            "case",
-            "is",
-            "not",
-            "or",
-            "switch",
-            "when",
-        ];
-
-        public static readonly List<string> _genericCollections =
-        [
-            "List",
+            "nameof",
+            //"var", covered by 
         ];
     }
 }

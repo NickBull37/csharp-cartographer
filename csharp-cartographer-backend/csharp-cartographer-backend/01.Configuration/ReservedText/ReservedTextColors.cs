@@ -265,11 +265,11 @@
                 Text = "implicit",
                 HighlightColor = _blue,
             },
-            new ReservedTextColor
-            {
-                Text = "in",
-                HighlightColor = _purple,
-            },
+            //new ReservedTextColor
+            //{
+            //    Text = "in",
+            //    HighlightColor = _purple/_blue,
+            //},
             new ReservedTextColor
             {
                 Text = "init",

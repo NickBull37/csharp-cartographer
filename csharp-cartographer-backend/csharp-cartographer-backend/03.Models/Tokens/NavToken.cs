@@ -202,6 +202,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return string.Equals(Text, keyword, StringComparison.Ordinal);
         }
 
+        public bool IsAccessStaticMember() => HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
+
         private bool HasAncestorAt(int index, SyntaxKind kind)
         {
             var ancestors = AncestorKinds.Ancestors;
@@ -527,6 +529,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement) ||
             HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
 
+        public bool IsForeachLoopLocalVariableDataType() =>
+            HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement) ||
+            HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
+
         public bool IsTupleElementName() => HasAncestorAt(0, SyntaxKind.TupleElement);
 
         public bool IsTupleElementType() => HasAncestorAt(1, SyntaxKind.TupleElement);
@@ -826,6 +832,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             }
 
             List<string> leadingTriviaStrings = [];
+
+            foreach (SyntaxTrivia trivia in roslynToken.LeadingTrivia)
+            {
+
+            }
+
+            List<int> test = [];
+
+            foreach (int num in test)
+            {
+
+            }
 
             foreach (var trivia in roslynToken.LeadingTrivia)
             {

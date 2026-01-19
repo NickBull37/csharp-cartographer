@@ -270,31 +270,98 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!token.IsKeyword())
                 return SemanticRole.None;
 
-            // --- Accessor keywords ---
-            if (GlobalConstants.Accessors.Contains(token.Text))
-                return SemanticRole.Accessor;
-
-            // --- Access modifier keywords ---
+            // --- Access modifiers ---
             if (GlobalConstants.AccessModifiers.Contains(token.Text))
                 return SemanticRole.AccessModifier;
 
-            // --- Modifier keywords ---
-            if (GlobalConstants.Modifiers.Contains(token.Text))
-                return SemanticRole.Modifier;
+            // --- Accessor keywords ---
+            if (GlobalConstants.AccessorKeywords.Contains(token.Text))
+                return SemanticRole.Accessor;
+
+            // --- Concurrency keywords ---
+            if (GlobalConstants.ConcurrencyKeywords.Contains(token.Text))
+                return SemanticRole.Concurrency;
+
+            // --- Conditional branching keywords ---
+            if (GlobalConstants.ConditionalBranchingKeywords.Contains(token.Text))
+                return SemanticRole.ConditionalBranching;
+
+            // --- Constraint keywords ---
+            if (GlobalConstants.ConstraintKeywords.Contains(token.Text))
+                return SemanticRole.Constraint;
 
             // --- Control flow keywords ---
-            if (GlobalConstants.ConditionalKeywords.Contains(token.Text))
-                return SemanticRole.Conditional;
+            if (GlobalConstants.ControlFlowKeywords.Contains(token.Text))
+                return SemanticRole.ControlFlow;
 
-            if (GlobalConstants.LoopKeywords.Contains(token.Text))
-                return SemanticRole.Loop;
+            // --- Event keywords ---
+            if (GlobalConstants.EventKeywords.Contains(token.Text))
+                return SemanticRole.EventHandling;
 
-            if (GlobalConstants.JumpKeywords.Contains(token.Text))
-                return SemanticRole.Jump;
+            // --- Exception handling ---
+            if (GlobalConstants.ExceptionHandlingKeywords.Contains(token.Text))
+                return SemanticRole.ExceptionHandling;
+
+            // --- Inheritance modifier keywords ---
+            if (GlobalConstants.InheritanceModifiers.Contains(token.Text))
+                return SemanticRole.InheritanceModifier;
+
+            // --- Iterator keywords ---
+            if (GlobalConstants.IteratorKeywords.Contains(token.Text))
+                return SemanticRole.Iterator;
+
+            // --- Jump statement keywords ---
+            if (GlobalConstants.JumpStatementKeywords.Contains(token.Text))
+                return SemanticRole.JumpStatement;
+
+            // --- Literal keywords ---
+            if (GlobalConstants.LiteralKeywords.Contains(token.Text))
+                return SemanticRole.LiteralValue;
+
+            // --- Loop statement keywords ---
+            if (GlobalConstants.LoopStatementKeywords.Contains(token.Text))
+                return SemanticRole.LoopStatement;
+
+            // --- Member modifiers ---
+            if (GlobalConstants.MemberModifiers.Contains(token.Text))
+                return SemanticRole.MemberModifier;
+
+            // --- Source scope keywords ---
+            if (GlobalConstants.SourceScopeKeywords.Contains(token.Text))
+                return SemanticRole.SourceScope;
+
+            // --- Object construction keywords ---
+            if (GlobalConstants.ObjectConstructionKeywords.Contains(token.Text))
+                return SemanticRole.ObjectConstruction;
+
+            // --- Parameter modifiers ---
+            if (GlobalConstants.ParameterModifiers.Contains(token.Text))
+                return SemanticRole.ParameterModifier;
 
             // --- Pattern matching keywords ---
             if (GlobalConstants.PatternMatchingKeywords.Contains(token.Text))
                 return SemanticRole.PatternMatching;
+
+            // --- Query expressions ---
+            if (GlobalConstants.QueryExpressionKeywords.Contains(token.Text))
+                return SemanticRole.QueryExpression;
+
+            // --- Safety context keywords ---
+            if (GlobalConstants.SafetyContextKeywords.Contains(token.Text))
+                return SemanticRole.SafetyContext;
+
+            // --- Type declaration keywords ---
+            if (GlobalConstants.TypeDeclarationKeywords.Contains(token.Text))
+                return SemanticRole.TypeDeclaration;
+
+            // --- Type reference keywords ---
+            if (GlobalConstants.PredefinedTypes.Contains(token.Text) && token.IsAccessStaticMember())
+                return SemanticRole.TypeReference;
+
+            // --- Type system keywords ---
+            if (GlobalConstants.TypeSystemKeywords.Contains(token.Text))
+                return SemanticRole.TypeSystem;
+
 
             // --- Keyword: data types ---
             if (token.IsFieldDataType())

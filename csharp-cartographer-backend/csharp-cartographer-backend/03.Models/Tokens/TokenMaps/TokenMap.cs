@@ -37,11 +37,74 @@
         TypeParameterListBoundary,
 
 
+        // ------------ OPERATORS ------------ //
+        ArithmeticOperator,
+        AssignmentOperator,
+        ComparisonOperator,
+        ConditionalMemberAccessOperator,
+        ConditionalOperator,
+        LogicalOperator,
+        MemberAccessOperator,
+        RangeOperator,
+
+
+        // ------------ PUNCTUATION ------------ //
+
+        // Separation
+        ArgumentSeparation,
+        BaseTypeSeparation,
+        EnumMemberSeparation,
+        ParameterSeparation,
+        SwitchArmSeparation,
+        TupleElementSeparation,
+        TypeArgumentSeparation,
+        TypeParameterConstraintClauseSeparation,
+        TypeParameterSeparation,
+        VariableDeclaratorSeparation,
+
+        // Termination
+        CaseLabelTermination,
+        ParameterLabelTermination,
+        StatementTermination,
+
+        // Misc
+        NamespaceAliasQualifier,
+        NullableTypeMarker,
+        NullConditionalGuard,
+
+
+        // ------------ KEYWORDS ------------ //
+
+        AccessModifier,
+        Accessor,
+        Concurrency,
+        ConditionalBranching,
+        Constraint,
+        ControlFlow,
+        EventHandling,
+        ExceptionHandling,
+        InheritanceModifier,
+        Iterator,
+        JumpStatement,
+        LiteralValue,
+        LoopStatement,
+        MemberModifier,
+        NamespaceImport,
+        ObjectConstruction,
+        ParameterModifier,
+        PatternMatching,
+        QueryExpression,
+        SafetyContext,
+        SourceScope,
+        TypeDeclaration,
+        TypeReference,
+        TypeSystem,
+
+
         // ------------ IDENTIFIERS ------------ //
 
         ObjectPropertyAssignment,
         ParameterLabel,
-        TypeDeclaration,
         UsingDirective,
 
         // Declarations
@@ -91,26 +154,13 @@
         RecordReference,
         RecordStructReference,
         StructReference,
-        TypeReference,
 
         // Invocations & access
         MethodInvocation,
-        PropertyAccess,
         FieldAccess,
         EventSubscription,
         EventUnsubscription,
         IndexerAccess,
-
-
-        // ------------ KEYWORDS ------------ //
-
-        // Control flow
-        ControlFlow,
-        Conditional,
-        Loop,
-        Jump,
-        ExceptionHandling,
-        PatternMatching,
 
 
         // ------------ LITERALS ------------ //
@@ -122,52 +172,6 @@
         NullValue,
         NumericLiteral,
         StringLiteral,
-
-
-        // ------------ MODIFIERS ------------ //
-        Accessor,
-        AccessModifier,
-        Modifier,
-
-
-        // Expressions & operations
-        //BinaryOperation,
-        //Logical,
-        //UnaryOperation,
-        // ------------ OPERATORS ------------ //
-        ArithmeticOperator,
-        AssignmentOperator,
-        ComparisonOperator,
-        ConditionalMemberAccessOperator,
-        ConditionalOperator,
-        LogicalOperator,
-        MemberAccessOperator,
-        RangeOperator,
-
-
-        // ------------ PUNCTUATION ------------ //
-
-        // Separation
-        ArgumentSeparation,
-        BaseTypeSeparation,
-        EnumMemberSeparation,
-        ParameterSeparation,
-        SwitchArmSeparation,
-        TupleElementSeparation,
-        TypeArgumentSeparation,
-        TypeParameterConstraintClauseSeparation,
-        TypeParameterSeparation,
-        VariableDeclaratorSeparation,
-
-        // Termination
-        CaseLabelTermination,
-        ParameterLabelTermination,
-        StatementTermination,
-
-        // Misc
-        NamespaceAliasQualifier,
-        NullableTypeMarker,
-        NullConditionalGuard,
 
 
         // ------------ TYPES ------------ //

@@ -20,7 +20,7 @@ namespace csharp_cartographer_backend._05.Services.Tags
             TryAddIdentifierTag(token);
             TryAddKeywordTag(token);
             TryAddAccessModifierTag(token);
-            TryAddModifierTag(token);
+            //TryAddModifierTag(token);
             TryAddPredefinedTypeTag(token);
             TryAddParameterTag(token);
             TryAddStringLiteralTag(token);
@@ -72,13 +72,13 @@ namespace csharp_cartographer_backend._05.Services.Tags
             }
         }
 
-        private static void TryAddModifierTag(NavToken token)
-        {
-            if (GlobalConstants.Modifiers.Contains(token.Text))
-            {
-                token.Tags.Add(new ModifierTag(token.Text));
-            }
-        }
+        //private static void TryAddModifierTag(NavToken token)
+        //{
+        //    if (GlobalConstants.Modifiers.Contains(token.Text))
+        //    {
+        //        token.Tags.Add(new ModifierTag(token.Text));
+        //    }
+        //}
 
         private static void TryAddIdentifierTag(NavToken token)
         {
