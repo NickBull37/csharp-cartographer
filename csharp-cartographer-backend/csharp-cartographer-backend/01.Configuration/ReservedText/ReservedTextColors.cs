@@ -42,7 +42,27 @@
             },
             new ReservedTextColor
             {
+                Text = "add",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "alias",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "and",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "as",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "ascending",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -63,6 +83,16 @@
             new ReservedTextColor
             {
                 Text = "bool",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "by",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "byte",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -110,9 +140,19 @@
                 Text = "decimal",
                 HighlightColor = _blue,
             },
+            //new ReservedTextColor
+            //{
+            //    Text = "default",
+            //    HighlightColor = _blue/_purple,
+            //},
             new ReservedTextColor
             {
                 Text = "delegate",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "descending",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -127,12 +167,22 @@
             },
             new ReservedTextColor
             {
+                Text = "dynamic",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "else",
                 HighlightColor = _purple,
             },
             new ReservedTextColor
             {
                 Text = "enum",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "equals",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -148,6 +198,11 @@
             new ReservedTextColor
             {
                 Text = "false",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "file",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -177,12 +232,22 @@
             },
             new ReservedTextColor
             {
+                Text = "from",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "get",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
             {
                 Text = "global",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "group",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -227,7 +292,22 @@
             },
             new ReservedTextColor
             {
+                Text = "into",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "is",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "join",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "let",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -238,6 +318,11 @@
             new ReservedTextColor
             {
                 Text = "long",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "managed",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -257,12 +342,22 @@
             },
             new ReservedTextColor
             {
+                Text = "nint",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "not",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
             {
                 Text = "notnull",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "nuint",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -277,6 +372,11 @@
             },
             new ReservedTextColor
             {
+                Text = "on",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "operator",
                 HighlightColor = _blue,
             },
@@ -287,12 +387,27 @@
             },
             new ReservedTextColor
             {
+                Text = "orderby",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "out",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
             {
                 Text = "override",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "params",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "partial",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -327,12 +442,32 @@
             },
             new ReservedTextColor
             {
+                Text = "remove",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "required",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "return",
                 HighlightColor = _purple,
             },
             new ReservedTextColor
             {
+                Text = "sbyte",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "sealed",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "select",
                 HighlightColor = _blue,
             },
             new ReservedTextColor
@@ -402,6 +537,26 @@
             },
             new ReservedTextColor
             {
+                Text = "uint",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "ulong",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "unmanaged",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "ushort",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "unchecked",
                 HighlightColor = _blue,
             },
@@ -453,6 +608,16 @@
             new ReservedTextColor
             {
                 Text = "while",
+                HighlightColor = _purple,
+            },
+            new ReservedTextColor
+            {
+                Text = "with",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
+                Text = "yield",
                 HighlightColor = _purple,
             },
         };
@@ -1183,6 +1348,11 @@
             {
                 Text = "?",
                 HighlightColor = _gray,
+            },
+            new ReservedTextColor
+            {
+                Text = "_",
+                HighlightColor = _blue,
             },
         };
 
