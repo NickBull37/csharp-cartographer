@@ -27,6 +27,7 @@
         CastTypeBoundary,
         CollectionExpressionBoundary,
         ForEachBlockBoundary,
+        ForBlockBoundary,
         IfBlockBoundary,
         IfConditionBoundary,
         InterpolatedValueBoundary,
@@ -38,14 +39,16 @@
 
 
         // ------------ OPERATORS ------------ //
-        ArithmeticOperator,
-        AssignmentOperator,
-        ComparisonOperator,
-        ConditionalMemberAccessOperator,
-        ConditionalOperator,
-        LogicalOperator,
-        MemberAccessOperator,
-        RangeOperator,
+        Arithmetic,
+        Assignment,
+        BitwiseShift,
+        BooleanLogical,
+        Comparison,
+        IndexRange,
+        Lambda,
+        MemberAccess,
+        Null,
+        Pointer,
 
 
         // ------------ PUNCTUATION ------------ //
@@ -68,7 +71,6 @@
         StatementTermination,
 
         // Misc
-        NamespaceAliasQualifier,
         NullableTypeMarker,
         NullConditionalGuard,
 

@@ -337,4 +337,77 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             }
         }
     }
+
+    public unsafe class SpecialCaseOperatorDemo
+    {
+        public static void Test()
+        {
+            // ------------------------------
+            // !
+            // ------------------------------
+
+            // BooleanLogical: logical NOT
+            bool flag = false;
+            Console.WriteLine(!flag);
+
+            // Null: null-forgiving operator
+            string? maybeNull = "hello";
+            Console.WriteLine(maybeNull!.Length);
+
+            // ------------------------------
+            // &
+            // ------------------------------
+
+            // BitwiseShift: bitwise AND
+            int x = 6;   // 110
+            int y = 3;   // 011
+            Console.WriteLine(x & y); // 010
+
+            // BooleanLogical: non-short-circuit AND
+            bool a = true;
+            bool b = false;
+            Console.WriteLine(a & b);
+
+            // Pointer: address-of
+            int value = 10;
+            int* pValue = &value;
+            Console.WriteLine(*pValue);
+
+            // ------------------------------
+            // |
+            // ------------------------------
+
+            // BitwiseShift: bitwise OR
+            Console.WriteLine(x | y); // 111
+
+            // BooleanLogical: non-short-circuit OR
+            Console.WriteLine(a | b);
+
+            // ------------------------------
+            // ^
+            // ------------------------------
+
+            // BitwiseShift: bitwise XOR
+            Console.WriteLine(x ^ y); // 101
+
+            // BooleanLogical: boolean XOR
+            Console.WriteLine(a ^ b);
+
+            // IndexRange: index-from-end
+            int[] numbers = { 10, 20, 30, 40 };
+            Console.WriteLine(numbers[^1]); // 40
+
+            // ------------------------------
+            // *
+            // ------------------------------
+
+            // Arithmetic: multiplication
+            int product = x * y;
+            Console.WriteLine(product);
+
+            // Pointer: pointer type and dereference
+            int* p2 = &value;
+            Console.WriteLine(*p2);
+        }
+    }
 }

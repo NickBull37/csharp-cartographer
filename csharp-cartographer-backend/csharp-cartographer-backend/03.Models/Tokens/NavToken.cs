@@ -273,6 +273,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
+        public bool IsForBlockDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.ForStatement)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsIfBlockDelimiter()
         {
             return IsDelimiter()
@@ -637,72 +645,50 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Operator Checks
-        public bool IsArithmeticOperator()
+        public bool IsArithmeticOperator() =>
+            Text is "+" or "-" or "*" or "/" or "%" or "++" or "--";
+
+        public bool IsAssignmentOperator() =>
+            Text is "=" or "+=" or "-=" or "*=" or "/=" or "%=" or "&=" or "|=" or "^=" or "<<=" or ">>=" or ">>>=";
+
+        public bool IsBitwiseShiftOperator() =>
+            Text is "&" or "|" or "^" or "~" or "<<" or ">>" or ">>>";
+
+        public bool IsBooleanLogicalOperator() =>
+            Text is "!" or "&" or "|" or "^" or "&&" or "||";
+
+        public bool IsComparisonOperator() =>
+            Text is "<" or ">" or "<=" or ">=" or "==" or "!=";
+
+        public bool IsIndexOrRangeOperator()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && (Text is "+" or "-" or "++" or "--" or "*" or "/" or "%");
+            // index
+            if (Kind == SyntaxKind.CaretToken && HasAncestorAt(0, SyntaxKind.IndexExpression))
+                return true;
+
+            // range
+            if (Kind == SyntaxKind.DotDotToken && HasAncestorAt(0, SyntaxKind.RangeExpression))
+                return true;
+
+            return false;
         }
 
-        public bool IsAssignmentOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && (Text is "=" or "+=" or "-=" or "*=" or "/=" or "%=" or "&=" or "|=" or "^=" or "<<=" or ">>=" or ">>>=");
-        }
+        public bool IsLambdaOperator() => Text is "=>";
 
-        public bool IsComparisonOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && (Text is "<" or ">" or "<=" or ">=" or "==" or "!=");
-        }
+        public bool IsMemberAccessOperator() => Kind == SyntaxKind.DotToken
+            && HasAncestorAt(0, SyntaxKind.SimpleMemberAccessExpression);
 
-        public bool IsConditionalOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && (Text is "&&" or "||");
-        }
+        public bool IsConditionalMemberAccessOperator() => Kind == SyntaxKind.DotToken
+            && HasAncestorAt(0, SyntaxKind.MemberBindingExpression);
 
-        public bool IsLogicalOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && (Text is "!" or "&" or "|" or "^");
-        }
+        public bool IsNamespaceAliasQualifier() => Kind == SyntaxKind.ColonColonToken
+            && HasAncestorAt(0, SyntaxKind.AliasQualifiedName);
 
-        public bool IsMemberAccessOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && HasAncestorAt(0, SyntaxKind.SimpleMemberAccessExpression)
-                && Text == ".";
-        }
+        public bool IsNullOperator() =>
+            Text is "!" or "??" or "??=" or "?[";
 
-        public bool IsConditionalMemberAccessOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && HasAncestorAt(0, SyntaxKind.MemberBindingExpression)
-                && Text == ".";
-        }
-
-        public bool IsNamespaceAliasQualifier()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "operator"
-                && HasAncestorAt(0, SyntaxKind.AliasQualifiedName)
-                && Text == "::";
-        }
-
-        public bool IsRangeOperator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.RangeExpression)
-                && Text == "..";
-        }
+        public bool IsPointerOperator() =>
+            Text is "&" or "*" or "->";
         #endregion
 
         #region Punctuation Checks
@@ -799,13 +785,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsSwitchCaseLabelTerminator() => Kind == SyntaxKind.ColonToken
             && HasAncestorAt(0, SyntaxKind.CaseSwitchLabel);
 
-        public bool IsLabelTerminator()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.NameColon)
-                && Text == ":";
-        }
+        public bool IsParameterLabelTerminator() => Kind == SyntaxKind.ColonToken
+            && HasAncestorAt(0, SyntaxKind.NameColon);
         #endregion
 
         #region Type Checks

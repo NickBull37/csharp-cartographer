@@ -1,6 +1,8 @@
 ﻿using csharp_cartographer_backend._01.Configuration;
 using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 {
@@ -33,10 +35,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static TokenPrimaryKind GetPrimaryKind(NavToken token)
         {
+            /*
+             *   Roslyn does a lot of the heavy lifting with their classification. But their
+             *   classification value may only be used for VS syntax highlighting and isn't
+             *   100% reliable for PrimaryKind mapping.
+             */
+
             // Special cases - update manually
             if (token.Text == "?" && token.RoslynClassification == "operator")
             {
                 return TokenPrimaryKind.Punctuation;
+            }
+            if (token.Text == ".." && token.RoslynClassification == "punctuation")
+            {
+                return TokenPrimaryKind.Operator;
             }
 
             switch (token.RoslynClassification)
@@ -121,50 +133,65 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!token.IsDelimiter())
                 return SemanticRole.None;
 
-            if (token.IsAccessorListDelimiter())
-                return SemanticRole.AccessorListBoundary;
+            if (token.Text is "(" or ")")
+            {
+                if (token.IsArgumentListDelimiter())
+                    return SemanticRole.ArgumentListBoundary;
 
-            if (token.IsArgumentListDelimiter())
-                return SemanticRole.ArgumentListBoundary;
+                if (token.IsAttributeArgumentListDelimiter())
+                    return SemanticRole.AttributeArgumentListBoundary;
 
-            if (token.IsAttributeListDelimiter())
-                return SemanticRole.AttributeListBoundary;
+                if (token.IsCastTypeDelimiter())
+                    return SemanticRole.CastTypeBoundary;
 
-            if (token.IsAttributeArgumentListDelimiter())
-                return SemanticRole.AttributeArgumentListBoundary;
+                if (token.IsIfConditionDelimiter())
+                    return SemanticRole.IfConditionBoundary;
 
-            if (token.IsCastTypeDelimiter())
-                return SemanticRole.CastTypeBoundary;
+                if (token.IsParameterListDelimiter())
+                    return SemanticRole.ParameterListBoundary;
 
-            if (token.IsCollectionExpressionDelimiter())
-                return SemanticRole.CollectionExpressionBoundary;
+                if (token.IsTupleTypeDelimiter())
+                    return SemanticRole.TupleTypeBoundary;
+            }
 
-            if (token.IsForEachBlockDelimiter())
-                return SemanticRole.ForEachBlockBoundary;
+            if (token.Text is "{" or "}")
+            {
+                if (token.IsAccessorListDelimiter())
+                    return SemanticRole.AccessorListBoundary;
 
-            if (token.IsIfBlockDelimiter())
-                return SemanticRole.IfBlockBoundary;
+                if (token.IsForEachBlockDelimiter())
+                    return SemanticRole.ForEachBlockBoundary;
 
-            if (token.IsIfConditionDelimiter())
-                return SemanticRole.IfConditionBoundary;
+                if (token.IsForBlockDelimiter())
+                    return SemanticRole.ForBlockBoundary;
 
-            if (token.IsInterpolatedValueDelimiter())
-                return SemanticRole.InterpolatedValueBoundary;
+                if (token.IsIfBlockDelimiter())
+                    return SemanticRole.IfBlockBoundary;
 
-            if (token.IsObjectInitializerDelimiter())
-                return SemanticRole.ObjectInitializerBoundary;
+                if (token.IsInterpolatedValueDelimiter())
+                    return SemanticRole.InterpolatedValueBoundary;
 
-            if (token.IsParameterListDelimiter())
-                return SemanticRole.ParameterListBoundary;
+                if (token.IsObjectInitializerDelimiter())
+                    return SemanticRole.ObjectInitializerBoundary;
+            }
 
-            if (token.IsTupleTypeDelimiter())
-                return SemanticRole.TupleTypeBoundary;
+            if (token.Text is "[" or "]")
+            {
+                if (token.IsAttributeListDelimiter())
+                    return SemanticRole.AttributeListBoundary;
 
-            if (token.IsTypeArgumentListDelimiter())
-                return SemanticRole.TypeArgumentListBoundary;
+                if (token.IsCollectionExpressionDelimiter())
+                    return SemanticRole.CollectionExpressionBoundary;
+            }
 
-            if (token.IsTypeParameterListDelimiter())
-                return SemanticRole.TypeParameterListBoundary;
+            if (token.Text is "<" or ">")
+            {
+                if (token.IsTypeArgumentListDelimiter())
+                    return SemanticRole.TypeArgumentListBoundary;
+
+                if (token.IsTypeParameterListDelimiter())
+                    return SemanticRole.TypeParameterListBoundary;
+            }
 
             return SemanticRole.None;
         }
@@ -175,52 +202,61 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.None;
 
             // --- Separators ---
-            if (token.IsArgumentSeperator())
-                return SemanticRole.ArgumentSeparation;
+            if (token.Text is ",")
+            {
+                if (token.IsArgumentSeperator())
+                    return SemanticRole.ArgumentSeparation;
 
-            if (token.IsBaseTypeSeperator())
-                return SemanticRole.BaseTypeSeparation;
+                if (token.IsBaseTypeSeperator())
+                    return SemanticRole.BaseTypeSeparation;
 
-            if (token.IsEnumMemberSeparator())
-                return SemanticRole.EnumMemberSeparation;
+                if (token.IsEnumMemberSeparator())
+                    return SemanticRole.EnumMemberSeparation;
 
-            if (token.IsTypeArgumentSeperator())
-                return SemanticRole.TypeArgumentSeparation;
+                if (token.IsTypeArgumentSeperator())
+                    return SemanticRole.TypeArgumentSeparation;
 
-            if (token.IsTypeParameterSeparator())
-                return SemanticRole.TypeParameterSeparation;
+                if (token.IsTypeParameterSeparator())
+                    return SemanticRole.TypeParameterSeparation;
 
-            if (token.IsParameterSeparator())
-                return SemanticRole.ParameterSeparation;
+                if (token.IsParameterSeparator())
+                    return SemanticRole.ParameterSeparation;
 
-            if (token.IsSwitchArmSeperator())
-                return SemanticRole.SwitchArmSeparation;
+                if (token.IsSwitchArmSeperator())
+                    return SemanticRole.SwitchArmSeparation;
 
-            if (token.IsTupleElementSeperator())
-                return SemanticRole.TupleElementSeparation;
+                if (token.IsTupleElementSeperator())
+                    return SemanticRole.TupleElementSeparation;
 
-            if (token.IsTypeParameterConstraintClauseSeperator())
-                return SemanticRole.TypeParameterConstraintClauseSeparation;
+                if (token.IsTypeParameterConstraintClauseSeperator())
+                    return SemanticRole.TypeParameterConstraintClauseSeparation;
 
-            if (token.IsVariableDeclaratorSeparator())
-                return SemanticRole.VariableDeclaratorSeparation;
+                if (token.IsVariableDeclaratorSeparator())
+                    return SemanticRole.VariableDeclaratorSeparation;
+            }
 
             // --- Terminators ---
-            if (token.IsStatementTerminator())
-                return SemanticRole.StatementTermination;
+            if (token.Text is ";" or ":")
+            {
+                if (token.IsStatementTerminator())
+                    return SemanticRole.StatementTermination;
 
-            if (token.IsSwitchCaseLabelTerminator())
-                return SemanticRole.CaseLabelTermination;
+                if (token.IsSwitchCaseLabelTerminator())
+                    return SemanticRole.CaseLabelTermination;
 
-            if (token.IsLabelTerminator())
-                return SemanticRole.ParameterLabelTermination;
+                if (token.IsParameterLabelTerminator())
+                    return SemanticRole.ParameterLabelTermination;
+            }
 
-            // --- Misc ---
-            if (token.IsNullConditionalGuard())
-                return SemanticRole.NullConditionalGuard;
+            // --- Nullables ---
+            if (token.Text is "?")
+            {
+                if (token.IsNullConditionalGuard())
+                    return SemanticRole.NullConditionalGuard;
 
-            if (token.IsNullableTypeMarker() || token.IsNullableConstraintTypeMarker())
-                return SemanticRole.NullableTypeMarker;
+                if (token.IsNullableTypeMarker() || token.IsNullableConstraintTypeMarker())
+                    return SemanticRole.NullableTypeMarker;
+            }
 
             return SemanticRole.None;
         }
@@ -230,37 +266,49 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!token.IsOperator())
                 return SemanticRole.None;
 
+            // Handle operators that can fall into multiple semantic roles first
+            if (GlobalConstants.SpecialCaseOperators.Contains(token.Text))
+                return GetSpecialCaseOperatorRole(token);
+
             // Arithmetic
             if (token.IsArithmeticOperator())
-                return SemanticRole.ArithmeticOperator;
+                return SemanticRole.Arithmetic;
 
             // Assignment
             if (token.IsAssignmentOperator())
-                return SemanticRole.AssignmentOperator;
+                return SemanticRole.Assignment;
+
+            // Bitwise-shift
+            if (token.IsBitwiseShiftOperator())
+                return SemanticRole.BitwiseShift;
+
+            // Boolean logical
+            if (token.IsBooleanLogicalOperator())
+                return SemanticRole.BooleanLogical;
 
             // Comparison
             if (token.IsComparisonOperator())
-                return SemanticRole.ComparisonOperator;
+                return SemanticRole.Comparison;
 
-            // Conditional
-            if (token.IsConditionalOperator())
-                return SemanticRole.ConditionalOperator;
+            // Index & Range
+            if (token.IsIndexOrRangeOperator())
+                return SemanticRole.IndexRange;
 
-            // Logical
-            if (token.IsLogicalOperator())
-                return SemanticRole.LogicalOperator;
+            // Lambda
+            if (token.IsLambdaOperator())
+                return SemanticRole.Lambda;
 
             // Member access
-            if (token.IsMemberAccessOperator() || token.IsConditionalMemberAccessOperator())
-                return SemanticRole.MemberAccessOperator;
+            if (token.IsMemberAccessOperator() || token.IsConditionalMemberAccessOperator() || token.IsNamespaceAliasQualifier())
+                return SemanticRole.MemberAccess;
 
-            // Range
-            if (token.IsRangeOperator())
-                return SemanticRole.RangeOperator;
+            // Null
+            if (token.IsNullOperator())
+                return SemanticRole.Null;
 
-            // Namespace alias
-            if (token.IsNamespaceAliasQualifier())
-                return SemanticRole.NamespaceAliasQualifier;
+            // Pointer
+            if (token.IsPointerOperator())
+                return SemanticRole.Pointer;
 
             return SemanticRole.None;
         }
@@ -392,45 +440,100 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole GetSpecialCaseKeywordRole(NavToken token)
         {
-            string? parent = token.ParentNodeKind;
+            string? parentKind = token.ParentNodeKind;
 
             return token.Text switch
             {
                 // switch case label, pattern case label
-                "case" => parent switch
+                "case" => parentKind switch
                 {
                     "CaseSwitchLabel" => SemanticRole.ControlFlow,
                     "CasePatternSwitchLabel" => SemanticRole.PatternMatching,
                     _ => SemanticRole.None
                 },
+
                 // switch label, default literal
-                "default" => parent switch
+                "default" => parentKind switch
                 {
-                    "DefaultLiteralExpression" => SemanticRole.LiteralValue,
+                    "DefaultExpression" or "DefaultLiteralExpression" => SemanticRole.LiteralValue,
                     "DefaultSwitchLabel" => SemanticRole.ControlFlow,
                     _ => SemanticRole.None
                 },
+
                 // foreach loops, query expressions, param modifiers
-                "in" => parent switch
+                "in" => parentKind switch
                 {
                     "ForEachStatement" => SemanticRole.LoopStatement,
                     "Parameter" => SemanticRole.ParameterModifier,
-                    _ when !string.IsNullOrEmpty(parent) && parent.Contains("Clause") => SemanticRole.QueryExpression,
+                    _ when !string.IsNullOrEmpty(parentKind) && parentKind.Contains("Clause") => SemanticRole.QueryExpression,
                     _ => SemanticRole.None
                 },
+
                 // object creation, member hiding
-                "new" => parent is "ObjectCreationExpression"
-                            or "ImplicitArrayCreationExpression"
-                            or "AnonymousObjectCreationExpression"
-                            ? SemanticRole.ObjectConstruction
-                            : SemanticRole.InheritanceModifier,
+                "new" => parentKind is "ObjectCreationExpression" or "ImplicitArrayCreationExpression" or "AnonymousObjectCreationExpression"
+                    ? SemanticRole.ObjectConstruction
+                    : SemanticRole.InheritanceModifier,
+
                 // query expressions, generic constraints
-                "where" => parent switch
+                "where" => parentKind switch
                 {
                     "WhereClause" => SemanticRole.QueryExpression,
                     "TypeParameterConstraintClause" => SemanticRole.ConstraintType,
                     _ => SemanticRole.None
                 },
+
+                _ => SemanticRole.None
+            };
+        }
+
+        private static SemanticRole GetSpecialCaseOperatorRole(NavToken token)
+        {
+            string? parentKind = token.ParentNodeKind;
+            var containingType = token.SemanticData?.ContainingType;
+            bool isBool = containingType == "bool";
+
+            return token.Text switch
+            {
+                "!" => parentKind switch
+                {
+                    "LogicalNotExpression" => SemanticRole.BooleanLogical,
+                    "SuppressNullableWarningExpression" => SemanticRole.Null,
+                    _ => SemanticRole.None
+                },
+
+                "&" => parentKind switch
+                {
+                    "BitwiseAndExpression" => isBool
+                        ? SemanticRole.BooleanLogical
+                        : SemanticRole.BitwiseShift,
+                    "AddressOfExpression" => SemanticRole.Pointer,
+                    _ => SemanticRole.None
+                },
+
+                "|" => parentKind switch
+                {
+                    "BitwiseOrExpression" => isBool
+                        ? SemanticRole.BooleanLogical
+                        : SemanticRole.BitwiseShift,
+                    _ => SemanticRole.None
+                },
+
+                "^" => parentKind switch
+                {
+                    "ExclusiveOrExpression" => isBool
+                        ? SemanticRole.BooleanLogical
+                        : SemanticRole.BitwiseShift,
+                    "IndexExpression" => SemanticRole.IndexRange,
+                    _ => SemanticRole.None
+                },
+
+                "*" => parentKind switch
+                {
+                    "MultiplyExpression" => SemanticRole.Arithmetic,
+                    "PointerType" or "PointerIndirectionExpression" => SemanticRole.Pointer,
+                    _ => SemanticRole.None
+                },
+
                 _ => SemanticRole.None
             };
         }
@@ -673,7 +776,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsNullableType() || token.IsNullableConstraintType())
                 modifiers.Add(SemanticModifiers.Nullable);
 
-            if (token.Text == "var")
+            if (token.Text == "var" || token.Parent.IsKind(SyntaxKind.DefaultLiteralExpression))
                 modifiers.Add(SemanticModifiers.ImplicitlyTyped);
 
             if (token.IsGenericType())
