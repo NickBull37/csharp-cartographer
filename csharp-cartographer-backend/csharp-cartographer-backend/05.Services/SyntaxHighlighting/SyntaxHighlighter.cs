@@ -152,13 +152,13 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         {
             foreach (var element in list)
             {
-                if (token.IsKeyword("default"))
+                if (token.Text == "default")
                 {
                     token.HighlightColor = GetDefaultKeywordColor(token);
                     continue;
                 }
 
-                if (token.IsKeyword("in"))
+                if (token.Text == "in")
                 {
                     token.HighlightColor = GetInKeywordColor(token);
                     continue;

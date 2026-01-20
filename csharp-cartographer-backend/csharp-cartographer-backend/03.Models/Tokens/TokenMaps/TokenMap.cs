@@ -198,6 +198,8 @@
     {
         None,
 
+        ReturnValue,
+
         // Accessibility & scope
         Public,
         Private,

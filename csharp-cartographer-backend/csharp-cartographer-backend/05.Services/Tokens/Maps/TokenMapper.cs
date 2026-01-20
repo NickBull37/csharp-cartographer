@@ -646,72 +646,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             var modifiers = new HashSet<SemanticModifiers>();
 
-            // Generic type parameters
-            //if (token.IsGenericTypeParameter())
-            //    modifiers.Add(SemanticModifiers.GenericTypeParameter);
+            // add literal value modifier
 
 
-            // Accessor modifiers
-            if (token.IsKeyword("get"))
-                modifiers.Add(SemanticModifiers.Getter);
+            // --- Return value ---
+            if (token.IsReturnValue())
+                modifiers.Add(SemanticModifiers.ReturnValue);
 
-            if (token.IsKeyword("set"))
-                modifiers.Add(SemanticModifiers.Setter);
-
-            if (token.IsKeyword("init"))
-                modifiers.Add(SemanticModifiers.InitOnly);
-
-
-            // Access modifiers
-            if (token.IsKeyword("public"))
-                modifiers.Add(SemanticModifiers.Public);
-
-            if (token.IsKeyword("private"))
-                modifiers.Add(SemanticModifiers.Private);
-
-            if (token.IsKeyword("protected"))
-                modifiers.Add(SemanticModifiers.Protected);
-
-            if (token.IsKeyword("internal"))
-                modifiers.Add(SemanticModifiers.Internal);
-
-
-            // Member modifiers
-            if (token.IsKeyword("abstract"))
-                modifiers.Add(SemanticModifiers.Abstract);
-
-            if (token.IsKeyword("async"))
-                modifiers.Add(SemanticModifiers.Async);
-
-            if (token.IsKeyword("const"))
-                modifiers.Add(SemanticModifiers.Const);
-
-            if (token.IsKeyword("override"))
-                modifiers.Add(SemanticModifiers.Override);
-
-            if (token.IsKeyword("partial"))
-                modifiers.Add(SemanticModifiers.Partial);
-
-            if (token.IsKeyword("readonly"))
-                modifiers.Add(SemanticModifiers.Readonly);
-
-            if (token.IsKeyword("required"))
-                modifiers.Add(SemanticModifiers.Required);
-
-            if (token.IsKeyword("sealed"))
-                modifiers.Add(SemanticModifiers.Sealed);
-
-            if (token.IsKeyword("static"))
-                modifiers.Add(SemanticModifiers.Static);
-
-            if (token.IsKeyword("virtual"))
-                modifiers.Add(SemanticModifiers.Virtual);
-
-            if (token.IsKeyword("volatile"))
-                modifiers.Add(SemanticModifiers.Volatile);
-
-
-            // Literal modifiers
+            // --- Literal modifiers ---
             if (token.IsQuotedString())
                 modifiers.Add(SemanticModifiers.QuotedString);
 
@@ -724,21 +666,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsInterpolatedVerbatimString())
                 modifiers.Add(SemanticModifiers.InterpolatedVerbatimString);
 
-
-            // Type modifiers
+            // --- Type modifiers ---
             if (GlobalConstants.PredefinedTypes.Contains(token.Text))
                 modifiers.Add(SemanticModifiers.PredefinedType);
 
             if (token.IsNullableType() || token.IsNullableConstraintType())
                 modifiers.Add(SemanticModifiers.Nullable);
 
-            if (token.IsKeyword("var"))
+            if (token.Text == "var")
                 modifiers.Add(SemanticModifiers.ImplicitlyTyped);
 
             if (token.IsGenericType())
                 modifiers.Add(SemanticModifiers.Generic);
 
-            // Operator modifiers
+            // --- Operator modifiers ---
             if (token.IsConditionalMemberAccessOperator())
                 modifiers.Add(SemanticModifiers.Conditional);
 

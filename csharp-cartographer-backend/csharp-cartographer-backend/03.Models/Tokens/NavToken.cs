@@ -213,6 +213,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && ancestors[index] == kind;
         }
 
+        public bool IsReturnValue()
+        {
+            bool isValidToken = Kind == SyntaxKind.IdentifierToken
+                || Kind == SyntaxKind.DefaultKeyword
+                || SyntaxFacts.IsLiteralExpression(Kind);
+
+            return isValidToken && HasAncestorAt(1, SyntaxKind.ReturnStatement);
+        }
+
         #region Delimiter Checks
         public bool IsAccessorListDelimiter()
         {
