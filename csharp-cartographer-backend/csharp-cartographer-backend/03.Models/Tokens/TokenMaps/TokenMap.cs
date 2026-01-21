@@ -163,6 +163,7 @@
         EventSubscription,
         EventUnsubscription,
         IndexerAccess,
+        PropertyAccess,
 
 
         // ------------ LITERALS ------------ //

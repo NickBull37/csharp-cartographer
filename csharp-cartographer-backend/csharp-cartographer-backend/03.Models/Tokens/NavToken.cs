@@ -197,11 +197,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsKeyword() => SyntaxFacts.IsKeywordKind(Kind);
 
-        public bool IsKeyword(string keyword)
-        {
-            return string.Equals(Text, keyword, StringComparison.Ordinal);
-        }
-
         public bool IsAccessStaticMember() => HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
 
         private bool HasAncestorAt(int index, SyntaxKind kind)
@@ -722,6 +717,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsNullableTypeMarker() => Kind == SyntaxKind.QuestionToken
             && HasAncestorAt(0, SyntaxKind.NullableType);
 
+        //public bool IsNullableTypeMarker() => SemanticData?.SymbolName == "Nullable";
+
         public bool IsNullableConstraintTypeMarker()
         {
             if (Kind != SyntaxKind.QuestionToken)
@@ -1059,9 +1056,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             {
                 semanticData.Symbol = symbolInfo.Symbol;
                 semanticData.SymbolName = symbolInfo.Symbol.Name;
-                semanticData.SymbolKind = symbolInfo.Symbol.Kind.ToString();
+                semanticData.SymbolKind = symbolInfo.Symbol.Kind;
                 semanticData.ContainingType = symbolInfo.Symbol.ContainingType?.ToString() ?? null;
                 semanticData.ContainingNamespace = symbolInfo.Symbol.ContainingNamespace?.ToString() ?? null;
+                semanticData.CandidateSymbols = symbolInfo.CandidateSymbols;
+                semanticData.CandidateReason = symbolInfo.CandidateReason;
             }
 
             var typeInfo = semanticModel.GetTypeInfo(node);

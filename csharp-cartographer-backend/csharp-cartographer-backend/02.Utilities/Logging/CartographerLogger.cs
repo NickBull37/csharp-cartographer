@@ -150,7 +150,9 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
             LogMessage($"GreatGrandParentNodeKind: {token.GreatGrandParentNodeKind ?? "..."}", _tokenLogPath);
             LogMessage("------------------------- Semantic data -------------------------", _tokenLogPath);
             LogMessage($"SymbolName: {token.SemanticData?.SymbolName ?? "..."}", _tokenLogPath);
-            LogMessage($"SymbolKind: {token.SemanticData?.SymbolKind ?? "..."}", _tokenLogPath);
+            LogMessage($"SymbolKind: {token.SemanticData?.SymbolKind.ToString() ?? "..."}", _tokenLogPath);
+            LogMessage($"CandidateCount: {token.SemanticData?.CandidateSymbols.Length.ToString() ?? "..."}", _tokenLogPath);
+            LogMessage($"CandidateReason: {token.SemanticData?.CandidateReason.ToString() ?? "..."}", _tokenLogPath);
             LogMessage($"ContainingType: {token.SemanticData?.ContainingType ?? "..."}", _tokenLogPath);
             LogMessage($"ContainingNamespace: {token.SemanticData?.ContainingNamespace ?? "..."}", _tokenLogPath);
             LogMessage($"TypeName: {token.SemanticData?.TypeName ?? "..."}", _tokenLogPath);

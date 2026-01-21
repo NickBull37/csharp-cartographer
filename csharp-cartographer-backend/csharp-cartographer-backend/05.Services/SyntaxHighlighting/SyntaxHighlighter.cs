@@ -13,6 +13,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 if (token.Map is null)
                     continue;
 
+                if (token.RoslynClassification == "class name")
+                {
+                    token.HighlightColor = "color-green";
+                    continue;
+                }
+
                 if (token.RoslynClassification == "type parameter name")
                 {
                     token.HighlightColor = "color-light-green";
@@ -57,6 +63,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     case SemanticRole.FieldReference:
                     case SemanticRole.NamespaceDeclaration:
                     case SemanticRole.ObjectPropertyAssignment:
+                    case SemanticRole.PropertyAccess:
                     case SemanticRole.PropertyDeclaration:
                     case SemanticRole.PropertyReference:
                     case SemanticRole.TupleElementName:

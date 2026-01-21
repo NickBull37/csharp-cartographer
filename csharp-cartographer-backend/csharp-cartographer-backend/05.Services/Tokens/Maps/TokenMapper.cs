@@ -543,6 +543,49 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!token.IsIdentifier())
                 return SemanticRole.None;
 
+            // Roslyn will generate semantic token data if it can see the token definition. Set tokens using
+            // semantic data first since it is more reliable.
+
+            //switch (token.SemanticData?.SymbolKind)
+            //{
+            //    case SymbolKind.Namespace:
+            //        return SemanticRole.NamespaceReference;
+            //    case SymbolKind.Field:
+            //        break;
+            //    case SymbolKind.Method:
+            //        break;
+            //    case SymbolKind.Property:
+            //        break;
+            //    case SymbolKind.Event:
+            //        break;
+            //    case SymbolKind.Label:
+            //        break;
+            //    case SymbolKind.Local:
+            //        break;
+            //    case SymbolKind.Parameter:
+            //        break;
+            //    case SymbolKind.PointerType:
+            //        break;
+            //    case SymbolKind.RangeVariable:
+            //        break;
+            //    case SymbolKind.TypeParameter:
+            //        break;
+            //    case SymbolKind.Discard:
+            //        break;
+            //    case SymbolKind.FunctionPointerType:
+            //        break;
+            //}
+
+            //if (token.SemanticData?.SymbolKind == SymbolKind.Property)
+            //{
+            //    return SemanticRole.PropertyAccess;
+            //}
+
+            //if (token.SemanticData?.SymbolKind == SymbolKind.Field)
+            //{
+            //    return SemanticRole.FieldAccess;
+            //}
+
             // --- Identifiers: Declarations ---
             if (token.IsAttributeDeclaration())
                 return SemanticRole.AttributeDeclaration;
@@ -714,6 +757,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Identifier - param labels
             if (token.IsParameterLabel())
                 return SemanticRole.ParameterLabel;
+
+
+
 
             return SemanticRole.None;
         }

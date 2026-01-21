@@ -345,28 +345,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                         p: '1.25rem'
                                     }}
                                 >
-                                    <Stack
-                                        display="flex"
-                                        gap={0.25}
-                                    >
-                                        <Typography
-                                            className="code"
-                                            sx={{
-                                                fontSize: '13px',
-                                                color: colors.gray70
-                                            }}
-                                        >
-                                            Primary Kind:
-                                        </Typography>
-                                        <Typography
-                                            className="code"
-                                            sx={{
-                                                fontSize: '16px'
-                                            }}
-                                        >
-                                            {activeToken.map.primaryKindString}
-                                        </Typography>
-                                    </Stack>
+                                    
                                     <Stack
                                         display="flex"
                                         gap={0.25}
@@ -387,6 +366,29 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                             }}
                                         >
                                             {activeToken.map.semanticRoleString}
+                                        </Typography>
+                                    </Stack>
+
+                                    <Stack
+                                        display="flex"
+                                        gap={0.25}
+                                    >
+                                        <Typography
+                                            className="code"
+                                            sx={{
+                                                fontSize: '13px',
+                                                color: colors.gray70
+                                            }}
+                                        >
+                                            Primary Kind:
+                                        </Typography>
+                                        <Typography
+                                            className="code"
+                                            sx={{
+                                                fontSize: '16px'
+                                            }}
+                                        >
+                                            {activeToken.map.primaryKindString}
                                         </Typography>
                                     </Stack>
 

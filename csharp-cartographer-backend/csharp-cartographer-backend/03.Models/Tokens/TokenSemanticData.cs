@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using System.Collections.Immutable;
 
 namespace csharp_cartographer_backend._03.Models.Tokens
 {
@@ -6,9 +7,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
     {
         public ISymbol? Symbol { get; set; }
 
-        public string? SymbolName { get; set; }
+        public ImmutableArray<ISymbol> CandidateSymbols { get; set; } = [];
 
-        public string? SymbolKind { get; set; }
+        public CandidateReason CandidateReason { get; set; }
+
+        public string SymbolName { get; set; } = string.Empty;
+
+        public SymbolKind SymbolKind { get; set; }
 
         public string? ContainingType { get; set; }
 
