@@ -546,35 +546,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Roslyn will generate semantic token data if it can see the token definition. Set tokens using
             // semantic data first since it is more reliable.
 
-            //switch (token.SemanticData?.SymbolKind)
-            //{
-            //    case SymbolKind.Namespace:
-            //        return SemanticRole.NamespaceReference;
-            //    case SymbolKind.Field:
-            //        break;
-            //    case SymbolKind.Method:
-            //        break;
-            //    case SymbolKind.Property:
-            //        break;
-            //    case SymbolKind.Event:
-            //        break;
-            //    case SymbolKind.Label:
-            //        break;
-            //    case SymbolKind.Local:
-            //        break;
-            //    case SymbolKind.Parameter:
-            //        break;
-            //    case SymbolKind.PointerType:
-            //        break;
-            //    case SymbolKind.RangeVariable:
-            //        break;
-            //    case SymbolKind.TypeParameter:
-            //        break;
-            //    case SymbolKind.Discard:
-            //        break;
-            //    case SymbolKind.FunctionPointerType:
-            //        break;
-            //}
+
 
             //if (token.SemanticData?.SymbolKind == SymbolKind.Property)
             //{
@@ -759,6 +731,34 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.ParameterLabel;
 
 
+
+            switch (token.SemanticData?.TypeKind)
+            {
+                case TypeKind.Class:
+                    return SemanticRole.StaticTypeQualifier;
+
+                //case TypeKind.Array:
+                //    return SemanticRole.NamespaceReference;
+                //case TypeKind.Delegate:
+                //    return SemanticRole.None;
+                //case TypeKind.Dynamic:
+                //    return SemanticRole.None;
+                //case TypeKind.Enum:
+                //    return SemanticRole.None;
+                //case TypeKind.Error:
+                //    return SemanticRole.None;
+                //case TypeKind.Interface:
+                //    return SemanticRole.None;
+                //case TypeKind.Pointer:
+                //    return SemanticRole.None;
+                //case TypeKind.Struct:
+                //    return SemanticRole.None;
+                //case TypeKind.TypeParameter:
+                //    return SemanticRole.None;
+
+                case TypeKind.Unknown:
+                    return SemanticRole.None;
+            }
 
 
             return SemanticRole.None;

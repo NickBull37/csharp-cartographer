@@ -111,7 +111,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _tokenMapper.MapNavTokens(navTokens);
 
             // Step 8. Correct roslyn generated classifications that don't provide much info
-            _classificationWizard.CorrectTokenClassifications(navTokens);
+            //_classificationWizard.CorrectTokenClassifications(navTokens);
 
             // Step 9. Generate TokenTags.
             _tokenTagGenerator.GenerateTokenTags(navTokens);
@@ -153,7 +153,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
                 var nonAliasTokens = artifact.NavTokens.Where(token => token.SemanticData?.SymbolKind != SymbolKind.Alias);
 
-                CartographerLogger.LogTokens(artifact.NavTokens);
+                CartographerLogger.LogTokens(unidentifiedTokens);
             }
 
             //List<string> kinds = [];
@@ -161,12 +161,14 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             //{
             //    var symbolKind = token.SemanticData?.SymbolKind.ToString() + $": {token.Index}";
 
-            //    if (symbolKind is null)
+            //    var operationKind = token.SemanticData?.OperationKind.ToString();
+
+            //    if (operationKind is null)
             //        continue;
 
-            //    if (!kinds.Contains(symbolKind))
+            //    if (!kinds.Contains(operationKind))
             //    {
-            //        kinds.Add(symbolKind);
+            //        kinds.Add(operationKind);
             //    }
             //}
 

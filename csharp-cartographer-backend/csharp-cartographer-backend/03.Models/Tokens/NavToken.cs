@@ -53,10 +53,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <summary>The Roslyn SyntaxKind of the token as a string.</summary>
         public string RoslynKind { get; set; }
 
-        /// <summary>The token field symbol.</summary>
-        [JsonIgnore]
-        public IFieldSymbol? FieldSymbol { get; set; }
-
         /// <summary>The token classification.</summary>
         public string? RoslynClassification { get; set; }
 
@@ -158,7 +154,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             Text = roslynToken.Text;
             Kind = roslynToken.Kind();
             RoslynKind = roslynToken.Kind().ToString();
-            FieldSymbol = TryGetFieldSymbol(semanticModel, roslynToken);
             RoslynClassification = classification;
             Span = roslynToken.Span;
             LeadingTrivia = GetLeadingTrivia(roslynToken);
@@ -179,7 +174,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             #endregion
 
             #region Semantic data
-            SemanticData = GetSemanticData(semanticModel, roslynToken.Parent);
+            SemanticData = GetSemanticData(semanticModel, GetSemanticNodeForToken(roslynToken), syntaxTree);
             #endregion
 
             #region Contextual data
@@ -484,6 +479,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             HasAncestorAt(0, SyntaxKind.VariableDeclarator) &&
             HasAncestorAt(2, SyntaxKind.FieldDeclaration);
 
+        public bool IsFieldDeclaration2() => SemanticData?.DeclaredSymbol?.Kind == SymbolKind.Field;
+
         public bool IsLocalVariableDeclaration() =>
             HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
             && !HasAncestorAt(0, SyntaxKind.GenericName)
@@ -527,6 +524,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             RoslynClassification is not null &&
             RoslynClassification == "struct name" &&
             HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
+
+        /*
+         *  -----------------------------------------------------------------------
+         *      Reference Identifiers
+         *  -----------------------------------------------------------------------
+         */
+
+        public bool IsFieldReference() => SemanticData?.SymbolKind == SymbolKind.Field && SemanticData.OperationKind == OperationKind.FieldReference;
 
         /*
          *  -----------------------------------------------------------------------
@@ -1040,38 +1045,261 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         /// <summary>Gets data for NavToken properites related to C# semantics.</summary>
         /// <param name="semanticModel">The semantic model generated from the source code.</param>
-        /// <param name="node">The node the semantic data is reffering to.</param>
-        /// <returns>The semantic data for the passed in node.</returns>
-        private static TokenSemanticData? GetSemanticData(SemanticModel semanticModel, SyntaxNode? node)
+        /// <param name="node">The parent node of the token.</param>
+        /// <returns>The semantic data for the token's parent node.</returns>
+        private static TokenSemanticData? GetSemanticData(SemanticModel semanticModel, SyntaxNode? node, SyntaxTree syntaxTree)
         {
             if (node is null)
-            {
                 return null;
-            }
 
-            TokenSemanticData semanticData = new();
+            var data = new TokenSemanticData();
+
+            // 1) DECLARATIONS: if this node declares something, GetDeclaredSymbol is the truth.
+            //    This is the main fix for "field declaration token gives Alias" scenarios.
+            data.DeclaredSymbol = TryGetDeclaredSymbol(semanticModel, node);
+
+            // 2) REFERENCES / BINDING: SymbolInfo for the node (useful even if declared symbol exists).
             var symbolInfo = semanticModel.GetSymbolInfo(node);
 
-            if (symbolInfo.Symbol != null)
+            var boundSymbol = symbolInfo.Symbol;
+
+            // Prefer declared symbol when present (definition site), otherwise bound symbol (reference site).
+            // But still keep both.
+            data.Symbol = data.DeclaredSymbol ?? boundSymbol;
+
+            // 3) ALIAS UNWRAP (global::, using-alias, extern alias, etc.)
+            //    If the chosen symbol is an alias, unwrap to its target.
+            if (data.Symbol is IAliasSymbol alias)
             {
-                semanticData.Symbol = symbolInfo.Symbol;
-                semanticData.SymbolName = symbolInfo.Symbol.Name;
-                semanticData.SymbolKind = symbolInfo.Symbol.Kind;
-                semanticData.ContainingType = symbolInfo.Symbol.ContainingType?.ToString() ?? null;
-                semanticData.ContainingNamespace = symbolInfo.Symbol.ContainingNamespace?.ToString() ?? null;
-                semanticData.CandidateSymbols = symbolInfo.CandidateSymbols;
-                semanticData.CandidateReason = symbolInfo.CandidateReason;
+                data.IsAlias = true;
+                data.AliasName = alias.Name;
+
+                data.AliasTargetSymbol = alias.Target;
+                data.AliasTargetDisplayString = alias.Target.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+
+                // Often you want the *target* treated as the "real" symbol for roles/classification.
+                // Keep the alias info, but also swap Symbol to target so downstream logic sees Field/Type/etc.
+                data.Symbol = alias.Target;
             }
 
+            // 4) Fill symbol properties if we have any symbol (after alias unwrapping)
+            if (data.Symbol is ISymbol symbol)
+            {
+                var locations = symbol.Locations;
+
+                // True for symbols declared in *any* source file in this compilation
+                data.IsInSource = locations.Any(l => l.IsInSource);
+
+                // True for symbols coming from metadata (referenced assemblies)
+                data.IsInMetadata = locations.Any(l => l.IsInMetadata);
+
+                // True only when declared in the uploaded file’s syntax tree
+                data.IsInUploadedFile = locations.Any(l => l.IsInSource && ReferenceEquals(l.SourceTree, syntaxTree));
+
+                // Optional: capture the file path when in source (first location)
+                data.DeclaredInFilePath = locations.FirstOrDefault(l => l.IsInSource)?.SourceTree?.FilePath;
+
+                data.SymbolName = symbol.Name;
+                data.SymbolKind = symbol.Kind;
+
+                data.ContainingType = symbol.ContainingType?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                data.ContainingNamespace = symbol.ContainingNamespace?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                data.ContainingAssembly = symbol.ContainingAssembly?.Name;
+
+                data.Accessibility = symbol.DeclaredAccessibility;
+                data.IsImplicitlyDeclared = symbol.IsImplicitlyDeclared;
+
+                // Some flags require ISymbol subtypes, but we can safely probe common ones:
+                data.IsStatic = symbol.IsStatic;
+                data.IsAbstract = symbol.IsAbstract;
+                data.IsVirtual = symbol.IsVirtual;
+                data.IsOverride = symbol.IsOverride;
+                data.IsSealed = symbol.IsSealed;
+                data.IsExtern = symbol.IsExtern;
+
+                // "IsDefinition" is more about whether the symbol is an original definition
+                // vs a constructed/reduced one. For methods/types it's often helpful:
+                data.IsDefinition = SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition);
+
+                // Grab member type / method signature when applicable
+                switch (symbol)
+                {
+                    case IFieldSymbol f:
+                        data.MemberTypeDisplayString = f.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                        data.MemberTypeKind = f.Type.Kind;
+                        break;
+
+                    case IPropertySymbol p:
+                        data.MemberTypeDisplayString = p.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                        data.MemberTypeKind = p.Type.Kind;
+                        break;
+
+                    case ILocalSymbol l:
+                        data.MemberTypeDisplayString = l.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                        data.MemberTypeKind = l.Type.Kind;
+                        break;
+
+                    case IParameterSymbol par:
+                        data.MemberTypeDisplayString = par.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                        data.MemberTypeKind = par.Type.Kind;
+                        break;
+
+                    case IMethodSymbol m:
+                        data.IsAsync = m.IsAsync;
+                        data.MemberTypeDisplayString = m.ReturnType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                        data.MethodSignature = m.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
+                        data.MethodKind = m.MethodKind;
+                        data.IsGenericMethod = m.IsGenericMethod;
+                        data.ReturnType = m.ReturnType;
+                        data.IsReadOnly = m.IsReadOnly;
+                        data.TypeParameters = m.TypeParameters;
+                        break;
+                }
+            }
+
+            // 5) TypeInfo (+ conversion) for the node
             var typeInfo = semanticModel.GetTypeInfo(node);
-            if (typeInfo.Type != null)
+
+            data.TypeSymbol = typeInfo.Type;
+            data.ConvertedTypeSymbol = typeInfo.ConvertedType;
+
+            if (typeInfo.Type is ITypeSymbol type)
             {
-                semanticData.TypeName = typeInfo.Type.Name;
-                semanticData.TypeKind = typeInfo.Type.Kind.ToString();
-                semanticData.IsNullable = typeInfo.Nullability.FlowState == NullableFlowState.MaybeNull;
+                data.TypeKind = type.TypeKind;
+
+                data.NullabilityFlowState = typeInfo.Nullability.FlowState;
+                data.NullabilityAnnotation = type.NullableAnnotation;
             }
 
-            return semanticData;
+            if (typeInfo.ConvertedType is ITypeSymbol ctype)
+            {
+                data.ConvertedTypeKind = ctype.TypeKind;
+
+                // flow state is for the expression; same object
+                data.ConvertedNullabilityFlowState = typeInfo.Nullability.FlowState;
+                data.ConvertedNullabilityAnnotation = ctype.NullableAnnotation;
+            }
+
+            // 6) Constant value (works on expressions where Roslyn can evaluate a constant)
+            var constant = semanticModel.GetConstantValue(node);
+            data.HasConstantValue = constant.HasValue;
+            if (constant.HasValue)
+            {
+                data.ConstantValue = constant.Value is null ? "null" : constant.Value.ToString();
+            }
+
+            // 7) Operations API (often *better* than SymbolInfo for expressions)
+            //    This returns null on many declaration nodes; it’s still valuable when present.
+            var op = semanticModel.GetOperation(node);
+            data.Operation = op;
+            if (op != null)
+            {
+                data.OperationKind = op.Kind;
+                data.OperationResultType = op.Type?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            }
+
+            return data;
+        }
+
+        private static ISymbol? TryGetDeclaredSymbol(SemanticModel semanticModel, SyntaxNode node)
+        {
+            // VariableDeclaratorSyntax covers fields + locals, etc.
+            // This is usually the right node for identifiers in declarations.
+            return node switch
+            {
+                VariableDeclaratorSyntax v => semanticModel.GetDeclaredSymbol(v),
+                SingleVariableDesignationSyntax d => semanticModel.GetDeclaredSymbol(d),
+                ParameterSyntax p => semanticModel.GetDeclaredSymbol(p),
+                PropertyDeclarationSyntax p => semanticModel.GetDeclaredSymbol(p),
+                EventDeclarationSyntax e => semanticModel.GetDeclaredSymbol(e),
+                EventFieldDeclarationSyntax efd => semanticModel.GetDeclaredSymbol(efd.Declaration?.Variables.FirstOrDefault()!), // best effort
+                MethodDeclarationSyntax m => semanticModel.GetDeclaredSymbol(m),
+                ConstructorDeclarationSyntax c => semanticModel.GetDeclaredSymbol(c),
+                ClassDeclarationSyntax c => semanticModel.GetDeclaredSymbol(c),
+                StructDeclarationSyntax s => semanticModel.GetDeclaredSymbol(s),
+                InterfaceDeclarationSyntax i => semanticModel.GetDeclaredSymbol(i),
+                RecordDeclarationSyntax r => semanticModel.GetDeclaredSymbol(r),
+                EnumDeclarationSyntax e => semanticModel.GetDeclaredSymbol(e),
+                DelegateDeclarationSyntax d => semanticModel.GetDeclaredSymbol(d),
+                NamespaceDeclarationSyntax n => semanticModel.GetDeclaredSymbol(n),
+                FileScopedNamespaceDeclarationSyntax n => semanticModel.GetDeclaredSymbol(n),
+                UsingDirectiveSyntax u when u.Alias != null => semanticModel.GetDeclaredSymbol(u.Alias),
+                _ => null
+            };
+        }
+
+        private static SyntaxNode? GetSemanticNodeForToken(SyntaxToken token)
+        {
+            var parent = token.Parent;
+            if (parent is null)
+                return null;
+
+            // 1) Declaration identifiers (best for DeclaredSymbol)
+            // Identifier token in: field/local/var declarator => parent is VariableDeclaratorSyntax
+            if (parent is VariableDeclaratorSyntax)
+                return parent;
+
+            // Parameter identifier token => parent is ParameterSyntax
+            if (parent is ParameterSyntax)
+                return parent;
+
+            // Type / member declarations (if you ever pass tokens from these nodes)
+            if (parent is MethodDeclarationSyntax
+                or ConstructorDeclarationSyntax
+                or PropertyDeclarationSyntax
+                or ClassDeclarationSyntax
+                or StructDeclarationSyntax
+                or InterfaceDeclarationSyntax
+                or RecordDeclarationSyntax
+                or EnumDeclarationSyntax
+                or DelegateDeclarationSyntax)
+                return parent;
+
+            // 2) Identifiers in expressions (best for SymbolInfo.Symbol)
+            // Most identifier tokens in expressions have parent IdentifierNameSyntax.
+            if (parent is IdentifierNameSyntax)
+                return parent;
+
+            // Generic names like List<int> (identifier token often sits under GenericNameSyntax)
+            if (parent is GenericNameSyntax)
+                return parent;
+
+            // Qualified names A.B.C (identifier token can be inside QualifiedNameSyntax)
+            if (parent is QualifiedNameSyntax)
+                return parent;
+
+            // 3) Operators / punctuation: climb to the expression node that owns the operator
+            // This makes Operation / TypeInfo much more meaningful.
+            if (token.IsKind(SyntaxKind.DotToken) || token.IsKind(SyntaxKind.QuestionToken))
+            {
+                // Handles `obj.Member`, `obj?.Member`, conditional access chains, etc.
+                return parent.FirstAncestorOrSelf<ConditionalAccessExpressionSyntax>()
+                    ?? parent.FirstAncestorOrSelf<MemberAccessExpressionSyntax>()
+                    ?? parent;
+            }
+
+            //if (SyntaxFacts.IsUnaryExpression(parent.Kind()))
+            //    return parent;
+
+            if (SyntaxFacts.IsBinaryExpression(parent.Kind()))
+                return parent;
+
+            // Invocation: name, parentheses, commas, etc.
+            if (parent.FirstAncestorOrSelf<InvocationExpressionSyntax>() is { } invoke)
+                return invoke;
+
+            // Object creation: `new Foo(...)`
+            if (parent.FirstAncestorOrSelf<ObjectCreationExpressionSyntax>() is { } create)
+                return create;
+
+            // default literal / default(T)
+            if (parent.FirstAncestorOrSelf<DefaultExpressionSyntax>() is { } defExpr)
+                return defExpr;
+            if (parent.FirstAncestorOrSelf<LiteralExpressionSyntax>() is { } litExpr)
+                return litExpr;
+
+            // 4) Fallback
+            return parent;
         }
 
         /// <summary>Gets the contextual data for the passed in syntax token.</summary>
@@ -1107,48 +1335,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 )
                 .Select(reference => reference.ToString())
                 .ToList();
-        }
-
-        /// <summary>Tries to get the field symbol for the passed in syntax token.</summary>
-        /// <param name="semanticModel">The semantic model generated from the source code.</param>
-        /// <param name="roslynToken">The SyntaxToken generated by the Roslyn code analysis library.</param>
-        /// <returns>The field symbol of the SyntaxToken.</returns>
-        private static IFieldSymbol? TryGetFieldSymbol(SemanticModel semanticModel, SyntaxToken roslynToken)
-        {
-            var declarator = roslynToken.Parent?.AncestorsAndSelf()
-                .OfType<VariableDeclaratorSyntax>()
-                .FirstOrDefault();
-
-            if (declarator != null && declarator.Identifier == roslynToken)
-            {
-                return semanticModel.GetDeclaredSymbol(declarator) as IFieldSymbol;
-            }
-
-            var identifierName = roslynToken.Parent?.AncestorsAndSelf()
-                .OfType<IdentifierNameSyntax>()
-                .FirstOrDefault();
-
-            if (identifierName != null && identifierName.Identifier == roslynToken)
-            {
-                return semanticModel.GetSymbolInfo(identifierName).Symbol as IFieldSymbol;
-            }
-
-            var memberAccess = roslynToken.Parent?.AncestorsAndSelf()
-                .OfType<MemberAccessExpressionSyntax>()
-                .FirstOrDefault();
-
-            var test = "";
-
-            var test2 = (string)test;
-
-            if (memberAccess != null
-                && memberAccess.Name is IdentifierNameSyntax nameId
-                && nameId.Identifier == roslynToken)
-            {
-                return semanticModel.GetSymbolInfo(memberAccess).Symbol as IFieldSymbol;
-            }
-
-            return null;
         }
     }
 }

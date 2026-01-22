@@ -192,9 +192,44 @@
         PropertyDataType,
         MethodReturnType,
         SimpleBaseType,
+        StaticTypeQualifier,
         TypePatternType,
         TupleElementName,
         TupleElementType,
+    }
+
+    public enum TypeSymbols
+    {
+        Class,
+        Enum,
+        Delegate,
+        Interface,
+        Record,
+        RecordStruct,
+        Struct,
+        TypeParameter,
+    }
+
+    public enum MemberSymbols
+    {
+        Constructor,
+        ConversionOperator,
+        Event,
+        Field,
+        Indexer,
+        Method,
+        Operator,
+        Property,
+    }
+
+    public enum NonMemberSymbols
+    {
+        EnumMember,
+        Label,
+        LocalVariable,
+        Namespace,
+        Parameter,
+        RangeVariable,
     }
 
     public enum SemanticModifiers
@@ -284,7 +319,7 @@
         Yellow,
     }
 
-    public enum ColorAs
+    public enum ColorAsType
     {
         // white
         Field,
@@ -338,15 +373,17 @@
 
     public sealed record TokenMap
     {
-        public TokenPrimaryKind PrimaryKind { get; set; }
+        public SemanticRole SemanticRole { get; set; } = SemanticRole.None;
 
-        public string PrimaryKindString { get; set; }
-
-        public SemanticRole SemanticRole { get; set; }
-
-        public string SemanticRoleString { get; set; }
+        public TokenPrimaryKind PrimaryKind { get; set; } = TokenPrimaryKind.Unknown;
 
         public IReadOnlySet<string> Modifiers { get; set; }
+
+        public ColorAsType ColorAsType { get; set; } = ColorAsType.Unknown;
+
+        public string SemanticRoleString { get; set; } = "None";
+
+        public string PrimaryKindString { get; set; } = "Unknown";
 
         public TokenMap(TokenPrimaryKind primaryKind, SemanticRole semanticRole, HashSet<SemanticModifiers>? modifiers)
         {
