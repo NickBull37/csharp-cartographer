@@ -104,6 +104,8 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             // Step 5. Turn the Roslyn data into a list of NavTokens.
             var navTokens = await _navTokenGenerator.GenerateNavTokens(semanticModel, syntaxTree, fileData.Document);
 
+            //_roslynAnalyzer.AddTokenSemanticData(navTokens);
+
             // Step 6. Generate TokenCharts.
             _tokenChartGenerator.GenerateTokenCharts(navTokens);
 
@@ -150,10 +152,12 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             if (_config.ShouldLogUnidentifiedTokens)
             {
                 var unidentifiedTokens = artifact.NavTokens.Where(token => token.HighlightColor == "color-red");
+                var semanticTokens = artifact.NavTokens.Where(token => token.SemanticData is not null);
 
-                var nonAliasTokens = artifact.NavTokens.Where(token => token.SemanticData?.SymbolKind != SymbolKind.Alias);
+                var logTokens = artifact.NavTokens.Where(token => token.HighlightColor == "color-red" && token.SemanticData is not null);
 
-                CartographerLogger.LogTokens(unidentifiedTokens);
+
+                CartographerLogger.LogTokens(logTokens);
             }
 
             //List<string> kinds = [];

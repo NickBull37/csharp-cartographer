@@ -74,16 +74,21 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     or "struct name"
                     or "type parameter name")
                 {
-                    HighlightRoslynClassifiedToken(token);
+                    ColorByRoslynClassification(token);
                     continue;
                 }
+
+                // Color by semantic role
+                ColorBySemanticRole(token);
+                if (token.HighlightColor is not null)
+                    continue;
 
                 // Color by semantic data
                 HighlightUsingSemanticData(token);
                 if (token.HighlightColor is not null)
                     continue;
 
-                // Color by semantic role
+
 
                 // No color found - color red
                 token.HighlightColor = Red;
@@ -115,7 +120,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        public static void HighlightRoslynClassifiedToken(NavToken token)
+        public static void ColorByRoslynClassification(NavToken token)
         {
             switch (token.RoslynClassification)
             {
@@ -157,6 +162,16 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     token.HighlightColor = Yellow;
                     break;
                 default:
+                    break;
+            }
+        }
+
+        public static void ColorBySemanticRole(NavToken token)
+        {
+            switch (token.Map!.SemanticRole)
+            {
+                case SemanticRole.UsingDirective:
+                    token.HighlightColor = "color-white";
                     break;
             }
         }
@@ -247,10 +262,10 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SymbolKind.Field:
                 case SymbolKind.Property:
                 case SymbolKind.Namespace:
-                    token.HighlightColor = White;
+                    token.HighlightColor = Pink;
                     return;
                 case SymbolKind.Method:
-                    token.HighlightColor = Yellow;
+                    token.HighlightColor = Pink;
                     return;
                 default:
                     break;
@@ -268,7 +283,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     token.HighlightColor = Pink;
                     break;
                 case TypeKind.Struct:
-                    token.HighlightColor = Jade;
+                    token.HighlightColor = Pink;
                     return;
                 default:
                     break;

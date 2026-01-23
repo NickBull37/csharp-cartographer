@@ -174,7 +174,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             #endregion
 
             #region Semantic data
-            SemanticData = GetSemanticData(semanticModel, GetSemanticNodeForToken(roslynToken), syntaxTree);
+            //SemanticData = GetSemanticData(semanticModel, GetSemanticNodeForToken(roslynToken), syntaxTree);
             #endregion
 
             #region Contextual data
@@ -1075,7 +1075,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 data.AliasName = alias.Name;
 
                 data.AliasTargetSymbol = alias.Target;
-                data.AliasTargetDisplayString = alias.Target.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                data.AliasTargetName = alias.Target.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
 
                 // Often you want the *target* treated as the "real" symbol for roles/classification.
                 // Keep the alias info, but also swap Symbol to target so downstream logic sees Field/Type/etc.
@@ -1088,10 +1088,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 var locations = symbol.Locations;
 
                 // True for symbols declared in *any* source file in this compilation
-                data.IsInSource = locations.Any(l => l.IsInSource);
+                data.IsInSourceCompilation = locations.Any(l => l.IsInSource);
 
                 // True for symbols coming from metadata (referenced assemblies)
-                data.IsInMetadata = locations.Any(l => l.IsInMetadata);
+                data.IsInReferencedAssemblies = locations.Any(l => l.IsInMetadata);
 
                 // True only when declared in the uploaded file’s syntax tree
                 data.IsInUploadedFile = locations.Any(l => l.IsInSource && ReferenceEquals(l.SourceTree, syntaxTree));
@@ -1119,34 +1119,34 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
                 // "IsDefinition" is more about whether the symbol is an original definition
                 // vs a constructed/reduced one. For methods/types it's often helpful:
-                data.IsDefinition = SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition);
+                data.IsOriginalDefinition = SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition);
 
                 // Grab member type / method signature when applicable
                 switch (symbol)
                 {
                     case IFieldSymbol f:
-                        data.MemberTypeDisplayString = f.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                        data.MemberType = f.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                         data.MemberTypeKind = f.Type.Kind;
                         break;
 
                     case IPropertySymbol p:
-                        data.MemberTypeDisplayString = p.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                        data.MemberType = p.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                         data.MemberTypeKind = p.Type.Kind;
                         break;
 
                     case ILocalSymbol l:
-                        data.MemberTypeDisplayString = l.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                        data.MemberType = l.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                         data.MemberTypeKind = l.Type.Kind;
                         break;
 
                     case IParameterSymbol par:
-                        data.MemberTypeDisplayString = par.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                        data.MemberType = par.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                         data.MemberTypeKind = par.Type.Kind;
                         break;
 
                     case IMethodSymbol m:
                         data.IsAsync = m.IsAsync;
-                        data.MemberTypeDisplayString = m.ReturnType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                        data.MemberType = m.ReturnType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                         data.MethodSignature = m.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
                         data.MethodKind = m.MethodKind;
                         data.IsGenericMethod = m.IsGenericMethod;
@@ -1167,8 +1167,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             {
                 data.TypeKind = type.TypeKind;
 
-                data.NullabilityFlowState = typeInfo.Nullability.FlowState;
-                data.NullabilityAnnotation = type.NullableAnnotation;
+                //data.NullabilityFlowState = typeInfo.Nullability.FlowState;
+                //data.NullabilityAnnotation = type.NullableAnnotation;
             }
 
             if (typeInfo.ConvertedType is ITypeSymbol ctype)
@@ -1176,17 +1176,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 data.ConvertedTypeKind = ctype.TypeKind;
 
                 // flow state is for the expression; same object
-                data.ConvertedNullabilityFlowState = typeInfo.Nullability.FlowState;
-                data.ConvertedNullabilityAnnotation = ctype.NullableAnnotation;
+                //data.ConvertedNullabilityFlowState = typeInfo.Nullability.FlowState;
+                //data.ConvertedNullabilityAnnotation = ctype.NullableAnnotation;
             }
 
             // 6) Constant value (works on expressions where Roslyn can evaluate a constant)
-            var constant = semanticModel.GetConstantValue(node);
-            data.HasConstantValue = constant.HasValue;
-            if (constant.HasValue)
-            {
-                data.ConstantValue = constant.Value is null ? "null" : constant.Value.ToString();
-            }
+            //var constant = semanticModel.GetConstantValue(node);
+            //data.HasConstantValue = constant.HasValue;
+            //if (constant.HasValue)
+            //{
+            //    data.ConstantValue = constant.Value is null ? "null" : constant.Value.ToString();
+            //}
 
             // 7) Operations API (often *better* than SymbolInfo for expressions)
             //    This returns null on many declaration nodes; it’s still valuable when present.

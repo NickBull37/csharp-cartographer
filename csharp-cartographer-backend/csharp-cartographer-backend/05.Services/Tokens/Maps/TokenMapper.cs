@@ -543,11 +543,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!token.IsIdentifier())
                 return SemanticRole.None;
 
-            // Roslyn will generate semantic token data if it can see the token definition. Set tokens using
-            // semantic data first since it is more reliable.
-
-
-
             //if (token.SemanticData?.SymbolKind == SymbolKind.Property)
             //{
             //    return SemanticRole.PropertyAccess;
@@ -736,6 +731,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             {
                 case TypeKind.Class:
                     return SemanticRole.StaticTypeQualifier;
+
+                //case TypeKind.Struct:
+                //    return SemanticRole.StructQualifier;
 
                 //case TypeKind.Array:
                 //    return SemanticRole.NamespaceReference;
