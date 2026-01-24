@@ -151,7 +151,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
             if (_config.ShouldLogUnidentifiedTokens)
             {
-                var unidentifiedTokens = artifact.NavTokens.Where(token => token.HighlightColor == "color-red");
+                var unidentifiedTokens = artifact.NavTokens.Where(token => token.HighlightColor == "color-red" || token.HighlightColor == "color-pink");
                 var semanticTokens = artifact.NavTokens.Where(token => token.SemanticData is not null);
 
                 var logTokens = artifact.NavTokens.Where(token => token.HighlightColor == "color-red" && token.SemanticData is not null);

@@ -228,6 +228,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.StringLiteral:
                     token.HighlightColor = "color-orange";
                     break;
+                case SemanticRole.TypeQualifier:
+                    token.HighlightColor = "color-pink";
+                    break;
                 // --------------------------------------------------------- //
                 case SemanticRole.CastType:
                 case SemanticRole.CastTargetType:
@@ -240,7 +243,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.ParameterDataType:
                 case SemanticRole.PropertyDataType:
                 case SemanticRole.SimpleBaseType:
-                //case SemanticRole.StaticMemberQualifier:
+                //case SemanticRole.TypeQualifier:
                 case SemanticRole.TupleElementType:
                 case SemanticRole.TypePatternType:
                     token.HighlightColor = GuessColor(token.Text);

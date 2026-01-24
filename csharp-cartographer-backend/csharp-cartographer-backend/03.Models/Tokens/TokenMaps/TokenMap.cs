@@ -121,7 +121,6 @@
         InterfaceDeclaration,
         LocalVariableDeclaration,
         MethodDeclaration,
-        NamespaceDeclaration,
         ParameterDeclaration,
         PropertyDeclaration,
         RecordDeclaration,
@@ -148,7 +147,6 @@
         FieldReference,
         InterfaceReference,
         LocalVariableReference,
-        NamespaceReference,
         ParameterReference,
         PropertyReference,
         PropertyOrEnumMemberReference,
@@ -203,7 +201,7 @@
         //QualifiedTarget,
         NamespaceQualifer,
         NamespaceDeclarationQualifer,
-        //StaticMemberQualifier,
+        TypeQualifier,
         UsingDirectiveQualifier,
     }
 

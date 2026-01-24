@@ -681,6 +681,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsAliasDeclarationIdentifier())
                 return SemanticRole.AliasDeclaration;
 
+            if (token.IsAliasQualifier())
+                return SemanticRole.AliasQualifier;
+
             // Identifier - generic type args
             if (token.IsGenericTypeArgument())
                 return SemanticRole.GenericTypeArgument;
@@ -763,18 +766,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             //    case TypeKind.Unknown:
             //        return SemanticRole.None;
             //}
+
             // --------------------------------------------------------- //
 
-            // Identifier - alias qualifiers
-            if (token.IsAliasQualifier())
-                return SemanticRole.AliasQualifier;
-
-            //if (token.IsNamespaceQualifier())
-            //    return SemanticRole.NamespaceQualifer;
-
-            // Identifier - static member qualifiers
-            //if (token.IsStaticMemberQualifier())
-            //    return SemanticRole.StaticMemberQualifier;
+            // Identifier - type qualifiers
+            if (token.IsTypeQualifier())
+                return SemanticRole.TypeQualifier;
 
             return SemanticRole.None;
         }

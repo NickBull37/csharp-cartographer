@@ -137,6 +137,8 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             // IO is an alias for System.IO
             using var reader = new IO.StreamReader(path);
 
+            System.Console.WriteLine("");
+
             return reader.ReadLine();
         }
 
