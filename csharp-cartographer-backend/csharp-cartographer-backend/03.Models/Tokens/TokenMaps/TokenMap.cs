@@ -107,7 +107,6 @@
 
         ObjectPropertyAssignment,
         ParameterLabel,
-        UsingDirective,
 
         // Declarations
         AttributeDeclaration,
@@ -192,10 +191,20 @@
         PropertyDataType,
         MethodReturnType,
         SimpleBaseType,
-        StaticTypeQualifier,
         TypePatternType,
         TupleElementName,
         TupleElementType,
+
+
+        // ------------ NAMES / QUALIFIERS ------------ //
+        AliasDeclaration,
+        AliasQualifier,
+        //Qualifier,
+        //QualifiedTarget,
+        NamespaceQualifer,
+        NamespaceDeclarationQualifer,
+        //StaticMemberQualifier,
+        UsingDirectiveQualifier,
     }
 
     public enum TypeSymbols

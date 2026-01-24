@@ -7,7 +7,7 @@
         public required string HighlightColor { get; init; }
     }
 
-    public class ReservedTextColors
+    public static class ReservedTextColors
     {
         private const string _white = "color-white";
         private const string _gray = "color-gray";

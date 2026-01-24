@@ -330,20 +330,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Identifier Checks
-        public bool IsUsingDirectiveSegment()
-        {
-            if (RoslynClassification is not ("namespace name" or "identifier"))
-                return false;
 
-            var ancestors = AncestorKinds.Ancestors;
-            return ancestors.Length > 0 && ancestors.Last() == SyntaxKind.UsingDirective;
-        }
-
-        public bool IsNamespaceSegment()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "namespace name";
-        }
 
         public bool IsTypeConstraint()
         {
@@ -449,6 +436,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
          *      Declaration Identifiers
          *  -----------------------------------------------------------------------
          */
+
         public bool IsAttributeDeclaration() =>
             HasAncestorAt(1, SyntaxKind.Attribute);
 
@@ -531,7 +519,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
          *  -----------------------------------------------------------------------
          */
 
-        public bool IsFieldReference() => SemanticData?.SymbolKind == SymbolKind.Field && SemanticData.OperationKind == OperationKind.FieldReference;
+        public bool IsFieldReference() => SemanticData?.SymbolKind == SymbolKind.Field
+            && SemanticData.OperationKind == OperationKind.FieldReference;
 
         /*
          *  -----------------------------------------------------------------------
@@ -570,6 +559,120 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsPropertyDataType() =>
             HasAncestorAt(1, SyntaxKind.PropertyDeclaration) ||
             HasAncestorAt(2, SyntaxKind.PropertyDeclaration);
+
+        /*
+         *  -----------------------------------------------------------------------
+         *      Alias / Qualifier Identifiers
+         *  -----------------------------------------------------------------------
+         */
+
+        public bool IsUsingDirectiveQualifier()
+        {
+            // skips using keyword, DotToken and SemiColonToken in using directives
+            if (RoslynClassification is not ("namespace name" or "identifier"))
+                return false;
+
+            // skips alias declarations
+            if (NextToken?.Text == "=")
+                return false;
+
+            return AncestorKinds.Ancestors.LastOrDefault() == SyntaxKind.UsingDirective;
+        }
+
+        public bool IsNamespaceDeclarationQualifier()
+        {
+            // skip using dir qualifiers that are shared between using dirs and namespace declaration
+            if (AncestorKinds.Ancestors.LastOrDefault() == SyntaxKind.UsingDirective)
+                return false;
+
+            return RoslynClassification is not null
+                && RoslynClassification == "namespace name"
+                && AncestorKinds.GetLast() == SyntaxKind.NamespaceDeclaration
+                && AncestorKinds.GetSecondToLast() == SyntaxKind.QualifiedName;
+        }
+
+        public bool IsNamespaceQualifier()
+        {
+            // skip using dir qualifiers that are shared between using dirs and namespace declaration
+            if (AncestorKinds.GetLast() == SyntaxKind.UsingDirective)
+                return false;
+
+            if (RoslynClassification is not null && RoslynClassification == "namespace name")
+                return true;
+
+            //             ⌄                ⌄    ⌄       ⌄ 
+            // csharp_cartographer_backend._03.Models.Artifacts.Artifact artifact = new();
+            if (HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.QualifiedName)
+                && HasAncestorAt(2, SyntaxKind.QualifiedName)
+                && NextToken?.Text == "."
+                && AncestorKinds.GetLast() != SyntaxKind.UsingDirective)
+            {
+                return true;
+            }
+
+            //            ⌄
+            // global::System.DateTime.Now
+            if (HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.AliasQualifiedName)
+                && PrevToken?.Text == "::")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsAliasDeclarationIdentifier()
+        {
+            //       ⌄
+            // using IO = System.IO;
+            return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.NameEquals)
+                && PrevToken?.Text == "using";
+        }
+
+        public bool IsAliasQualifier()
+        {
+            //                    ⌄
+            // var token = new MyToken.NavToken();
+            if (HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.QualifiedName)
+                && !HasAncestorAt(2, SyntaxKind.QualifiedName)
+                && PrevToken?.Text != "."
+                && NextToken?.Text == ".")
+                return true;
+
+            //        ⌄
+            // return IO.File.Exists(path);
+            if (HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
+                && PrevToken?.Text != "."
+                && NextToken?.Text == "."
+                && SemanticData?.SymbolKind == SymbolKind.Namespace
+                && SemanticData?.MemberTypeKind == SymbolKind.Alias)
+                return true;
+
+            return false;
+        }
+
+        public bool IsStaticMemberQualifier()
+        {
+            //           ⌄
+            // System.Console.Writeline(text);
+            if (PrevToken?.Text == "." && NextToken?.Text == ".")
+                return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                    && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
+                    && HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression);
+
+            //    ⌄                         ⌄
+            // Console.Writeline(text);    Guid.NewGuid();
+            if (PrevToken?.Text != "." && NextToken?.Text == ".")
+                return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                    && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
+
+            return false;
+        }
         #endregion
 
         #region Literal Checks

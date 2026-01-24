@@ -14,6 +14,22 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 : ancestorKinds;
         }
 
+        public SyntaxKind? GetLast()
+        {
+            if (Ancestors.Length == 0)
+                return null;
+
+            return Ancestors[^1];
+        }
+
+        public SyntaxKind? GetSecondToLast()
+        {
+            if (Ancestors.Length < 2)
+                return null;
+
+            return Ancestors[^2];
+        }
+
         public bool Equals(AncestorNodeKinds other) =>
             Ancestors.SequenceEqual(other.Ancestors);
 

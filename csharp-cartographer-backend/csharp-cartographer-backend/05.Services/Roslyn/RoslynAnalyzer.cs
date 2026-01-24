@@ -259,14 +259,25 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             if (parent is QualifiedNameSyntax)
                 return parent;
 
+            // Alias::Name (global::System, IO::File, etc.)
+            if (parent.FirstAncestorOrSelf<AliasQualifiedNameSyntax>() is { } aqn)
+            {
+                // If the token is the alias identifier (global / IO), bind to that.
+                if (token == aqn.Alias.Identifier)
+                    return aqn.Alias;
+
+                // Otherwise bind to the name side as usual.
+                return aqn.Name;
+            }
+
 
             // Invocation: name, parentheses, commas, etc.
-            if (parent.FirstAncestorOrSelf<InvocationExpressionSyntax>() is { } invoke)
-                return invoke;
+            //if (parent.FirstAncestorOrSelf<InvocationExpressionSyntax>() is { } invoke)
+            //    return invoke;
 
             // Object creation: `new Foo(...)`
-            if (parent.FirstAncestorOrSelf<ObjectCreationExpressionSyntax>() is { } create)
-                return create;
+            //if (parent.FirstAncestorOrSelf<ObjectCreationExpressionSyntax>() is { } create)
+            //    return create;
 
             // default literal / default(T)
             if (parent.FirstAncestorOrSelf<DefaultExpressionSyntax>() is { } defExpr)
@@ -289,7 +300,6 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                 EnumDeclarationSyntax en => semanticModel.GetDeclaredSymbol(en),
                 EventDeclarationSyntax enm => semanticModel.GetDeclaredSymbol(enm),
                 EventFieldDeclarationSyntax efd => semanticModel.GetDeclaredSymbol(efd.Declaration?.Variables.FirstOrDefault()!), // best effort
-                FieldDeclarationSyntax fld => semanticModel.GetDeclaredSymbol(fld),
                 FileScopedNamespaceDeclarationSyntax fsn => semanticModel.GetDeclaredSymbol(fsn),
                 IndexerDeclarationSyntax ind => semanticModel.GetDeclaredSymbol(ind),
                 InterfaceDeclarationSyntax itf => semanticModel.GetDeclaredSymbol(itf),

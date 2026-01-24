@@ -157,7 +157,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
                 var logTokens = artifact.NavTokens.Where(token => token.HighlightColor == "color-red" && token.SemanticData is not null);
 
 
-                CartographerLogger.LogTokens(logTokens);
+                CartographerLogger.LogTokens(unidentifiedTokens);
             }
 
             //List<string> kinds = [];

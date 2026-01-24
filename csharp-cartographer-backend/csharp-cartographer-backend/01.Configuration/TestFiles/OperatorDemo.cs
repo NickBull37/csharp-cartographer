@@ -1,6 +1,8 @@
 ﻿using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._06.Workflows.Artifacts;
 using Microsoft.CodeAnalysis;
+using IO = System.IO;
+using MyToken = csharp_cartographer_backend._03.Models.Tokens;
 
 namespace csharp_cartographer_backend._01.Configuration.TestFiles
 {
@@ -125,6 +127,35 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                 TestInt = 5
             };
             string stringX = test.TestInt.ToString();
+        }
+    }
+
+    public class FileReaderTest
+    {
+        public string ReadFirstLine(string path)
+        {
+            // IO is an alias for System.IO
+            using var reader = new IO.StreamReader(path);
+
+            return reader.ReadLine();
+        }
+
+        public bool FileExists(string path)
+        {
+            var token = new MyToken.NavToken();
+
+            csharp_cartographer_backend._03.Models.Artifacts.Artifact artifact = new(
+                "",
+                TimeSpan.Zero,
+                []);
+
+            _03.Models.Artifacts.Artifact artifact2 = new(
+                "",
+                TimeSpan.Zero,
+                []);
+
+            // Alias used again
+            return IO.File.Exists(path);
         }
     }
 

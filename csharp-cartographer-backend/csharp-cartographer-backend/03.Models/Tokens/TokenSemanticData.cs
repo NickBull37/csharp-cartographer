@@ -6,7 +6,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
     public sealed class TokenSemanticData
     {
         /// **************************************************
-        /// |       Raw Roslyn objects       |
+        /// |               Raw Roslyn objects               |
         /// **************************************************
 
         /// <summary>
@@ -90,6 +90,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public ITypeSymbol? ConvertedTypeSymbol { get; set; }
 
 
+
         /// **************************************************
         /// |                  Alias Support                 |
         /// **************************************************
@@ -100,10 +101,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public string? AliasTargetName { get; set; }
 
 
+
         /// **************************************************
         /// |                  Location Data                 |
         /// **************************************************
-        /// 
 
         /// <summary>
         /// True only when symbol is declared in the uploaded file’s syntax tree.
@@ -116,7 +117,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool? IsInSourceCompilation { get; set; }
 
         /// <summary>
-        /// True for symbols coming from metadata (referenced assemblies).
+        /// True for symbols coming from referenced assemblies (metadata).
         /// </summary>
         public bool? IsInReferencedAssemblies { get; set; }
 
@@ -124,19 +125,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// The file path when symbol is declared in any source file in this compilation.
         /// </summary>
         public string? DeclaredInFilePath { get; set; }
-
-
-
-        /// **************************************************
-        /// |                  Symbol Data                   |
-        /// **************************************************
-        public string SymbolName { get; set; } = string.Empty;
-
-        public SymbolKind SymbolKind { get; set; }
-
-        public string? ContainingType { get; set; }
-
-        public string? ContainingTypeFullyQualified { get; set; }
 
         public string? ContainingNamespace { get; set; }
 
@@ -147,8 +135,23 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
 
         /// **************************************************
-        /// |       Symbol characteristics      |
+        /// |                  Symbol Data                   |
         /// **************************************************
+
+        public string SymbolName { get; set; } = string.Empty;
+
+        public SymbolKind SymbolKind { get; set; }
+
+        public string? ContainingType { get; set; }
+
+        public string? ContainingTypeFullyQualified { get; set; }
+
+
+
+        /// **************************************************
+        /// |             Symbol characteristics             |
+        /// **************************************************
+
         public Accessibility? Accessibility { get; set; }
 
         public bool? IsAbstract { get; set; }
@@ -203,6 +206,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// **************************************************
         /// |       Member-ish Details (when available)      |
         /// **************************************************
+
         public bool IsFieldSymbol { get; set; }
 
         public bool IsPropertySymbol { get; set; }
@@ -218,7 +222,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public string MemberTypeFullyQualified { get; set; } = string.Empty;
 
         public SymbolKind MemberTypeKind { get; set; }
-
 
         // Methods Only
         public MethodKind? MethodKind { get; set; }
@@ -238,27 +241,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public ImmutableArray<ITypeParameterSymbol>? TypeParameters { get; set; }
 
 
+
         /// **************************************************
         /// |                    Type Info                   |
         /// **************************************************
+        /// 
         public TypeKind? TypeKind { get; set; }
 
         public TypeKind? ConvertedTypeKind { get; set; }
 
 
 
-
-        //public NullableFlowState? NullabilityFlowState { get; set; }
-
-        //public NullableAnnotation? NullabilityAnnotation { get; set; }
-
-        //public NullableFlowState? ConvertedNullabilityFlowState { get; set; }
-
-        //public NullableAnnotation? ConvertedNullabilityAnnotation { get; set; }
-
-
         /// **************************************************
-        /// |       Operations / constants      |
+        /// |             Operations / constants             |
         /// **************************************************
 
         public OperationKind OperationKind { get; set; }
@@ -266,12 +261,5 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public string? OperationResultType { get; set; }
 
         public string? OperationResultTypeFullyQualified { get; set; }
-
-        //public bool HasConstantValue { get; set; }
-
-        //public string? ConstantValue { get; set; }
-
-
-
     }
 }

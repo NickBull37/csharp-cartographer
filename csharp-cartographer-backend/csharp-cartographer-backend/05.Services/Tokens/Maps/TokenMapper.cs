@@ -668,12 +668,18 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.RoslynClassification == "struct name" && token.IsObjectCreationExpression())
                 return SemanticRole.StructConstructorInvocation;
 
-            // Identifier - namespaces
-            if (token.IsUsingDirectiveSegment())
-                return SemanticRole.UsingDirective;
+            // Identifier - namespaces, aliases, qualifiers
+            if (token.IsUsingDirectiveQualifier())
+                return SemanticRole.UsingDirectiveQualifier;
 
-            if (token.IsNamespaceSegment())
-                return SemanticRole.NamespaceDeclaration;
+            if (token.IsNamespaceDeclarationQualifier())
+                return SemanticRole.NamespaceDeclarationQualifer;
+
+            if (token.IsNamespaceQualifier())
+                return SemanticRole.NamespaceQualifer;
+
+            if (token.IsAliasDeclarationIdentifier())
+                return SemanticRole.AliasDeclaration;
 
             // Identifier - generic type args
             if (token.IsGenericTypeArgument())
@@ -727,37 +733,48 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
 
 
-            switch (token.SemanticData?.TypeKind)
-            {
-                case TypeKind.Class:
-                    return SemanticRole.StaticTypeQualifier;
+            //switch (token.SemanticData?.TypeKind)
+            //{
+            //    case TypeKind.Class:
+            //        return SemanticRole.StaticMemberQualifier;
 
-                //case TypeKind.Struct:
-                //    return SemanticRole.StructQualifier;
+            //    //case TypeKind.Struct:
+            //    //    return SemanticRole.StructQualifier;
 
-                //case TypeKind.Array:
-                //    return SemanticRole.NamespaceReference;
-                //case TypeKind.Delegate:
-                //    return SemanticRole.None;
-                //case TypeKind.Dynamic:
-                //    return SemanticRole.None;
-                //case TypeKind.Enum:
-                //    return SemanticRole.None;
-                //case TypeKind.Error:
-                //    return SemanticRole.None;
-                //case TypeKind.Interface:
-                //    return SemanticRole.None;
-                //case TypeKind.Pointer:
-                //    return SemanticRole.None;
-                //case TypeKind.Struct:
-                //    return SemanticRole.None;
-                //case TypeKind.TypeParameter:
-                //    return SemanticRole.None;
+            //    //case TypeKind.Array:
+            //    //    return SemanticRole.NamespaceReference;
+            //    //case TypeKind.Delegate:
+            //    //    return SemanticRole.None;
+            //    //case TypeKind.Dynamic:
+            //    //    return SemanticRole.None;
+            //    //case TypeKind.Enum:
+            //    //    return SemanticRole.None;
+            //    //case TypeKind.Error:
+            //    //    return SemanticRole.None;
+            //    //case TypeKind.Interface:
+            //    //    return SemanticRole.None;
+            //    //case TypeKind.Pointer:
+            //    //    return SemanticRole.None;
+            //    //case TypeKind.Struct:
+            //    //    return SemanticRole.None;
+            //    //case TypeKind.TypeParameter:
+            //    //    return SemanticRole.None;
 
-                case TypeKind.Unknown:
-                    return SemanticRole.None;
-            }
+            //    case TypeKind.Unknown:
+            //        return SemanticRole.None;
+            //}
+            // --------------------------------------------------------- //
 
+            // Identifier - alias qualifiers
+            if (token.IsAliasQualifier())
+                return SemanticRole.AliasQualifier;
+
+            //if (token.IsNamespaceQualifier())
+            //    return SemanticRole.NamespaceQualifer;
+
+            // Identifier - static member qualifiers
+            //if (token.IsStaticMemberQualifier())
+            //    return SemanticRole.StaticMemberQualifier;
 
             return SemanticRole.None;
         }

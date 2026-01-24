@@ -78,23 +78,19 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     continue;
                 }
 
-                // Color by semantic role
-                ColorBySemanticRole(token);
-                if (token.HighlightColor is not null)
-                    continue;
-
                 // Color by semantic data
                 HighlightUsingSemanticData(token);
                 if (token.HighlightColor is not null)
                     continue;
 
-
+                // Color by semantic role
+                ColorBySemanticRole(token);
+                if (token.HighlightColor is not null)
+                    continue;
 
                 // No color found - color red
                 token.HighlightColor = Red;
             }
-
-            //HighlightUnidentifiedTokensRed(navTokens);
         }
 
         public static void HighlightKeyword(NavToken token)
@@ -153,7 +149,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case "enum member name":
                 case "event name":
                 case "field name":
-                case "namespace name":
+                //case "namespace name":
                 case "property name":
                 case "punctuation":
                     token.HighlightColor = White;
@@ -170,28 +166,23 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         {
             switch (token.Map!.SemanticRole)
             {
-                case SemanticRole.UsingDirective:
-                    token.HighlightColor = "color-white";
-                    break;
-            }
-        }
-
-        public static void HighlightExternalIdentifier(NavToken token)
-        {
-            switch (token.Map!.SemanticRole)
-            {
+                case SemanticRole.AliasDeclaration:
                 case SemanticRole.EnumMemberDeclaration:
                 case SemanticRole.EnumMemberReference:
                 case SemanticRole.FieldDeclaration:
                 case SemanticRole.FieldReference:
-                case SemanticRole.NamespaceDeclaration:
+                case SemanticRole.NamespaceDeclarationQualifer:
                 case SemanticRole.ObjectPropertyAssignment:
                 case SemanticRole.PropertyAccess:
                 case SemanticRole.PropertyDeclaration:
                 case SemanticRole.PropertyReference:
                 case SemanticRole.TupleElementName:
-                case SemanticRole.UsingDirective:
+                case SemanticRole.UsingDirectiveQualifier:
                     token.HighlightColor = "color-white";
+                    break;
+                case SemanticRole.AliasQualifier:
+                case SemanticRole.NamespaceQualifer:
+                    token.HighlightColor = "color-gray";
                     break;
                 case SemanticRole.AttributeDeclaration:
                 case SemanticRole.ClassConstructorDeclaration:
@@ -237,6 +228,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.StringLiteral:
                     token.HighlightColor = "color-orange";
                     break;
+                // --------------------------------------------------------- //
                 case SemanticRole.CastType:
                 case SemanticRole.CastTargetType:
                 case SemanticRole.ConstraintType:
@@ -248,9 +240,10 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.ParameterDataType:
                 case SemanticRole.PropertyDataType:
                 case SemanticRole.SimpleBaseType:
+                //case SemanticRole.StaticMemberQualifier:
                 case SemanticRole.TupleElementType:
                 case SemanticRole.TypePatternType:
-                    token.HighlightColor = GetColorForDataTypeIdentifiers(token);
+                    token.HighlightColor = GuessColor(token.Text);
                     break;
             }
         }
@@ -261,11 +254,11 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             {
                 case SymbolKind.Field:
                 case SymbolKind.Property:
-                case SymbolKind.Namespace:
-                    token.HighlightColor = Pink;
+                    //case SymbolKind.Namespace:
+                    token.HighlightColor = White;
                     return;
                 case SymbolKind.Method:
-                    token.HighlightColor = Pink;
+                    token.HighlightColor = Yellow;
                     return;
                 default:
                     break;
@@ -275,68 +268,18 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             {
                 case TypeKind.Class:
                 case TypeKind.Delegate:
-                    token.HighlightColor = Pink;
+                    token.HighlightColor = Green;
                     break;
                 case TypeKind.Enum:
                 case TypeKind.Interface:
                 case TypeKind.TypeParameter:
-                    token.HighlightColor = Pink;
+                    token.HighlightColor = LightGreen;
                     break;
                 case TypeKind.Struct:
-                    token.HighlightColor = Pink;
+                    token.HighlightColor = Jade;
                     return;
                 default:
                     break;
-            }
-        }
-
-        private static string GetColorForDataTypeIdentifiers(NavToken token)
-        {
-            switch (token.RoslynClassification)
-            {
-                case "class name":
-                case "record class name":
-                    return "color-green";
-                case "enum name":
-                case "interface name":
-                    return "color-light-green";
-                case "struct name":
-                case "record struct name":
-                    return "color-jade";
-                default:
-                    return GuessColor(token.Text);
-            }
-        }
-
-        private static void HighlightReservedTextTokens(NavToken token, List<ReservedTextColor> list)
-        {
-            foreach (var element in list)
-            {
-                if (token.Text == "default")
-                {
-                    token.HighlightColor = GetDefaultKeywordColor(token);
-                    continue;
-                }
-
-                if (token.Text == "in")
-                {
-                    token.HighlightColor = GetInKeywordColor(token);
-                    continue;
-                }
-
-                if (token.Text.Equals(element.Text))
-                    token.HighlightColor = element.HighlightColor;
-            }
-        }
-
-        private static void HighlightUnidentifiedTokensRed(List<NavToken> navTokens)
-        {
-            foreach (var token in navTokens)
-            {
-                if (string.IsNullOrEmpty(token.HighlightColor))
-                {
-                    token.HighlightColor = "color-red";
-                }
             }
         }
 
