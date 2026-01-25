@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
-import { TitleBox, StructureSidebar, TokenSidebar, CodeWindow } from "../components";
+//import { TitleBox, StructureSidebar, TokenSidebar, CodeWindow } from "../components";
+import { ArtifactBanner, LeftSidebar, RightSidebar, CodeWindow } from "../components";
 
 const UserCodeCartograph = ({artifact}) => {
 
@@ -46,7 +47,7 @@ const UserCodeCartograph = ({artifact}) => {
     return (
         <Box>
 
-            <TitleBox
+            {/* <TitleBox
                 artifactTitle={artifactTitle}
                 leftSidebarOpen={leftSidebarOpen}
                 numTokens={numTokens}
@@ -76,6 +77,42 @@ const UserCodeCartograph = ({artifact}) => {
                 activeToken={activeToken}
                 setActiveToken={setActiveToken}
                 activeHighlightIndices={[]}
+                setActiveHighlightIndices={setActiveHighlightIndices}
+            /> */}
+
+            <ArtifactBanner
+                artifactTitle={artifactTitle}
+                leftSidebarOpen={leftSidebarOpen}
+                numTokens={numTokens}
+                numTags={numTags}
+                numAncestors={numAncestors}
+                generationTime={generationTime}
+            />
+
+            <LeftSidebar
+                navTokens={navTokens}
+                leftSidebarOpen={leftSidebarOpen}
+                setLeftSidebarOpen={setLeftSidebarOpen}
+                selectedTokens={selectedTokens}
+                setSelectedTokens={setSelectedTokens}
+            />
+
+            <CodeWindow
+                leftSidebarOpen={leftSidebarOpen}
+                tokenList={navTokens}
+                activeToken={activeToken}
+                setActiveToken={setActiveToken}
+                activeHighlightIndices={activeHighlightIndices}
+                setActiveHighlightIndices={setActiveHighlightIndices}
+                selectedTokens={selectedTokens}
+                setSelectedTokens={setSelectedTokens}
+            />
+
+            <RightSidebar
+                navTokens={navTokens}
+                activeToken={activeToken}
+                setActiveToken={setActiveToken}
+                activeHighlightIndices={activeHighlightIndices}
                 setActiveHighlightIndices={setActiveHighlightIndices}
             />
             

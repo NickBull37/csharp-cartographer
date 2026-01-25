@@ -50,6 +50,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             {
                 return TokenPrimaryKind.Operator;
             }
+            if (GlobalConstants.Delimiters.Contains(token.Text))
+            {
+                return TokenPrimaryKind.Delimiter;
+            }
 
             switch (token.RoslynClassification)
             {
@@ -64,8 +68,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 case "string - verbatim":
                 case "number":
                     return TokenPrimaryKind.Literal;
-                case "delimiter":
-                    return TokenPrimaryKind.Delimiter;
                 case "class name":
                 case "constant name":
                 case "delegate name":
@@ -176,6 +178,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsObjectInitializerDelimiter())
                     return SemanticRole.ObjectInitializerBoundary;
+
+                if (token.IsNamespaceDelimiter())
+                    return SemanticRole.NamespaceBoundary;
+
+                if (token.IsClassDelimiter())
+                    return SemanticRole.ClassBoundary;
             }
 
             if (token.Text is "[" or "]")
@@ -350,6 +358,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.ControlFlow;
 
             // --- Event keywords ---
+            if (GlobalConstants.EventKeywords.Contains(token.Text) && token.Kind == SyntaxKind.EventKeyword)
+                return SemanticRole.MemberDeclaration;
+
             if (GlobalConstants.EventKeywords.Contains(token.Text))
                 return SemanticRole.EventHandling;
 
@@ -644,6 +655,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsMethodReturnType())
                 return SemanticRole.MethodReturnType;
+
+            if (token.IsDelegateReturnType())
+                return SemanticRole.DelegateReturnType;
 
             if (token.IsParameterDataType())
                 return SemanticRole.ParameterDataType;

@@ -1,4 +1,6 @@
-﻿namespace DelegateAndEventDemo
+﻿using Handler = System.Action<int>;
+
+namespace DelegateAndEventDemo
 {
     // 1. Define a delegate
     // This defines the *shape* of methods that can handle the event
@@ -11,6 +13,12 @@
 
         // 3. Define an event based on the delegate
         public event TemperatureChangedHandler? TemperatureChanged;
+
+        public event TemperatureChangedHandler TemperatureChangedAgain;
+
+        public event Action<int> TemperatureChangedMore;
+
+        public event Func<int, (int min, int max)> RangeRequested;
 
         public int Temperature
         {
@@ -61,5 +69,35 @@
             // 7. Unsubscribe
             thermostat.TemperatureChanged -= display.ShowTemperature;
         }
+    }
+
+    public class BuiltInDelegates
+    {
+        public event Action TemperatureChanged;
+
+        public event Action<int> TemperatureChangedWithValue;
+
+        public event Func<int, int> ValueTransformed;
+
+        public event Func<int, (int min, int max)> RangeRequested;
+    }
+
+    namespace MyApp.Events
+    {
+        public delegate void TemperatureChangedHandler(int value);
+
+        public delegate bool Predicate(string value);
+
+        public delegate AliasExample PredicateTest(string value);
+    }
+
+    public class FullyQualifiedExample
+    {
+        public event MyApp.Events.TemperatureChangedHandler TemperatureChanged;
+    }
+
+    public class AliasExample
+    {
+        public event Handler TemperatureChanged;
     }
 }

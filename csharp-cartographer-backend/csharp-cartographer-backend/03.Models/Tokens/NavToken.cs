@@ -244,6 +244,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
+        public bool IsClassDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.ClassDeclaration)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsCollectionExpressionDelimiter()
         {
             return IsDelimiter()
@@ -303,11 +310,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.LessThanToken || Kind == SyntaxKind.GreaterThanToken);
         }
 
-        public bool IsParameterListDelimiter()
+        public bool IsNamespaceDelimiter()
         {
             return IsDelimiter()
-                && HasAncestorAt(0, SyntaxKind.ParameterList)
-                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+                && HasAncestorAt(0, SyntaxKind.NamespaceDeclaration)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
         public bool IsObjectInitializerDelimiter()
@@ -315,6 +322,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.ObjectInitializerExpression)
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsParameterListDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.ParameterList)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
         public bool IsInterpolatedValueDelimiter()
@@ -533,6 +547,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 || HasAncestorAt(2, SyntaxKind.MethodDeclaration);
         }
 
+        public bool IsDelegateReturnType()
+        {
+            if (IsTupleElementName() || IsTupleElementType())
+                return false;
+
+            return HasAncestorAt(1, SyntaxKind.DelegateDeclaration)
+                || HasAncestorAt(2, SyntaxKind.DelegateDeclaration);
+        }
+
         public bool IsParameterDataType() =>
             HasAncestorAt(1, SyntaxKind.Parameter) ||
             HasAncestorAt(2, SyntaxKind.Parameter);
@@ -565,6 +588,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             // skip using dir qualifiers that are shared between using dirs and namespace declaration
             if (AncestorKinds.Ancestors.LastOrDefault() == SyntaxKind.UsingDirective)
                 return false;
+
+            // for single segment namespace declarations
+            if (RoslynClassification is not null
+                && RoslynClassification == "namespace name"
+                && AncestorKinds.GetLast() == SyntaxKind.NamespaceDeclaration
+                && PrevToken?.Text == "namespace")
+            {
+                return true;
+            }
 
             return RoslynClassification is not null
                 && RoslynClassification == "namespace name"
