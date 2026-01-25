@@ -115,17 +115,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (semanticRole != SemanticRole.None)
                 return semanticRole;
 
-            // --- Identifiers ---
-            semanticRole = GetSemanticRoleForIdentifiers(token);
-            if (semanticRole != SemanticRole.None)
-                return semanticRole;
-
             // --- Literals ---
             semanticRole = GetSemanticRoleForLiterals(token);
             if (semanticRole != SemanticRole.None)
                 return semanticRole;
 
-            return SemanticRole.None;
+            // --- Identifiers ---
+            semanticRole = GetSemanticRoleForIdentifiers(token);
+            if (semanticRole != SemanticRole.None)
+                return semanticRole;
+
+            // --- Members ---
+            return SemanticRole.MemberAccess;
+
+            //return SemanticRole.None;
         }
 
         private static SemanticRole GetSemanticRoleForDelimiters(NavToken token)
@@ -538,6 +541,31 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             };
         }
 
+        private static SemanticRole GetSemanticRoleForLiterals(NavToken token)
+        {
+            // Numeric literals
+            if (token.IsNumericLiteral())
+                return SemanticRole.NumericLiteral;
+
+            // String literals
+            if (token.IsQuotedString() || token.IsVerbatimString() || token.IsInterpolatedString() || token.IsInterpolatedVerbatimString())
+                return SemanticRole.StringLiteral;
+
+            // Char literals
+            if (token.IsCharacterLiteral())
+                return SemanticRole.CharacterLiteral;
+
+            // Boolean literals
+            if (token.IsBooleanLiteral())
+                return SemanticRole.BooleanLiteral;
+
+            // Null literals
+            if (token.IsNullLiteral())
+                return SemanticRole.NullValue;
+
+            return SemanticRole.None;
+        }
+
         private static SemanticRole GetSemanticRoleForIdentifiers(NavToken token)
         {
             if (!token.IsIdentifier())
@@ -611,7 +639,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsFieldDataType())
                 return SemanticRole.FieldDataType;
 
-            if (token.IsLocalVariableDataType())
+            if (token.IsLocalVariableDataType() || token.IsForEachLoopLocalVariableDataType())
                 return SemanticRole.LocalVariableDataType;
 
             if (token.IsMethodReturnType())
@@ -657,6 +685,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.RoslynClassification == "struct name" && token.IsObjectCreationExpression())
                 return SemanticRole.StructConstructorInvocation;
+
+            if (token.IsObjectCreationExpression())
+                return SemanticRole.ConstructorInvocation;
 
             // Identifier - namespaces, aliases, qualifiers
             if (token.IsUsingDirectiveQualifier())
@@ -751,34 +782,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsJoinIntoRangeVariable())
                 return SemanticRole.JoinIntoRangeVariable;
-
-            //if (token.IsQueryVariableReference())
-            //    return SemanticRole.QueryVariableReference;
-
-            return SemanticRole.None;
-        }
-
-        private static SemanticRole GetSemanticRoleForLiterals(NavToken token)
-        {
-            // Numeric literals
-            if (token.IsNumericLiteral())
-                return SemanticRole.NumericLiteral;
-
-            // String literals
-            if (token.IsQuotedString() || token.IsVerbatimString() || token.IsInterpolatedString() || token.IsInterpolatedVerbatimString())
-                return SemanticRole.StringLiteral;
-
-            // Char literals
-            if (token.IsCharacterLiteral())
-                return SemanticRole.CharacterLiteral;
-
-            // Boolean literals
-            if (token.IsBooleanLiteral())
-                return SemanticRole.BooleanLiteral;
-
-            // Null literals
-            if (token.IsNullLiteral())
-                return SemanticRole.NullValue;
 
             return SemanticRole.None;
         }

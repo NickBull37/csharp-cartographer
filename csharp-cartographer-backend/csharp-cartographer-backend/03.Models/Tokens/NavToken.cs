@@ -330,8 +330,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Identifier Checks
-
-
         public bool IsTypeConstraint()
         {
             if (Kind == SyntaxKind.QuestionToken)
@@ -378,14 +376,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsObjectCreationExpression()
         {
-            return HasAncestorAt(1, SyntaxKind.ObjectCreationExpression);
-        }
+            if (HasAncestorAt(1, SyntaxKind.ObjectCreationExpression))
+                return true;
 
-        public bool IsExternallyDefinedObjectCreationExpression()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "identifier"
-                && HasAncestorAt(1, SyntaxKind.ObjectCreationExpression);
+            // alias qualified constructors
+            return HasAncestorAt(1, SyntaxKind.QualifiedName)
+                && HasAncestorAt(2, SyntaxKind.ObjectCreationExpression)
+                && PrevToken?.Kind == SyntaxKind.DotToken;
         }
 
         public bool IsObjCreationPropertyAssignment()
@@ -394,6 +391,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && RoslynClassification == "identifier"
                 && HasAncestorAt(1, SyntaxKind.SimpleAssignmentExpression)
                 && HasAncestorAt(2, SyntaxKind.ObjectInitializerExpression);
+        }
+
+        public bool IsExternallyDefinedObjectCreationExpression()
+        {
+            return RoslynClassification is not null
+                && RoslynClassification == "identifier"
+                && HasAncestorAt(1, SyntaxKind.ObjectCreationExpression);
         }
 
         public bool IsParameterLabel()
@@ -535,13 +539,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement) ||
             HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
 
-        public bool IsForeachLoopLocalVariableDataType() =>
-            HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement) ||
-            HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
+        public bool IsForEachLoopLocalVariableDataType()
+            => HasAncestorAt(1, SyntaxKind.ForEachStatement);
 
-        public bool IsTupleElementName() => HasAncestorAt(0, SyntaxKind.TupleElement);
+        public bool IsTupleElementName()
+            => HasAncestorAt(0, SyntaxKind.TupleElement);
 
-        public bool IsTupleElementType() => HasAncestorAt(1, SyntaxKind.TupleElement);
+        public bool IsTupleElementType()
+            => HasAncestorAt(1, SyntaxKind.TupleElement);
 
         public bool IsMethodReturnType()
         {
@@ -994,13 +999,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return RoslynClassification is not null
                 && RoslynClassification == "punctuation"
                 && Text == ";";
-            //&&
-            //    (
-            //        HasAncestorAt(0, SyntaxKind.ExpressionStatement) ||
-            //        HasAncestorAt(0, SyntaxKind.LocalDeclarationStatement) ||
-            //        HasAncestorAt(0, SyntaxKind.ReturnStatement) ||
-            //        HasAncestorAt(0, SyntaxKind.FieldDeclaration)
-            //    );
         }
 
         public bool IsSwitchCaseLabelTerminator() => Kind == SyntaxKind.ColonToken
@@ -1029,7 +1027,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsPredefinedType() => SyntaxFacts.IsPredefinedType(Kind);
 
-        public bool IsTypePatternType() => HasAncestorAt(1, SyntaxKind.DeclarationPattern);
+        public bool IsTypePatternType() =>
+            HasAncestorAt(1, SyntaxKind.ConstantPattern) ||
+            HasAncestorAt(1, SyntaxKind.DeclarationPattern) ||
+            HasAncestorAt(1, SyntaxKind.IsExpression);
         #endregion
 
         /// <summary>Gets the token's leading trivia.</summary>

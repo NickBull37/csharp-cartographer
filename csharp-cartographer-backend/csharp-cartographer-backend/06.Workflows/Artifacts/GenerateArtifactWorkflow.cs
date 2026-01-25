@@ -25,12 +25,8 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         private readonly ITokenChartGenerator _tokenChartGenerator;
         private readonly ITokenChartWizard _tokenChartWizard;
         private readonly ITokenTagGenerator _tokenTagGenerator;
-        private readonly IClassificationWizard _classificationWizard;
         private readonly ITokenMapper _tokenMapper;
         private readonly CartographerConfig _config;
-
-        private readonly IOptions<CartographerConfig> _testConfig;
-        private readonly IOptions<CartographerConfig>? _testConfigTwo;
 
         public GenerateArtifactWorkflow(
             IFileProcessor fileProcessor,
@@ -40,7 +36,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             ITokenChartGenerator tokenChartGenerator,
             ITokenChartWizard tokenChartWizard,
             ITokenTagGenerator tokenTagGenerator,
-            IClassificationWizard classificationWizard,
             ITokenMapper tokenMapper,
             IOptions<CartographerConfig> config)
         {
@@ -51,7 +46,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _tokenChartGenerator = tokenChartGenerator;
             _tokenChartWizard = tokenChartWizard;
             _tokenTagGenerator = tokenTagGenerator;
-            _classificationWizard = classificationWizard;
             _tokenMapper = tokenMapper;
             _config = config.Value;
         }
@@ -145,41 +139,15 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         private void LogArtifactData(Artifact artifact)
         {
             if (_config.ShouldLogArtifact)
-            {
                 CartographerLogger.LogArtifact(artifact);
-            }
 
             if (_config.ShouldLogUnidentifiedTokens)
             {
-                var unidentifiedTokens = artifact.NavTokens.Where(token => token.HighlightColor == "color-red" || token.HighlightColor == "color-pink");
-                var semanticTokens = artifact.NavTokens.Where(token => token.SemanticData is not null);
-
-                var logTokens = artifact.NavTokens.Where(token => token.HighlightColor == "color-red" && token.SemanticData is not null);
-
+                var unidentifiedTokens = artifact.NavTokens
+                    .Where(token => token.HighlightColor == "color-red");
 
                 CartographerLogger.LogTokens(unidentifiedTokens);
             }
-
-            //List<string> kinds = [];
-            //foreach (var token in artifact.NavTokens)
-            //{
-            //    var symbolKind = token.SemanticData?.SymbolKind.ToString() + $": {token.Index}";
-
-            //    var operationKind = token.SemanticData?.OperationKind.ToString();
-
-            //    if (operationKind is null)
-            //        continue;
-
-            //    if (!kinds.Contains(operationKind))
-            //    {
-            //        kinds.Add(operationKind);
-            //    }
-            //}
-
-            //foreach (var kind in kinds)
-            //{
-            //    CartographerLogger.LogText(kind);
-            //}
         }
     }
 }

@@ -33,16 +33,16 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         /*
         *  Order for adding syntax highlighting
         *  
-        *  [Keywords, Literals, ]
-        *  1) Highlight keywords, literals, delimiters, operators & punctuation manually [very reliable]
+        *  1a. Highlight Keywords manually (most reliable), use Classification to identify them
         *  
-        *  [Externally Defined Identifiers]
-        *  1) Use Roslyn's classification which is specifically purposed for syntax highlighting
-        *     Roslyn will only have a useful classification if the symbol definition is inside the uploaded file.
+        *  1b. Use Classification directly to highlight delimiters, operators, punctuation, literals,
+        *      and any identifiers defined in the uploaded file (highly reliable).
         *  
-        *  2) Use semantic data in token map. Cannot distinguish classes, enums, structs, etc. defined outside of the uploaded file.,
+        *  2. Use Roslyn semantic data to highlight tokens defined in referenced assembiles (works rarely).
         *  
-        *  3) Color unidentified tokens red.
+        *  3. Use SemanticRole to highlight remaining tokens (not fully reliable until unit tests are in place). 
+        *  
+        *  3. Color unidentified tokens red.
         *  
         */
         public void AddSyntaxHighlightingToNavTokens(List<NavToken> navTokens)
@@ -93,7 +93,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     if (token.HighlightColor is not null)
                         continue;
                 }
-
 
                 ColorBySemanticRole(token);
                 if (token.HighlightColor is not null)
@@ -216,6 +215,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.EnumMemberReference:
                 case SemanticRole.FieldDeclaration:
                 case SemanticRole.FieldReference:
+                case SemanticRole.MemberAccess:
                 case SemanticRole.NamespaceDeclarationQualifer:
                 case SemanticRole.ObjectPropertyAssignment:
                 case SemanticRole.PropertyAccess:
@@ -327,7 +327,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 return LightGreen;
             }
 
-            return Teal;
+            return Green;
         }
     }
 }

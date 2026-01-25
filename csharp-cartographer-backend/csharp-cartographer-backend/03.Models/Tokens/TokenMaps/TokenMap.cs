@@ -197,8 +197,8 @@
         // ------------ NAMES / QUALIFIERS ------------ //
         AliasDeclaration,
         AliasQualifier,
-        //Qualifier,
         //QualifiedTarget,
+        MemberName,
         NamespaceQualifer,
         NamespaceDeclarationQualifer,
         TypeQualifier,
@@ -297,6 +297,8 @@
         Array,
         Pointer,
         GenericTypeParameter,
+        For,
+        ForEach,
 
         // Property / accessor modifiers
         Getter,

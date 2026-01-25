@@ -6,6 +6,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace csharp_cartographer_backend._05.Services.Roslyn
 {
+
+    // TODO: See if it's possible pass in common c# libraries to analyzer to get
+    //       more data on common types (DateTime, Console, Guid, etc.)
+
     public class RoslynAnalyzer : IRoslynAnalyzer
     {
         public SyntaxTree GetSyntaxTree(FileData fileData)
