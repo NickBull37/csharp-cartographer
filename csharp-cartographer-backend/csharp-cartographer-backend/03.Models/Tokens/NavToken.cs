@@ -173,10 +173,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             AncestorKindChain = GetAncestorKindChain(roslynToken);
             #endregion
 
-            #region Semantic data
-            //SemanticData = GetSemanticData(semanticModel, GetSemanticNodeForToken(roslynToken), syntaxTree);
-            #endregion
-
             #region Contextual data
             References = GetContextualData(semanticModel, syntaxTree, roslynToken);
             #endregion
@@ -413,26 +409,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
                 && !HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression)
                 && PrevToken?.Kind == SyntaxKind.DotToken;
-        }
-
-        private bool HasIdenticalAncestorsAsNextIdentifier()
-        {
-            var nextIdentifier = NextToken?.NextToken;
-
-            if (nextIdentifier is null)
-                return false;
-
-            return AncestorKinds.Equals(nextIdentifier.AncestorKinds);
-        }
-
-        private bool HasIdenticalAncestorsAsPrevIdentifier()
-        {
-            var prevIdentifier = PrevToken?.PrevToken;
-
-            if (prevIdentifier is null)
-                return false;
-
-            return AncestorKinds.Equals(prevIdentifier.AncestorKinds);
         }
 
         /*
@@ -946,8 +922,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsNullableTypeMarker() => Kind == SyntaxKind.QuestionToken
             && HasAncestorAt(0, SyntaxKind.NullableType);
 
-        //public bool IsNullableTypeMarker() => SemanticData?.SymbolName == "Nullable";
-
         public bool IsNullableConstraintTypeMarker()
         {
             if (Kind != SyntaxKind.QuestionToken)
@@ -956,7 +930,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return HasAncestorAt(0, SyntaxKind.ClassConstraint)
                 || HasAncestorAt(0, SyntaxKind.StructConstraint);
         }
-
 
         public bool IsParameterSeparator()
         {

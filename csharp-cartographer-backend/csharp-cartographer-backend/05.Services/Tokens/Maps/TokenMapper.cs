@@ -126,9 +126,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return semanticRole;
 
             // --- Members ---
-            return SemanticRole.MemberAccess;
+            //return SemanticRole.MemberAccess;
 
-            //return SemanticRole.None;
+            return SemanticRole.None;
         }
 
         private static SemanticRole GetSemanticRoleForDelimiters(NavToken token)
