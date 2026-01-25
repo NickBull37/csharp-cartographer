@@ -203,6 +203,16 @@
         NamespaceDeclarationQualifer,
         TypeQualifier,
         UsingDirectiveQualifier,
+
+        // ------------ QUERY EXPRESSIONS ------------ //
+        GroupContinuationRangeVariable,
+        JoinIntoRangeVariable,
+        JoinRangeVariable,
+        JoinSource,
+        LetVariable,
+        QuerySource,
+        QueryVariableReference,
+        RangeVariable,
     }
 
     public enum TypeSymbols

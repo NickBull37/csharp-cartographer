@@ -443,4 +443,108 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             Console.WriteLine(*p2);
         }
     }
+
+    public class QueryExpressionDemo
+    {
+        public static void Main()
+        {
+            var numbers = new List<Item>
+            {
+                new Item { Id = 1, Value = 5,  Category = "A" },
+                new Item { Id = 2, Value = 20, Category = "A" },
+                new Item { Id = 3, Value = 15, Category = "B" },
+                new Item { Id = 4, Value = 30, Category = "B" },
+            };
+
+            var labels = new List<Label>
+            {
+                new Label { Id = 1, Name = "One" },
+                new Label { Id = 2, Name = "Two" },
+                new Label { Id = 3, Name = "Three" },
+                new Label { Id = 4, Name = "Four" },
+            };
+
+            // 1) Basic from / in / where / select
+            var evens =
+                from n in numbers
+                where n.Value % 2 == 0
+                select n.Value;
+
+            // 2) let
+            var squares =
+                from n in numbers
+                let doubled = n.Value * 2
+                where doubled > 20
+                select doubled;
+
+            // 3) join / on / equals
+            var joined =
+                from n in numbers
+                join l in labels on n.Id equals l.Id
+                select new { n.Value, l.Name };
+
+            // 4) group ... by
+            var grouped =
+                from n in numbers
+                group n by n.Category;
+
+            // 5) group ... by ... into
+            var groupedFiltered =
+                from n in numbers
+                group n by n.Category into g
+                where g.Count() > 1
+                select new
+                {
+                    Category = g.Key,
+                    Count = g.Count()
+                };
+
+            // 6) join ... into (group join)
+            var groupJoin =
+                from n in numbers
+                join l in labels on n.Id equals l.Id into matches
+                select new
+                {
+                    n.Id,
+                    MatchCount = matches.Count()
+                };
+
+            // 7) orderby ascending / descending
+            var ordered =
+                from n in numbers
+                orderby n.Category ascending, n.Value descending
+                select n;
+
+            // 8) Full example (uses almost every keyword)
+            var full =
+                from n in numbers
+                join l in labels on n.Id equals l.Id
+                let doubled = n.Value * 2
+                where doubled > 10
+                group new { n, l, doubled } by n.Category into g
+                orderby g.Key ascending
+                select new
+                {
+                    Category = g.Key,
+                    Count = g.Count(),
+                    MaxDoubled = g.Max(x => x.doubled)
+                };
+
+            // Force enumeration so everything actually runs
+            Console.WriteLine("Done");
+        }
+
+        public class Item
+        {
+            public int Id { get; set; }
+            public int Value { get; set; }
+            public string Category { get; set; } = "";
+        }
+
+        public class Label
+        {
+            public int Id { get; set; }
+            public string Name { get; set; } = "";
+        }
+    }
 }

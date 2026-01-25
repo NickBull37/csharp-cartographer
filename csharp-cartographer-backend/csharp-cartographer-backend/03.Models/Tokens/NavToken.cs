@@ -662,6 +662,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (NextToken?.Text != ".")
                 return false;
 
+            // skips query expression vars when they ref a property
+            //               ⌄
+            // let doubled = n.Value * 2 
+            if (IsQueryExpressionVariable())
+                return false;
+
             //           ⌄
             // System.Console.WriteLine(text);
             if (PrevToken?.Text == ".")
@@ -677,6 +683,111 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
 
             return false;
+        }
+
+        /*
+         *  -----------------------------------------------------------------------
+         *      Query Expression Identifiers
+         *  -----------------------------------------------------------------------
+         */
+
+        public bool IsQueryExpressionVariable()
+        {
+            List<SyntaxKind> kinds =
+            [
+                SyntaxKind.FromClause,
+                SyntaxKind.LetClause,
+                SyntaxKind.JoinClause,
+                SyntaxKind.QueryContinuation,
+                SyntaxKind.QueryBody,
+                SyntaxKind.QueryExpression,
+                SyntaxKind.WhereClause,
+                SyntaxKind.WhenClause,
+                SyntaxKind.GroupClause,
+                SyntaxKind.OrderByClause,
+                SyntaxKind.SelectClause,
+                SyntaxKind.AscendingOrdering,
+                SyntaxKind.DescendingOrdering,
+            ];
+
+            foreach (var kind in AncestorKinds.Ancestors)
+            {
+                if (kinds.Contains(kind))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public bool IsRangeVariable()
+        {
+            //                  ⌄
+            // var query = from n in numbers
+            return HasAncestorAt(0, SyntaxKind.FromClause)
+                && HasAncestorAt(1, SyntaxKind.QueryExpression)
+                && PrevToken?.Text == "from";
+        }
+
+        public bool IsQueryVariableReference()
+        {
+            // TODO: split this into specific query exp vars (not reliable)
+            //                                       ⌄
+            // from n in numbers join l in labels on n.Id
+            return SemanticData?.SymbolKind == SymbolKind.RangeVariable;
+        }
+
+        public bool IsQuerySource()
+        {
+            //                          ⌄
+            // var query = from n in numbers
+            return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.FromClause)
+                && PrevToken?.Text == "in";
+        }
+
+        public bool IsJoinRangeVariable()
+        {
+            //      ⌄
+            // join l in labels on n.Id equals l.Id
+            return HasAncestorAt(0, SyntaxKind.JoinClause)
+                && HasAncestorAt(1, SyntaxKind.QueryBody)
+                && PrevToken?.Text == "join";
+        }
+
+        public bool IsJoinSource()
+        {
+            //             ⌄
+            // join l in labels on n.Id equals l.Id
+            return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.JoinClause)
+                && PrevToken?.Text == "in";
+        }
+
+        public bool IsLetVariable()
+        {
+            //        ⌄
+            // let doubled = n.Value * 2
+            return HasAncestorAt(0, SyntaxKind.LetClause)
+                && HasAncestorAt(1, SyntaxKind.QueryBody)
+                && PrevToken?.Text == "let";
+        }
+
+        public bool IsGroupContinuationRangeVariable()
+        {
+            //                                             ⌄
+            // group new { n, l, doubled } by n.Value into g
+            return HasAncestorAt(0, SyntaxKind.QueryContinuation)
+                && HasAncestorAt(1, SyntaxKind.QueryBody)
+                && PrevToken?.Text == "into";
+        }
+
+        public bool IsJoinIntoRangeVariable()
+        {
+            //                                              ⌄
+            // join l in labels on n.Id equals l.Id into matches
+            return HasAncestorAt(0, SyntaxKind.JoinIntoClause)
+                && HasAncestorAt(1, SyntaxKind.JoinClause)
+                && PrevToken?.Text == "into";
         }
         #endregion
 

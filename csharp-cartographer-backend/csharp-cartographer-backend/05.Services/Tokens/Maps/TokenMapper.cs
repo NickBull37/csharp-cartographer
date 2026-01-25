@@ -13,17 +13,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             for (int i = 0; i < navTokens.Count; i++)
             {
                 var token = navTokens[i];
-                var previous = i > 0 ? navTokens[i - 1] : null;
-                var next = i < navTokens.Count - 1 ? navTokens[i + 1] : null;
-
-                token.Map = MapToken(token, previous, next);
+                token.Map = MapToken(token);
             }
         }
 
-        private static TokenMap MapToken(NavToken token, NavToken? previous, NavToken? next)
+        private static TokenMap MapToken(NavToken token)
         {
             var primaryKind = GetPrimaryKind(token);
-            var role = GetSemanticRole(token, previous, next);
+            var role = GetSemanticRole(token);
             var modifiers = GetSemanticModifiers(token);
 
             return new TokenMap(
@@ -91,7 +88,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         }
 
         #region Semantic Roles
-        private static SemanticRole GetSemanticRole(NavToken token, NavToken? previous, NavToken? next)
+        private static SemanticRole GetSemanticRole(NavToken token)
         {
             var semanticRole = SemanticRole.None;
 
@@ -543,16 +540,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!token.IsIdentifier())
                 return SemanticRole.None;
 
-            //if (token.SemanticData?.SymbolKind == SymbolKind.Property)
-            //{
-            //    return SemanticRole.PropertyAccess;
-            //}
-
-            //if (token.SemanticData?.SymbolKind == SymbolKind.Field)
-            //{
-            //    return SemanticRole.FieldAccess;
-            //}
-
             // --- Identifiers: Declarations ---
             if (token.IsAttributeDeclaration())
                 return SemanticRole.AttributeDeclaration;
@@ -734,44 +721,36 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsParameterLabel())
                 return SemanticRole.ParameterLabel;
 
-
-
-            //switch (token.SemanticData?.TypeKind)
-            //{
-            //    case TypeKind.Class:
-            //        return SemanticRole.StaticMemberQualifier;
-
-            //    //case TypeKind.Struct:
-            //    //    return SemanticRole.StructQualifier;
-
-            //    //case TypeKind.Array:
-            //    //    return SemanticRole.NamespaceReference;
-            //    //case TypeKind.Delegate:
-            //    //    return SemanticRole.None;
-            //    //case TypeKind.Dynamic:
-            //    //    return SemanticRole.None;
-            //    //case TypeKind.Enum:
-            //    //    return SemanticRole.None;
-            //    //case TypeKind.Error:
-            //    //    return SemanticRole.None;
-            //    //case TypeKind.Interface:
-            //    //    return SemanticRole.None;
-            //    //case TypeKind.Pointer:
-            //    //    return SemanticRole.None;
-            //    //case TypeKind.Struct:
-            //    //    return SemanticRole.None;
-            //    //case TypeKind.TypeParameter:
-            //    //    return SemanticRole.None;
-
-            //    case TypeKind.Unknown:
-            //        return SemanticRole.None;
-            //}
-
             // --------------------------------------------------------- //
 
             // Identifier - type qualifiers
             if (token.IsTypeQualifier())
                 return SemanticRole.TypeQualifier;
+
+            // Identifier - query expressions
+            if (token.IsRangeVariable())
+                return SemanticRole.RangeVariable;
+
+            if (token.IsQuerySource())
+                return SemanticRole.QuerySource;
+
+            if (token.IsJoinRangeVariable())
+                return SemanticRole.JoinRangeVariable;
+
+            if (token.IsJoinSource())
+                return SemanticRole.JoinSource;
+
+            if (token.IsLetVariable())
+                return SemanticRole.LetVariable;
+
+            if (token.IsGroupContinuationRangeVariable())
+                return SemanticRole.GroupContinuationRangeVariable;
+
+            if (token.IsJoinIntoRangeVariable())
+                return SemanticRole.JoinIntoRangeVariable;
+
+            if (token.IsQueryVariableReference())
+                return SemanticRole.QueryVariableReference;
 
             return SemanticRole.None;
         }

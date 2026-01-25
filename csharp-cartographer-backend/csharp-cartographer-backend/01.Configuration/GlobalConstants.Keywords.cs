@@ -376,6 +376,7 @@
             "equals",
             "from",
             "group",
+            "in",
             "into",
             "join",
             "let",

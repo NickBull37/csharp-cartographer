@@ -178,6 +178,15 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.PropertyReference:
                 case SemanticRole.TupleElementName:
                 case SemanticRole.UsingDirectiveQualifier:
+                // query expression vars
+                case SemanticRole.GroupContinuationRangeVariable:
+                case SemanticRole.JoinIntoRangeVariable:
+                case SemanticRole.JoinRangeVariable:
+                case SemanticRole.JoinSource:
+                case SemanticRole.LetVariable:
+                case SemanticRole.QuerySource:
+                case SemanticRole.QueryVariableReference:
+                case SemanticRole.RangeVariable:
                     token.HighlightColor = "color-white";
                     break;
                 case SemanticRole.AliasQualifier:
@@ -228,9 +237,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.StringLiteral:
                     token.HighlightColor = "color-orange";
                     break;
-                case SemanticRole.TypeQualifier:
-                    token.HighlightColor = "color-pink";
-                    break;
+                //case SemanticRole.StringLiteral:
+                //    token.HighlightColor = "color-pink";
+                //    break;
                 // --------------------------------------------------------- //
                 case SemanticRole.CastType:
                 case SemanticRole.CastTargetType:
@@ -243,7 +252,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.ParameterDataType:
                 case SemanticRole.PropertyDataType:
                 case SemanticRole.SimpleBaseType:
-                //case SemanticRole.TypeQualifier:
+                case SemanticRole.TypeQualifier:
                 case SemanticRole.TupleElementType:
                 case SemanticRole.TypePatternType:
                     token.HighlightColor = GuessColor(token.Text);
