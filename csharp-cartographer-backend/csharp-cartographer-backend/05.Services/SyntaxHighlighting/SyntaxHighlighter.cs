@@ -1,7 +1,9 @@
-﻿using csharp_cartographer_backend._01.Configuration.ReservedText;
+﻿using csharp_cartographer_backend._01.Configuration.Configs;
+using csharp_cartographer_backend._01.Configuration.ReservedText;
 using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.Options;
 
 namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 {
@@ -17,8 +19,16 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         const string Pink = "color-pink";
         const string Purple = "color-purple";
         const string Red = "color-red";
+        const string Teal = "color-teal";
         const string White = "color-white";
         const string Yellow = "color-yellow";
+
+        private readonly CartographerConfig _config;
+
+        public SyntaxHighlighter(IOptions<CartographerConfig> config)
+        {
+            _config = config.Value;
+        }
 
         /*
         *  Order for adding syntax highlighting
@@ -42,14 +52,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 if (token.Map is null)
                     continue;
 
-                // Roslyn classified keywords
                 if (token.RoslynClassification is "keyword" or "keyword - control")
                 {
-                    HighlightKeyword(token);
+                    ColorByKeyword(token);
                     continue;
                 }
 
-                // Roslyn classified tokens
                 if (token.RoslynClassification
                     is "class name"
                     or "constant name"
@@ -61,7 +69,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     or "interface name"
                     or "local name"
                     or "method name"
-                    or "namespace name"
+                    //or "namespace name"
                     or "number"
                     or "operator"
                     or "parameter name"
@@ -78,12 +86,15 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     continue;
                 }
 
-                // Color by semantic data
-                HighlightUsingSemanticData(token);
-                if (token.HighlightColor is not null)
-                    continue;
+                // Is subject to change and could break in the future
+                if (_config.SemanticDataHighlightingEnabled)
+                {
+                    ColorBySemanticData(token);
+                    if (token.HighlightColor is not null)
+                        continue;
+                }
 
-                // Color by semantic role
+
                 ColorBySemanticRole(token);
                 if (token.HighlightColor is not null)
                     continue;
@@ -93,7 +104,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        public static void HighlightKeyword(NavToken token)
+        public static void ColorByKeyword(NavToken token)
         {
             foreach (var keyword in ReservedTextColors.Keywords)
             {
@@ -162,6 +173,40 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
+        private static void ColorBySemanticData(NavToken token)
+        {
+            switch (token.SemanticData?.SymbolKind)
+            {
+                case SymbolKind.Field:
+                case SymbolKind.Property:
+                    token.HighlightColor = White;
+                    return;
+                case SymbolKind.Method:
+                    token.HighlightColor = Yellow;
+                    return;
+                default:
+                    break;
+            }
+
+            switch (token.SemanticData?.TypeKind)
+            {
+                case TypeKind.Class:
+                case TypeKind.Delegate:
+                    token.HighlightColor = Green;
+                    return;
+                case TypeKind.Enum:
+                case TypeKind.Interface:
+                case TypeKind.TypeParameter:
+                    token.HighlightColor = LightGreen;
+                    return;
+                case TypeKind.Struct:
+                    token.HighlightColor = Jade;
+                    return;
+                default:
+                    break;
+            }
+        }
+
         public static void ColorBySemanticRole(NavToken token)
         {
             switch (token.Map!.SemanticRole)
@@ -187,11 +232,16 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.QuerySource:
                 case SemanticRole.QueryVariableReference:
                 case SemanticRole.RangeVariable:
-                    token.HighlightColor = "color-white";
+                case SemanticRole.GroupContinuationRangeVariableReference:
+                case SemanticRole.JoinIntoRangeVariableReference:
+                case SemanticRole.JoinRangeVariableReference:
+                case SemanticRole.LetVariableReference:
+                case SemanticRole.RangeVariableReference:
+                    token.HighlightColor = White;
                     break;
                 case SemanticRole.AliasQualifier:
                 case SemanticRole.NamespaceQualifer:
-                    token.HighlightColor = "color-gray";
+                    token.HighlightColor = Gray;
                     break;
                 case SemanticRole.AttributeDeclaration:
                 case SemanticRole.ClassConstructorDeclaration:
@@ -203,14 +253,14 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.RecordConstructorInvocation:
                 case SemanticRole.RecordDeclaration:
                 case SemanticRole.RecordReference:
-                    token.HighlightColor = "color-green";
+                    token.HighlightColor = Green;
                     break;
                 case SemanticRole.EnumDeclaration:
                 case SemanticRole.EnumReference:
                 case SemanticRole.InterfaceDeclaration:
                 case SemanticRole.InterfaceReference:
                 case SemanticRole.NumericLiteral:
-                    token.HighlightColor = "color-light-green";
+                    token.HighlightColor = LightGreen;
                     break;
                 case SemanticRole.RecordStructDeclaration:
                 case SemanticRole.RecordStructConstructorDeclaration:
@@ -220,27 +270,24 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.StructConstructorDeclaration:
                 case SemanticRole.StructConstructorInvocation:
                 case SemanticRole.StructReference:
-                    token.HighlightColor = "color-jade";
+                    token.HighlightColor = Jade;
                     break;
                 case SemanticRole.LocalVariableDeclaration:
                 case SemanticRole.LocalVariableReference:
                 case SemanticRole.ParameterDeclaration:
                 case SemanticRole.ParameterLabel:
                 case SemanticRole.ParameterReference:
-                    token.HighlightColor = "color-light-blue";
+                    token.HighlightColor = LightBlue;
                     break;
                 case SemanticRole.MethodDeclaration:
                 case SemanticRole.MethodInvocation:
-                    token.HighlightColor = "color-yellow";
+                    token.HighlightColor = Yellow;
                     break;
                 case SemanticRole.CharacterLiteral:
                 case SemanticRole.StringLiteral:
-                    token.HighlightColor = "color-orange";
+                    token.HighlightColor = Orange;
                     break;
-                //case SemanticRole.StringLiteral:
-                //    token.HighlightColor = "color-pink";
-                //    break;
-                // --------------------------------------------------------- //
+                // -------------------------------------------------------------- //
                 case SemanticRole.CastType:
                 case SemanticRole.CastTargetType:
                 case SemanticRole.ConstraintType:
@@ -260,50 +307,15 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        private static void HighlightUsingSemanticData(NavToken token)
-        {
-            switch (token.SemanticData?.SymbolKind)
-            {
-                case SymbolKind.Field:
-                case SymbolKind.Property:
-                    //case SymbolKind.Namespace:
-                    token.HighlightColor = White;
-                    return;
-                case SymbolKind.Method:
-                    token.HighlightColor = Yellow;
-                    return;
-                default:
-                    break;
-            }
-
-            switch (token.SemanticData?.TypeKind)
-            {
-                case TypeKind.Class:
-                case TypeKind.Delegate:
-                    token.HighlightColor = Green;
-                    break;
-                case TypeKind.Enum:
-                case TypeKind.Interface:
-                case TypeKind.TypeParameter:
-                    token.HighlightColor = LightGreen;
-                    break;
-                case TypeKind.Struct:
-                    token.HighlightColor = Jade;
-                    return;
-                default:
-                    break;
-            }
-        }
-
         private static string GetDefaultKeywordColor(NavToken token) =>
             token.Map?.SemanticRole == SemanticRole.LiteralValue
-                ? "color-blue"
-                : "color-purple";
+                ? Blue
+                : Purple;
 
         private static string GetInKeywordColor(NavToken token) =>
             token.Map?.SemanticRole == SemanticRole.LoopStatement
-                ? "color-purple"
-                : "color-blue";
+                ? Purple
+                : Blue;
 
         private static string GuessColor(string text)
         {
@@ -312,10 +324,10 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 && char.IsUpper(text[0])
                 && char.IsUpper(text[1]))
             {
-                return "color-light-green";
+                return LightGreen;
             }
 
-            return "color-green";
+            return Teal;
         }
     }
 }

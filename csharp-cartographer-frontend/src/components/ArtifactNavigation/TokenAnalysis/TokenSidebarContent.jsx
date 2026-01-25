@@ -238,6 +238,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                     ? 'active-orange'
                                 : highlightColor === 'color-yellow'
                                     ? 'active-yellow'
+                                : highlightColor === 'color-teal'
+                                    ? 'active-teal'
                                 : 'default-text-class'
                         }
                     >

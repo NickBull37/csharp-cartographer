@@ -41,7 +41,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// </summary>
         public ISymbol? DeclaredSymbol { get; set; }
 
-        public bool IsDeclaredSymbol { get; set; }
+        public bool IsDeclaredSymbol { get; set; } = false;
 
         /// <summary>
         /// 

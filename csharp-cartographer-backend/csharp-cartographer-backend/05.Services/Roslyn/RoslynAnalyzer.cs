@@ -27,14 +27,6 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             SemanticModel semanticModel,
             SyntaxTree syntaxTree)
         {
-            //if (GlobalConstants.Keywords.Contains(token.Text)
-            //    || GlobalConstants.Operators.Contains(token.Text)
-            //    || GlobalConstants.Delimiters.Contains(token.Text)
-            //    || GlobalConstants.Punctuators.Contains(token.Text))
-            //{
-            //    return;
-            //}
-
             if (token.Kind != SyntaxKind.IdentifierToken)
                 return;
 

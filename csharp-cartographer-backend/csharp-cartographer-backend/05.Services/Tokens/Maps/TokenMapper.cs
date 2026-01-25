@@ -10,11 +10,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
     {
         public void MapNavTokens(List<NavToken> navTokens)
         {
+            // for tokens that have enough data to be classified on the first attempt
             for (int i = 0; i < navTokens.Count; i++)
             {
                 var token = navTokens[i];
                 token.Map = MapToken(token);
             }
+
+            MapSpecialCaseSemanticRoles(navTokens);
         }
 
         private static TokenMap MapToken(NavToken token)
@@ -749,8 +752,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsJoinIntoRangeVariable())
                 return SemanticRole.JoinIntoRangeVariable;
 
-            if (token.IsQueryVariableReference())
-                return SemanticRole.QueryVariableReference;
+            //if (token.IsQueryVariableReference())
+            //    return SemanticRole.QueryVariableReference;
 
             return SemanticRole.None;
         }
@@ -824,6 +827,80 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 modifiers.Add(SemanticModifiers.Conditional);
 
             return modifiers;
+        }
+        #endregion
+
+        #region Special Case Tokens
+        private static void MapSpecialCaseSemanticRoles(List<NavToken> navTokens)
+        {
+            MapQueryExpressionVariableRefs(navTokens);
+        }
+
+        private static void MapQueryExpressionVariableRefs(List<NavToken> navTokens)
+        {
+            // Iterate through tokens until a query expression is found, then map it.
+            // The "from" will always be the first token in a query expression.
+            for (int i = 0; i < navTokens.Count; i++)
+            {
+                var token = navTokens[i];
+
+                if (token.Text is not "from" || !token.Parent.IsKind(SyntaxKind.FromClause))
+                    continue;
+
+                MapQueryExpression(navTokens, i);
+            }
+        }
+
+        private static void MapQueryExpression(List<NavToken> navTokens, int startIndex)
+        {
+            var decToRefDict = new Dictionary<SemanticRole, SemanticRole>
+            {
+                [SemanticRole.RangeVariable] = SemanticRole.RangeVariableReference,
+                [SemanticRole.LetVariable] = SemanticRole.LetVariableReference,
+                [SemanticRole.GroupContinuationRangeVariable] = SemanticRole.GroupContinuationRangeVariableReference,
+                [SemanticRole.JoinRangeVariable] = SemanticRole.JoinRangeVariableReference,
+                [SemanticRole.JoinIntoRangeVariable] = SemanticRole.JoinIntoRangeVariableReference
+            };
+
+            var identifierToRefDict = new Dictionary<string, SemanticRole>(StringComparer.Ordinal);
+
+            // 1) Collect query expression declaration identifiers. Break out of loop on first
+            //    ";" token to avoid mapping identifiers from other query expressions that may
+            //    share the same identifier name.
+            for (int i = startIndex; i < navTokens.Count; i++)
+            {
+                var token = navTokens[i];
+
+                if (token.Text == ";")
+                    break;
+
+                var semanticRole = token.Map?.SemanticRole;
+                if (semanticRole is null)
+                    continue;
+
+                if (decToRefDict.TryGetValue(semanticRole.Value, out var referenceRole))
+                    identifierToRefDict.TryAdd(token.Text, referenceRole);
+            }
+
+            // 2) Find matches to declaration identifiers & set references roles. Break out of
+            //    loop on first ";" token to avoid mapping identifiers from other query expressions
+            //    that may share the same identifier name.
+            for (int i = startIndex; i < navTokens.Count; i++)
+            {
+                var token = navTokens[i];
+
+                if (token.Text == ";")
+                    break;
+
+                // don't update declarations (if semantic role is already set)
+                if (!token.IsQueryExpressionVariable()
+                    || token.Map is null
+                    || token.Map.SemanticRole != SemanticRole.None)
+                    continue;
+
+                if (identifierToRefDict.TryGetValue(token.Text, out var referenceRole))
+                    token.Map.SemanticRole = referenceRole;
+            }
         }
         #endregion
     }

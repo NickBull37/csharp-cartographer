@@ -213,6 +213,12 @@
         QuerySource,
         QueryVariableReference,
         RangeVariable,
+
+        GroupContinuationRangeVariableReference,
+        JoinIntoRangeVariableReference,
+        JoinRangeVariableReference,
+        LetVariableReference,
+        RangeVariableReference,
     }
 
     public enum TypeSymbols
@@ -396,13 +402,14 @@
 
         public IReadOnlySet<string> Modifiers { get; set; }
 
-        public ColorAsType ColorAsType { get; set; } = ColorAsType.Unknown;
+        public string SemanticRoleString => SemanticRole.ToString();
 
-        public string SemanticRoleString { get; set; } = "None";
+        public string PrimaryKindString => PrimaryKind.ToString();
 
-        public string PrimaryKindString { get; set; } = "Unknown";
-
-        public TokenMap(TokenPrimaryKind primaryKind, SemanticRole semanticRole, HashSet<SemanticModifiers>? modifiers)
+        public TokenMap(
+            TokenPrimaryKind primaryKind,
+            SemanticRole semanticRole,
+            HashSet<SemanticModifiers>? modifiers)
         {
             HashSet<string> modifierStrings = [];
             if (modifiers is not null)
@@ -415,8 +422,6 @@
 
             PrimaryKind = primaryKind;
             SemanticRole = semanticRole;
-            PrimaryKindString = primaryKind.ToString();
-            SemanticRoleString = semanticRole.ToString();
             Modifiers = modifierStrings;
         }
     }

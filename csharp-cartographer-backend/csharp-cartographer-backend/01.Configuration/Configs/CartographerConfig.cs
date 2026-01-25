@@ -3,18 +3,24 @@
     public class CartographerConfig
     {
         /// <summary>
-        ///     Will log the artifact data to 02.Utilities/Logging/Logs/ArtifactLog.txt if true.
+        ///     If true the artifact data will be logged to /02.Utilities/Logging/Logs/ArtifactLog.txt.
         /// </summary>
         public bool ShouldLogArtifact { get; set; }
 
         /// <summary>
-        ///     Will log any unidentified (red) tokens to 02.Utilities/Logging/Logs/TokenLog.txt if true.
+        ///     If true any unidentified (red) tokens will be logged to /02.Utilities/Logging/Logs/TokenLog.txt.
         /// </summary>
         public bool ShouldLogUnidentifiedTokens { get; set; }
 
+        /// <summary>
+        ///     If true the SyntaxHighlighter will use Roslyn "internal implementation only"
+        ///     semantic data to color tokens defined in referenced assembiles.
+        /// </summary>
+        public bool SemanticDataHighlightingEnabled { get; set; }
+
         // TODO: Move to ChatGpt client config
         /// <summary>
-        ///     The ChatGpt endpoint url for generating code analysis..
+        ///     The ChatGpt endpoint url for generating code analysis.
         /// </summary>
         public string ChatGptUrl { get; set; } = string.Empty;
 

@@ -446,6 +446,33 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
     public class QueryExpressionDemo
     {
+        private IEnumerable<int> _evens =
+            from n in new[] { 1, 2, 3, 4, 102 }
+            where n % 2 == 0
+            select n;
+
+        public IEnumerable<int> Odds { get; } =
+            from n in new[] { 1, 2, 3, 4 }
+            where n % 2 == 1
+            select n;
+
+        Func<IEnumerable<int>> func = () =>
+            from n in new[] { 1, 2, 3, 4, 102 }
+            select n;
+
+        public IEnumerable<int> GetTest()
+        {
+            var count =
+                (from n in _evens
+                 where n > 10
+                 select n).Count();
+
+            return
+                from n in _evens
+                where n > 100
+                select n;
+        }
+
         public static void Main()
         {
             var numbers = new List<Item>
@@ -517,11 +544,11 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
             // 8) Full example (uses almost every keyword)
             var full =
-                from n in numbers
-                join l in labels on n.Id equals l.Id
-                let doubled = n.Value * 2
+                from p in numbers
+                join n in labels on p.Id equals n.Id
+                let doubled = p.Value * 2
                 where doubled > 10
-                group new { n, l, doubled } by n.Category into g
+                group new { p, n, doubled } by p.Category into g
                 orderby g.Key ascending
                 select new
                 {
