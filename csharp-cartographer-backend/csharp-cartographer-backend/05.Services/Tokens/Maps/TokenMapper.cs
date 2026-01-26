@@ -90,6 +90,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 case "struct name":
                 case "type parameter name":
                 case "identifier":
+                case "static symbol":
                     return TokenPrimaryKind.Identifier;
                 default:
                     return TokenPrimaryKind.Unknown;
@@ -453,7 +454,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsFieldDataType())
                 return SemanticRole.FieldDataType;
 
-            if (token.IsLocalVariableDataType())
+            if (token.IsLocalVariableDataType() || token.IsForEachLoopLocalVariableDataType())
                 return SemanticRole.LocalVariableDataType;
 
             if (token.IsMethodReturnType())
@@ -639,7 +640,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsLocalForLoopVariableDeclaration())
                 return SemanticRole.LocalVariableDeclaration;
 
-            if (token.IsLocalForeachLoopVariableDeclaration())
+            if (token.IsLocalForEachLoopVariableDeclaration())
                 return SemanticRole.LocalVariableDeclaration;
 
             if (token.IsMethodDeclaration())
@@ -797,6 +798,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Identifier - param labels
             if (token.IsParameterLabel())
                 return SemanticRole.ParameterLabel;
+
+            // Identifier - attribute arguments
+            if (token.IsAttributeArgument())
+                return SemanticRole.AttributeArgument;
+
+            // Identifier - type references
+            if (token.IsTypeReference())
+                return SemanticRole.TypeReference;
 
             // --------------------------------------------------------- //
 

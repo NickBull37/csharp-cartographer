@@ -191,7 +191,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsKeyword() => SyntaxFacts.IsKeywordKind(Kind);
 
-        public bool IsAccessStaticMember() => HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
+        public bool IsAccessStaticMember() =>
+            HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
 
         private bool HasAncestorAt(int index, SyntaxKind kind)
         {
@@ -350,6 +351,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Identifier Checks
+        public bool IsAttributeArgument()
+        {
+            return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.NameEquals)
+                && HasAncestorAt(2, SyntaxKind.AttributeArgument);
+        }
+
         public bool IsTypeConstraint()
         {
             if (Kind == SyntaxKind.QuestionToken)
@@ -435,6 +443,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && PrevToken?.Kind == SyntaxKind.DotToken;
         }
 
+        public bool IsTypeReference()
+        {
+            return Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(0, SyntaxKind.GenericName)
+                && HasAncestorAt(1, SyntaxKind.TypeArgumentList);
+        }
+
         /*
          *  -----------------------------------------------------------------------
          *      Declaration Identifiers
@@ -480,7 +495,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsLocalForLoopVariableDeclaration() =>
             HasAncestorAt(2, SyntaxKind.ForStatement);
 
-        public bool IsLocalForeachLoopVariableDeclaration() =>
+        public bool IsLocalForEachLoopVariableDeclaration() =>
             HasAncestorAt(0, SyntaxKind.ForEachStatement);
 
         public bool IsMethodDeclaration() =>
@@ -547,7 +562,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
 
         public bool IsForEachLoopLocalVariableDataType()
-            => HasAncestorAt(1, SyntaxKind.ForEachStatement);
+        {
+            return HasAncestorAt(1, SyntaxKind.ForEachStatement)
+                && NextToken?.Text != ")";
+        }
 
         public bool IsTupleElementName()
             => HasAncestorAt(0, SyntaxKind.TupleElement);

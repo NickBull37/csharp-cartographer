@@ -112,6 +112,7 @@
 
         // ------------ IDENTIFIERS ------------ //
 
+        AttributeArgument,
         ObjectPropertyAssignment,
         ParameterLabel,
 
@@ -199,6 +200,7 @@
         MethodReturnType,
         SimpleBaseType,
         TypePatternType,
+        //TypeReference,
         TupleElementName,
         TupleElementType,
 

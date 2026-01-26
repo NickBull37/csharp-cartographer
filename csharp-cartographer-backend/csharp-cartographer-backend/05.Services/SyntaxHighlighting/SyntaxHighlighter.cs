@@ -211,6 +211,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             switch (token.Map!.SemanticRole)
             {
                 case SemanticRole.AliasDeclaration:
+                case SemanticRole.AttributeArgument:
                 case SemanticRole.EnumMemberDeclaration:
                 case SemanticRole.EnumMemberReference:
                 case SemanticRole.FieldDeclaration:
@@ -303,6 +304,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.TypeQualifier:
                 case SemanticRole.TupleElementType:
                 case SemanticRole.TypePatternType:
+                case SemanticRole.TypeReference:
                     token.HighlightColor = GuessColor(token.Text);
                     break;
             }
