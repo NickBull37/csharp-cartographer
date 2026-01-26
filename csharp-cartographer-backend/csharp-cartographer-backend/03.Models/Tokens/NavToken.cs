@@ -451,11 +451,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsEnumMemberDeclaration() =>
             HasAncestorAt(0, SyntaxKind.EnumMemberDeclaration);
 
-        public bool IsEventDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.EventDeclaration);
-
         public bool IsEventFieldDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.EventFieldDeclaration);
+            HasAncestorAt(0, SyntaxKind.VariableDeclarator) &&
+            HasAncestorAt(1, SyntaxKind.VariableDeclaration) &&
+            HasAncestorAt(2, SyntaxKind.EventFieldDeclaration);
 
         public bool IsFieldDeclaration() =>
             HasAncestorAt(0, SyntaxKind.VariableDeclarator) &&
@@ -521,6 +520,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
          *      DataType Identifiers
          *  -----------------------------------------------------------------------
          */
+
+        public bool IsEventFieldType()
+        {
+            // covers nullable and non-nullable types
+            return HasAncestorAt(2, SyntaxKind.EventFieldDeclaration)
+                || HasAncestorAt(3, SyntaxKind.EventFieldDeclaration);
+        }
+
         public bool IsFieldDataType() =>
             HasAncestorAt(2, SyntaxKind.FieldDeclaration) ||
             HasAncestorAt(3, SyntaxKind.FieldDeclaration);

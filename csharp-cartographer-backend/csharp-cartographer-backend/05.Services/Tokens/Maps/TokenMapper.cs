@@ -439,6 +439,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsMethodReturnType())
                 return SemanticRole.MethodReturnType;
 
+            if (token.IsDelegateReturnType())
+                return SemanticRole.DelegateReturnType;
+
             if (token.IsParameterDataType())
                 return SemanticRole.ParameterDataType;
 
@@ -601,9 +604,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsEnumMemberDeclaration())
                 return SemanticRole.EnumMemberDeclaration;
 
-            if (token.IsEventDeclaration())
-                return SemanticRole.EventDeclaration;
-
             if (token.IsEventFieldDeclaration())
                 return SemanticRole.EventFieldDeclaration;
 
@@ -647,6 +647,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.StructConstructorDeclaration;
 
             // --- Identifiers: data types ---
+            if (token.IsEventFieldType())
+                return SemanticRole.EventFieldType;
+
             if (token.IsFieldDataType())
                 return SemanticRole.FieldDataType;
 
@@ -671,6 +674,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.RoslynClassification == "enum member name")
                 return SemanticRole.EnumMemberReference;
+
+            if (token.RoslynClassification == "event name")
+                return SemanticRole.EventReference;
 
             if (token.RoslynClassification == "field name")
                 return SemanticRole.FieldReference;

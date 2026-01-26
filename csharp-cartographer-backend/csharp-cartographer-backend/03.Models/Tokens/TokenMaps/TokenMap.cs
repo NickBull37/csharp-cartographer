@@ -184,6 +184,7 @@
         CastTargetType,
         ConstraintType,
         DelegateReturnType,
+        EventFieldType,
         ExceptionType,
         FieldDataType,
         GenericTypeArgument,
