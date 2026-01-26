@@ -42,6 +42,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
              */
 
             // Special cases - update manually
+            if (token.Text == "." && token.IsNamespaceQualifierSeparator())
+            {
+                return TokenPrimaryKind.Punctuation;
+            }
             if (token.Text == "?" && token.RoslynClassification == "operator")
             {
                 return TokenPrimaryKind.Punctuation;
@@ -257,6 +261,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsParameterLabelTerminator())
                     return SemanticRole.ParameterLabelTermination;
+            }
+
+            // --- Qualifiers ---
+            if (token.Text is ".")
+            {
+                if (token.IsNamespaceQualifierSeparator())
+                    return SemanticRole.NamespaceQualifierSeparator;
             }
 
             // --- Nullables ---

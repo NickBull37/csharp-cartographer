@@ -59,6 +59,7 @@
         ArgumentSeparation,
         BaseTypeSeparation,
         EnumMemberSeparation,
+        NamespaceQualifierSeparator,
         ParameterSeparation,
         SwitchArmSeparation,
         TupleElementSeparation,

@@ -605,6 +605,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return true;
             }
 
+            // for a namespace defined in a namespace
+            if (RoslynClassification is not null
+                && RoslynClassification == "namespace name"
+                && AncestorKinds.GetLast() == SyntaxKind.NamespaceDeclaration
+                && AncestorKinds.GetSecondToLast() == SyntaxKind.NamespaceDeclaration)
+            {
+                return true;
+            }
+
             return RoslynClassification is not null
                 && RoslynClassification == "namespace name"
                 && AncestorKinds.GetLast() == SyntaxKind.NamespaceDeclaration
@@ -953,6 +962,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && RoslynClassification == "punctuation"
                 && HasAncestorAt(0, SyntaxKind.EnumDeclaration)
                 && Text == ",";
+        }
+
+        public bool IsNamespaceQualifierSeparator()
+        {
+            return HasAncestorAt(0, SyntaxKind.QualifiedName);
         }
 
         public bool IsNullConditionalGuard() => Kind == SyntaxKind.QuestionToken
