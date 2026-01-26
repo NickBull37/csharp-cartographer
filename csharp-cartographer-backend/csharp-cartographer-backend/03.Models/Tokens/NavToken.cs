@@ -143,6 +143,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             int a, b, c;
 
+            string? name = null;
+            name ??= "DefaultName";
+
             List<int>? test = [];
 
             TestEnum = TestEnum.Camaro;
@@ -286,6 +289,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.IfStatement)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
+        public bool IsTupleExpressionDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.TupleExpression)
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
@@ -923,6 +933,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsLambdaOperator() => Text is "=>";
 
+        public bool IsLogicalNotOperator()
+        {
+            return HasAncestorAt(0, SyntaxKind.LogicalNotExpression);
+        }
+
         public bool IsMemberAccessOperator() => Kind == SyntaxKind.DotToken
             && HasAncestorAt(0, SyntaxKind.SimpleMemberAccessExpression);
 
@@ -932,8 +947,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsNamespaceAliasQualifier() => Kind == SyntaxKind.ColonColonToken
             && HasAncestorAt(0, SyntaxKind.AliasQualifiedName);
 
-        public bool IsNullOperator() =>
-            Text is "!" or "??" or "??=" or "?[";
+        public bool IsNullConditionalGuard() => Kind == SyntaxKind.QuestionToken
+            && HasAncestorAt(0, SyntaxKind.ConditionalAccessExpression);
+
+        public bool IsNullCoalescingOperator() =>
+            Kind == SyntaxKind.QuestionQuestionToken &&
+            HasAncestorAt(0, SyntaxKind.CoalesceExpression);
+
+        public bool IsNullCoalescingAssignmentOperator() =>
+            Kind == SyntaxKind.QuestionQuestionEqualsToken &&
+            HasAncestorAt(0, SyntaxKind.CoalesceAssignmentExpression);
+
+        public bool IsNullForgivingOperator() =>
+            Kind == SyntaxKind.ExclamationToken &&
+            HasAncestorAt(0, SyntaxKind.SuppressNullableWarningExpression);
 
         public bool IsPointerOperator() =>
             Text is "&" or "*" or "->";
@@ -969,9 +996,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return HasAncestorAt(0, SyntaxKind.QualifiedName);
         }
 
-        public bool IsNullConditionalGuard() => Kind == SyntaxKind.QuestionToken
-            && HasAncestorAt(0, SyntaxKind.ConditionalAccessExpression);
-
         public bool IsNullableTypeMarker() => Kind == SyntaxKind.QuestionToken
             && HasAncestorAt(0, SyntaxKind.NullableType);
 
@@ -1001,8 +1025,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsSwitchArmSeperator() => Kind == SyntaxKind.CommaToken
             && HasAncestorAt(0, SyntaxKind.SwitchExpression);
 
-        public bool IsTupleElementSeperator() => Kind == SyntaxKind.CommaToken
-            && HasAncestorAt(0, SyntaxKind.TupleType);
+        public bool IsTupleElementSeperator()
+        {
+            if (Kind != SyntaxKind.CommaToken)
+                return false;
+
+            return HasAncestorAt(0, SyntaxKind.TupleType)
+                || HasAncestorAt(0, SyntaxKind.TupleExpression);
+        }
 
         public bool IsTypeParameterConstraintClauseSeperator()
         {
@@ -1037,8 +1067,25 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #region Type Checks
         public bool IsGenericTypeArgument()
         {
-            return HasAncestorAt(1, SyntaxKind.TypeArgumentList) ||
-                HasAncestorAt(2, SyntaxKind.TypeArgumentList);
+            //        ⌄
+            // List<string> LeadingTrivia { get; set; }
+            if (HasAncestorAt(1, SyntaxKind.TypeArgumentList)
+                && PrevToken?.Text == "<"
+                && NextToken?.Text == ">")
+            {
+                return true;
+            }
+
+            //         ⌄
+            // List<string?> LeadingTrivia { get; set; }
+            if (HasAncestorAt(2, SyntaxKind.TypeArgumentList)
+                && PrevToken?.Text == "<"
+                && NextToken?.Text == "?")
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public bool IsGenericType() => HasAncestorAt(0, SyntaxKind.GenericName);

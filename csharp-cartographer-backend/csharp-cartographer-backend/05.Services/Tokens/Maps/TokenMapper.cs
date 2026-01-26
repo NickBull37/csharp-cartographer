@@ -46,7 +46,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             {
                 return TokenPrimaryKind.Punctuation;
             }
-            if (token.Text == "?" && token.RoslynClassification == "operator")
+            if (token.Text == "?" && token.IsNullableTypeMarker())
             {
                 return TokenPrimaryKind.Punctuation;
             }
@@ -158,6 +158,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsParameterListDelimiter())
                     return SemanticRole.ParameterListBoundary;
+
+                if (token.IsTupleExpressionDelimiter())
+                    return SemanticRole.TupleExpressionBoundary;
 
                 if (token.IsTupleTypeDelimiter())
                     return SemanticRole.TupleTypeBoundary;
@@ -324,9 +327,15 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsMemberAccessOperator() || token.IsConditionalMemberAccessOperator() || token.IsNamespaceAliasQualifier())
                 return SemanticRole.MemberAccess;
 
-            // Null
-            if (token.IsNullOperator())
-                return SemanticRole.Null;
+            // Null-related
+            if (token.IsNullCoalescingOperator())
+                return SemanticRole.NullCoalescing;
+
+            if (token.IsNullCoalescingAssignmentOperator())
+                return SemanticRole.NullCoalescingAssignment;
+
+            if (token.IsNullForgivingOperator())
+                return SemanticRole.NullForgiving;
 
             // Pointer
             if (token.IsPointerOperator())
@@ -459,6 +468,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsPropertyDataType())
                 return SemanticRole.PropertyDataType;
 
+            if (token.IsTupleElementType())
+                return SemanticRole.TupleElementType;
+
             // --- Keyword: generic types ---
             if (token.IsGenericTypeArgument())
                 return SemanticRole.GenericTypeArgument;
@@ -525,7 +537,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 "!" => parentKind switch
                 {
                     "LogicalNotExpression" => SemanticRole.BooleanLogical,
-                    "SuppressNullableWarningExpression" => SemanticRole.Null,
+                    "SuppressNullableWarningExpression" => SemanticRole.NullForgiving,
                     _ => SemanticRole.None
                 },
 

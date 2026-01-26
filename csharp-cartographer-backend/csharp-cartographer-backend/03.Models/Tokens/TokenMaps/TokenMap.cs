@@ -35,6 +35,7 @@
         NamespaceBoundary,
         ObjectInitializerBoundary,
         ParameterListBoundary,
+        TupleExpressionBoundary,
         TupleTypeBoundary,
         TypeArgumentListBoundary,
         TypeParameterListBoundary,
@@ -49,7 +50,9 @@
         IndexRange,
         Lambda,
         MemberAccess,
-        Null,
+        NullCoalescing,
+        NullCoalescingAssignment,
+        NullForgiving,
         Pointer,
 
 
