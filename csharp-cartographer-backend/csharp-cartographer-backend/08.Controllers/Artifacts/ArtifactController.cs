@@ -20,7 +20,7 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
         /// <summary>Generates and returns the requested demo artifact.</summary>
         [HttpGet]
         [Route("get-demo-artifact")]
-        public async Task<IActionResult> GetDemoArtifact([FromQuery] string fileName)
+        public async Task<IActionResult> GetDemoArtifact([FromQuery] string fileName, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(fileName))
             {
@@ -35,6 +35,10 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
             {
                 var artifact = await _generateArtifactWorkflow.ExecGenerateDemoArtifact(fileName);
                 return Ok(artifact);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                return StatusCode(499);
             }
             catch (Exception ex)
             {
@@ -52,7 +56,7 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
         /// <summary>Generates and returns an artifact for user uploaded source code.</summary>
         [HttpPost]
         [Route("generate-artifact")]
-        public async Task<IActionResult> GenerateArtifact([FromBody] GenerateArtifactDto dto)
+        public async Task<IActionResult> GenerateArtifact([FromBody] GenerateArtifactDto dto, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(dto.FileName) || string.IsNullOrEmpty(dto.FileContent))
             {
@@ -67,6 +71,10 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
             {
                 var artifact = await _generateArtifactWorkflow.ExecGenerateUserArtifact(dto);
                 return Ok(artifact);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                return StatusCode(499);
             }
             catch (Exception ex)
             {

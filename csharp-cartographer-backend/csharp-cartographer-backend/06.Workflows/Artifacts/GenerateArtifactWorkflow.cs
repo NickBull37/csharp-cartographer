@@ -50,19 +50,19 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _config = config.Value;
         }
 
-        public async Task<Artifact> ExecGenerateDemoArtifact(string fileName)
+        public async Task<Artifact> ExecGenerateDemoArtifact(string fileName, CancellationToken cancellationToken)
         {
             FileData fileData = _fileProcessor.ReadInTestFileData(fileName);
-            return await GenerateArtifact(fileData);
+            return await GenerateArtifact(fileData, cancellationToken);
         }
 
-        public async Task<Artifact> ExecGenerateUserArtifact(GenerateArtifactDto requestDto)
+        public async Task<Artifact> ExecGenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken)
         {
             FileData fileData = _fileProcessor.ReadInFileData(requestDto);
-            return await GenerateArtifact(fileData);
+            return await GenerateArtifact(fileData, cancellationToken);
         }
 
-        private async Task<Artifact> GenerateArtifact(FileData fileData)
+        private async Task<Artifact> GenerateArtifact(FileData fileData, CancellationToken cancellationToken)
         {
             /*
              *   Steps to generate an artifact:
@@ -70,19 +70,16 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
              *   0. Read in source code from user uploaded file & generate FileData.
              *   1. Start stopwatch.
              *   2. Generate SyntaxTree with passed in FileData.
-             *   3. Generate CompilationUnit with SyntaxTree.
-             *   4. Generate SemanticModel with CompilationUnit & SyntaxTree.
-             *   5. Turn the Roslyn data into a list of NavTokens.
-             *   6. Generate TokenCharts.
-             *   7. Map NavTokens
-             *   8. Correct roslyn generated classifications that don't provide much info
-             *   9. Generate TokenTags.
-             *   10. Add TokenCharts highlight indices for highlighting in the code viewer.
-             *   11. Add TokenTags definitions & insights.
-             *   12. Add syntax highlighting for all NavTokens (should be last step in workflow).
-             *   13. Trim charts that are useful for highlighting but not useful anymore.
-             *   14. Stop stopwatch.
-             *   15. Build & return artifact.
+             *   3. Generate SemanticModel with CompilationUnit & SyntaxTree.
+             *   4. Turn the Roslyn data into a list of NavTokens.
+             *   5. Generate ancestor charts for each token.
+             *   6. Map NavTokens
+             *   7. Generate TokenTags.
+             *   8. Add highlight indices to token charts for highlighting ancestors.
+             *   9. Add TokenTags definitions & insights.
+             *   10. Add syntax highlighting for all NavTokens (should be last step in workflow).
+             *   11. Stop stopwatch.
+             *   12. Build & return artifact.
              *   
              */
 
@@ -92,42 +89,34 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             // Step 2. Generate SyntaxTree with passed in FileData.
             var syntaxTree = _roslynAnalyzer.GetSyntaxTree(fileData);
 
-            // Step 4. Generate SemanticModel with CompilationUnit & SyntaxTree.
+            // Step 3. Generate SemanticModel with CompilationUnit & SyntaxTree.
             var semanticModel = _roslynAnalyzer.GetSemanticModel(syntaxTree);
 
-            // Step 5. Turn the Roslyn data into a list of NavTokens.
+            // Step 4. Turn the Roslyn data into a list of NavTokens.
             var navTokens = await _navTokenGenerator.GenerateNavTokens(semanticModel, syntaxTree, fileData.Document);
 
-            //_roslynAnalyzer.AddTokenSemanticData(navTokens);
-
-            // Step 6. Generate TokenCharts.
+            // Step 5. Generate ancestor charts for each token.
             _tokenChartGenerator.GenerateTokenCharts(navTokens);
 
-            // Step 7. Map NavTokens
+            // Step 6. Map NavTokens
             _tokenMapper.MapNavTokens(navTokens);
 
-            // Step 8. Correct roslyn generated classifications that don't provide much info
-            //_classificationWizard.CorrectTokenClassifications(navTokens);
-
-            // Step 9. Generate TokenTags.
+            // Step 7. Generate TokenTags.
             _tokenTagGenerator.GenerateTokenTags(navTokens);
 
-            // Step 10. Add TokenCharts highlight indices for highlighting in the code viewer.
+            // Step 8. Add highlight indices to token charts for highlighting ancestors.
             _tokenChartWizard.AddHighlightValuesToNavTokenCharts(navTokens);
 
-            // Step 11. Add TokenCharts definitions & insights.
+            // Step 9. Add token chart definitions & insights.
             _tokenChartWizard.AddFactsAndInsightsToNavTokenCharts(navTokens);
 
-            // Step 12. Add syntax highlighting for all NavTokens (should be last step in workflow).
+            // Step 10. Add syntax highlighting for all NavTokens (should be last step in workflow).
             _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
 
-            // Step 13. Trim charts that are useful for highlighting but not useful anymore.
-            //_tokenChartWizard.RemoveExcessChartsFromNavTokens(navTokens);
-
-            // Step 14. Stop stopwatch.
+            // Step 11. Stop stopwatch.
             stopwatch.Stop();
 
-            // Step 15. Build & return artifact.
+            // Step 12. Build & return artifact.
             var artifact = new Artifact(fileData.FileName, stopwatch.Elapsed, navTokens);
 
             // Bonus: Log artifact data (optional)

@@ -41,7 +41,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 
                 navTokens.Add(newToken);
 
-                // each token in list needs data from the ones before & after for syntax highlighting
+                // each token in list needs data from the ones before & after for token mapping
                 if (index > 0)
                 {
                     var prevToken = navTokens[index - 1];
@@ -58,6 +58,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         private static async Task<IReadOnlyDictionary<int, List<ClassifiedSpan>>> BuildClassificationLookup(SyntaxTree syntaxTree, Document document)
         {
             var classifiedSpans = await GetClassifiedSpans(syntaxTree, document);
+
             return classifiedSpans
                 .GroupBy(c => c.TextSpan.Start)
                 .ToDictionary(g => g.Key, g => g.ToList());
@@ -76,6 +77,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         {
             var text = await syntaxTree.GetTextAsync();
             var fullSpan = new TextSpan(0, text.Length);
+
             return await Classifier.GetClassifiedSpansAsync(document, fullSpan) ?? [];
         }
     }

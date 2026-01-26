@@ -5,8 +5,20 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 {
     public interface IGenerateArtifactWorkflow
     {
-        Task<Artifact> ExecGenerateDemoArtifact(string fileName);
+        /// <summary>
+        /// Executes the generate-artifact workflow for demo files.
+        /// </summary>
+        /// <param name="fileName">The name of the demo file.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A fully mapped artifact.</returns>
+        Task<Artifact> ExecGenerateDemoArtifact(string fileName, CancellationToken cancellationToken);
 
-        Task<Artifact> ExecGenerateUserArtifact(GenerateArtifactDto requestDto);
+        /// <summary>
+        /// Executes the generate-artifact workflow for user uploaded files.
+        /// </summary>
+        /// <param name="requestDto">The DTO containing the uploaded file data.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A fully mapped artifact.</returns>
+        Task<Artifact> ExecGenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken);
     }
 }
