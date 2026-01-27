@@ -44,6 +44,11 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             SyntaxTree syntaxTree,
             CancellationToken cancellationToken)
         {
+            if (token.Index == 40)
+            {
+
+            }
+
             var node = GetSemanticNode(token.RoslynToken);
             if (node is null)
                 return null;

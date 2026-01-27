@@ -220,6 +220,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
+        public bool IsArrayInitializationDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.ArrayInitializerExpression)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsArgumentListDelimiter()
         {
             return IsDelimiter()
@@ -291,6 +298,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.IfStatement)
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
+        public bool IsImplicitArrayCreationDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.ImplicitArrayCreationExpression)
+                && (Kind == SyntaxKind.OpenBracketToken || Kind == SyntaxKind.CloseBracketToken);
         }
 
         public bool IsTupleExpressionDelimiter()
@@ -615,7 +629,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (NextToken?.Text == "=")
                 return false;
 
-            return AncestorKinds.Ancestors.LastOrDefault() == SyntaxKind.UsingDirective;
+            return AncestorKinds.Ancestors.Contains(SyntaxKind.UsingDirective);
         }
 
         public bool IsNamespaceDeclarationQualifier()
@@ -1083,6 +1097,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Type Checks
+        public bool IsAnonymousObjectCreation()
+        {
+            return HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression);
+        }
+
         public bool IsGenericTypeArgument()
         {
             //        ⌄

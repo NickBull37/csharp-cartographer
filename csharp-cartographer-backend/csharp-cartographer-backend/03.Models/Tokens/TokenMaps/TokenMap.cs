@@ -20,6 +20,7 @@
         // ------------ DELIMITERS ------------ //
 
         AccessorListBoundary,
+        ArrayInitializationBoundary,
         ArgumentListBoundary,
         AttributeListBoundary,
         AttributeArgumentListBoundary,
@@ -31,6 +32,7 @@
         ForBlockBoundary,
         IfBlockBoundary,
         IfConditionBoundary,
+        ImplicitArrayCreation,
         InterpolatedValueBoundary,
         NamespaceBoundary,
         ObjectInitializerBoundary,
@@ -303,6 +305,7 @@
         Struct,
 
         // Type form modifiers
+        Anonymous,
         Generic,
         Nullable,
         Array,

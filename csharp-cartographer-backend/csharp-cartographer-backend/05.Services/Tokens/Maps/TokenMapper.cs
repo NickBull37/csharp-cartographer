@@ -58,6 +58,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             {
                 return TokenPrimaryKind.Delimiter;
             }
+            if (token.Text is "nint" && token.SemanticData?.SymbolName == "IntPtr")
+            {
+                token.RoslynClassification = "keyword";
+                return TokenPrimaryKind.Keyword;
+            }
+            if (token.Text is "nuint" && token.SemanticData?.SymbolName == "UIntPtr")
+            {
+                token.RoslynClassification = "keyword";
+                return TokenPrimaryKind.Keyword;
+            }
 
             switch (token.RoslynClassification)
             {
@@ -172,6 +182,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsAccessorListDelimiter())
                     return SemanticRole.AccessorListBoundary;
 
+                if (token.IsArrayInitializationDelimiter())
+                    return SemanticRole.ArrayInitializationBoundary;
+
                 if (token.IsForEachBlockDelimiter())
                     return SemanticRole.ForEachBlockBoundary;
 
@@ -201,6 +214,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsCollectionExpressionDelimiter())
                     return SemanticRole.CollectionExpressionBoundary;
+
+                if (token.IsImplicitArrayCreationDelimiter())
+                    return SemanticRole.ImplicitArrayCreation;
             }
 
             if (token.Text is "<" or ">")
@@ -880,6 +896,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Operator modifiers ---
             if (token.IsConditionalMemberAccessOperator())
                 modifiers.Add(SemanticModifiers.Conditional);
+
+            // --- Anonymous modifier ---
+            if (token.IsAnonymousObjectCreation())
+                modifiers.Add(SemanticModifiers.Anonymous);
 
             return modifiers;
         }
