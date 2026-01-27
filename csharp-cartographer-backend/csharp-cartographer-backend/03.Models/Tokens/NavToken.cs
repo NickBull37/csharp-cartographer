@@ -184,6 +184,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
+        public bool IsCatchBlockDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.CatchClause)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsArgumentListDelimiter()
         {
             return IsDelimiter()
@@ -212,10 +220,32 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
+        public bool IsCatchArgumentDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.CatchDeclaration)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
+        public bool IsCatchFilterDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.CatchFilterClause)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
         public bool IsClassDelimiter()
         {
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.ClassDeclaration)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsConstructorDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.ConstructorDeclaration)
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
@@ -292,6 +322,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.LessThanToken || Kind == SyntaxKind.GreaterThanToken);
         }
 
+        public bool IsMethodDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.MethodDeclaration)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsNamespaceDelimiter()
         {
             return IsDelimiter()
@@ -303,6 +341,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.ObjectInitializerExpression)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsTryBlockDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.TryStatement)
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
@@ -972,6 +1018,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Text == ":";
         }
 
+        public bool IsCollectionElementSeparator()
+        {
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.CollectionExpression);
+        }
+
         public bool IsEnumMemberSeparator()
         {
             return RoslynClassification is not null
@@ -1003,6 +1055,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && RoslynClassification == "punctuation"
                 && HasAncestorAt(0, SyntaxKind.ParameterList)
                 && Text == ",";
+        }
+
+        public bool IsPropertyInitializationSeparator()
+        {
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.ObjectInitializerExpression);
         }
 
         public bool IsTypeArgumentSeperator() => Kind == SyntaxKind.CommaToken

@@ -84,15 +84,12 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                 data.IsInSourceCompilation = locations.Any(l => l.IsInSource);
                 data.IsInReferencedAssemblies = locations.Any(l => l.IsInMetadata);
                 data.IsInUploadedFile = locations.Any(l => l.IsInSource && ReferenceEquals(l.SourceTree, syntaxTree));
-                data.DeclaredInFilePath = locations.FirstOrDefault(l => l.IsInSource)?.SourceTree?.FilePath;
 
                 data.SymbolName = symbol.Name;
                 data.SymbolKind = symbol.Kind;
 
                 data.ContainingType = symbol.ContainingType?.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-                data.ContainingTypeFullyQualified = symbol.ContainingType?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                 data.ContainingNamespace = symbol.ContainingNamespace?.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-                data.ContainingNamespaceFullyQualified = symbol.ContainingNamespace?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                 data.ContainingAssembly = symbol.ContainingAssembly?.Name;
 
                 data.Accessibility = symbol.DeclaredAccessibility != Accessibility.NotApplicable ? symbol.DeclaredAccessibility : null;
@@ -104,7 +101,6 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                 data.IsSealed = symbol.IsSealed;
                 data.IsOriginalDefinition = symbol.IsDefinition;
                 data.IsExtern = symbol.IsExtern;
-                data.CanBeReferencedByName = symbol.CanBeReferencedByName;
 
                 // 5) Grab member type / method signature when applicable
                 switch (symbol)
@@ -112,7 +108,6 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                     case IFieldSymbol f:
                         data.IsFieldSymbol = true;
                         data.MemberType = f.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-                        data.MemberTypeFullyQualified = f.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                         data.MemberTypeKind = f.Type.Kind;
                         data.IsAbstract = f.IsAbstract;
                         data.IsConst = f.IsConst;
@@ -130,7 +125,6 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                     case IPropertySymbol p:
                         data.IsPropertySymbol = true;
                         data.MemberType = p.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-                        data.MemberTypeFullyQualified = p.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                         data.MemberTypeKind = p.Type.Kind;
                         data.IsAbstract = p.IsAbstract;
                         data.IsIndexer = p.IsIndexer;
@@ -146,7 +140,6 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                     case ILocalSymbol l:
                         data.IsLocalSymbol = true;
                         data.MemberType = l.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-                        data.MemberTypeFullyQualified = l.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                         data.MemberTypeKind = l.Type.Kind;
                         data.IsAbstract = l.IsAbstract;
                         data.IsConst = l.IsConst;
@@ -163,7 +156,6 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                     case IParameterSymbol par:
                         data.IsParameterSymbol = true;
                         data.MemberType = par.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-                        data.MemberTypeFullyQualified = par.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                         data.MemberTypeKind = par.Type.Kind;
                         data.IsAbstract = par.IsAbstract;
                         data.IsDiscard = par.IsDiscard;
@@ -179,10 +171,8 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                     case IMethodSymbol m:
                         data.IsMethodSymbol = true;
                         data.MemberType = m.ReturnType.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-                        data.MemberTypeFullyQualified = m.ReturnType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
                         data.MethodSignature = m.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
                         data.MethodSignatureFullyQualified = m.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-                        data.MethodSignatureErrorFormat = m.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
                         data.MethodKind = m.MethodKind;
                         data.ReturnType = m.ReturnType;
                         data.TypeParameters = m.TypeParameters;
@@ -198,10 +188,16 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             data.TypeSymbol = typeInfo.Type;
 
             if (typeInfo.Type is ITypeSymbol type)
+            {
+                data.IsTypeSymbol = true;
                 data.TypeKind = type.TypeKind;
+            }
 
             if (typeInfo.ConvertedType is ITypeSymbol ctype)
+            {
+                data.IsConvertedTypeSymbol = true;
                 data.ConvertedTypeKind = ctype.TypeKind;
+            }
 
             // 6) Operations API (often *better* than SymbolInfo for expressions)
             //    This returns null on many declaration nodes; it’s still valuable when present.
@@ -209,9 +205,9 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             data.Operation = op;
             if (op != null)
             {
+                data.IsOperation = true;
                 data.OperationKind = op.Kind;
                 data.OperationResultType = op.Type?.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-                data.OperationResultTypeFullyQualified = op.Type?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
             }
 
             return data;

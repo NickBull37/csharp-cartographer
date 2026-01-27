@@ -130,6 +130,14 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             if (_config.ShouldLogArtifact)
                 CartographerLogger.LogArtifact(artifact);
 
+            if (_config.ShouldLogSemanticData)
+            {
+                var identifiers = artifact.NavTokens
+                    .Where(token => token.SemanticData is not null);
+
+                CartographerLogger.LogTokens(identifiers);
+            }
+
             if (_config.ShouldLogUnidentifiedTokens)
             {
                 var unidentifiedTokens = artifact.NavTokens

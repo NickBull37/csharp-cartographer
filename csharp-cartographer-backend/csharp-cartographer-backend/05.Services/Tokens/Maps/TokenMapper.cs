@@ -164,6 +164,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsCastTypeDelimiter())
                     return SemanticRole.CastTypeBoundary;
 
+                if (token.IsCatchArgumentDelimiter())
+                    return SemanticRole.CatchArgumentBoundary;
+
+                if (token.IsCatchFilterDelimiter())
+                    return SemanticRole.CatchFilterBoundary;
+
                 if (token.IsIfConditionDelimiter())
                     return SemanticRole.IfConditionBoundary;
 
@@ -185,6 +191,15 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsArrayInitializationDelimiter())
                     return SemanticRole.ArrayInitializationBoundary;
 
+                if (token.IsCatchBlockDelimiter())
+                    return SemanticRole.CatchBlockBoundary;
+
+                if (token.IsClassDelimiter())
+                    return SemanticRole.ClassBoundary;
+
+                if (token.IsConstructorDelimiter())
+                    return SemanticRole.ConstructorBoundary;
+
                 if (token.IsForEachBlockDelimiter())
                     return SemanticRole.ForEachBlockBoundary;
 
@@ -197,14 +212,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsInterpolatedValueDelimiter())
                     return SemanticRole.InterpolatedValueBoundary;
 
-                if (token.IsObjectInitializerDelimiter())
-                    return SemanticRole.ObjectInitializerBoundary;
+                if (token.IsMethodDelimiter())
+                    return SemanticRole.MethodBoundary;
 
                 if (token.IsNamespaceDelimiter())
                     return SemanticRole.NamespaceBoundary;
 
-                if (token.IsClassDelimiter())
-                    return SemanticRole.ClassBoundary;
+                if (token.IsObjectInitializerDelimiter())
+                    return SemanticRole.ObjectInitializerBoundary;
+
+                if (token.IsTryBlockDelimiter())
+                    return SemanticRole.TryBlockBoundary;
             }
 
             if (token.Text is "[" or "]")
@@ -245,6 +263,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsBaseTypeSeperator())
                     return SemanticRole.BaseTypeSeparation;
 
+                if (token.IsCollectionElementSeparator())
+                    return SemanticRole.CollectionElementSeparation;
+
                 if (token.IsEnumMemberSeparator())
                     return SemanticRole.EnumMemberSeparation;
 
@@ -256,6 +277,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsParameterSeparator())
                     return SemanticRole.ParameterSeparation;
+
+                if (token.IsPropertyInitializationSeparator())
+                    return SemanticRole.PropertyInitializationSeparator;
 
                 if (token.IsSwitchArmSeperator())
                     return SemanticRole.SwitchArmSeparation;

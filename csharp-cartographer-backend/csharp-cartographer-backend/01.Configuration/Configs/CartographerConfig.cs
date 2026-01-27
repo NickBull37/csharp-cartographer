@@ -8,6 +8,11 @@
         public bool ShouldLogArtifact { get; set; }
 
         /// <summary>
+        ///     If true any identifier tokens with semantic data will be logged to /02.Utilities/Logging/Logs/TokenLog.txt.
+        /// </summary>
+        public bool ShouldLogSemanticData { get; set; }
+
+        /// <summary>
         ///     If true any unidentified (red) tokens will be logged to /02.Utilities/Logging/Logs/TokenLog.txt.
         /// </summary>
         public bool ShouldLogUnidentifiedTokens { get; set; }
