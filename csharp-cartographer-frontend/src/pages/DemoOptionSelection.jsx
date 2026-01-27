@@ -77,7 +77,7 @@ const DemoOptionSelection = () => {
                         alignItems={'center'}
                     >
                         <Stack
-                            gap={5}
+                            gap={4.5}
                         >
                             <BtnText
                                 onClick={() => handleFileClick("NavToken.cs")}

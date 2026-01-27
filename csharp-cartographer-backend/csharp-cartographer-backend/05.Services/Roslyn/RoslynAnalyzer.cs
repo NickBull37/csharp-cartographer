@@ -44,11 +44,6 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             SyntaxTree syntaxTree,
             CancellationToken cancellationToken)
         {
-            if (token.Index == 40)
-            {
-
-            }
-
             var node = GetSemanticNode(token.RoslynToken);
             if (node is null)
                 return null;
@@ -272,15 +267,6 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                 // Otherwise bind to the name side as usual.
                 return aqn.Name;
             }
-
-
-            // Invocation: name, parentheses, commas, etc.
-            //if (parent.FirstAncestorOrSelf<InvocationExpressionSyntax>() is { } invoke)
-            //    return invoke;
-
-            // Object creation: `new Foo(...)`
-            //if (parent.FirstAncestorOrSelf<ObjectCreationExpressionSyntax>() is { } create)
-            //    return create;
 
             // default literal / default(T)
             if (parent.FirstAncestorOrSelf<DefaultExpressionSyntax>() is { } defExpr)

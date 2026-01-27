@@ -30,8 +30,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 
             foreach (var token in roslynTokens)
             {
+                var newToken = new NavToken(token, index);
+
                 var classification = GetTokenClassification(token, classificationLookup);
-                var newToken = new NavToken(token, semanticModel, syntaxTree, index, classification);
+                newToken.RoslynClassification = classification;
 
                 _roslynAnalyzer.AddTokenSemanticData(newToken, semanticModel, syntaxTree, cancellationToken);
 
