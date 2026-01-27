@@ -52,6 +52,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 if (token.Map is null)
                     continue;
 
+                // TODO: color by classification
                 if (token.RoslynClassification is "keyword" or "keyword - control")
                 {
                     ColorByKeyword(token);

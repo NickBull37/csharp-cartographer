@@ -884,46 +884,54 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             var modifiers = new HashSet<SemanticModifiers>();
 
-            // add literal value modifier
+            // --- Keyword modifiers ---
+            if (token.IsKeyword())
+            {
+                if (GlobalConstants.PredefinedTypes.Contains(token.Text))
+                    modifiers.Add(SemanticModifiers.PredefinedType);
 
+                if (token.Text == "var" || token.Parent.IsKind(SyntaxKind.DefaultLiteralExpression))
+                    modifiers.Add(SemanticModifiers.ImplicitlyTyped);
 
-            // --- Return value ---
-            if (token.IsReturnValue())
-                modifiers.Add(SemanticModifiers.ReturnValue);
+                if (token.IsAnonymousObjectCreation())
+                    modifiers.Add(SemanticModifiers.Anonymous);
+            }
 
             // --- Literal modifiers ---
-            if (token.IsQuotedString())
-                modifiers.Add(SemanticModifiers.QuotedString);
+            if (token.Kind == SyntaxKind.StringLiteralToken)
+            {
+                if (token.IsQuotedString())
+                    modifiers.Add(SemanticModifiers.QuotedString);
 
-            if (token.IsVerbatimString())
-                modifiers.Add(SemanticModifiers.VerbatimString);
+                if (token.IsVerbatimString())
+                    modifiers.Add(SemanticModifiers.VerbatimString);
 
-            if (token.IsInterpolatedString())
-                modifiers.Add(SemanticModifiers.InterpolatedString);
+                if (token.IsInterpolatedString())
+                    modifiers.Add(SemanticModifiers.InterpolatedString);
 
-            if (token.IsInterpolatedVerbatimString())
-                modifiers.Add(SemanticModifiers.InterpolatedVerbatimString);
+                if (token.IsInterpolatedVerbatimString())
+                    modifiers.Add(SemanticModifiers.InterpolatedVerbatimString);
+            }
 
-            // --- Type modifiers ---
-            if (GlobalConstants.PredefinedTypes.Contains(token.Text))
-                modifiers.Add(SemanticModifiers.PredefinedType);
+            // --- Operator modifiers ---
+            if (GlobalConstants.Operators.Contains(token.Text))
+            {
+                if (token.IsConditionalMemberAccessOperator())
+                    modifiers.Add(SemanticModifiers.Conditional);
+            }
 
-            if (token.IsNullableType() || token.IsNullableConstraintType())
-                modifiers.Add(SemanticModifiers.Nullable);
-
-            if (token.Text == "var" || token.Parent.IsKind(SyntaxKind.DefaultLiteralExpression))
-                modifiers.Add(SemanticModifiers.ImplicitlyTyped);
+            // --- General modifiers
+            if (token.IsArgument())
+                modifiers.Add(SemanticModifiers.Argument);
 
             if (token.IsGenericType())
                 modifiers.Add(SemanticModifiers.Generic);
 
-            // --- Operator modifiers ---
-            if (token.IsConditionalMemberAccessOperator())
-                modifiers.Add(SemanticModifiers.Conditional);
+            if (token.IsNullableType() || token.IsNullableConstraintType())
+                modifiers.Add(SemanticModifiers.Nullable);
 
-            // --- Anonymous modifier ---
-            if (token.IsAnonymousObjectCreation())
-                modifiers.Add(SemanticModifiers.Anonymous);
+            if (token.IsReturnValue())
+                modifiers.Add(SemanticModifiers.ReturnValue);
 
             return modifiers;
         }

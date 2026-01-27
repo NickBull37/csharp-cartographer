@@ -280,8 +280,6 @@
     {
         None,
 
-        ReturnValue,
-
         // Accessibility & scope
         Public,
         Private,
@@ -314,13 +312,15 @@
 
         // Type form modifiers
         Anonymous,
-        Generic,
-        Nullable,
+        Argument,
         Array,
-        Pointer,
-        GenericTypeParameter,
         For,
         ForEach,
+        Generic,
+        GenericTypeParameter,
+        Nullable,
+        Pointer,
+        ReturnValue,
 
         // Property / accessor modifiers
         Getter,

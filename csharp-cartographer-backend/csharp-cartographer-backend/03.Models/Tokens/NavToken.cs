@@ -1117,6 +1117,32 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression);
         }
 
+        public bool IsArgument()
+        {
+            // single token identifiers
+            if (HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.Argument))
+            {
+                return true;
+            }
+
+            // numeric literals
+            if (HasAncestorAt(0, SyntaxKind.NumericLiteralExpression)
+                && HasAncestorAt(1, SyntaxKind.Argument))
+            {
+                return true;
+            }
+
+            // string literals
+            if (HasAncestorAt(0, SyntaxKind.StringLiteralExpression)
+                && HasAncestorAt(1, SyntaxKind.Argument))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public bool IsGenericTypeArgument()
         {
             //        ⌄

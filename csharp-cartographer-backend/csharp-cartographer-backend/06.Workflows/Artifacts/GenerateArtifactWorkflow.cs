@@ -4,7 +4,6 @@ using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._03.Models.Files;
 using csharp_cartographer_backend._05.Services.Charts;
 using csharp_cartographer_backend._05.Services.Files;
-using csharp_cartographer_backend._05.Services.Roslyn;
 using csharp_cartographer_backend._05.Services.SyntaxHighlighting;
 using csharp_cartographer_backend._05.Services.Tags;
 using csharp_cartographer_backend._05.Services.Tokens;
@@ -20,7 +19,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
     {
         private readonly IFileProcessor _fileProcessor;
         private readonly INavTokenGenerator _navTokenGenerator;
-        private readonly IRoslynAnalyzer _roslynAnalyzer;
         private readonly ISyntaxHighlighter _syntaxHighlighter;
         private readonly ITokenChartGenerator _tokenChartGenerator;
         private readonly ITokenChartWizard _tokenChartWizard;
@@ -31,7 +29,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         public GenerateArtifactWorkflow(
             IFileProcessor fileProcessor,
             INavTokenGenerator navTokenGenerator,
-            IRoslynAnalyzer roslynAnalyzer,
             ISyntaxHighlighter syntaxHighlighter,
             ITokenChartGenerator tokenChartGenerator,
             ITokenChartWizard tokenChartWizard,
@@ -41,7 +38,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         {
             _fileProcessor = fileProcessor;
             _navTokenGenerator = navTokenGenerator;
-            _roslynAnalyzer = roslynAnalyzer;
             _syntaxHighlighter = syntaxHighlighter;
             _tokenChartGenerator = tokenChartGenerator;
             _tokenChartWizard = tokenChartWizard;
@@ -85,12 +81,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
             // Step 1. Start stopwatch.
             Stopwatch stopwatch = Stopwatch.StartNew();
-
-            // Step 2. Generate SyntaxTree with passed in FileData.
-            //var syntaxTree = _roslynAnalyzer.GetSyntaxTree(fileData);
-
-            //// Step 3. Generate SemanticModel with CompilationUnit & SyntaxTree.
-            //var semanticModel = _roslynAnalyzer.GetSemanticModel(syntaxTree);
 
             // Step 4. Turn the Roslyn data into a list of NavTokens.
             var navTokens = await _navTokenGenerator.GenerateNavTokens(fileData, cancellationToken);
