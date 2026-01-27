@@ -33,7 +33,7 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
 
             try
             {
-                var artifact = await _generateArtifactWorkflow.ExecGenerateDemoArtifact(fileName);
+                var artifact = await _generateArtifactWorkflow.ExecGenerateDemoArtifact(fileName, cancellationToken);
                 return Ok(artifact);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
@@ -69,7 +69,7 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
 
             try
             {
-                var artifact = await _generateArtifactWorkflow.ExecGenerateUserArtifact(dto);
+                var artifact = await _generateArtifactWorkflow.ExecGenerateUserArtifact(dto, cancellationToken);
                 return Ok(artifact);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)

@@ -12,12 +12,12 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 
     public class RoslynAnalyzer : IRoslynAnalyzer
     {
-        public SyntaxTree GetSyntaxTree(FileData fileData)
+        public SyntaxTree GetSyntaxTree(FileData fileData, CancellationToken cancellationToken)
         {
-            return CSharpSyntaxTree.ParseText(fileData.Content);
+            return CSharpSyntaxTree.ParseText(fileData.Content, cancellationToken: cancellationToken);
         }
 
-        public SemanticModel GetSemanticModel(SyntaxTree syntaxTree)
+        public SemanticModel GetSemanticModel(SyntaxTree syntaxTree, CancellationToken cancellationToken)
         {
             var compilationUnit = CSharpCompilation.Create("ArtifactCompilation")
                 .AddSyntaxTrees(syntaxTree)
@@ -29,18 +29,20 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
         public void AddTokenSemanticData(
             NavToken token,
             SemanticModel semanticModel,
-            SyntaxTree syntaxTree)
+            SyntaxTree syntaxTree,
+            CancellationToken cancellationToken)
         {
             if (token.Kind != SyntaxKind.IdentifierToken)
                 return;
 
-            token.SemanticData = GetSemanticData(token, semanticModel, syntaxTree);
+            token.SemanticData = GetSemanticData(token, semanticModel, syntaxTree, cancellationToken);
         }
 
         private static TokenSemanticData? GetSemanticData(
             NavToken token,
             SemanticModel semanticModel,
-            SyntaxTree syntaxTree)
+            SyntaxTree syntaxTree,
+            CancellationToken cancellationToken)
         {
             var node = GetSemanticNode(token.RoslynToken);
             if (node is null)
@@ -49,7 +51,7 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             var data = new TokenSemanticData();
 
             // 1) REFERENCES / BINDING: SymbolInfo for the node
-            var symbolInfo = semanticModel.GetSymbolInfo(node);
+            var symbolInfo = semanticModel.GetSymbolInfo(node, cancellationToken: cancellationToken);
 
             data.Symbol = symbolInfo.Symbol;
 
@@ -192,7 +194,7 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             }
 
             // 5) TypeInfo (+ conversion) for the node
-            var typeInfo = semanticModel.GetTypeInfo(node);
+            var typeInfo = semanticModel.GetTypeInfo(node, cancellationToken);
             data.TypeSymbol = typeInfo.Type;
 
             if (typeInfo.Type is ITypeSymbol type)
@@ -203,7 +205,7 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 
             // 6) Operations API (often *better* than SymbolInfo for expressions)
             //    This returns null on many declaration nodes; it’s still valuable when present.
-            var op = semanticModel.GetOperation(node);
+            var op = semanticModel.GetOperation(node, cancellationToken);
             data.Operation = op;
             if (op != null)
             {

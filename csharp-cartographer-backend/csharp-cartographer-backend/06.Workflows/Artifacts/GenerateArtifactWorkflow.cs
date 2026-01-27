@@ -87,13 +87,13 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             // Step 2. Generate SyntaxTree with passed in FileData.
-            var syntaxTree = _roslynAnalyzer.GetSyntaxTree(fileData);
+            //var syntaxTree = _roslynAnalyzer.GetSyntaxTree(fileData);
 
-            // Step 3. Generate SemanticModel with CompilationUnit & SyntaxTree.
-            var semanticModel = _roslynAnalyzer.GetSemanticModel(syntaxTree);
+            //// Step 3. Generate SemanticModel with CompilationUnit & SyntaxTree.
+            //var semanticModel = _roslynAnalyzer.GetSemanticModel(syntaxTree);
 
             // Step 4. Turn the Roslyn data into a list of NavTokens.
-            var navTokens = await _navTokenGenerator.GenerateNavTokens(semanticModel, syntaxTree, fileData.Document);
+            var navTokens = await _navTokenGenerator.GenerateNavTokens(fileData, cancellationToken);
 
             // Step 5. Generate ancestor charts for each token.
             _tokenChartGenerator.GenerateTokenCharts(navTokens);

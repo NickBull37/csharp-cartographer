@@ -6,13 +6,14 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 {
     public interface IRoslynAnalyzer
     {
-        SyntaxTree GetSyntaxTree(FileData fileData);
+        SyntaxTree GetSyntaxTree(FileData fileData, CancellationToken cancellationToken);
 
-        SemanticModel GetSemanticModel(SyntaxTree syntaxTree);
+        SemanticModel GetSemanticModel(SyntaxTree syntaxTree, CancellationToken cancellationToken);
 
         void AddTokenSemanticData(
             NavToken token,
             SemanticModel semanticModel,
-            SyntaxTree syntaxTree);
+            SyntaxTree syntaxTree,
+            CancellationToken cancellationToken);
     }
 }

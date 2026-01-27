@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { styled } from '@mui/material/styles';
-import { Box, Stack, Button, IconButton, Typography } from '@mui/material';
+import { Box, Stack, Button, IconButton, Typography, CircularProgress } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import CloseIcon from '@mui/icons-material/Close';
+//import CircularProgress from '@mui/material/CircularProgress';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -54,6 +55,7 @@ const UserCodeUpload = ({setArtifact}) => {
 
     // State Variables
     const [generateFileBtnEnabled, setGenerateFileBtnEnabled] = useState(false);
+    const [isGenerating, setIsGenerating] = useState(false);
 
     const [fileName, setFileName] = useState('');
     const [fileContent, setFileContent] = useState('');
@@ -93,6 +95,8 @@ const UserCodeUpload = ({setArtifact}) => {
     // API Calls
     async function GenerateArtifact() {
         try {
+            setIsGenerating(true);
+
             const response = await axios.post("https://localhost:44300/Artifact/generate-artifact", {
                 fileName: fileName,
                 fileContent: fileContent
@@ -105,6 +109,8 @@ const UserCodeUpload = ({setArtifact}) => {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsGenerating(false);
         }
     }
 
@@ -180,14 +186,23 @@ const UserCodeUpload = ({setArtifact}) => {
                         </Box>
                         <GenerateButton
                             variant="contained"
-                            disabled={!generateFileBtnEnabled}
+                            disabled={!generateFileBtnEnabled || isGenerating}
                             onClick={handleGenerateFromFile}
                             sx={{
                                 mt: 4
                             }}
                         >
-                            Map Source File
+                            {isGenerating ? 'Mapping...' : 'Map File'}
                         </GenerateButton>
+                        {isGenerating && (
+                            <Box
+                                mt={3}
+                                display="flex"
+                                justifyContent="center"
+                            >
+                                <CircularProgress sx={{ color: '#10d594' }} />
+                            </Box>
+                        )}
                     </Stack>
                 </Stack>
                 
