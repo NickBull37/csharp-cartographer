@@ -69,6 +69,57 @@ const NextTokenButton = styled(IconButton)(() => ({
     },
 }));
 
+const MapTagBox = styled(Box)(() => ({
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+}));
+const MapTagLabel = styled(Typography)(() => ({
+    fontSize: '16px',
+    color: colors.gray75
+}));
+const MapTagTextBox = styled(Box)(() => ({
+    padding: '1px 6px 1px 6px',
+    backgroundColor: colors.gray20,
+    borderRadius: '4px',
+}));
+const MapTagText = styled(Typography)(() => ({
+    fontSize: '14px',
+    color: colors.gray90
+}));
+const MapTagTextSm = styled(Typography)(() => ({
+    fontSize: '13px',
+    color: colors.gray90
+}));
+
+const MapTagDefTextStack = styled(Stack)(() => ({
+    gap: '0.7rem',
+    marginTop: '1rem',
+    backgroundColor: colors.gray35,
+    color: '#fff',
+    borderRadius: '4px',
+    padding: '8px 12px 10px 12px',
+}));
+const MapTagModTextStack = styled(Stack)(() => ({
+    gap: '0.7rem',
+    marginTop: '0.5rem',
+    border: '2px solid #666666',
+    color: '#fff',
+    borderRadius: '4px',
+    padding: '8px 10px 10px 10px',
+}));
+const MapTagDefLabel = styled(Typography)(() => ({
+    fontSize: '16px',
+    // letterSpacing: '0.04em',
+    color: colors.gray95
+}));
+const MapTagDefText = styled(Typography)(() => ({
+    fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
+    fontSize: '14px',
+    letterSpacing: '0.04em',
+    color: colors.gray95
+}));
+
 const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHighlightIndices, setActiveHighlightIndices }) => {
 
     // Find the index of the activeToken in navTokens
@@ -265,8 +316,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
 
                     <Stack>
 
-                        <Divider sx={{ bgcolor: '#808080' }} />
-                        <Typography
+                        {/* <Divider sx={{ bgcolor: '#808080' }} /> */}
+                        {/* <Typography
                             className='code'
                             sx={{
                                 px: 1,
@@ -277,7 +328,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             }}
                         >
                             {roslynClassification}
-                        </Typography>
+                        </Typography> */}
 
                         {/* <Divider sx={{ bgcolor: '#808080' }} />
                         <Typography
@@ -339,101 +390,94 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             </IconButton>
                         </Box>
 
+                        {/* <Divider sx={{ bgcolor: '#808080' }} /> */}
+
                         {tokenChartExpanded
                             ?
                                 <Stack
-                                    gap={2}
                                     sx={{
                                         p: '1.25rem'
                                     }}
                                 >
-                                    
                                     <Stack
-                                        display="flex"
-                                        gap={0.25}
+                                        gap={1}
                                     >
-                                        <Typography
-                                            className="code"
-                                            sx={{
-                                                fontSize: '13px',
-                                                color: colors.gray70
-                                            }}
-                                        >
-                                            Semantic Role:
-                                        </Typography>
-                                        <Typography
-                                            className="code"
-                                            sx={{
-                                                fontSize: '16px'
-                                            }}
-                                        >
-                                            {activeToken.map.semanticRoleString}
-                                        </Typography>
-                                    </Stack>
-
-                                    <Stack
-                                        display="flex"
-                                        gap={0.25}
-                                    >
-                                        <Typography
-                                            className="code"
-                                            sx={{
-                                                fontSize: '13px',
-                                                color: colors.gray70
-                                            }}
-                                        >
-                                            Primary Kind:
-                                        </Typography>
-                                        <Typography
-                                            className="code"
-                                            sx={{
-                                                fontSize: '16px'
-                                            }}
-                                        >
-                                            {activeToken.map.primaryKindString}
-                                        </Typography>
-                                    </Stack>
-
-                                    {activeToken?.map.modifiers?.length > 0 && (
-                                        <Stack
-                                            gap={0.5}
-                                        >
-                                            <Box
-                                                display="flex"
+                                        <MapTagBox>
+                                            <MapTagLabel
+                                                className="code"
                                             >
-                                                <Typography
+                                                PK:
+                                            </MapTagLabel>
+                                            <MapTagTextBox>
+                                                <MapTagText
                                                     className="code"
-                                                    sx={{
-                                                        fontSize: '14px',
-                                                        color: colors.gray70
-                                                    }}
                                                 >
-                                                    Semantic Modifiers:
-                                                </Typography>
-                                            </Box>
+                                                    {activeToken.map.primaryKindString}
+                                                </MapTagText>
+                                            </MapTagTextBox>
+                                        </MapTagBox>
+                                        <MapTagBox>
+                                            <MapTagLabel
+                                                className="code"
+                                            >
+                                                SR:
+                                            </MapTagLabel>
+                                            <MapTagTextBox>
+                                                <MapTagText
+                                                    className="code"
+                                                >
+                                                    {activeToken.map.semanticRoleString}
+                                                </MapTagText>
+                                            </MapTagTextBox>
+                                        </MapTagBox>
+
+                                        {activeToken?.map.modifiers?.length > 0 && (
                                             <Box
                                                 display="flex"
-                                                gap={1}
-                                                flexWrap="wrap"
+                                                gap={0.5}
                                             >
-                                                {activeToken.map.modifiers.map((modifier) => (
-                                                    <Typography
-                                                        key={modifier}
-                                                        className="code"
-                                                        sx={{
-                                                            fontSize: '16px',
-                                                            px: '6px',
-                                                            py: '2px',
-                                                            borderRadius: '4px',
-                                                            backgroundColor: colors.gray20,
-                                                        }}
-                                                    >
-                                                        {modifier}
-                                                    </Typography>
-                                                ))}
+                                                <MapTagLabel
+                                                    className="code"
+                                                >
+                                                    Mods:
+                                                </MapTagLabel>
+                                                <Box
+                                                    display="flex"
+                                                    gap={1}
+                                                    flexWrap="wrap"
+                                                >
+                                                    {activeToken.map.modifiers.map((modifier) => (
+                                                        <MapTagTextBox>
+                                                            <MapTagTextSm
+                                                                key={modifier}
+                                                                className="code"
+                                                            >
+                                                                {modifier}
+                                                            </MapTagTextSm>
+                                                        </MapTagTextBox>
+                                                    ))}
+                                                </Box>
                                             </Box>
-                                        </Stack>
-                                    )}
+                                        )}
+
+                                        <MapTagDefTextStack>
+                                            <MapTagDefLabel className='code'>
+                                                {activeToken.map.semanticRoleString}
+                                            </MapTagDefLabel>
+                                            <MapTagDefText>
+                                                Generic type arguments are the specific types you supply to a generic class, method, or interface to tell it what data types should work with it.
+                                            </MapTagDefText>
+                                        </MapTagDefTextStack>
+                                        <MapTagModTextStack>
+                                            <MapTagDefLabel className='code'>
+                                                PredefinedType
+                                            </MapTagDefLabel>
+                                            <MapTagDefText>
+                                                Pre-defined types are basic data types the C# language gives you out of the box.
+                                            </MapTagDefText>
+                                        </MapTagModTextStack>
+                                        
+                                    </Stack>
                                 </Stack>
                             :
                                 <></>
