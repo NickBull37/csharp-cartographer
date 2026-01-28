@@ -75,7 +75,7 @@ const MapTagBox = styled(Box)(() => ({
     gap: '4px',
 }));
 const MapTagLabel = styled(Typography)(() => ({
-    fontSize: '16px',
+    fontSize: '13px',
     color: colors.gray75
 }));
 const MapTagTextBox = styled(Box)(() => ({
@@ -84,11 +84,7 @@ const MapTagTextBox = styled(Box)(() => ({
     borderRadius: '4px',
 }));
 const MapTagText = styled(Typography)(() => ({
-    fontSize: '14px',
-    color: colors.gray90
-}));
-const MapTagTextSm = styled(Typography)(() => ({
-    fontSize: '13px',
+    fontSize: '12px',
     color: colors.gray90
 }));
 
@@ -110,8 +106,8 @@ const MapTagModTextStack = styled(Stack)(() => ({
 }));
 const MapTagDefLabel = styled(Typography)(() => ({
     fontSize: '16px',
-    // letterSpacing: '0.04em',
-    color: colors.gray95
+    color: colors.gray95,
+    borderBottom: '1px solid #666666'
 }));
 const MapTagDefText = styled(Typography)(() => ({
     fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
@@ -396,11 +392,11 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             ?
                                 <Stack
                                     sx={{
-                                        p: '1.25rem'
+                                        p: '1.25rem 1.2rem 1.25rem 1rem',
                                     }}
                                 >
                                     <Stack
-                                        gap={1}
+                                        gap={0.75}
                                     >
                                         <MapTagBox>
                                             <MapTagLabel
@@ -448,35 +444,52 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 >
                                                     {activeToken.map.modifiers.map((modifier) => (
                                                         <MapTagTextBox>
-                                                            <MapTagTextSm
+                                                            <MapTagText
                                                                 key={modifier}
                                                                 className="code"
                                                             >
                                                                 {modifier}
-                                                            </MapTagTextSm>
+                                                            </MapTagText>
                                                         </MapTagTextBox>
                                                     ))}
                                                 </Box>
                                             </Box>
                                         )}
 
-                                        <MapTagDefTextStack>
+                                        {/* <MapTagDefTextStack>
                                             <MapTagDefLabel className='code'>
                                                 {activeToken.map.semanticRoleString}
                                             </MapTagDefLabel>
                                             <MapTagDefText>
-                                                Generic type arguments are the specific types you supply to a generic class, method, or interface to tell it what data types should work with it.
+                                                Controls where code elements like classes, methods, and fields can be accessed from, helping enforce encapsulation and safe boundaries between parts of a program.
                                             </MapTagDefText>
-                                        </MapTagDefTextStack>
-                                        <MapTagModTextStack>
-                                            <MapTagDefLabel className='code'>
-                                                PredefinedType
-                                            </MapTagDefLabel>
                                             <MapTagDefText>
-                                                Pre-defined types are basic data types the C# language gives you out of the box.
+                                                <span className="code" style={{ color: '#6fabdc' }}>public</span> members are accessible from any other code in the same assembly or another assembly that references it.
                                             </MapTagDefText>
-                                        </MapTagModTextStack>
-                                        
+                                        </MapTagDefTextStack> */}
+                                        <Stack
+                                            gap={1}
+                                            sx={{
+                                                mt: '1.25rem'
+                                            }}
+                                        >
+                                            <MapTagDefLabel className='code' >
+                                                {activeToken.map.semanticLabel}
+                                            </MapTagDefLabel>
+                                            {/* <MapTagDefLabel className='code' >
+                                                {activeToken.map.semanticRoleString}
+                                            </MapTagDefLabel> */}
+                                            <Stack
+                                                gap={2}
+                                            >
+                                                <MapTagDefText>
+                                                    Access modifier keywords control where code elements like classes, methods, and fields can be accessed from, helping enforce encapsulation and safe boundaries between parts of a program.
+                                                </MapTagDefText>
+                                                <MapTagDefText>
+                                                    <span className="code" style={{ color: '#6fabdc' }}><b>public</b></span> members are accessible from any other code in the same assembly or another assembly that references it.
+                                                </MapTagDefText>
+                                            </Stack>
+                                        </Stack>
                                     </Stack>
                                 </Stack>
                             :

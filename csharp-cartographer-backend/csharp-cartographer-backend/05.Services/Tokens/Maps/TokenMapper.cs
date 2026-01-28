@@ -20,16 +20,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             MapSpecialCaseSemanticRoles(navTokens);
         }
 
-        private static TokenMap MapToken(NavToken token)
+        private static SemanticMap MapToken(NavToken token)
         {
             var primaryKind = GetPrimaryKind(token);
             var role = GetSemanticRole(token);
             var modifiers = GetSemanticModifiers(token);
 
-            return new TokenMap(
+            return new SemanticMap(
                 primaryKind: primaryKind,
                 semanticRole: role,
-                modifiers: modifiers.Count > 0 ? modifiers : null
+                modifiers: modifiers
             );
         }
 
@@ -880,15 +880,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         #endregion
 
         #region Semantic Modifiers
-        private static HashSet<SemanticModifiers> GetSemanticModifiers(NavToken token)
+        private static List<SemanticModifiers> GetSemanticModifiers(NavToken token)
         {
-            var modifiers = new HashSet<SemanticModifiers>();
+            List<SemanticModifiers> modifiers = [];
 
             // --- Keyword modifiers ---
             if (token.IsKeyword())
             {
-                if (GlobalConstants.PredefinedTypes.Contains(token.Text))
-                    modifiers.Add(SemanticModifiers.PredefinedType);
+                // TODO: change to reference/value types
+                //if (GlobalConstants.PredefinedTypes.Contains(token.Text))
+                //    modifiers.Add(SemanticModifiers.PredefinedType);
 
                 if (token.Text == "var" || token.Parent.IsKind(SyntaxKind.DefaultLiteralExpression))
                     modifiers.Add(SemanticModifiers.ImplicitlyTyped);
