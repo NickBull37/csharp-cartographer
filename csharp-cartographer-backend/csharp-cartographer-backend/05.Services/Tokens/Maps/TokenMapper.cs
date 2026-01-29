@@ -33,7 +33,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             );
         }
 
-        private static TokenPrimaryKind GetPrimaryKind(NavToken token)
+        private static PrimaryKind GetPrimaryKind(NavToken token)
         {
             /*
              *   Roslyn does a lot of the heavy lifting with their classification. But their
@@ -44,44 +44,49 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Special cases - update manually
             if (token.Text == "." && token.IsNamespaceQualifierSeparator())
             {
-                return TokenPrimaryKind.Punctuation;
+                return PrimaryKind.Punctuation;
             }
             if (token.Text == "?" && token.IsNullableTypeMarker())
             {
-                return TokenPrimaryKind.Punctuation;
+                return PrimaryKind.Punctuation;
             }
             if (token.Text == ".." && token.RoslynClassification == "punctuation")
             {
-                return TokenPrimaryKind.Operator;
+                return PrimaryKind.Operator;
             }
             if (GlobalConstants.Delimiters.Contains(token.Text))
             {
-                return TokenPrimaryKind.Delimiter;
+                return PrimaryKind.Delimiter;
             }
             if (token.Text is "nint" && token.SemanticData?.SymbolName == "IntPtr")
             {
                 token.RoslynClassification = "keyword";
-                return TokenPrimaryKind.Keyword;
+                return PrimaryKind.Keyword;
             }
             if (token.Text is "nuint" && token.SemanticData?.SymbolName == "UIntPtr")
             {
                 token.RoslynClassification = "keyword";
-                return TokenPrimaryKind.Keyword;
+                return PrimaryKind.Keyword;
+            }
+            if (token.Text is "var" && token.IsLocalType())
+            {
+                token.RoslynClassification = "keyword";
+                return PrimaryKind.Keyword;
             }
 
             switch (token.RoslynClassification)
             {
                 case "keyword":
                 case "keyword - control":
-                    return TokenPrimaryKind.Keyword;
+                    return PrimaryKind.Keyword;
                 case "operator":
-                    return TokenPrimaryKind.Operator;
+                    return PrimaryKind.Operator;
                 case "punctuation":
-                    return TokenPrimaryKind.Punctuation;
+                    return PrimaryKind.Punctuation;
                 case "string":
                 case "string - verbatim":
                 case "number":
-                    return TokenPrimaryKind.Literal;
+                    return PrimaryKind.Literal;
                 case "class name":
                 case "constant name":
                 case "delegate name":
@@ -101,9 +106,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 case "type parameter name":
                 case "identifier":
                 case "static symbol":
-                    return TokenPrimaryKind.Identifier;
+                    return PrimaryKind.Identifier;
                 default:
-                    return TokenPrimaryKind.Unknown;
+                    return PrimaryKind.Unknown;
             }
         }
 
@@ -298,13 +303,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.Text is ";" or ":")
             {
                 if (token.IsStatementTerminator())
-                    return SemanticRole.StatementTermination;
+                    return SemanticRole.StatementTerminator;
 
                 if (token.IsSwitchCaseLabelTerminator())
-                    return SemanticRole.CaseLabelTermination;
+                    return SemanticRole.CaseLabelTerminator;
 
                 if (token.IsParameterLabelTerminator())
-                    return SemanticRole.ParameterLabelTermination;
+                    return SemanticRole.ParameterLabelTerminator;
             }
 
             // --- Qualifiers ---
@@ -885,7 +890,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             List<SemanticModifiers> modifiers = [];
 
             // --- Keyword modifiers ---
-            if (token.IsKeyword())
+            if (token.IsKeyword() || token.IsContextualKeyword())
             {
                 // TODO: change to reference/value types
                 //if (GlobalConstants.PredefinedTypes.Contains(token.Text))
@@ -899,7 +904,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             }
 
             // --- Literal modifiers ---
-            if (token.Kind == SyntaxKind.StringLiteralToken)
+            if (token.Kind.ToString().Contains("String") && token.Kind.ToString().Contains("Token"))
             {
                 if (token.IsQuotedString())
                     modifiers.Add(SemanticModifiers.QuotedString);
@@ -933,6 +938,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsReturnValue())
                 modifiers.Add(SemanticModifiers.ReturnValue);
+
+            if (token.IsIdentifier())
+            {
+                // add interpolated value modifier
+            }
+
+            //if (token.Text == "var" && token.IsLocalVariableDataType())
+            //    modifiers.Add(SemanticModifiers.ImplicitlyTyped);
 
             return modifiers;
         }

@@ -148,6 +148,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsKeyword() => SyntaxFacts.IsKeywordKind(Kind);
 
+        public bool IsContextualKeyword() => SyntaxFacts.IsContextualKeyword(Kind);
+
         public bool IsAccessStaticMember() =>
             HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
 
@@ -573,6 +575,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsFieldDataType() =>
             HasAncestorAt(2, SyntaxKind.FieldDeclaration) ||
             HasAncestorAt(3, SyntaxKind.FieldDeclaration);
+
+        public bool IsLocalType() => IsLocalVariableDataType()
+            || IsForEachLoopLocalVariableDataType();
 
         public bool IsLocalVariableDataType() =>
             HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement) ||
