@@ -39,7 +39,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public string? UpdatedClassification { get; set; }
 
         /// <summary> </summary>
-        public SemanticMap? Map { get; set; }
+        public SemanticMap Map { get; set; }
 
         /// <summary>The TextSpan of the token text.</summary>
         [JsonIgnore]

@@ -1,6 +1,4 @@
-﻿using csharp_cartographer_backend._02.Utilities.Helpers;
-
-namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
+﻿namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 {
     // A general class based on the original Roslyn classification
     public enum PrimaryKind
@@ -202,7 +200,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         DefaultValue,
         NullValue,
         NumericLiteral,
-        StringLiteral,
+        //StringLiteral,
+        QuotedString,
+        VerbatimString,
+        InterpolatedStringStart,
+        InterpolatedStringText,
+        InterpolatedStringEnd,
+        InterpolatedVerbatimStringStart,
+        InterpolatedVerbatimStringText,
+        InterpolatedVerbatimStringEnd,
 
 
         // ------------ TYPES ------------ //
@@ -237,6 +243,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         NamespaceDeclarationQualifer,
         TypeQualifier,
         UsingDirectiveQualifier,
+
 
         // ------------ QUERY EXPRESSIONS ------------ //
         GroupContinuationRangeVariable,
@@ -438,43 +445,29 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         public PrimaryKind PrimaryKind { get; set; } = PrimaryKind.Unknown;
 
-        public IEnumerable<string> Modifiers { get; set; } = [];
+        public IEnumerable<SemanticModifiers> Modifiers { get; set; } = [];
 
-        public string SemanticLabel { get; set; } = string.Empty;
 
+        public string PrimaryLabel { get; set; } = string.Empty;
+
+        public MapText PrimaryDefinition { get; set; }
+
+        public MapText? PrimaryFocusedDefinition { get; set; }
+
+        public string? SecondaryLabel { get; set; } = string.Empty;
+
+        public MapText? SecondaryDefinition { get; set; }
+
+        // PK and SR only used for development
         public string SemanticRoleString => SemanticRole.ToString();
-
         public string PrimaryKindString => PrimaryKind.ToString();
+        public IEnumerable<string> ModifierStrings { get; set; } = [];
 
         public SemanticMap(
             PrimaryKind primaryKind,
             SemanticRole semanticRole,
             List<SemanticModifiers> modifiers)
         {
-            bool isDataTypeKeyword = (semanticRole.ToString().Contains("DataType")
-                || semanticRole.ToString().Contains("ReturnType"))
-                && primaryKind == PrimaryKind.Keyword;
-
-            string? label;
-            if (semanticRole != SemanticRole.UsingDirectiveQualifier
-                && semanticRole != SemanticRole.TypeQualifier
-                && semanticRole != SemanticRole.NamespaceQualifer
-                && semanticRole != SemanticRole.NamespaceDeclarationQualifer
-                && semanticRole != SemanticRole.NumericLiteral
-                && semanticRole != SemanticRole.StringLiteral
-                && semanticRole != SemanticRole.CharacterLiteral
-                && primaryKind != PrimaryKind.Punctuation
-                && primaryKind != PrimaryKind.Delimiter
-                && !isDataTypeKeyword)
-            {
-                //TODO: add data type keywords
-                label = semanticRole.ToSpacedString() + " " + primaryKind.ToSpacedString();
-            }
-            else
-            {
-                label = semanticRole.ToSpacedString();
-            }
-
             List<string> modifierStrings = [];
             if (modifiers is not null)
             {
@@ -486,8 +479,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
             PrimaryKind = primaryKind;
             SemanticRole = semanticRole;
-            Modifiers = modifierStrings;
-            SemanticLabel = label;
+            ModifierStrings = modifierStrings;
         }
     }
 }

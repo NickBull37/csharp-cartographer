@@ -8,6 +8,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 {
     public class TokenMapper : ITokenMapper
     {
+        private readonly ISemanticLibrary _semanticLibrary;
+
+        public TokenMapper(ISemanticLibrary semanticLibrary)
+        {
+            _semanticLibrary = semanticLibrary;
+        }
+
         public void MapNavTokens(List<NavToken> navTokens)
         {
             // for tokens that have enough data to be classified on the first attempt
@@ -18,6 +25,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             }
 
             MapSpecialCaseSemanticRoles(navTokens);
+
+            _semanticLibrary.AddSemanticInfo(navTokens);
         }
 
         private static SemanticMap MapToken(NavToken token)
@@ -631,8 +640,32 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.NumericLiteral;
 
             // String literals
-            if (token.IsQuotedString() || token.IsVerbatimString() || token.IsInterpolatedString() || token.IsInterpolatedVerbatimString())
-                return SemanticRole.StringLiteral;
+            //if (token.IsQuotedString() || token.IsVerbatimString() || token.IsInterpolatedString() || token.IsInterpolatedVerbatimString())
+            //    return SemanticRole.StringLiteral;
+
+            if (token.IsQuotedString())
+                return SemanticRole.QuotedString;
+
+            if (token.IsVerbatimString())
+                return SemanticRole.VerbatimString;
+
+            if (token.IsInterpolatedString() && token.Kind == SyntaxKind.InterpolatedStringStartToken)
+                return SemanticRole.InterpolatedStringStart;
+
+            if (token.IsInterpolatedString() && token.Kind == SyntaxKind.InterpolatedStringTextToken)
+                return SemanticRole.InterpolatedStringText;
+
+            if (token.IsInterpolatedString() && token.Kind == SyntaxKind.InterpolatedStringEndToken)
+                return SemanticRole.InterpolatedStringEnd;
+
+            if (token.IsInterpolatedVerbatimString() && token.Kind == SyntaxKind.InterpolatedVerbatimStringStartToken)
+                return SemanticRole.InterpolatedVerbatimStringStart;
+
+            if (token.IsInterpolatedVerbatimString() && token.Kind == SyntaxKind.InterpolatedStringTextToken && token.RoslynClassification is not null && token.RoslynClassification.Contains("verbatim"))
+                return SemanticRole.InterpolatedVerbatimStringText;
+
+            if (token.IsInterpolatedVerbatimString() && token.Kind == SyntaxKind.InterpolatedStringEndToken && token.RoslynClassification is not null && token.RoslynClassification.Contains("verbatim"))
+                return SemanticRole.InterpolatedVerbatimStringEnd;
 
             // Char literals
             if (token.IsCharacterLiteral())
@@ -903,20 +936,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             }
 
             // --- Literal modifiers ---
-            if (token.Kind.ToString().Contains("String") && token.Kind.ToString().Contains("Token"))
-            {
-                if (token.IsQuotedString())
-                    modifiers.Add(SemanticModifiers.QuotedString);
+            //if (token.Kind.ToString().Contains("String") && token.Kind.ToString().Contains("Token"))
+            //{
+            //    if (token.IsQuotedString())
+            //        modifiers.Add(SemanticModifiers.QuotedString);
 
-                if (token.IsVerbatimString())
-                    modifiers.Add(SemanticModifiers.VerbatimString);
+            //    if (token.IsVerbatimString())
+            //        modifiers.Add(SemanticModifiers.VerbatimString);
 
-                if (token.IsInterpolatedString())
-                    modifiers.Add(SemanticModifiers.InterpolatedString);
+            //    if (token.IsInterpolatedString())
+            //        modifiers.Add(SemanticModifiers.InterpolatedString);
 
-                if (token.IsInterpolatedVerbatimString())
-                    modifiers.Add(SemanticModifiers.InterpolatedVerbatimString);
-            }
+            //    if (token.IsInterpolatedVerbatimString())
+            //        modifiers.Add(SemanticModifiers.InterpolatedVerbatimString);
+            //}
 
             // --- Operator modifiers ---
             if (GlobalConstants.Operators.Contains(token.Text))

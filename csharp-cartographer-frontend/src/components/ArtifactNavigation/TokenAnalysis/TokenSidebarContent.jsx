@@ -427,7 +427,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                             </MapTagTextBox>
                                         </MapTagBox>
 
-                                        {activeToken?.map.modifiers?.length > 0 && (
+                                        {activeToken?.map.modifierStrings?.length > 0 && (
                                             <Box
                                                 display="flex"
                                                 gap={0.5}
@@ -442,7 +442,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                     gap={1}
                                                     flexWrap="wrap"
                                                 >
-                                                    {activeToken.map.modifiers.map((modifier) => (
+                                                    {activeToken.map.modifierStrings.map((modifier) => (
                                                         <MapTagTextBox>
                                                             <MapTagText
                                                                 key={modifier}
@@ -456,17 +456,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                             </Box>
                                         )}
 
-                                        {/* <MapTagDefTextStack>
-                                            <MapTagDefLabel className='code'>
-                                                {activeToken.map.semanticRoleString}
-                                            </MapTagDefLabel>
-                                            <MapTagDefText>
-                                                Controls where code elements like classes, methods, and fields can be accessed from, helping enforce encapsulation and safe boundaries between parts of a program.
-                                            </MapTagDefText>
-                                            <MapTagDefText>
-                                                <span className="code" style={{ color: '#6fabdc' }}>public</span> members are accessible from any other code in the same assembly or another assembly that references it.
-                                            </MapTagDefText>
-                                        </MapTagDefTextStack> */}
                                         <Stack
                                             gap={1}
                                             sx={{
@@ -474,11 +463,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                             }}
                                         >
                                             <MapTagDefLabel className='code' >
-                                                {activeToken.map.semanticLabel}
+                                                {activeToken.map.primaryLabel}
                                             </MapTagDefLabel>
-                                            {/* <MapTagDefLabel className='code' >
-                                                {activeToken.map.semanticRoleString}
-                                            </MapTagDefLabel> */}
                                             <Stack
                                                 gap={2}
                                             >
@@ -487,6 +473,25 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 </MapTagDefText>
                                                 <MapTagDefText>
                                                     <span className="code" style={{ color: '#6fabdc' }}><b>public</b></span> members are accessible from any other code in the same assembly or another assembly that references it.
+                                                </MapTagDefText>
+                                            </Stack>
+                                        </Stack>
+
+                                        <Stack
+                                            gap={1}
+                                            sx={{
+                                                mt: '1.5rem'
+                                            }}
+                                        >
+                                            <MapTagDefLabel className='code' >
+                                                Return Value
+                                                {/* {activeToken.map.secondaryLabel} */}
+                                            </MapTagDefLabel>
+                                            <Stack
+                                                gap={2}
+                                            >
+                                                <MapTagDefText>
+                                                    This token represents the value that will be returned by this method.
                                                 </MapTagDefText>
                                             </Stack>
                                         </Stack>

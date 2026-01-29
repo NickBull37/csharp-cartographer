@@ -286,7 +286,14 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     token.HighlightColor = Yellow;
                     break;
                 case SemanticRole.CharacterLiteral:
-                case SemanticRole.StringLiteral:
+                case SemanticRole.QuotedString:
+                case SemanticRole.VerbatimString:
+                case SemanticRole.InterpolatedStringStart:
+                case SemanticRole.InterpolatedStringText:
+                case SemanticRole.InterpolatedStringEnd:
+                case SemanticRole.InterpolatedVerbatimStringStart:
+                case SemanticRole.InterpolatedVerbatimStringText:
+                case SemanticRole.InterpolatedVerbatimStringEnd:
                     token.HighlightColor = Orange;
                     break;
                 // -------------------------------------------------------------- //

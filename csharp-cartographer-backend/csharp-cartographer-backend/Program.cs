@@ -47,6 +47,7 @@ builder.Services.AddScoped<IClassificationWizard, ClassificationWizard>();
 builder.Services.AddScoped<IFileProcessor, FileProcessor>();
 builder.Services.AddScoped<INavTokenGenerator, NavTokenGenerator>();
 builder.Services.AddScoped<IRoslynAnalyzer, RoslynAnalyzer>();
+builder.Services.AddScoped<ISemanticLibrary, SemanticLibrary>();
 builder.Services.AddScoped<ISyntaxHighlighter, SyntaxHighlighter>();
 builder.Services.AddScoped<ITokenChartGenerator, TokenChartGenerator>();
 builder.Services.AddScoped<ITokenChartWizard, TokenChartWizard>();
