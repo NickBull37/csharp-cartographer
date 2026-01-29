@@ -880,6 +880,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsJoinIntoRangeVariable())
                 return SemanticRole.JoinIntoRangeVariable;
 
+            if (token.PrevToken?.Text == ".")
+                return SemanticRole.MemberAccess;
+
             return SemanticRole.None;
         }
         #endregion
@@ -892,10 +895,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Keyword modifiers ---
             if (token.IsKeyword() || token.IsContextualKeyword())
             {
-                // TODO: change to reference/value types
-                //if (GlobalConstants.PredefinedTypes.Contains(token.Text))
-                //    modifiers.Add(SemanticModifiers.PredefinedType);
-
                 if (token.Text == "var" || token.Parent.IsKind(SyntaxKind.DefaultLiteralExpression))
                     modifiers.Add(SemanticModifiers.ImplicitlyTyped);
 
@@ -926,6 +925,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     modifiers.Add(SemanticModifiers.Conditional);
             }
 
+            // --- Identifier modifiers
+            if (token.IsIdentifier())
+            {
+                if (token.IsInterpolatedValue())
+                    modifiers.Add(SemanticModifiers.InterpolatedValue);
+            }
+
             // --- General modifiers
             if (token.IsArgument())
                 modifiers.Add(SemanticModifiers.Argument);
@@ -938,14 +944,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsReturnValue())
                 modifiers.Add(SemanticModifiers.ReturnValue);
-
-            if (token.IsIdentifier())
-            {
-                // add interpolated value modifier
-            }
-
-            //if (token.Text == "var" && token.IsLocalVariableDataType())
-            //    modifiers.Add(SemanticModifiers.ImplicitlyTyped);
 
             return modifiers;
         }

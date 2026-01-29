@@ -331,6 +331,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         ForEach,
         Generic,
         GenericTypeParameter,
+        InterpolatedValue,
         Nullable,
         Pointer,
         ReturnValue,

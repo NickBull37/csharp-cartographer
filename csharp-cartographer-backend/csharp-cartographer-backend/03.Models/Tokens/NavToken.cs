@@ -171,6 +171,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return isValidToken && HasAncestorAt(1, SyntaxKind.ReturnStatement);
         }
 
+        public bool IsInterpolatedValue()
+        {
+            return HasAncestorAt(1, SyntaxKind.Interpolation)
+                && PrevToken?.Text == "{"
+                && NextToken?.Text == "}";
+        }
+
         #region Delimiter Checks
         public bool IsAccessorListDelimiter()
         {
