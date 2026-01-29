@@ -1,0 +1,11 @@
+{
+  "Namespace": {
+    "Definition": "The namespace keyword groups related types into a named scope, helping organize code and prevent naming conflicts across large projects."
+  },
+  "Public": {
+    "Definition": "public members are accessible from any other code in the same assembly or another assembly that references it."
+  },
+  "Using": {
+    "Definition": "The using keyword imports namespaces into the file so you can reference their types without fully qualifying their names."
+  }
+}

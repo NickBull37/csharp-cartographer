@@ -1,0 +1,5 @@
+{
+  "Argument": {
+    "Definition": "Arguments are the actual values you pass to a method, constructor, or function when you call it. These values get assigned to the corresponding parameters so they can be used wherever they are passed."
+  }
+}

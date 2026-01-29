@@ -1,6 +1,8 @@
 ﻿namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 {
-    // A general class based on the original Roslyn classification
+    /// <summary>
+    /// Describes the general syntax category the token falls under.
+    /// </summary>
     public enum PrimaryKind
     {
         Unknown,
@@ -12,21 +14,12 @@
         Literal
     }
 
-    public enum DelimiterSemanticRoles
-    {
-        Unknown,
-        Keyword,
-        Delimiter,
-        Operator,
-        Punctuation,
-        Identifier,
-        Literal
-    }
-
-    // What the token actually being used for
+    /// <summary>
+    /// Describes what the token is actually being used for in it's current context.
+    /// </summary>
     public enum SemanticRole
     {
-        None,
+        Unknown,
 
         // ------------ DELIMITERS ------------ //
 
@@ -125,7 +118,7 @@
         PatternMatching,
         QueryExpression,
         SafetyContext,
-        SourceScope,
+        CompilationScope,
         TypeDeclaration,
         TypeReference,
         TypeSystem,
@@ -441,7 +434,7 @@
 
     public sealed record SemanticMap
     {
-        public SemanticRole SemanticRole { get; set; } = SemanticRole.None;
+        public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
 
         public PrimaryKind PrimaryKind { get; set; } = PrimaryKind.Unknown;
 

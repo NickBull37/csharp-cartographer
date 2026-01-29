@@ -14,9 +14,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 token.Map.PrimaryLabel = GetPrimaryLabel(token);
                 token.Map.SecondaryLabel = GetSecondaryLabel(token);
-                //token.Map.PrimaryDefinition = GetPrimaryDefinition(token);
-                //token.Map.PrimaryFocusedDefinition = GetPrimaryFocusedDefinition(token);
-                //token.Map.SecondaryDefinition = GetSecondaryDefinition(token);
+                token.Map.PrimaryDefinition = GetPrimaryDefinition(token);
+                token.Map.PrimaryFocusedDefinition = GetPrimaryFocusedDefinition(token);
+                token.Map.SecondaryDefinition = GetSecondaryDefinition(token);
             }
         }
 
@@ -55,28 +55,74 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static string? GetSecondaryLabel(NavToken token)
         {
-            if (!token.Map.Modifiers.Any())
+            if (token.Index == 117)
+            {
+
+            }
+
+            if (!token.Map.ModifierStrings.Any())
                 return null;
 
-            var mod = token.Map.Modifiers.First();
-            var primaryKind = token.Map.PrimaryKind;
-
-            return mod.ToSpacedString() + " " + primaryKind.ToSpacedString();
+            return token.Map.ModifierStrings.First();
         }
 
-        //private static MapText GetPrimaryDefinition(NavToken token)
-        //{
+        private static MapText GetPrimaryDefinition(NavToken token)
+        {
+            var key = token.Map.SemanticRole.ToString();
 
-        //}
+            var definition = key is not null
+                ? DefinitionProvider.GetDefinition(key)
+                : null;
 
-        //private static MapText GetPrimaryFocusedDefinition(NavToken token)
-        //{
+            if (string.IsNullOrWhiteSpace(definition))
+                return new MapText();
 
-        //}
+            return ToPlainMapText(definition);
+        }
 
-        //private static MapText GetSecondaryDefinition(NavToken token)
-        //{
+        private static MapText GetPrimaryFocusedDefinition(NavToken token)
+        {
+            var key = token.Text;
 
-        //}
+            var definition = key is not null
+                ? DefinitionProvider.GetDefinition(key)
+                : null;
+
+            if (string.IsNullOrWhiteSpace(definition))
+                return new MapText();
+
+            return ToPlainMapText(definition);
+        }
+
+        private static MapText GetSecondaryDefinition(NavToken token)
+        {
+            var key = token.Map.ModifierStrings.FirstOrDefault();
+
+            var definition = key is not null
+                ? DefinitionProvider.GetDefinition(key)
+                : null;
+
+            if (string.IsNullOrWhiteSpace(definition))
+                return new MapText();
+
+            return ToPlainMapText(definition);
+        }
+
+        private static MapText ToPlainMapText(string definition)
+        {
+            return new MapText
+            {
+                ID = Guid.NewGuid(),
+                Segments =
+                [
+                    new TextSegment
+                    {
+                        ID = Guid.NewGuid(),
+                        Text = definition,
+                        Classes = []
+                    }
+                ]
+            };
+        }
     }
 }

@@ -4,6 +4,6 @@
     {
         public Guid ID { get; set; }
 
-        public required List<TextSegment> Segments { get; init; }
+        public List<TextSegment> Segments { get; set; } = [];
     }
 }

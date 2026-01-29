@@ -74,8 +74,9 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
              *   8. Add highlight indices to token charts for highlighting ancestors.
              *   9. Add TokenTags definitions & insights.
              *   10. Add syntax highlighting for all NavTokens (should be last step in workflow).
-             *   11. Stop stopwatch.
-             *   12. Build & return artifact.
+             *   11. Build artifact.
+             *   12. Stop stopwatch.
+             *   13. Return artifact.
              *   
              */
 
@@ -103,15 +104,16 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             // Step 10. Add syntax highlighting for all NavTokens (should be last step in workflow).
             _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
 
-            // Step 11. Stop stopwatch.
-            stopwatch.Stop();
-
-            // Step 12. Build & return artifact.
+            // Step 11. Build & return artifact.
             var artifact = new Artifact(fileData.FileName, stopwatch.Elapsed, navTokens);
+
+            // Step 12. Stop stopwatch.
+            stopwatch.Stop();
 
             // Bonus: Log artifact data (optional)
             LogArtifactData(artifact);
 
+            // Step 13. Return artifact.
             return artifact;
         }
 

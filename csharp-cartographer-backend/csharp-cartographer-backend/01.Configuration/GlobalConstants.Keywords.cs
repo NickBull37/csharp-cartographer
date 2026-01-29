@@ -307,8 +307,8 @@
             "volatile",
         ];
 
-        /// Source Scope
-        public static readonly List<string> SourceScopeKeywords =
+        /// Compilation Scope
+        public static readonly List<string> CompilationScopeKeywords =
         [
             "alias",
             "file",

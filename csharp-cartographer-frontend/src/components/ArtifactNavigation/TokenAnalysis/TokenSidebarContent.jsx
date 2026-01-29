@@ -235,6 +235,23 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
         }
     }, [activeToken]);
 
+    const renderMapText = (mapText) => {
+        if (!mapText?.segments?.length) return null;
+        return (
+            <>
+                {mapText.segments.map(seg => (
+                    <span
+                        key={seg.id}
+                        className={seg.classes?.join(' ') || undefined}
+                        style={seg.highlightColor ? { backgroundColor: seg.highlightColor } : undefined}
+                    >
+                        {seg.text}
+                    </span>
+                ))}
+            </>
+        );
+    };
+
     return (
         <ContentContainer>
             <Stack
@@ -465,36 +482,39 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                             <MapTagDefLabel className='code' >
                                                 {activeToken.map.primaryLabel}
                                             </MapTagDefLabel>
-                                            <Stack
-                                                gap={2}
-                                            >
+
+                                            <Stack gap={2}>
                                                 <MapTagDefText>
-                                                    Access modifier keywords control where code elements like classes, methods, and fields can be accessed from, helping enforce encapsulation and safe boundaries between parts of a program.
+                                                    {renderMapText(activeToken?.map?.primaryDefinition)}
                                                 </MapTagDefText>
-                                                <MapTagDefText>
-                                                    <span className="code" style={{ color: '#6fabdc' }}><b>public</b></span> members are accessible from any other code in the same assembly or another assembly that references it.
-                                                </MapTagDefText>
+
+                                                {!!activeToken?.map?.primaryFocusedDefinition?.segments?.length && (
+                                                    <MapTagDefText>
+                                                        {renderMapText(activeToken?.map?.primaryFocusedDefinition)}
+                                                    </MapTagDefText>
+                                                )}
                                             </Stack>
                                         </Stack>
 
-                                        <Stack
-                                            gap={1}
-                                            sx={{
-                                                mt: '1.5rem'
-                                            }}
-                                        >
-                                            <MapTagDefLabel className='code' >
-                                                Return Value
-                                                {/* {activeToken.map.secondaryLabel} */}
-                                            </MapTagDefLabel>
+                                        {!!activeToken?.map?.secondaryLabel && (
                                             <Stack
-                                                gap={2}
+                                                gap={1}
+                                                sx={{
+                                                    mt: '1.5rem'
+                                                }}
                                             >
-                                                <MapTagDefText>
-                                                    This token represents the value that will be returned by this method.
-                                                </MapTagDefText>
+                                                <MapTagDefLabel className='code' >
+                                                    {activeToken.map.secondaryLabel}
+                                                </MapTagDefLabel>
+                                                <Stack
+                                                    gap={2}
+                                                >
+                                                    <MapTagDefText>
+                                                        {renderMapText(activeToken?.map?.secondaryDefinition)}
+                                                    </MapTagDefText>
+                                                </Stack>
                                             </Stack>
-                                        </Stack>
+                                        )}
                                     </Stack>
                                 </Stack>
                             :
