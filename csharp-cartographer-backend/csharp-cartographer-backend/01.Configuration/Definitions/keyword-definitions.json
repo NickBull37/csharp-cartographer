@@ -1,23 +1,353 @@
 {
-  "Namespace": {
-    "Definition": "The {c:color-blue keyword}namespace{/c} keyword groups related types into a named scope, helping organize code and prevent naming conflicts across large projects."
+  "abstract": {
+    "Definition": "The abstract keyword marks a class or member as incomplete and meant to be inherited. Abstract members must be implemented by derived classes."
   },
-  "Public": {
-    "Definition": "{c:color-blue keyword}public{/c} members are accessible from any other code in the same assembly or another assembly that references it."
+  "add": {
+    "Definition": "The add keyword defines how a handler is attached to an event. It runs when code subscribes to the event."
   },
-  "Private": {
-    "Definition": "{c:color-blue keyword}private{/c} members are only accessible within the class or struct in which they are declared."
+  "alias": {
+    "Definition": "The alias keyword creates an alternate name for a namespace or type. It helps simplify long or conflicting names."
   },
-  "Protected": {
-    "Definition": "{c:color-blue keyword}protected{/c} members are accessible within the containing class and by derived (child) classes."
+  "and": {
+    "Definition": "The and keyword is used in pattern matching to require multiple conditions to be true. All parts of the pattern must match."
   },
-  "Internal": {
+  "as": {
+    "Definition": "The as keyword attempts to convert a value to a specified type. If the conversion fails, it returns null instead of throwing an error."
+  },
+  "ascending": {
+    "Definition": "The ascending keyword sorts query results from lowest to highest. It is commonly used in LINQ order-by expressions."
+  },
+  "async": {
+    "Definition": "The async keyword marks a method as asynchronous. It allows the method to run without blocking while waiting for work to finish."
+  },
+  "await": {
+    "Definition": "The await keyword pauses execution until an asynchronous operation completes. It allows the program to continue doing other work while waiting."
+  },
+  "base": {
+    "Definition": "The base keyword refers to a base class from which the current class inherits. It is used to access base class members."
+  },
+  "bool": {
+    "Definition": "The bool keyword defines a Boolean value. It can hold either true or false."
+  },
+  "by": {
+    "Definition": "The by keyword specifies how data should be grouped or ordered in a query. It works with keywords like group and order."
+  },
+  "byte": {
+    "Definition": "The byte keyword defines a small numeric type that stores whole numbers from 0 to 255. It is often used for raw data and memory-efficient storage."
+  },
+  "break": {
+    "Definition": "The break keyword immediately exits a loop or switch statement. Execution continues with the next statement after the block."
+  },
+  "case": {
+    "Definition": "The case keyword defines a branch in a switch statement. It specifies what code runs when a value matches."
+  },
+  "catch": {
+    "Definition": "The catch keyword handles errors that occur in a try block. It allows a program to respond to exceptions safely."
+  },
+  "char": {
+    "Definition": "The char keyword defines a single character value. It is written using single quotes, such as 'A'."
+  },
+  "checked": {
+    "Definition": "The checked keyword enables overflow checking for numeric operations. It causes an error if a calculation exceeds the allowed range."
+  },
+  "class": {
+    "Definition": "The class keyword defines a class, which is a blueprint for creating objects. Classes group related data and behavior together."
+  },
+  "const": {
+    "Definition": "The const keyword defines a value that cannot be changed after it is set. Constant values are known at compile time."
+  },
+  "continue": {
+    "Definition": "The continue keyword skips the rest of the current loop iteration. Execution continues with the next iteration of the loop."
+  },
+  "decimal": {
+    "Definition": "The decimal keyword defines a high-precision numeric type. It is commonly used for financial and monetary calculations."
+  },
+  "default": {
+    "Definition": "The default keyword provides a fallback value or action when no other option matches. It is commonly used in switch statements and default expressions."
+  },
+  "delegate": {
+    "Definition": "The delegate keyword defines a type that represents a method reference. It allows methods to be passed and invoked indirectly."
+  },
+  "descending": {
+    "Definition": "The descending keyword sorts query results from highest to lowest. It is used in LINQ order-by expressions."
+  },
+  "do": {
+    "Definition": "The do keyword starts a loop that runs at least once. The loop continues while a condition remains true."
+  },
+  "double": {
+    "Definition": "The double keyword defines a floating-point numeric type. It is used for numbers with decimal values."
+  },
+  "dynamic": {
+    "Definition": "The dynamic keyword defers type checking until runtime. It allows flexible behavior but removes compile-time type safety."
+  },
+  "else": {
+    "Definition": "The else keyword defines code that runs when an if condition is false. It provides an alternative execution path."
+  },
+  "enum": {
+    "Definition": "The enum keyword defines a set of named constant values. It is used to represent a fixed list of options."
+  },
+  "equals": {
+    "Definition": "The equals keyword specifies a value comparison in pattern matching. It checks whether two values are equal."
+  },
+  "event": {
+    "Definition": "The event keyword defines a notification that other code can subscribe to. It allows objects to react when something happens."
+  },
+  "explicit": {
+    "Definition": "The explicit keyword defines a conversion that must be written by the programmer. It prevents accidental or unsafe type conversions."
+  },
+  "false": {
+    "Definition": "The false keyword represents a Boolean value that means something is not true. It is commonly used in conditions and logical expressions."
+  },
+  "file": {
+    "Definition": "The file keyword applies certain declarations to a single source file. It helps limit visibility and avoid name conflicts."
+  },
+  "finally": {
+    "Definition": "The finally keyword defines code that always runs after a try or catch block. It is commonly used for cleanup tasks."
+  },
+  "fixed": {
+    "Definition": "The fixed keyword prevents data from being moved by the garbage collector. It is used when working with pointers in unsafe code."
+  },
+  "float": {
+    "Definition": "The float keyword defines a floating-point numeric type. It is used for numbers with decimal values and less precision than double."
+  },
+  "for": {
+    "Definition": "The for keyword starts a loop that runs a set number of times. It is commonly used when the number of iterations is known."
+  },
+  "foreach": {
+    "Definition": "The foreach keyword loops through each item in a collection. It simplifies working with lists and arrays."
+  },
+  "from": {
+    "Definition": "The from keyword specifies the data source in a LINQ query. It defines where the query begins."
+  },
+  "get": {
+    "Definition": "The get keyword defines how a property’s value is retrieved. It runs when the property is read."
+  },
+  "global": {
+    "Definition": "The global keyword refers to the global namespace or scope. It helps avoid naming conflicts."
+  },
+  "group": {
+    "Definition": "The group keyword groups query results based on a key. It is used in LINQ queries to organize data."
+  },
+  "goto": {
+    "Definition": "The goto keyword jumps execution to a labeled statement. It is rarely used because it can make code harder to follow."
+  },
+  "if": {
+    "Definition": "The if keyword runs code only when a condition is true. It allows programs to make decisions."
+  },
+  "implicit": {
+    "Definition": "The implicit keyword defines a conversion that happens automatically. It allows safe type conversions without extra syntax."
+  },
+  "in": {
+    "Definition": "The in keyword is used to iterate over collections or specify input-only parameters. It indicates that values are read but not modified."
+  },
+  "init": {
+    "Definition": "The init keyword allows a property to be set only during object creation. It helps create immutable objects."
+  },
+  "int": {
+    "Definition": "The int keyword defines a whole number type. It is commonly used for counting and indexing."
+  },
+  "interface": {
+    "Definition": "The interface keyword defines a contract that classes must follow. It specifies what members a class must implement."
+  },
+  "internal": {
     "Definition": "{c:color-blue keyword}internal{/c} members are accessible from any code within the same assembly but not from other assemblies."
   },
-  "Using": {
+  "into": {
+    "Definition": "The into keyword continues a query after a group or join operation. It allows further processing of query results."
+  },
+  "is": {
+    "Definition": "The is keyword checks whether a value matches a given type or pattern. It is commonly used in conditions."
+  },
+  "join": {
+    "Definition": "The join keyword combines data from two sources based on a related value. It is used in LINQ queries to match items."
+  },
+  "let": {
+    "Definition": "The let keyword stores the result of an expression in a temporary variable. It helps simplify complex queries."
+  },
+  "lock": {
+    "Definition": "The lock keyword prevents multiple threads from accessing the same code at the same time. It helps avoid data corruption."
+  },
+  "long": {
+    "Definition": "The long keyword defines a whole number type that can store very large values. It is larger than int."
+  },
+  "managed": {
+    "Definition": "The managed keyword specifies that code is managed by the runtime. It is used in advanced interoperability scenarios."
+  },
+  "nameof": {
+    "Definition": "The nameof keyword returns the name of a variable, type, or member as a string. It helps avoid hard-coded names."
+  },
+  "namespace": {
+    "Definition": "The {c:color-blue keyword}namespace{/c} keyword groups related types into a named scope, helping organize code and prevent naming conflicts across large projects."
+  },
+  "new": {
+    "Definition": "The new keyword creates a new instance of a type. It allocates memory and initializes the object."
+  },
+  "nint": {
+    "Definition": "The nint keyword defines an integer whose size depends on the platform. It is commonly used in low-level or interop code."
+  },
+  "not": {
+    "Definition": "The not keyword negates a pattern or condition. It matches when the pattern does not apply."
+  },
+  "notnull": {
+    "Definition": "The notnull keyword constrains a generic type to non-null values. It ensures null is not allowed."
+  },
+  "nuint": {
+    "Definition": "The nuint keyword defines an unsigned integer whose size depends on the platform. It is used for low-level or interop scenarios."
+  },
+  "null": {
+    "Definition": "The null keyword represents the absence of a value or object reference. It means nothing is assigned."
+  },
+  "object": {
+    "Definition": "The object keyword represents the base type of all types in C#. Every type ultimately derives from object."
+  },
+  "on": {
+    "Definition": "The on keyword specifies the condition used to match items in a join query. It defines how data sources are related."
+  },
+  "operator": {
+    "Definition": "The operator keyword defines a custom operator for a type. It controls how operators like + or == behave."
+  },
+  "or": {
+    "Definition": "The or keyword is used in pattern matching to allow alternative matches. At least one condition must be true."
+  },
+  "orderby": {
+    "Definition": "The orderby keyword sorts query results. It is commonly used in LINQ expressions."
+  },
+  "out": {
+    "Definition": "The out keyword passes a variable by reference to a method. The method assigns the value before returning."
+  },
+  "override": {
+    "Definition": "The override keyword replaces a base class method with a new implementation. It allows derived classes to change behavior."
+  },
+  "params": {
+    "Definition": "The params keyword allows a method to accept a variable number of arguments. It simplifies passing multiple values."
+  },
+  "partial": {
+    "Definition": "The partial keyword splits a class, struct, or method across multiple files. It helps organize large codebases."
+  },
+  "private": {
+    "Definition": "{c:color-blue keyword}private{/c} members are only accessible within the class or struct in which they are declared."
+  },
+  "protected": {
+    "Definition": "{c:color-blue keyword}protected{/c} members are accessible within the containing class and by derived (child) classes."
+  },
+  "public": {
+    "Definition": "{c:color-blue keyword}public{/c} members are accessible from any other code in the same assembly or another assembly that references it."
+  },
+  "readonly": {
+    "Definition": "The readonly keyword allows a field to be assigned only during initialization. It prevents modification after construction."
+  },
+  "record": {
+    "Definition": "The record keyword defines a data-focused type with value-based equality. It is commonly used for immutable data."
+  },
+  "ref": {
+    "Definition": "The ref keyword passes a variable by reference. Changes made inside the method affect the original value."
+  },
+  "remove": {
+    "Definition": "The remove keyword defines how a handler is detached from an event. It runs when code unsubscribes from the event."
+  },
+  "required": {
+    "Definition": "The required keyword enforces that a property must be set during object creation. It helps ensure objects are properly initialized."
+  },
+  "return": {
+    "Definition": "The return keyword sends a value back from a method and ends its execution. It defines the result of the method."
+  },
+  "sbyte": {
+    "Definition": "The sbyte keyword defines a small signed numeric type. It stores whole numbers from -128 to 127."
+  },
+  "sealed": {
+    "Definition": "The sealed keyword prevents a class from being inherited. It locks the class so it cannot be extended."
+  },
+  "select": {
+    "Definition": "The select keyword chooses which values are returned from a query. It defines the shape of the query result."
+  },
+  "set": {
+    "Definition": "The set keyword defines how a property’s value is assigned. It runs when a property is written to."
+  },
+  "short": {
+    "Definition": "The short keyword defines a small whole number type. It stores values from -32,768 to 32,767."
+  },
+  "sizeof": {
+    "Definition": "The sizeof keyword returns the size of a type in bytes. It is mainly used in low-level or unsafe code."
+  },
+  "stackalloc": {
+    "Definition": "The stackalloc keyword allocates memory on the stack instead of the heap. It is used for high-performance or low-level scenarios."
+  },
+  "static": {
+    "Definition": "The static keyword defines members that belong to a type rather than an instance. Static members are shared across all objects."
+  },
+  "string": {
+    "Definition": "The string keyword defines a sequence of characters. It is commonly used to represent text."
+  },
+  "struct": {
+    "Definition": "The struct keyword defines a value type that groups related data together. Structs are often used for small, lightweight objects."
+  },
+  "switch": {
+    "Definition": "The switch keyword selects which code to run based on a value or pattern. It provides a clear alternative to multiple if statements."
+  },
+  "this": {
+    "Definition": "The this keyword refers to the current instance of a class or struct. It is used to access instance members."
+  },
+  "throw": {
+    "Definition": "The throw keyword raises an exception. It signals that an error has occurred."
+  },
+  "true": {
+    "Definition": "The true keyword represents a Boolean value that means something is correct or enabled. It is used in logical expressions."
+  },
+  "try": {
+    "Definition": "The try keyword wraps code that might cause an error. It works with catch and finally to handle exceptions."
+  },
+  "typeof": {
+    "Definition": "The typeof keyword gets information about a type at runtime. It returns a Type object."
+  },
+  "uint": {
+    "Definition": "The uint keyword defines an unsigned whole number type. It stores values from 0 to 4,294,967,295."
+  },
+  "ulong": {
+    "Definition": "The ulong keyword defines a very large unsigned whole number type. It is used when extremely large values are needed."
+  },
+  "unmanaged": {
+    "Definition": "The unmanaged keyword restricts a generic type to unmanaged types. It ensures the type does not contain managed references."
+  },
+  "ushort": {
+    "Definition": "The ushort keyword defines a small unsigned whole number type. It stores values from 0 to 65,535."
+  },
+  "unchecked": {
+    "Definition": "The unchecked keyword disables overflow checking for numeric operations. It allows calculations to wrap without errors."
+  },
+  "unsafe": {
+    "Definition": "The unsafe keyword allows code to use pointers and direct memory access. It bypasses some safety checks."
+  },
+  "using": {
     "Definition": "The {c:color-blue keyword}using{/c} keyword imports namespaces into the file so you can reference their types without fully qualifying their names."
   },
-  "Void": {
+  "value": {
+    "Definition": "The value keyword represents the value being assigned to a property or indexer. It is used inside a set or init accessor."
+  },
+  "var": {
+    "Definition": "The var keyword lets the compiler infer the type of a variable from its assigned value. The variable still has a strong, fixed type."
+  },
+  "virtual": {
+    "Definition": "The virtual keyword allows a method or property to be overridden in a derived class. It supports customizable behavior through inheritance."
+  },
+  "void": {
     "Definition": "The return type {c:color-blue keyword}void{/c} means the method does not return anything. The point of execution will return to where the method was called from but no data will be returned with it."
+  },
+  "volatile": {
+    "Definition": "The volatile keyword ensures a field is always read from and written to main memory. It helps prevent issues in multi-threaded code."
+  },
+  "when": {
+    "Definition": "The when keyword adds a condition to a catch block or pattern match. It controls when the code should run."
+  },
+  "where": {
+    "Definition": "The where keyword filters data in a query or applies constraints to generic types. It limits which values or types are allowed."
+  },
+  "while": {
+    "Definition": "The while keyword starts a loop that runs as long as a condition is true. The condition is checked before each iteration."
+  },
+  "with": {
+    "Definition": "The with keyword creates a copy of an object with selected values changed. It is commonly used with records."
+  },
+  "yield": {
+    "Definition": "The yield keyword returns values one at a time from a method. It allows lazy iteration over a sequence."
   }
 }

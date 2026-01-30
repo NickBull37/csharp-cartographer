@@ -1,5 +1,29 @@
 {
+  "Anonymous": {
+    "Definition": "Anonymous means something is created without giving it a name. It is often used for temporary objects, types, or functions."
+  },
   "Argument": {
     "Definition": "Arguments are the actual values you pass to a method, constructor, or function when you call it. These values get assigned to the corresponding parameters so they can be used wherever they are passed."
+  },
+  "Concatenation": {
+    "Definition": "Concatenation combines two or more values into a single value. It is most commonly used to join strings together."
+  },
+  "Conditional": {
+    "Definition": "Conditional indicates that something depends on a condition being true or false. It controls which value or action is chosen."
+  },
+  "Generic": {
+    "Definition": "This is a generic type and must be supplied a generic type argument when used. Generic types allow a single implementation to work with multiple data types."
+  },
+  "ImplicitlyTyped": {
+    "Definition": "Implicitly typed means the type is determined automatically by the compiler. The type is still fixed, even though it is not written explicitly."
+  },
+  "InterpolatedValue": {
+    "Definition": "An interpolated value is an expression embedded inside an interpolated string. Its result is inserted into the string at runtime."
+  },
+  "Nullable": {
+    "Definition": "Nullable indicates that a value can also be null. It is used to represent the absence of a value safely."
+  },
+  "ReturnValue": {
+    "Definition": "A return value is the result produced by a method or function. It is sent back to the caller when execution finishes."
   }
 }
