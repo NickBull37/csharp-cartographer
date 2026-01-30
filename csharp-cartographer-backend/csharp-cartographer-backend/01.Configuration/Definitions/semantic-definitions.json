@@ -1,11 +1,14 @@
 {
   "AccessModifier": {
-    "Definition": "Access modifier keywords control where code elements like classes, methods, and fields can be accessed from, helping enforce encapsulation and safe boundaries between parts of a program."
+    "Definition": "Access modifiers control where code elements like classes, methods, and fields can be accessed from, helping enforce encapsulation and safe boundaries between parts of a program."
   },
   "QuotedString": {
     "Definition": "Quoted strings represent a sequence of characters enclosed in double quotes (\") on the same line."
   },
   "CompilationScope": {
     "Definition": "These keywords set up the overall structure and context of a file before any code runs. They control where code belongs, how names are organized, and which other code can be referenced."
+  },
+  "MethodReturnType": {
+    "Definition": "This part of the method signature defines what data will be returned when the method is finished executing."
   }
 }

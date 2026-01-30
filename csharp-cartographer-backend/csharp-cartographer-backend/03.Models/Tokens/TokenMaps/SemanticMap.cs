@@ -434,13 +434,14 @@
 
     public sealed record SemanticMap
     {
+        // Used for classifying a token
         public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
 
         public PrimaryKind PrimaryKind { get; set; } = PrimaryKind.Unknown;
 
         public IEnumerable<SemanticModifiers> Modifiers { get; set; } = [];
 
-
+        // UI elements to show to the user
         public string PrimaryLabel { get; set; } = string.Empty;
 
         public MapText PrimaryDefinition { get; set; }

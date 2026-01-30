@@ -74,42 +74,44 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             var key = token.Map.SemanticRole.ToString();
 
-            var definition = key is not null
-                ? DefinitionProvider.GetDefinition(key)
-                : null;
+            return DefinitionProvider.GetMapText(key);
 
-            if (string.IsNullOrWhiteSpace(definition))
-                return new MapText();
+            //var definition = key is not null
+            //    ? DefinitionProvider.GetMapText(key)
+            //    : null;
 
-            return ToPlainMapText(definition);
+            //if (string.IsNullOrWhiteSpace(definition))
+            //    return new MapText();
+
+            //return ToPlainMapText(definition);
         }
 
         private static MapText GetPrimaryFocusedDefinition(NavToken token)
         {
             var key = token.Text;
 
-            var definition = key is not null
-                ? DefinitionProvider.GetDefinition(key)
+            return key is not null
+                ? DefinitionProvider.GetMapText(key)
                 : null;
 
-            if (string.IsNullOrWhiteSpace(definition))
-                return new MapText();
+            //if (string.IsNullOrWhiteSpace(definition))
+            //    return new MapText();
 
-            return ToPlainMapText(definition);
+            //return ToPlainMapText(definition);
         }
 
         private static MapText GetSecondaryDefinition(NavToken token)
         {
             var key = token.Map.ModifierStrings.FirstOrDefault();
 
-            var definition = key is not null
-                ? DefinitionProvider.GetDefinition(key)
+            return key is not null
+                ? DefinitionProvider.GetMapText(key)
                 : null;
 
-            if (string.IsNullOrWhiteSpace(definition))
-                return new MapText();
+            //if (string.IsNullOrWhiteSpace(definition))
+            //    return new MapText();
 
-            return ToPlainMapText(definition);
+            //return ToPlainMapText(definition);
         }
 
         private static MapText ToPlainMapText(string definition)
