@@ -51,7 +51,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
              */
 
             // Special cases - update manually
-            if (token.Text == "." && token.IsNamespaceQualifierSeparator())
+            if (token.Text == "." && token.IsQualifiedNameSeparator())
             {
                 return PrimaryKind.Punctuation;
             }
@@ -324,8 +324,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Qualifiers ---
             if (token.Text is ".")
             {
-                if (token.IsNamespaceQualifierSeparator())
-                    return SemanticRole.NamespaceQualifierSeparator;
+                if (token.IsQualifiedNameSeparator())
+                    return SemanticRole.QualifiedNameSeparator;
             }
 
             // --- Nullables ---

@@ -1044,7 +1044,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Text == ",";
         }
 
-        public bool IsNamespaceQualifierSeparator()
+        public bool IsQualifiedNameSeparator()
         {
             return HasAncestorAt(0, SyntaxKind.QualifiedName);
         }

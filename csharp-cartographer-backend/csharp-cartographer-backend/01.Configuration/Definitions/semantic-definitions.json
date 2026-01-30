@@ -1,14 +1,548 @@
 {
+  "AccessorListBoundary": {
+    "Definition": "An accessor list boundary marks the start or end of a property or indexer’s accessors, such as get and set."
+  },
+  "ArrayInitializationBoundary": {
+    "Definition": "An array initialization boundary marks where the elements of an array are defined."
+  },
+  "ArgumentListBoundary": {
+    "Definition": "An argument list boundary marks the start or end of the values passed into a method or constructor call."
+  },
+  "AttributeListBoundary": {
+    "Definition": "An attribute list boundary marks the start or end of attributes applied to a code element."
+  },
+  "AttributeArgumentListBoundary": {
+    "Definition": "An attribute argument list boundary marks the start or end of arguments passed to an attribute."
+  },
+  "BlockBoundary": {
+    "Definition": "A block boundary marks the start or end of a block of code enclosed in braces."
+  },
+  "CastTypeBoundary": {
+    "Definition": "A cast type boundary marks the type used when converting a value to another type."
+  },
+  "CatchArgumentBoundary": {
+    "Definition": "A catch argument boundary marks the exception information provided to a catch clause."
+  },
+  "CatchBlockBoundary": {
+    "Definition": "A catch block boundary marks the start or end of code that handles an exception."
+  },
+  "CatchFilterBoundary": {
+    "Definition": "A catch filter boundary marks a condition that determines whether a catch block should handle an exception."
+  },
+  "ClassBoundary": {
+    "Definition": "A class boundary marks the start or end of a class definition."
+  },
+  "ConstructorBoundary": {
+    "Definition": "A constructor boundary marks the start or end of a constructor’s definition."
+  },
+  "CollectionExpressionBoundary": {
+    "Definition": "A collection expression boundary marks the elements of a collection expression."
+  },
+  "ForEachBlockBoundary": {
+    "Definition": "A foreach block boundary marks the code that runs for each item in a collection."
+  },
+  "ForBlockBoundary": {
+    "Definition": "A for block boundary marks the code that runs repeatedly in a for loop."
+  },
+  "IfBlockBoundary": {
+    "Definition": "An if block boundary marks the code that runs when a condition is true."
+  },
+  "IfConditionBoundary": {
+    "Definition": "An if condition boundary marks the condition that determines whether an if statement runs."
+  },
+  "ImplicitArrayCreation": {
+    "Definition": "An implicit array creation boundary marks an array being created without explicitly specifying its type."
+  },
+  "InterpolatedValueBoundary": {
+    "Definition": "An interpolated value boundary marks an expression embedded inside an interpolated string."
+  },
+  "MethodBoundary": {
+    "Definition": "A method boundary marks the start or end of a method’s definition."
+  },
+  "NamespaceBoundary": {
+    "Definition": "A namespace boundary marks the start or end of a namespace declaration."
+  },
+  "ObjectInitializerBoundary": {
+    "Definition": "An object initializer boundary marks where an object’s properties or fields are assigned during creation."
+  },
+  "ParameterListBoundary": {
+    "Definition": "A parameter list boundary marks the parameters defined for a method or constructor."
+  },
+  "TryBlockBoundary": {
+    "Definition": "A try block boundary marks the code that may throw an exception."
+  },
+  "TupleExpressionBoundary": {
+    "Definition": "A tuple expression boundary marks the values grouped together as a tuple."
+  },
+  "TupleTypeBoundary": {
+    "Definition": "A tuple type boundary marks the types that make up a tuple."
+  },
+  "TypeArgumentListBoundary": {
+    "Definition": "A type argument list boundary marks the types supplied to a generic type or method."
+  },
+  "TypeParameterListBoundary": {
+    "Definition": "A type parameter list boundary marks the generic type parameters declared by a type or method."
+  },
+  "Arithmetic": {
+    "Definition": "Arithmetic operators perform basic math operations such as addition, subtraction, multiplication, and division."
+  },
+  "Assignment": {
+    "Definition": "Assignment operators store a value in a variable. They set or update the variable’s value."
+  },
+  "BitwiseShift": {
+    "Definition": "Bitwise shift operators move the bits of a number left or right. They are often used for low-level or performance-related operations."
+  },
+  "BooleanLogical": {
+    "Definition": "Boolean logical operators combine or invert true and false values. They are commonly used in conditional expressions."
+  },
+  "Comparison": {
+    "Definition": "Comparison operators compare two values and produce a true or false result. They are used in conditions and decision-making."
+  },
+  "IndexRange": {
+    "Definition": "Index range operators select a range of elements from a sequence. They are commonly used with arrays and spans."
+  },
+  "Lambda": {
+    "Definition": "The lambda operator defines an inline function using a concise syntax. It is often used to pass behavior as data."
+  },
+  "MemberAccess": {
+    "Definition": "The member access operator is used to access members of a type or object. It connects an instance or type to its fields, properties, or methods."
+  },
+  "NullCoalescing": {
+    "Definition": "The null-coalescing operator provides a fallback value when an expression is null. It helps avoid null reference errors."
+  },
+  "NullCoalescingAssignment": {
+    "Definition": "The null-coalescing assignment operator assigns a value only if the target is null. It combines a null check and assignment into one operation."
+  },
+  "NullForgiving": {
+    "Definition": "The null-forgiving operator tells the compiler that a value should be treated as non-null. It does not change runtime behavior."
+  },
+  "Pointer": {
+    "Definition": "Pointer operators work with memory addresses in unsafe code. They allow direct access to memory locations."
+  },
+  "ArgumentSeparator": {
+    "Definition": "Punctuation that separates multiple arguments passed to a method or constructor."
+  },
+  "BaseTypeSeparator": {
+    "Definition": "Punctuation that separates a type from its base class or implemented interfaces."
+  },
+  "CollectionElementSeparator": {
+    "Definition": "Punctuation that separates individual elements within a collection."
+  },
+  "EnumMemberSeparator": {
+    "Definition": "Punctuation that separates individual members within an enum."
+  },
+  "ParameterSeparator": {
+    "Definition": "Punctuation that separates parameters in a method, constructor, or lambda declaration."
+  },
+  "PropertyInitializationSeparator": {
+    "Definition": "Punctuation that separates a property name from its assigned value during initialization."
+  },
+  "QualifiedNameSeparator": {
+    "Definition": "Punctuation that separates parts of a fully qualified namespace or type name."
+  },
+  "SwitchArmSeparator": {
+    "Definition": "Punctuation that separates a pattern or condition from the result in a switch expression."
+  },
+  "TupleElementSeparator": {
+    "Definition": "Punctuation that separates individual values within a tuple."
+  },
+  "TypeArgumentSeparator": {
+    "Definition": "Punctuation that separates multiple type arguments supplied to a generic type or method."
+  },
+  "TypeParameterConstraintClauseSeparator": {
+    "Definition": "Punctuation that separates a generic type parameter from its constraints."
+  },
+  "TypeParameterSeparator": {
+    "Definition": "Punctuation that separates multiple generic type parameters."
+  },
+  "VariableDeclaratorSeparator": {
+    "Definition": "Punctuation that separates multiple variables declared in a single statement."
+  },
+  "CaseLabelTerminator": {
+    "Definition": "Punctuation that marks the end of a case label in a switch statement."
+  },
+  "ParameterLabelTerminator": {
+    "Definition": "Punctuation that marks the end of a parameter label in a named argument."
+  },
+  "StatementTerminator": {
+    "Definition": "Punctuation that marks the end of a statement."
+  },
+  "NullableTypeMarker": {
+    "Definition": "Punctuation that indicates that a value type can also represent null."
+  },
+  "NullConditionalGuard": {
+    "Definition": "Punctuation that prevents member access when the target value is null."
+  },
   "AccessModifier": {
     "Definition": "Access modifiers control where code elements like classes, methods, and fields can be accessed from, helping enforce encapsulation and safe boundaries between parts of a program."
   },
-  "QuotedString": {
-    "Definition": "Quoted strings represent a sequence of characters enclosed in double quotes (\") on the same line."
+  "Accessor": {
+    "Definition": "Accessors define how a property or indexer value is read or written. Common accessors include get and set."
   },
   "CompilationScope": {
     "Definition": "These keywords set up the overall structure and context of a file before any code runs. They control where code belongs, how names are organized, and which other code can be referenced."
   },
+  "Concurrency": {
+    "Definition": "Concurrency keywords control how code runs across multiple threads or tasks. They help manage work that happens at the same time."
+  },
+  "ConditionalBranching": {
+    "Definition": "Conditional branching keywords choose which code runs based on a condition. They allow programs to make decisions."
+  },
+  "Constraint": {
+    "Definition": "Constraint keywords restrict which types can be used with generics. They help ensure generic code is used safely."
+  },
+  "ControlFlow": {
+    "Definition": "Control flow keywords determine the order in which code executes. They control how execution moves through a program."
+  },
+  "EventHandling": {
+    "Definition": "Event handling keywords define how code responds when events occur. They allow programs to react to actions or changes."
+  },
+  "ExceptionHandling": {
+    "Definition": "Exception handling keywords manage errors that occur while a program is running. They allow errors to be caught and handled safely."
+  },
+  "InheritanceModifier": {
+    "Definition": "Inheritance modifiers control how classes and members can be inherited or overridden. They affect how behavior is extended in derived types."
+  },
+  "Iterator": {
+    "Definition": "Iterator keywords enable a method to return values one at a time. They are commonly used to work with sequences."
+  },
+  "JumpStatement": {
+    "Definition": "Jump statements immediately move execution to another location in code. They are used to exit loops or methods early."
+  },
+  "LiteralValue": {
+    "Definition": "Literal value keywords represent fixed values written directly in code. They are not stored in variables."
+  },
+  "LoopStatement": {
+    "Definition": "Loop statements repeat a block of code while a condition is met. They are used to process data multiple times."
+  },
+  "MemberDeclaration": {
+    "Definition": "Member declaration keywords define members such as fields, methods, or properties inside a type. They describe what a type contains."
+  },
+  "MemberModifier": {
+    "Definition": "Member modifiers change how a class member behaves or can be used. They add rules such as visibility or mutability."
+  },
+  "NamespaceImport": {
+    "Definition": "Namespace import keywords make types from other namespaces available in a file. They reduce the need to write fully qualified names."
+  },
+  "ObjectConstruction": {
+    "Definition": "Object construction keywords create new instances of types. They allocate and initialize objects in memory."
+  },
+  "ParameterModifier": {
+    "Definition": "Parameter modifiers change how arguments are passed into methods. They control behaviors like passing by reference."
+  },
+  "PatternMatching": {
+    "Definition": "Pattern matching keywords check values against patterns. They allow code to react based on shape or type."
+  },
+  "QueryExpression": {
+    "Definition": "Query expression keywords define queries over collections of data. They provide a readable way to filter and transform data."
+  },
+  "SafetyContext": {
+    "Definition": "Safety context keywords control whether code is allowed to perform unsafe operations. They help protect memory and program stability."
+  },
+  "TypeDeclaration": {
+    "Definition": "Type declaration keywords define new types such as classes, structs, or interfaces. They describe the structure of data and behavior."
+  },
+  "TypeReference": {
+    "Definition": "Type reference keywords refer to existing types in code. They are used when declaring variables, parameters, or return values."
+  },
+  "TypeSystem": {
+    "Definition": "Type system keywords describe how types behave and interact. They define rules for assigning and converting values."
+  },
+  "AttributeArgument": {
+    "Definition": "Attribute arguments provide values to an attribute. They configure how the attribute behaves or supplies additional information."
+  },
+  "ObjectPropertyAssignment": {
+    "Definition": "Object property assignment keywords set property values when an object is created. They make it easy to initialize an object’s data in one place."
+  },
+  "ParameterLabel": {
+    "Definition": "A parameter label names an argument when calling a method. It improves readability by making it clear which parameter a value is assigned to."
+  },
+  "AttributeDeclaration": {
+    "Definition": "An attribute declaration adds extra information (metadata) to code elements like classes, methods, or properties. Attributes are often used to control behavior or provide instructions to tools and frameworks."
+  },
+  "ClassDeclaration": {
+    "Definition": "A class declaration defines a blueprint for creating objects that contain data and behavior. It groups related variables and methods into a single reusable unit."
+  },
+  "ClassConstructorDeclaration": {
+    "Definition": "A class constructor is a special method that runs when a new object of a class is created. It is used to set up the initial state of the object."
+  },
+  "DelegateDeclaration": {
+    "Definition": "A delegate declaration defines a type that represents a reference to a method. Delegates allow methods to be passed around and called later."
+  },
+  "EnumDeclaration": {
+    "Definition": "An enum declaration defines a set of named constant values. It is commonly used to represent a fixed list of related options."
+  },
+  "EnumMemberDeclaration": {
+    "Definition": "An enum member declaration defines a single named value inside an enum. Each member represents one possible option from the enum."
+  },
+  "EventDeclaration": {
+    "Definition": "An event declaration defines a notification that other code can respond to when something happens. Events are commonly used for signaling changes or actions."
+  },
+  "EventFieldDeclaration": {
+    "Definition": "An event field declaration declares an event that uses a delegate type behind the scenes. It allows objects to subscribe and react when the event is raised."
+  },
+  "FieldDeclaration": {
+    "Definition": "A field declaration defines a variable that belongs to a class or struct. Fields store data that represents the state of an object."
+  },
+  "InterfaceDeclaration": {
+    "Definition": "An interface declaration defines a contract that specifies what members a class must implement. It allows different classes to share the same behavior without sharing implementation."
+  },
+  "LocalVariableDeclaration": {
+    "Definition": "A local variable declaration defines a variable inside a method or block of code. Local variables are only accessible within the scope where they are declared."
+  },
+  "MethodDeclaration": {
+    "Definition": "A method declaration defines a block of code that performs an action or returns a value. Methods are called to run the code they contain."
+  },
+  "ParameterDeclaration": {
+    "Definition": "A parameter declaration defines a variable that receives a value when a method or constructor is called. Parameters allow information to be passed into code."
+  },
+  "PropertyDeclaration": {
+    "Definition": "A property declaration defines a member that provides controlled access to data on an object. Properties often include logic for getting or setting values."
+  },
+  "RecordDeclaration": {
+    "Definition": "A record declaration defines a reference type designed for storing data. Records provide built-in support for value-based equality and immutability."
+  },
+  "RecordConstructorDeclaration": {
+    "Definition": "A record constructor defines how a record is created and how its values are initialized. It runs when a new record instance is created."
+  },
+  "RecordStructDeclaration": {
+    "Definition": "A record struct declaration defines a value type designed for storing data. Record structs combine the efficiency of structs with record-style features."
+  },
+  "RecordStructConstructorDeclaration": {
+    "Definition": "A record struct constructor defines how a record struct is initialized when it is created. It sets the initial values of the record struct."
+  },
+  "StructDeclaration": {
+    "Definition": "A struct declaration defines a value type that groups related data together. Structs are often used for small, lightweight data objects."
+  },
+  "StructConstructorDeclaration": {
+    "Definition": "A struct constructor defines how a struct is initialized when it is created. It sets up the initial state of the struct."
+  },
+  "ConstructorInvocation": {
+    "Definition": "A constructor invocation creates a new instance of a type by calling its constructor. This is how objects and value types are created in code."
+  },
+  "ClassConstructorInvocation": {
+    "Definition": "A class constructor invocation creates a new object by calling a class constructor. It allocates memory and initializes the object."
+  },
+  "RecordConstructorInvocation": {
+    "Definition": "A record constructor invocation creates a new record instance. It initializes the record’s values using its constructor."
+  },
+  "RecordStructConstructorInvocation": {
+    "Definition": "A record struct constructor invocation creates a new record struct value. It initializes the record struct’s data."
+  },
+  "StructConstructorInvocation": {
+    "Definition": "A struct constructor invocation creates a new struct value. It initializes the struct’s fields or properties."
+  },
+  "ClassReference": {
+    "Definition": "A class reference is a usage of a class type in code. It points to a class that has already been defined."
+  },
+  "ConstructorReference": {
+    "Definition": "A constructor reference refers to a constructor being used to create a new instance of a type. It identifies which constructor is being called."
+  },
+  "DelegateReference": {
+    "Definition": "A delegate reference refers to a delegate type or instance used in code. It allows methods to be treated like values that can be passed or stored."
+  },
+  "EnumReference": {
+    "Definition": "An enum reference refers to an enum type used in code. It represents a predefined set of named values."
+  },
+  "EnumMemberReference": {
+    "Definition": "An enum member reference refers to a specific named value within an enum. It selects one option from the enum’s set of values."
+  },
+  "EventReference": {
+    "Definition": "An event reference refers to an event that is being accessed or used in code. It allows code to subscribe to or interact with notifications."
+  },
+  "FieldReference": {
+    "Definition": "A field reference refers to a field being accessed on a class or struct. It reads or modifies stored data on an object."
+  },
+  "InterfaceReference": {
+    "Definition": "An interface reference refers to an interface type used in code. It represents a contract that a class or struct implements."
+  },
+  "LocalVariableReference": {
+    "Definition": "A local variable reference refers to a variable declared inside a method or block. It accesses the variable’s value within its scope."
+  },
+  "ParameterReference": {
+    "Definition": "A parameter reference refers to a parameter being used inside a method or constructor. It accesses the value passed into the code."
+  },
+  "PropertyReference": {
+    "Definition": "A property reference refers to a property being accessed on an object or type. It gets or sets a value through the property’s logic."
+  },
+  "PropertyOrEnumMemberReference": {
+    "Definition": "A property or enum member reference refers to a name that could represent either a property or an enum value. The exact meaning depends on the surrounding context."
+  },
+  "RecordReference": {
+    "Definition": "A record reference refers to a record type or instance used in code. It represents a data-focused type with value-based equality."
+  },
+  "RecordStructReference": {
+    "Definition": "A record struct reference refers to a record struct type or value used in code. It combines value-type behavior with record-style features."
+  },
+  "StructReference": {
+    "Definition": "A struct reference refers to a struct type or value used in code. It accesses a lightweight value type that groups related data."
+  },
+  "MethodInvocation": {
+    "Definition": "A method invocation is the act of calling a method to run its code. It may pass arguments and can return a value."
+  },
+  "FieldAccess": {
+    "Definition": "A field access reads or modifies the value stored in a field. It retrieves data that belongs to an object or type."
+  },
+  "EventSubscription": {
+    "Definition": "An event subscription registers code to run when an event occurs. It allows a method to listen for notifications."
+  },
+  "EventUnsubscription": {
+    "Definition": "An event unsubscription removes previously registered code from an event. This stops the code from receiving notifications."
+  },
+  "IndexerAccess": {
+    "Definition": "An indexer access retrieves or sets a value using index-based syntax, such as with brackets. It allows objects to be accessed like arrays."
+  },
+  "PropertyAccess": {
+    "Definition": "A property access reads or writes a value through a property. It uses the property’s getter or setter logic."
+  },
+  "BooleanLiteral": {
+    "Definition": "A boolean literal represents a true or false value. It is used in conditions and logical expressions."
+  },
+  "CharacterLiteral": {
+    "Definition": "A character literal represents a single character enclosed in single quotes. It is commonly used to work with individual characters."
+  },
+  "DefaultValue": {
+    "Definition": "A default value represents the default value of a type. It is often used to initialize variables or reset values."
+  },
+  "NullValue": {
+    "Definition": "A null value represents the absence of a value or object reference. It indicates that something does not point to any data."
+  },
+  "NumericLiteral": {
+    "Definition": "Represents a number written directly in the code. It can be written as an integer, decimal, or floating-point value."
+  },
+  "QuotedString": {
+    "Definition": "Quoted strings represent a sequence of characters enclosed in double quotes (\") on the same line."
+  },
+  "VerbatimString": {
+    "Definition": "A verbatim string represents text exactly as written, without processing escape sequences. It allows multi-line text and uses the @ symbol."
+  },
+  "InterpolatedStringStart": {
+    "Definition": "The start of an interpolated string marks the beginning of a string that can include expressions. It uses the $ symbol before the opening quote."
+  },
+  "InterpolatedStringText": {
+    "Definition": "Interpolated string text represents the literal text inside an interpolated string. It appears between expressions and is output as-is."
+  },
+  "InterpolatedStringEnd": {
+    "Definition": "The end of an interpolated string marks where the interpolated string finishes. It closes the string definition."
+  },
+  "InterpolatedVerbatimStringStart": {
+    "Definition": "The start of an interpolated verbatim string marks the beginning of a string that supports interpolation and multi-line text. It uses the $@ or @$ prefix."
+  },
+  "InterpolatedVerbatimStringText": {
+    "Definition": "Interpolated verbatim string text represents the literal text inside an interpolated verbatim string. It is written exactly as it appears."
+  },
+  "InterpolatedVerbatimStringEnd": {
+    "Definition": "The end of an interpolated verbatim string marks where the string definition finishes. It closes the interpolated verbatim string."
+  },
+  "CastType": {
+    "Definition": "A cast type specifies the type that a value is being converted from or to. It is used when explicitly changing how a value is treated in code."
+  },
+  "CastTargetType": {
+    "Definition": "A cast target type is the type that a value is being converted into. It determines how the value should be interpreted after the cast."
+  },
+  "ConstraintType": {
+    "Definition": "A constraint type restricts what types can be used with a generic type or method. It helps ensure that only valid types are allowed."
+  },
+  "DelegateReturnType": {
+    "Definition": "A delegate return type defines the type of value returned by methods that match the delegate. It specifies what result the delegate’s methods must produce."
+  },
+  "EventFieldType": {
+    "Definition": "An event field type defines the delegate type used by an event. It determines the shape of the methods that can handle the event."
+  },
+  "ExceptionType": {
+    "Definition": "An exception type represents the kind of error that can be thrown or caught. It identifies what went wrong during program execution."
+  },
+  "FieldDataType": {
+    "Definition": "A field data type defines what kind of data a field can store. It determines the values that can be assigned to the field."
+  },
+  "GenericTypeArgument": {
+    "Definition": "A generic type argument is a specific type supplied to a generic class or method. It fills in the placeholder defined by a generic parameter."
+  },
+  "GenericTypeParameter": {
+    "Definition": "A generic type parameter is a placeholder type used in a generic class or method. It allows the code to work with different types."
+  },
+  "LocalVariableDataType": {
+    "Definition": "A local variable data type defines what kind of value a local variable can hold. It determines how the variable can be used within its scope."
+  },
   "MethodReturnType": {
     "Definition": "This part of the method signature defines what data will be returned when the method is finished executing."
+  },
+  "ParameterDataType": {
+    "Definition": "A parameter data type defines what kind of value can be passed into a method or constructor. It ensures the argument matches the expected type."
+  },
+  "PropertyDataType": {
+    "Definition": "A property data type defines what kind of value a property can get or set. It controls the type of data exposed by the property."
+  },
+  "SimpleBaseType": {
+    "Definition": "A simple base type specifies a type that another type inherits from or implements. It defines a parent relationship in the type hierarchy."
+  },
+  "TypePatternType": {
+    "Definition": "A type pattern type specifies the type being checked in a pattern matching expression. It determines whether a value matches a given type."
+  },
+  "TupleElementName": {
+    "Definition": "A tuple element name gives a readable name to a value inside a tuple. It makes tuple values easier to understand and access."
+  },
+  "TupleElementType": {
+    "Definition": "A tuple element type defines the type of a value stored in a tuple. It determines what kind of data that element can hold."
+  },
+  "AliasDeclaration": {
+    "Definition": "An alias declaration creates an alternate name for a type or namespace. It provides a shorter or clearer name to use in code."
+  },
+  "AliasQualifier": {
+    "Definition": "An alias qualifier refers to an alias used to access a type or namespace. It helps distinguish which aliased name is being used."
+  },
+  "MemberName": {
+    "Definition": "A member name identifies a specific member of a type, such as a method, property, or field. It is used to access that member in code."
+  },
+  "NamespaceQualifer": {
+    "Definition": "A namespace qualifier identifies the namespace that a type belongs to. It helps fully qualify names and avoid naming conflicts."
+  },
+  "NamespaceDeclarationQualifer": {
+    "Definition": "Specifies part of the namespace being declared in the current source file. It defines where the contained types logically belong."
+  },
+  "TypeQualifier": {
+    "Definition": "A type qualifier identifies a specific type within a namespace or enclosing type. It helps precisely locate the type being referenced."
+  },
+  "UsingDirectiveQualifier": {
+    "Definition": "Specifies part of a namespace or alias that allows types to be referenced without fully qualified names."
+  },
+  "GroupContinuationRangeVariable": {
+    "Definition": "A group continuation range variable represents a variable introduced after a group operation in a query. It allows the grouped results to be queried further."
+  },
+  "JoinIntoRangeVariable": {
+    "Definition": "A join-into range variable represents the result of a join operation in a query. It stores the grouped matches from the join."
+  },
+  "JoinRangeVariable": {
+    "Definition": "A join range variable represents a variable used during a join operation in a query. It holds values being compared between data sources."
+  },
+  "JoinSource": {
+    "Definition": "A join source represents the data source being joined in a query. It provides the values used for matching during the join."
+  },
+  "LetVariable": {
+    "Definition": "A let variable stores the result of an expression inside a query. It helps simplify complex expressions and reuse computed values."
+  },
+  "QuerySource": {
+    "Definition": "A query source represents the data being queried in a LINQ expression. It is the starting point for the query."
+  },
+  "QueryVariableReference": {
+    "Definition": "A query variable reference refers to a variable used within a query expression. It accesses values introduced earlier in the query."
+  },
+  "RangeVariable": {
+    "Definition": "A range variable represents a variable that ranges over elements in a data source. It is used to refer to each element in a query."
+  },
+  "GroupContinuationRangeVariableReference": {
+    "Definition": "A group continuation range variable reference refers to a previously defined group continuation variable. It accesses grouped results later in the query."
+  },
+  "JoinIntoRangeVariableReference": {
+    "Definition": "A join-into range variable reference refers to the variable created by a join-into clause. It is used to access grouped join results."
+  },
+  "JoinRangeVariableReference": {
+    "Definition": "A join range variable reference refers to a join variable being used in a query. It accesses values involved in the join comparison."
+  },
+  "LetVariableReference": {
+    "Definition": "A let variable reference refers to a variable created by a let clause in a query. It accesses a previously computed value."
+  },
+  "RangeVariableReference": {
+    "Definition": "A range variable reference refers to a range variable being used in a query. It accesses the current element from the data source."
   }
 }
