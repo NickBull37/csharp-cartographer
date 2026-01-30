@@ -105,9 +105,13 @@ const MapTagModTextStack = styled(Stack)(() => ({
     padding: '8px 10px 10px 10px',
 }));
 const MapTagDefLabel = styled(Typography)(() => ({
-    fontSize: '16px',
+    fontSize: '17px',
     color: colors.gray95,
-    borderBottom: '1px solid #666666'
+    //borderBottom: '1px solid #666666'
+}));
+const MapKindTag = styled(Typography)(() => ({
+    fontSize: '15px',
+     marginRight: '2px'
 }));
 const MapTagDefText = styled(Typography)(() => ({
     fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
@@ -292,6 +296,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                     ? 'active-dark-blue'
                                 : highlightColor === 'color-green'
                                     ? 'active-green'
+                                : highlightColor === 'color-jade'
+                                    ? 'active-jade'
                                 : highlightColor === 'color-light-green'
                                     ? 'active-light-green'
                                 : highlightColor === 'color-dark-green'
@@ -329,8 +335,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
 
                     <Stack>
 
-                        {/* <Divider sx={{ bgcolor: '#808080' }} /> */}
-                        {/* <Typography
+                        {/* <Divider sx={{ bgcolor: '#808080' }} />
+                        <Typography
                             className='code'
                             sx={{
                                 px: 1,
@@ -409,13 +415,14 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             ?
                                 <Stack
                                     sx={{
-                                        p: '1.25rem 1.2rem 1.25rem 1rem',
+                                        // p: '1.25rem 1.2rem 1.25rem 1rem',
+                                        p: '0 1.2rem 1.25rem 1rem',
                                     }}
                                 >
                                     <Stack
                                         gap={0.75}
                                     >
-                                        <MapTagBox>
+                                        {/* <MapTagBox>
                                             <MapTagLabel
                                                 className="code"
                                             >
@@ -471,7 +478,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                     ))}
                                                 </Box>
                                             </Box>
-                                        )}
+                                        )} */}
 
                                         <Stack
                                             gap={1}
@@ -479,9 +486,45 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 mt: '1.25rem'
                                             }}
                                         >
-                                            <MapTagDefLabel className='code' >
-                                                {activeToken.map.primaryLabel}
-                                            </MapTagDefLabel>
+                                            <Box
+                                                display="flex"
+                                                justifyContent="space-between"
+                                                alignItems="center"
+                                                sx={{
+                                                    borderBottom: '1px solid #666666'
+                                                }}
+                                            >
+                                                <MapTagDefLabel className='code' >
+                                                    {activeToken.map.primaryLabel}
+                                                </MapTagDefLabel>
+                                                <MapKindTag
+                                                    className={
+                                                        highlightColor === 'color-blue'
+                                                                ? 'tag blue-tag'
+                                                            : highlightColor === 'color-gray'
+                                                                ? 'tag gray-tag'
+                                                            : highlightColor === 'color-green'
+                                                                ? 'tag green-tag'
+                                                            : highlightColor === 'color-jade'
+                                                                ? 'tag jade-tag'
+                                                            : highlightColor === 'color-light-blue'
+                                                                ? 'tag light-blue-tag'
+                                                            : highlightColor === 'color-light-green'
+                                                                ? 'tag light-green-tag'
+                                                            : highlightColor === 'color-orange'
+                                                                ? 'tag orange-tag'
+                                                            : highlightColor === 'color-purple'
+                                                                ? 'tag purple-tag'
+                                                            : highlightColor === 'color-yellow'
+                                                                ? 'tag yellow-tag'
+                                                            : highlightColor === 'color-white'
+                                                                ? 'tag white-tag'
+                                                            : 'default-text-class'
+                                                    }
+                                                >
+                                                    {activeToken.map.primaryKindString}
+                                                </MapKindTag>
+                                            </Box>
 
                                             <Stack gap={2}>
                                                 <MapTagDefText>

@@ -12,7 +12,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             {
                 var token = navTokens[i];
 
-                token.Map.PrimaryLabel = GetPrimaryLabel(token);
+                //token.Map.PrimaryLabel = GetPrimaryLabel(token);
+                token.Map.PrimaryLabel = token.Map.SemanticRole.ToSpacedString();
                 token.Map.SecondaryLabel = GetSecondaryLabel(token);
                 token.Map.PrimaryDefinition = GetPrimaryDefinition(token);
                 token.Map.PrimaryFocusedDefinition = GetPrimaryFocusedDefinition(token);
@@ -28,7 +29,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             var semanticRole = token.Map.SemanticRole;
             var primaryKind = token.Map.PrimaryKind;
 
-            // Special Case: drop Identifier PK for Qualifiers
+            // Special Case: drop Identifier PK for Qualifiers & References
             if (semanticRole.ToString().Contains("Qualifier"))
                 return semanticRole.ToSpacedString();
 
