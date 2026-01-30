@@ -272,40 +272,40 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.Text is ",")
             {
                 if (token.IsArgumentSeperator())
-                    return SemanticRole.ArgumentSeparation;
+                    return SemanticRole.ArgumentSeparator;
 
                 if (token.IsBaseTypeSeperator())
-                    return SemanticRole.BaseTypeSeparation;
+                    return SemanticRole.BaseTypeSeparator;
 
                 if (token.IsCollectionElementSeparator())
-                    return SemanticRole.CollectionElementSeparation;
+                    return SemanticRole.CollectionElementSeparator;
 
                 if (token.IsEnumMemberSeparator())
-                    return SemanticRole.EnumMemberSeparation;
+                    return SemanticRole.EnumMemberSeparator;
 
                 if (token.IsTypeArgumentSeperator())
-                    return SemanticRole.TypeArgumentSeparation;
+                    return SemanticRole.TypeArgumentSeparator;
 
                 if (token.IsTypeParameterSeparator())
-                    return SemanticRole.TypeParameterSeparation;
+                    return SemanticRole.TypeParameterSeparator;
 
                 if (token.IsParameterSeparator())
-                    return SemanticRole.ParameterSeparation;
+                    return SemanticRole.ParameterSeparator;
 
                 if (token.IsPropertyInitializationSeparator())
                     return SemanticRole.PropertyInitializationSeparator;
 
                 if (token.IsSwitchArmSeperator())
-                    return SemanticRole.SwitchArmSeparation;
+                    return SemanticRole.SwitchArmSeparator;
 
                 if (token.IsTupleElementSeperator())
-                    return SemanticRole.TupleElementSeparation;
+                    return SemanticRole.TupleElementSeparator;
 
                 if (token.IsTypeParameterConstraintClauseSeperator())
-                    return SemanticRole.TypeParameterConstraintClauseSeparation;
+                    return SemanticRole.TypeParameterConstraintClauseSeparator;
 
                 if (token.IsVariableDeclaratorSeparator())
-                    return SemanticRole.VariableDeclaratorSeparation;
+                    return SemanticRole.VariableDeclaratorSeparator;
             }
 
             // --- Terminators ---
@@ -934,22 +934,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsAnonymousObjectCreation())
                     modifiers.Add(SemanticModifiers.Anonymous);
             }
-
-            // --- Literal modifiers ---
-            //if (token.Kind.ToString().Contains("String") && token.Kind.ToString().Contains("Token"))
-            //{
-            //    if (token.IsQuotedString())
-            //        modifiers.Add(SemanticModifiers.QuotedString);
-
-            //    if (token.IsVerbatimString())
-            //        modifiers.Add(SemanticModifiers.VerbatimString);
-
-            //    if (token.IsInterpolatedString())
-            //        modifiers.Add(SemanticModifiers.InterpolatedString);
-
-            //    if (token.IsInterpolatedVerbatimString())
-            //        modifiers.Add(SemanticModifiers.InterpolatedVerbatimString);
-            //}
 
             // --- Operator modifiers ---
             if (GlobalConstants.Operators.Contains(token.Text))

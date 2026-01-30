@@ -49,6 +49,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (primaryKind == PrimaryKind.Literal)
                 return semanticRole.ToSpacedString();
 
+            // Special Case: 
+            if (semanticRole == SemanticRole.NullConditionalGuard)
+                return semanticRole.ToSpacedString();
+
             // Normal Case is SR + PK
             return semanticRole.ToSpacedString() + " " + primaryKind.ToSpacedString();
         }

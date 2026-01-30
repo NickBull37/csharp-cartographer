@@ -71,19 +71,19 @@
         // ------------ PUNCTUATION ------------ //
 
         // Separation
-        ArgumentSeparation,
-        BaseTypeSeparation,
-        CollectionElementSeparation,
-        EnumMemberSeparation,
+        ArgumentSeparator,
+        BaseTypeSeparator,
+        CollectionElementSeparator,
+        EnumMemberSeparator,
         NamespaceQualifierSeparator,
-        ParameterSeparation,
+        ParameterSeparator,
         PropertyInitializationSeparator,
-        SwitchArmSeparation,
-        TupleElementSeparation,
-        TypeArgumentSeparation,
-        TypeParameterConstraintClauseSeparation,
-        TypeParameterSeparation,
-        VariableDeclaratorSeparation,
+        SwitchArmSeparator,
+        TupleElementSeparator,
+        TypeArgumentSeparator,
+        TypeParameterConstraintClauseSeparator,
+        TypeParameterSeparator,
+        VariableDeclaratorSeparator,
 
         // Termination
         CaseLabelTerminator,
@@ -193,7 +193,6 @@
         DefaultValue,
         NullValue,
         NumericLiteral,
-        //StringLiteral,
         QuotedString,
         VerbatimString,
         InterpolatedStringStart,
@@ -206,7 +205,7 @@
 
         // ------------ TYPES ------------ //
 
-        // Type positions (where a type appears)
+        // Type positions
         CastType,
         CastTargetType,
         ConstraintType,
@@ -228,6 +227,7 @@
 
 
         // ------------ NAMES / QUALIFIERS ------------ //
+
         AliasDeclaration,
         AliasQualifier,
         //QualifiedTarget,
@@ -239,6 +239,7 @@
 
 
         // ------------ QUERY EXPRESSIONS ------------ //
+
         GroupContinuationRangeVariable,
         JoinIntoRangeVariable,
         JoinRangeVariable,
@@ -247,7 +248,6 @@
         QuerySource,
         QueryVariableReference,
         RangeVariable,
-
         GroupContinuationRangeVariableReference,
         JoinIntoRangeVariableReference,
         JoinRangeVariableReference,
@@ -294,34 +294,34 @@
         None,
 
         // Accessibility & scope
-        Public,
-        Private,
-        Protected,
-        Internal,
-        FileScoped,
+        //Public,
+        //Private,
+        //Protected,
+        //Internal,
+        //FileScoped,
 
         // Member behavior
-        Abstract,
-        Async,
-        Const,
-        Override,
-        Partial,
-        Readonly,
-        Required,
-        Sealed,
-        Static,
-        Virtual,
-        Volatile,
+        //Abstract,
+        //Async,
+        //Const,
+        //Override,
+        //Partial,
+        //Readonly,
+        //Required,
+        //Sealed,
+        //Static,
+        //Virtual,
+        //Volatile,
 
         // Identifier types
-        Class,
-        Delegate,
-        Enum,
-        Interface,
-        PredefinedType,
-        Record,
-        RecordStruct,
-        Struct,
+        //Class,
+        //Delegate,
+        //Enum,
+        //Interface,
+        //PredefinedType,
+        //Record,
+        //RecordStruct,
+        //Struct,
 
         // Type form modifiers
         Anonymous,
@@ -337,9 +337,9 @@
         ReturnValue,
 
         // Property / accessor modifiers
-        Getter,
-        Setter,
-        InitOnly,
+        //Getter,
+        //Setter,
+        //InitOnly,
 
         // Variable behavior
         ImplicitlyTyped,
@@ -348,13 +348,13 @@
         In,
 
         // Literal modifiers
-        Numeric,
-        QuotedString,
-        VerbatimString,
-        InterpolatedString,
-        InterpolatedVerbatimString,
-        Boolean,
-        Character,
+        //Numeric,
+        //QuotedString,
+        //VerbatimString,
+        //InterpolatedString,
+        //InterpolatedVerbatimString,
+        //Boolean,
+        //Character,
 
         // Control-flow modifiers
         ShortCircuit,
