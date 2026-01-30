@@ -639,10 +639,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsNumericLiteral())
                 return SemanticRole.NumericLiteral;
 
-            // String literals
-            //if (token.IsQuotedString() || token.IsVerbatimString() || token.IsInterpolatedString() || token.IsInterpolatedVerbatimString())
-            //    return SemanticRole.StringLiteral;
-
             if (token.IsQuotedString())
                 return SemanticRole.QuotedString;
 
@@ -940,6 +936,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             {
                 if (token.IsConditionalMemberAccessOperator())
                     modifiers.Add(SemanticModifiers.Conditional);
+
+                if (token.IsConcatenationAddOperator())
+                    modifiers.Add(SemanticModifiers.Concatenation);
             }
 
             // --- Identifier modifiers

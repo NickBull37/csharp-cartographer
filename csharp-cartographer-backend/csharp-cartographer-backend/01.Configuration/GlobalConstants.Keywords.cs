@@ -280,9 +280,9 @@
 
         /// Literals
         public static readonly List<string> LiteralKeywords =
-                [
-                    "true",
-            "false",
+        [
+            //"true",  covered by BooleanLiteral semantic role
+            //"false",
             "null",
             "default",
         ];

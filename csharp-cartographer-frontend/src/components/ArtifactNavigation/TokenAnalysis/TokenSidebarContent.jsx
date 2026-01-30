@@ -38,7 +38,7 @@ const GrayBox = styled(Box)(() => ({
 
 const TokenText = styled(Typography)(() => ({
     fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
-    fontSize: '1rem',
+    fontSize: '1.125rem',
 }));
 
 const BoxText = styled(Typography)(() => ({
@@ -107,7 +107,10 @@ const MapTagModTextStack = styled(Stack)(() => ({
 const MapTagDefLabel = styled(Typography)(() => ({
     fontSize: '17px',
     color: colors.gray95,
-    //borderBottom: '1px solid #666666'
+}));
+const MapTagDefFadedLabel = styled(Typography)(() => ({
+    fontSize: '17px',
+    paddingRight: '2px'
 }));
 const MapKindTag = styled(Typography)(() => ({
     fontSize: '15px',
@@ -118,6 +121,16 @@ const MapTagDefText = styled(Typography)(() => ({
     fontSize: '14px',
     letterSpacing: '0.04em',
     color: colors.gray95
+}));
+const MapTagFocusedDefText = styled(Typography)(() => ({
+    fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
+    fontSize: '14px',
+    letterSpacing: '0.04em',
+    color: colors.white,
+    padding: '12px 12px',
+    borderRadius: '4px',
+    backgroundColor: 'rgba(51, 51, 51, 0.9)',
+    //marginBottom: '4px',
 }));
 
 const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHighlightIndices, setActiveHighlightIndices }) => {
@@ -313,8 +326,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                 : 'default-text-class'
                         }
                     >
-                        {/* {tokenText} */}
-                        {tokenText} - {activeTokenIndex}
+                        {tokenText}
+                        {/* {tokenText} - {activeTokenIndex} */}
                     </TokenText>
                     <Tooltip title="Next Token">
                         <NextTokenButton
@@ -416,7 +429,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                 <Stack
                                     sx={{
                                         // p: '1.25rem 1.2rem 1.25rem 1rem',
-                                        p: '0 1.2rem 1.25rem 1rem',
+                                        p: '0 1rem 0.5rem 1rem',
                                     }}
                                 >
                                     <Stack
@@ -483,7 +496,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                         <Stack
                                             gap={1}
                                             sx={{
-                                                mt: '1.25rem'
+                                                mt: '1.75rem'
                                             }}
                                         >
                                             <Box
@@ -497,33 +510,40 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 <MapTagDefLabel className='code' >
                                                     {activeToken.map.primaryLabel}
                                                 </MapTagDefLabel>
-                                                <MapKindTag
+
+                                                <MapTagDefFadedLabel
                                                     className={
-                                                        highlightColor === 'color-blue'
-                                                                ? 'tag blue-tag'
+                                                        highlightColor === 'color-white'
+                                                                ? 'tag faded-white'
                                                             : highlightColor === 'color-gray'
-                                                                ? 'tag gray-tag'
-                                                            : highlightColor === 'color-green'
-                                                                ? 'tag green-tag'
-                                                            : highlightColor === 'color-jade'
-                                                                ? 'tag jade-tag'
+                                                                ? 'tag faded-gray'
+                                                            : highlightColor === 'color-blue'
+                                                                ? 'tag faded-blue'
                                                             : highlightColor === 'color-light-blue'
-                                                                ? 'tag light-blue-tag'
+                                                                ? 'tag faded-light-blue'
+                                                            : highlightColor === 'color-dark-blue'
+                                                                ? 'tag faded-dark-blue'
+                                                            : highlightColor === 'color-green'
+                                                                ? 'tag faded-green'
+                                                            : highlightColor === 'color-jade'
+                                                                ? 'tag faded-jade'
                                                             : highlightColor === 'color-light-green'
-                                                                ? 'tag light-green-tag'
-                                                            : highlightColor === 'color-orange'
-                                                                ? 'tag orange-tag'
+                                                                ? 'tag faded-light-green'
+                                                            : highlightColor === 'color-dark-green'
+                                                                ? 'tag faded-dark-green'
                                                             : highlightColor === 'color-purple'
-                                                                ? 'tag purple-tag'
+                                                                ? 'tag faded-purple'
+                                                            : highlightColor === 'color-orange'
+                                                                ? 'tag faded-orange'
                                                             : highlightColor === 'color-yellow'
-                                                                ? 'tag yellow-tag'
-                                                            : highlightColor === 'color-white'
-                                                                ? 'tag white-tag'
-                                                            : 'default-text-class'
+                                                                ? 'tag faded-yellow'
+                                                            : highlightColor === 'color-teal'
+                                                                ? 'tag faded-teal'
+                                                            : 'tag faded-white'
                                                     }
                                                 >
                                                     {activeToken.map.primaryKindString}
-                                                </MapKindTag>
+                                                </MapTagDefFadedLabel>
                                             </Box>
 
                                             <Stack gap={2}>
@@ -532,9 +552,9 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 </MapTagDefText>
 
                                                 {!!activeToken?.map?.primaryFocusedDefinition?.segments?.length && (
-                                                    <MapTagDefText>
+                                                    <MapTagFocusedDefText>
                                                         {renderMapText(activeToken?.map?.primaryFocusedDefinition)}
-                                                    </MapTagDefText>
+                                                    </MapTagFocusedDefText>
                                                 )}
                                             </Stack>
                                         </Stack>
@@ -546,7 +566,11 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                     mt: '1.5rem'
                                                 }}
                                             >
-                                                <MapTagDefLabel className='code' >
+                                                <MapTagDefLabel className='code'
+                                                    sx={{
+                                                        borderBottom: '1px solid #666666'
+                                                    }}
+                                                >
                                                     {activeToken.map.secondaryLabel}
                                                 </MapTagDefLabel>
                                                 <Stack

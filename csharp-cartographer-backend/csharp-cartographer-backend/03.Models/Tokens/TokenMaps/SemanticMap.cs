@@ -362,6 +362,7 @@
         ConditionalExecution,
 
         // Operator modifiers
+        Concatenation,
         Conditional,
     }
 

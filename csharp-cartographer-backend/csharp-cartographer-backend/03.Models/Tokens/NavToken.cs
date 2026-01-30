@@ -886,12 +886,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.NumericLiteralExpression);
         }
 
-        public bool IsBooleanLiteral()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "keyword"
-                && (Kind == SyntaxKind.TrueKeyword || Kind == SyntaxKind.FalseKeyword);
-        }
+        public bool IsBooleanLiteral() =>
+            Kind == SyntaxKind.TrueKeyword || Kind == SyntaxKind.FalseKeyword;
 
         public bool IsCharacterLiteral()
         {
@@ -901,12 +897,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.CharacterLiteralExpression);
         }
 
-        public bool IsNullLiteral()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "keyword"
-                && Kind == SyntaxKind.NullKeyword;
-        }
+        public bool IsNullLiteral() => Kind == SyntaxKind.NullKeyword;
 
         public bool IsQuotedString()
         {
@@ -990,6 +981,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsConditionalMemberAccessOperator() => Kind == SyntaxKind.DotToken
             && HasAncestorAt(0, SyntaxKind.MemberBindingExpression);
+
+        public bool IsConcatenationAddOperator() => Kind == SyntaxKind.PlusToken
+            && (PrevToken?.Kind == SyntaxKind.StringLiteralToken
+            || NextToken?.Kind == SyntaxKind.StringLiteralToken);
 
         public bool IsNamespaceAliasQualifier() => Kind == SyntaxKind.ColonColonToken
             && HasAncestorAt(0, SyntaxKind.AliasQualifiedName);
