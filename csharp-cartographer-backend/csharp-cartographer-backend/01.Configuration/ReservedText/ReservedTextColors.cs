@@ -73,7 +73,7 @@
             new ReservedTextColor
             {
                 Text = "await",
-                HighlightColor = _blue,
+                HighlightColor = _purple,
             },
             new ReservedTextColor
             {

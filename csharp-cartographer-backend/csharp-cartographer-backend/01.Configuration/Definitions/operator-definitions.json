@@ -1,0 +1,131 @@
+{
+  "+": {
+    "Definition": "The plus operator adds two numeric values together or concatenates strings."
+  },
+  "-": {
+    "Definition": "The minus operator subtracts one numeric value from another or negates a number."
+  },
+  "*": {
+    "Definition": "The multiplication operator multiplies two numeric values."
+  },
+  "/": {
+    "Definition": "The division operator divides one numeric value by another."
+  },
+  "%": {
+    "Definition": "The modulus operator returns the remainder after division."
+  },
+  "++": {
+    "Definition": "The increment operator {c:keyword}\"++\"{/c} increases a numeric value by one."
+  },
+  "--": {
+    "Definition": "The decrement operator {c:keyword}\"--\"{/c} decreases a numeric value by one."
+  },
+  "=": {
+    "Definition": "The assignment operator {c:keyword}\"=\"{/c} assigns the value on the right to the variable on the left."
+  },
+  "+=": {
+    "Definition": "The addition assignment operator adds a value to a variable and stores the result back in that variable."
+  },
+  "-=": {
+    "Definition": "The subtraction assignment operator subtracts a value from a variable and stores the result back in that variable."
+  },
+  "*=": {
+    "Definition": "The multiplication assignment operator multiplies a variable by a value and stores the result back in that variable."
+  },
+  "/=": {
+    "Definition": "The division assignment operator divides a variable by a value and stores the result back in that variable."
+  },
+  "%=": {
+    "Definition": "The modulus assignment operator applies the remainder operation and stores the result back in the variable."
+  },
+  "&=": {
+    "Definition": "The bitwise AND assignment operator applies a bitwise AND and stores the result back in the variable."
+  },
+  "|=": {
+    "Definition": "The bitwise OR assignment operator applies a bitwise OR and stores the result back in the variable."
+  },
+  "^=": {
+    "Definition": "The bitwise XOR assignment operator applies a bitwise exclusive OR and stores the result back in the variable."
+  },
+  "<<=": {
+    "Definition": "The left shift assignment operator shifts bits to the left and stores the result back in the variable."
+  },
+  ">>=": {
+    "Definition": "The right shift assignment operator shifts bits to the right and stores the result back in the variable."
+  },
+  ">>>=": {
+    "Definition": "The unsigned right shift assignment operator shifts bits to the right without preserving the sign bit."
+  },
+  "&": {
+    "Definition": "The bitwise AND operator compares the bits of two values and keeps only the bits that are set in both."
+  },
+  "|": {
+    "Definition": "The bitwise OR operator compares the bits of two values and keeps the bits that are set in either value."
+  },
+  "^": {
+    "Definition": "The bitwise XOR operator compares the bits of two values and keeps the bits that are different."
+  },
+  "~": {
+    "Definition": "The bitwise NOT operator flips all the bits of a value. Zeros become ones and ones become zeros."
+  },
+  "<<": {
+    "Definition": "The left shift operator moves the bits of a value to the left by a specified amount."
+  },
+  ">>": {
+    "Definition": "The right shift operator moves the bits of a value to the right while preserving the sign bit."
+  },
+  ">>>": {
+    "Definition": "The unsigned right shift operator moves the bits of a value to the right without preserving the sign bit."
+  },
+  "!": {
+    "Definition": "The logical NOT operator reverses a Boolean value. True becomes false, and false becomes true."
+  },
+  "&&": {
+    "Definition": "The logical AND operator returns true only if both conditions are true. It stops evaluating as soon as one condition is false."
+  },
+  "||": {
+    "Definition": "The logical OR operator returns true if at least one condition is true. It stops evaluating as soon as a true condition is found."
+  },
+  "<": {
+    "Definition": "The less-than operator checks whether the value on the left is smaller than the value on the right."
+  },
+  ">": {
+    "Definition": "The greater-than operator checks whether the value on the left is larger than the value on the right."
+  },
+  "<=": {
+    "Definition": "The less-than-or-equal operator checks whether the left value is smaller than or equal to the right value."
+  },
+  ">=": {
+    "Definition": "The greater-than-or-equal operator checks whether the left value is larger than or equal to the right value."
+  },
+  "==": {
+    "Definition": "The equality operator checks whether two values are equal. It returns true if they match."
+  },
+  "!=": {
+    "Definition": "The inequality operator checks whether two values are not equal. It returns true when they differ."
+  },
+  "..": {
+    "Definition": "The range operator represents a range of values between two indices. It is commonly used with arrays and spans."
+  },
+  "=>": {
+    "Definition": "The lambda operator separates parameters from the body of a lambda expression. It defines an inline function."
+  },
+  ".": {
+    "Definition": "The member access operator {c:keyword}\".\"{/c} is used to access members such as methods, properties, or fields of the preceeding type or object."
+  },
+  "?.": {
+    "Definition": "The null-conditional operator safely accesses a member only if the value is not null. It prevents null reference errors."
+  },
+  "::": {
+    "Definition": "The namespace alias qualifier {c:keyword}\"::\"{/c} accesses a member through a specific alias. It is commonly used with global or using aliases."
+  },
+  "??": {
+    "Definition": "The null-coalescing operator {c:keyword}\"??\"{/c} returns a fallback value when the left value is null."
+  },
+  "??=": {
+    "Definition": "The null-coalescing assignment operator {c:keyword}\"??=\"{/c} assigns a value only if the variable is currently null."
+  },
+  "->": {
+    "Definition": "The pointer member access operator accesses a member through a pointer. It is used in unsafe code."
+  }
+}

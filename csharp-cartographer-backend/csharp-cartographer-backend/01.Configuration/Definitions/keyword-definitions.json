@@ -1,189 +1,189 @@
 {
   "abstract": {
-    "Definition": "The abstract keyword marks a class or member as incomplete and meant to be inherited. Abstract members must be implemented by derived classes."
+    "Definition": "The {c:color-blue keyword}abstract{/c} keyword marks a class or member as incomplete and meant to be inherited. Abstract members must be implemented by derived classes."
   },
   "add": {
-    "Definition": "The add keyword defines how a handler is attached to an event. It runs when code subscribes to the event."
+    "Definition": "The {c:color-blue keyword}add{/c} keyword defines how a handler is attached to an event. It runs when code subscribes to the event."
   },
   "alias": {
-    "Definition": "The alias keyword creates an alternate name for a namespace or type. It helps simplify long or conflicting names."
+    "Definition": "{c:color-blue keyword}alias{/c} creates an alternate name for a namespace or type to help simplify long or conflicting qualified names."
   },
   "and": {
-    "Definition": "The and keyword is used in pattern matching to require multiple conditions to be true. All parts of the pattern must match."
+    "Definition": "The {c:color-blue keyword}and{/c} keyword is used in pattern matching to require multiple conditions to be true. All parts of the pattern must match."
   },
   "as": {
-    "Definition": "The as keyword attempts to convert a value to a specified type. If the conversion fails, it returns null instead of throwing an error."
+    "Definition": "The {c:color-blue keyword}as{/c} keyword attempts to convert a value to a specified type. If the conversion fails, it returns null instead of throwing an error."
   },
   "ascending": {
-    "Definition": "The ascending keyword sorts query results from lowest to highest. It is commonly used in LINQ order-by expressions."
+    "Definition": "The {c:color-blue keyword}ascending{/c} keyword sorts query results from lowest to highest. It is commonly used in LINQ order-by expressions."
   },
   "async": {
-    "Definition": "The async keyword marks a method as asynchronous. It allows the method to run without blocking while waiting for work to finish."
+    "Definition": "{c:color-blue keyword}async{/c} marks a method as asynchronous which allows the method to run without blocking while waiting for work to finish."
   },
   "await": {
-    "Definition": "The await keyword pauses execution until an asynchronous operation completes. It allows the program to continue doing other work while waiting."
+    "Definition": "The {c:color-purple keyword}await{/c} keyword pauses execution until an asynchronous operation completes. It allows the program to continue doing other work while waiting."
   },
   "base": {
-    "Definition": "The base keyword refers to a base class from which the current class inherits. It is used to access base class members."
+    "Definition": "{c:color-blue keyword}base{/c} refers to a base class from which the current class inherits and is used to access the base class members."
   },
   "bool": {
-    "Definition": "The bool keyword defines a Boolean value. It can hold either true or false."
+    "Definition": "{c:color-blue keyword}bool{/c} defines a Boolean type value which can hold either true or false."
   },
   "by": {
-    "Definition": "The by keyword specifies how data should be grouped or ordered in a query. It works with keywords like group and order."
+    "Definition": "The {c:color-blue keyword}by{/c} keyword specifies how data should be grouped or ordered in a query. It works with keywords like group and order."
   },
   "byte": {
-    "Definition": "The byte keyword defines a small numeric type that stores whole numbers from 0 to 255. It is often used for raw data and memory-efficient storage."
+    "Definition": "The {c:color-blue keyword}byte{/c} keyword defines a small numeric type that stores whole numbers from 0 to 255. It is often used for raw data and memory-efficient storage."
   },
   "break": {
-    "Definition": "The break keyword immediately exits a loop or switch statement. Execution continues with the next statement after the block."
+    "Definition": "{c:color-purple keyword}break{/c} immediately exits a loop or switch statement. Execution continues with the next statement after the block."
   },
   "case": {
-    "Definition": "The case keyword defines a branch in a switch statement. It specifies what code runs when a value matches."
+    "Definition": "The {c:color-purple keyword}case{/c} keyword defines a branch in a switch statement. It specifies what code runs when a value matches."
   },
   "catch": {
-    "Definition": "The catch keyword handles errors that occur in a try block. It allows a program to respond to exceptions safely."
+    "Definition": "The {c:color-purple keyword}catch{/c} keyword handles errors that occur in a try block. It allows a program to respond to exceptions safely."
   },
   "char": {
-    "Definition": "The char keyword defines a single character value. It is written using single quotes, such as 'A'."
+    "Definition": "The {c:color-blue keyword}char{/c} keyword defines a single character value. It is written using single quotes, such as 'A'."
   },
   "checked": {
-    "Definition": "The checked keyword enables overflow checking for numeric operations. It causes an error if a calculation exceeds the allowed range."
+    "Definition": "The {c:color-blue keyword}checked{/c} keyword enables overflow checking for numeric operations. It causes an error if a calculation exceeds the allowed range."
   },
   "class": {
-    "Definition": "The class keyword defines a class, which is a blueprint for creating objects. Classes group related data and behavior together."
+    "Definition": "The {c:color-blue keyword}class{/c} keyword defines a class, which is a blueprint for creating objects. Classes group related data and behavior together."
   },
   "const": {
-    "Definition": "The const keyword defines a value that cannot be changed after it is set. Constant values are known at compile time."
+    "Definition": "The {c:color-blue keyword}const{/c} keyword defines a value that cannot be changed after it is set. Constant values are known at compile time."
   },
   "continue": {
-    "Definition": "The continue keyword skips the rest of the current loop iteration. Execution continues with the next iteration of the loop."
+    "Definition": "The {c:color-purple keyword}continue{/c} keyword skips the rest of the current loop iteration. Execution continues with the next iteration of the loop."
   },
   "decimal": {
-    "Definition": "The decimal keyword defines a high-precision numeric type. It is commonly used for financial and monetary calculations."
+    "Definition": "The {c:color-blue keyword}decimal{/c} keyword defines a high-precision numeric type. It is commonly used for financial and monetary calculations."
   },
   "default": {
-    "Definition": "The default keyword provides a fallback value or action when no other option matches. It is commonly used in switch statements and default expressions."
+    "Definition": "The {c:color-blue keyword}default{/c} keyword provides a fallback value or action when no other option matches. It is commonly used in switch statements and default expressions."
   },
   "delegate": {
-    "Definition": "The delegate keyword defines a type that represents a method reference. It allows methods to be passed and invoked indirectly."
+    "Definition": "The {c:color-blue keyword}delegate{/c} keyword defines a type that represents a method reference. It allows methods to be passed and invoked indirectly."
   },
   "descending": {
-    "Definition": "The descending keyword sorts query results from highest to lowest. It is used in LINQ order-by expressions."
+    "Definition": "The {c:color-blue keyword}descending{/c} keyword sorts query results from highest to lowest. It is used in LINQ order-by expressions."
   },
   "do": {
-    "Definition": "The do keyword starts a loop that runs at least once. The loop continues while a condition remains true."
+    "Definition": "The {c:color-purple keyword}do{/c} keyword starts a loop that runs at least once. The loop continues while a condition remains true."
   },
   "double": {
-    "Definition": "The double keyword defines a floating-point numeric type. It is used for numbers with decimal values."
+    "Definition": "The {c:color-blue keyword}double{/c} keyword defines a floating-point numeric type. It is used for numbers with decimal values."
   },
   "dynamic": {
-    "Definition": "The dynamic keyword defers type checking until runtime. It allows flexible behavior but removes compile-time type safety."
+    "Definition": "The {c:color-blue keyword}dynamic{/c} keyword defers type checking until runtime. It allows flexible behavior but removes compile-time type safety."
   },
   "else": {
-    "Definition": "The else keyword defines code that runs when an if condition is false. It provides an alternative execution path."
+    "Definition": "The {c:color-purple keyword}else{/c} keyword defines code that runs when an if condition is false. It provides an alternative execution path."
   },
   "enum": {
-    "Definition": "The enum keyword defines a set of named constant values. It is used to represent a fixed list of options."
+    "Definition": "The {c:color-light-green keyword}enum{/c} keyword defines a set of named constant values. It is used to represent a fixed list of options."
   },
   "equals": {
-    "Definition": "The equals keyword specifies a value comparison in pattern matching. It checks whether two values are equal."
+    "Definition": "The {c:color-blue keyword}equals{/c} keyword specifies a value comparison in pattern matching. It checks whether two values are equal."
   },
   "event": {
-    "Definition": "The event keyword defines a notification that other code can subscribe to. It allows objects to react when something happens."
+    "Definition": "The {c:color-blue keyword}event{/c} keyword defines a notification that other code can subscribe to. It allows objects to react when something happens."
   },
   "explicit": {
-    "Definition": "The explicit keyword defines a conversion that must be written by the programmer. It prevents accidental or unsafe type conversions."
+    "Definition": "The {c:color-blue keyword}explicit{/c} keyword defines a conversion that must be written by the programmer. It prevents accidental or unsafe type conversions."
   },
   "false": {
-    "Definition": "The false keyword represents a Boolean value that means something is not true. It is commonly used in conditions and logical expressions."
+    "Definition": "The {c:color-blue keyword}false{/c} keyword represents a Boolean value that means something is not true. It is commonly used in conditions and logical expressions."
   },
   "file": {
-    "Definition": "The file keyword applies certain declarations to a single source file. It helps limit visibility and avoid name conflicts."
+    "Definition": "The {c:color-blue keyword}file{/c} keyword applies certain declarations to a single source file. It helps limit visibility and avoid name conflicts."
   },
   "finally": {
-    "Definition": "The finally keyword defines code that always runs after a try or catch block. It is commonly used for cleanup tasks."
+    "Definition": "The {c:color-purple keyword}finally{/c} keyword defines code that always runs after a try or catch block. It is commonly used for cleanup tasks."
   },
   "fixed": {
-    "Definition": "The fixed keyword prevents data from being moved by the garbage collector. It is used when working with pointers in unsafe code."
+    "Definition": "The {c:color-blue keyword}fixed{/c} keyword prevents data from being moved by the garbage collector. It is used when working with pointers in unsafe code."
   },
   "float": {
-    "Definition": "The float keyword defines a floating-point numeric type. It is used for numbers with decimal values and less precision than double."
+    "Definition": "The {c:color-blue keyword}float{/c} keyword defines a floating-point numeric type. It is used for numbers with decimal values and less precision than double."
   },
   "for": {
-    "Definition": "The for keyword starts a loop that runs a set number of times. It is commonly used when the number of iterations is known."
+    "Definition": "The {c:color-purple keyword}for{/c} keyword starts a loop that runs a set number of times. It is commonly used when the number of iterations is known."
   },
   "foreach": {
-    "Definition": "The foreach keyword loops through each item in a collection. It simplifies working with lists and arrays."
+    "Definition": "The {c:color-purple keyword}foreach{/c} keyword loops through each item in a collection. It simplifies working with lists and arrays."
   },
   "from": {
-    "Definition": "The from keyword specifies the data source in a LINQ query. It defines where the query begins."
+    "Definition": "The {c:color-blue keyword}from{/c} keyword specifies the data source in a LINQ query. It defines where the query begins."
   },
   "get": {
-    "Definition": "The get keyword defines how a property’s value is retrieved. It runs when the property is read."
+    "Definition": "The {c:color-blue keyword}get{/c} keyword defines how a property’s value is retrieved. It runs when the property is read."
   },
   "global": {
-    "Definition": "The global keyword refers to the global namespace or scope. It helps avoid naming conflicts."
+    "Definition": "The {c:color-blue keyword}global{/c} keyword refers to the global namespace or scope. It helps avoid naming conflicts."
   },
   "group": {
-    "Definition": "The group keyword groups query results based on a key. It is used in LINQ queries to organize data."
+    "Definition": "The {c:color-blue keyword}group{/c} keyword groups query results based on a key. It is used in LINQ queries to organize data."
   },
   "goto": {
-    "Definition": "The goto keyword jumps execution to a labeled statement. It is rarely used because it can make code harder to follow."
+    "Definition": "The {c:color-purple keyword}goto{/c} keyword jumps execution to a labeled statement. It is rarely used because it can make code harder to follow."
   },
   "if": {
-    "Definition": "The if keyword runs code only when a condition is true. It allows programs to make decisions."
+    "Definition": "The {c:color-purple keyword}if{/c} keyword runs code only when a condition is true. It allows programs to make decisions."
   },
   "implicit": {
-    "Definition": "The implicit keyword defines a conversion that happens automatically. It allows safe type conversions without extra syntax."
+    "Definition": "The {c:color-blue keyword}implicit{/c} keyword defines a conversion that happens automatically. It allows safe type conversions without extra syntax."
   },
   "in": {
-    "Definition": "The in keyword is used to iterate over collections or specify input-only parameters. It indicates that values are read but not modified."
+    "Definition": "The {c:color-purple keyword}in{/c} keyword is used to iterate over collections or specify input-only parameters. It indicates that values are read but not modified."
   },
   "init": {
-    "Definition": "The init keyword allows a property to be set only during object creation. It helps create immutable objects."
+    "Definition": "The {c:color-blue keyword}init{/c} keyword allows a property to be set only during object creation. It helps create immutable objects."
   },
   "int": {
-    "Definition": "The int keyword defines a whole number type. It is commonly used for counting and indexing."
+    "Definition": "The {c:color-blue keyword}int{/c} keyword defines a whole number type. It is commonly used for counting and indexing."
   },
   "interface": {
-    "Definition": "The interface keyword defines a contract that classes must follow. It specifies what members a class must implement."
+    "Definition": "The {c:color-blue keyword}interface{/c} keyword defines a contract that classes must follow. It specifies what members a class must implement."
   },
   "internal": {
     "Definition": "{c:color-blue keyword}internal{/c} members are accessible from any code within the same assembly but not from other assemblies."
   },
   "into": {
-    "Definition": "The into keyword continues a query after a group or join operation. It allows further processing of query results."
+    "Definition": "The {c:color-blue keyword}into{/c} keyword continues a query after a group or join operation. It allows further processing of query results."
   },
   "is": {
-    "Definition": "The is keyword checks whether a value matches a given type or pattern. It is commonly used in conditions."
+    "Definition": "The {c:color-blue keyword}is{/c} keyword checks whether a value matches a given type or pattern. It is commonly used in conditions."
   },
   "join": {
-    "Definition": "The join keyword combines data from two sources based on a related value. It is used in LINQ queries to match items."
+    "Definition": "The {c:color-blue keyword}join{/c} keyword combines data from two sources based on a related value. It is used in LINQ queries to match items."
   },
   "let": {
-    "Definition": "The let keyword stores the result of an expression in a temporary variable. It helps simplify complex queries."
+    "Definition": "The {c:color-blue keyword}let{/c} keyword stores the result of an expression in a temporary variable. It helps simplify complex queries."
   },
   "lock": {
-    "Definition": "The lock keyword prevents multiple threads from accessing the same code at the same time. It helps avoid data corruption."
+    "Definition": "The {c:color-blue keyword}lock{/c} keyword prevents multiple threads from accessing the same code at the same time. It helps avoid data corruption."
   },
   "long": {
-    "Definition": "The long keyword defines a whole number type that can store very large values. It is larger than int."
+    "Definition": "The {c:color-blue keyword}long{/c} keyword defines a whole number type that can store very large values. It is larger than int."
   },
   "managed": {
-    "Definition": "The managed keyword specifies that code is managed by the runtime. It is used in advanced interoperability scenarios."
+    "Definition": "The {c:color-blue keyword}managed{/c} keyword specifies that code is managed by the runtime. It is used in advanced interoperability scenarios."
   },
   "nameof": {
-    "Definition": "The nameof keyword returns the name of a variable, type, or member as a string. It helps avoid hard-coded names."
+    "Definition": "The {c:color-blue keyword}nameof{/c} keyword returns the name of a variable, type, or member as a string. It helps avoid hard-coded names."
   },
   "namespace": {
     "Definition": "The {c:color-blue keyword}namespace{/c} keyword groups related types into a named scope, helping organize code and prevent naming conflicts across large projects."
   },
   "new": {
-    "Definition": "The new keyword creates a new instance of a type. It allocates memory and initializes the object."
+    "Definition": "The {c:color-blue keyword}new{/c} keyword creates a new instance of a type. It allocates memory and initializes the object."
   },
   "nint": {
-    "Definition": "The nint keyword defines an integer whose size depends on the platform. It is commonly used in low-level or interop code."
+    "Definition": "The {c:color-blue keyword}nint{/c} keyword defines an integer whose size depends on the platform. It is commonly used in low-level or interop code."
   },
   "not": {
     "Definition": "The not keyword negates a pattern or condition. It matches when the pattern does not apply."

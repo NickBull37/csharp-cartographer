@@ -12,7 +12,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             {
                 var token = navTokens[i];
 
-                //token.Map.PrimaryLabel = GetPrimaryLabel(token);
                 token.Map.PrimaryLabel = token.Map.SemanticRole.ToSpacedString();
                 token.Map.SecondaryLabel = GetSecondaryLabel(token);
                 token.Map.PrimaryDefinition = GetPrimaryDefinition(token);

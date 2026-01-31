@@ -105,7 +105,7 @@
     "Definition": "The lambda operator defines an inline function using a concise syntax. It is often used to pass behavior as data."
   },
   "MemberAccess": {
-    "Definition": "The member access operator is used to access members of a type or object. It connects an instance or type to its fields, properties, or methods."
+    "Definition": "This identifier represents a member being accessed by the preceeding type or type instance."
   },
   "NullCoalescing": {
     "Definition": "The null-coalescing operator provides a fallback value when an expression is null. It helps avoid null reference errors."

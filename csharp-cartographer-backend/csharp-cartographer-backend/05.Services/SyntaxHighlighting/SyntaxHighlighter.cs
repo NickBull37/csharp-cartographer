@@ -1,4 +1,5 @@
-﻿using csharp_cartographer_backend._01.Configuration.Configs;
+﻿using csharp_cartographer_backend._01.Configuration;
+using csharp_cartographer_backend._01.Configuration.Configs;
 using csharp_cartographer_backend._01.Configuration.ReservedText;
 using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
@@ -33,6 +34,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         /*
         *  Order for adding syntax highlighting
         *  
+        *  1. There is often not enough data to distinguish classes, enums, & structs when highlighting.
+        *     Use hardcoded lists of common structs and enums to improve highlighting accuracy.
+        *  
         *  1a. Highlight Keywords manually (most reliable), use Classification to identify them
         *  
         *  1b. Use Classification directly to highlight delimiters, operators, punctuation, literals,
@@ -49,10 +53,17 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         {
             foreach (var token in navTokens)
             {
+                // color manually
+                if (GlobalConstants.CommonIdentifiers.Contains(token.Text))
+                {
+                    ColorManually(token);
+                    continue;
+                }
+
                 if (token.Map is null)
                     continue;
 
-                // TODO: color by classification
+                // color by classification
                 if (token.RoslynClassification is "keyword" or "keyword - control")
                 {
                     ColorByKeyword(token);
@@ -104,7 +115,16 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        public static void ColorByKeyword(NavToken token)
+        private static void ColorManually(NavToken token)
+        {
+            if (GlobalConstants.CommonEnums.Contains(token.Text))
+                token.HighlightColor = LightGreen;
+
+            if (GlobalConstants.CommonStructs.Contains(token.Text))
+                token.HighlightColor = Jade;
+        }
+
+        private static void ColorByKeyword(NavToken token)
         {
             foreach (var keyword in ReservedTextColors.Keywords)
             {
@@ -127,7 +147,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        public static void ColorByRoslynClassification(NavToken token)
+        private static void ColorByRoslynClassification(NavToken token)
         {
             switch (token.RoslynClassification)
             {
@@ -207,7 +227,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        public static void ColorBySemanticRole(NavToken token)
+        private static void ColorBySemanticRole(NavToken token)
         {
             switch (token.Map!.SemanticRole)
             {

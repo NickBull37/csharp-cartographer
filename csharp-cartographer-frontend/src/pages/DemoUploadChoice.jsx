@@ -9,7 +9,7 @@ const PageContainer = styled(Box)(() => ({
 
 const FlexBox = styled(Box)(() => ({
     display: 'flex',
-    paddingTop: '80px',
+    paddingTop: '140px',
     alignItems: 'center'
 }));
 
