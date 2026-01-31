@@ -417,6 +417,12 @@ body {
     /* font-weight: bold!important; */
     font-size: 15px;
 }
+.bold {
+    /* font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace!important; */
+    /* font-weight: bold!important; */
+    /* font-size: 15px; */
+    font-weight: 600;
+}
 
 
 /* .tag-border-black {

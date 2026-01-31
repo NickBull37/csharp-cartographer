@@ -66,6 +66,7 @@
         NullCoalescingAssignment,
         NullForgiving,
         Pointer,
+        Ternary,
 
 
         // ------------ PUNCTUATION ------------ //

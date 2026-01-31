@@ -956,6 +956,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsComparisonOperator() =>
             Text is "<" or ">" or "<=" or ">=" or "==" or "!=";
 
+        public bool IsTernaryOperator()
+        {
+            if (Kind != SyntaxKind.QuestionToken && Kind != SyntaxKind.ColonToken)
+                return false;
+
+            return HasAncestorAt(0, SyntaxKind.ConditionalExpression);
+        }
+
         public bool IsIndexOrRangeOperator()
         {
             // index

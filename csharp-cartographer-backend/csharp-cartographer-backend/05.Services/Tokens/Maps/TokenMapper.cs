@@ -396,6 +396,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsPointerOperator())
                 return SemanticRole.Pointer;
 
+            // Ternary
+            if (token.IsTernaryOperator())
+                return SemanticRole.Ternary;
+
             return SemanticRole.Unknown;
         }
 
