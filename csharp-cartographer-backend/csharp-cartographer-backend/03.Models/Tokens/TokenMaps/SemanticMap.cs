@@ -105,6 +105,7 @@
         ConditionalBranching,
         Constraint,
         ControlFlow,
+        Discard,
         EventHandling,
         ExceptionHandling,
         InheritanceModifier,

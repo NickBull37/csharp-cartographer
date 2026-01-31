@@ -24,13 +24,5 @@
                 Analysis = "An analysis could not be provided at this time.",
                 ErrorMessage = errorMessage
             };
-
-        public static CodeAnalysisResult Canceled() =>
-            new()
-            {
-                IsSuccess = false,
-                Analysis = string.Empty,
-                ErrorMessage = "The operation was canceled."
-            };
     }
 }

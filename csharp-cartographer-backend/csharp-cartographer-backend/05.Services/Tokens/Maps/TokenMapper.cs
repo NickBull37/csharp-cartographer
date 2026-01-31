@@ -436,6 +436,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (GlobalConstants.ControlFlowKeywords.Contains(token.Text))
                 return SemanticRole.ControlFlow;
 
+            // --- Discard contextual keyword ---
+            if (token.IsDiscard())
+                return SemanticRole.Discard;
+
             // --- Event keywords ---
             if (GlobalConstants.EventKeywords.Contains(token.Text) && token.Kind == SyntaxKind.EventKeyword)
                 return SemanticRole.MemberDeclaration;

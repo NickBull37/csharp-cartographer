@@ -186,43 +186,43 @@
     "Definition": "The {c:color-blue keyword}nint{/c} keyword defines an integer whose size depends on the platform. It is commonly used in low-level or interop code."
   },
   "not": {
-    "Definition": "The not keyword negates a pattern or condition. It matches when the pattern does not apply."
+    "Definition": "The {c:color-blue keyword}not{/c} keyword negates a pattern or condition. It matches when the pattern does not apply."
   },
   "notnull": {
-    "Definition": "The notnull keyword constrains a generic type to non-null values. It ensures null is not allowed."
+    "Definition": "The {c:color-blue keyword}notnull{/c} keyword constrains a generic type to non-null values. It ensures null is not allowed."
   },
   "nuint": {
-    "Definition": "The nuint keyword defines an unsigned integer whose size depends on the platform. It is used for low-level or interop scenarios."
+    "Definition": "The {c:color-blue keyword}nuint{/c} keyword defines an unsigned integer whose size depends on the platform. It is used for low-level or interop scenarios."
   },
   "null": {
-    "Definition": "The null keyword represents the absence of a value or object reference. It means nothing is assigned."
+    "Definition": "The {c:color-blue keyword}null{/c} keyword represents the absence of a value or object reference. It means nothing is assigned."
   },
   "object": {
-    "Definition": "The object keyword represents the base type of all types in C#. Every type ultimately derives from object."
+    "Definition": "The {c:color-blue keyword}object{/c} keyword represents the base type of all types in C#. Every type ultimately derives from object."
   },
   "on": {
-    "Definition": "The on keyword specifies the condition used to match items in a join query. It defines how data sources are related."
+    "Definition": "The {c:color-blue keyword}on{/c} keyword specifies the condition used to match items in a join query. It defines how data sources are related."
   },
   "operator": {
-    "Definition": "The operator keyword defines a custom operator for a type. It controls how operators like + or == behave."
+    "Definition": "The {c:color-blue keyword}operator{/c} keyword defines a custom operator for a type. It controls how operators like + or == behave."
   },
   "or": {
-    "Definition": "The or keyword is used in pattern matching to allow alternative matches. At least one condition must be true."
+    "Definition": "The {c:color-blue keyword}or{/c} keyword is used in pattern matching to allow alternative matches. At least one condition must be true."
   },
   "orderby": {
-    "Definition": "The orderby keyword sorts query results. It is commonly used in LINQ expressions."
+    "Definition": "The {c:color-blue keyword}orderby{/c} keyword sorts query results. It is commonly used in LINQ expressions."
   },
   "out": {
-    "Definition": "The out keyword passes a variable by reference to a method. The method assigns the value before returning."
+    "Definition": "The {c:color-blue keyword}out{/c} keyword passes a variable by reference to a method. The method assigns the value before returning."
   },
   "override": {
-    "Definition": "The override keyword replaces a base class method with a new implementation. It allows derived classes to change behavior."
+    "Definition": "The {c:color-blue keyword}override{/c} keyword replaces a base class method with a new implementation. It allows derived classes to change behavior."
   },
   "params": {
-    "Definition": "The params keyword allows a method to accept a variable number of arguments. It simplifies passing multiple values."
+    "Definition": "The {c:color-blue keyword}params{/c} keyword allows a method to accept a variable number of arguments. It simplifies passing multiple values."
   },
   "partial": {
-    "Definition": "The partial keyword splits a class, struct, or method across multiple files. It helps organize large codebases."
+    "Definition": "The {c:color-blue keyword}partial{/c} keyword splits a class, struct, or method across multiple files. It helps organize large codebases."
   },
   "private": {
     "Definition": "{c:color-blue keyword}private{/c} members are only accessible within the class or struct in which they are declared."
@@ -231,123 +231,123 @@
     "Definition": "{c:color-blue keyword}protected{/c} members are accessible within the containing class and by derived (child) classes."
   },
   "public": {
-    "Definition": "{c:color-blue keyword}public{/c} members are accessible from any other code in the same assembly or another assembly that references it."
+    "Definition": "{c:color-blue keyword}public{/c} members are accessible from any other code within the same assembly or another assembly that references it."
   },
   "readonly": {
-    "Definition": "The readonly keyword allows a field to be assigned only during initialization. It prevents modification after construction."
+    "Definition": "The {c:color-blue keyword}readonly{/c} keyword allows a field to be assigned only during initialization. It prevents modification after construction."
   },
   "record": {
-    "Definition": "The record keyword defines a data-focused type with value-based equality. It is commonly used for immutable data."
+    "Definition": "The {c:color-blue keyword}record{/c} keyword defines a data-focused type with value-based equality. It is commonly used for immutable data."
   },
   "ref": {
-    "Definition": "The ref keyword passes a variable by reference. Changes made inside the method affect the original value."
+    "Definition": "The {c:color-blue keyword}ref{/c} keyword passes a variable by reference. Changes made inside the method affect the original value."
   },
   "remove": {
-    "Definition": "The remove keyword defines how a handler is detached from an event. It runs when code unsubscribes from the event."
+    "Definition": "The {c:color-blue keyword}remove{/c} keyword defines how a handler is detached from an event. It runs when code unsubscribes from the event."
   },
   "required": {
-    "Definition": "The required keyword enforces that a property must be set during object creation. It helps ensure objects are properly initialized."
+    "Definition": "The {c:color-blue keyword}required{/c} keyword enforces that a property must be set during object creation. It helps ensure objects are properly initialized."
   },
   "return": {
-    "Definition": "The return keyword sends a value back from a method and ends its execution. It defines the result of the method."
+    "Definition": "The {c:color-purple keyword}return{/c} keyword sends a value back from a method and ends its execution. It defines the result of the method."
   },
   "sbyte": {
-    "Definition": "The sbyte keyword defines a small signed numeric type. It stores whole numbers from -128 to 127."
+    "Definition": "The {c:color-blue keyword}sbyte{/c} keyword defines a small signed numeric type. It stores whole numbers from -128 to 127."
   },
   "sealed": {
-    "Definition": "The sealed keyword prevents a class from being inherited. It locks the class so it cannot be extended."
+    "Definition": "The {c:color-blue keyword}sealed{/c} keyword prevents a class from being inherited. It locks the class so it cannot be extended."
   },
   "select": {
-    "Definition": "The select keyword chooses which values are returned from a query. It defines the shape of the query result."
+    "Definition": "The {c:color-blue keyword}select{/c} keyword chooses which values are returned from a query. It defines the shape of the query result."
   },
   "set": {
-    "Definition": "The set keyword defines how a property’s value is assigned. It runs when a property is written to."
+    "Definition": "The {c:color-blue keyword}set{/c} keyword defines how a property’s value is assigned. It runs when a property is written to."
   },
   "short": {
-    "Definition": "The short keyword defines a small whole number type. It stores values from -32,768 to 32,767."
+    "Definition": "The {c:color-blue keyword}short{/c} keyword defines a small whole number type. It stores values from -32,768 to 32,767."
   },
   "sizeof": {
-    "Definition": "The sizeof keyword returns the size of a type in bytes. It is mainly used in low-level or unsafe code."
+    "Definition": "The {c:color-blue keyword}sizeof{/c} keyword returns the size of a type in bytes. It is mainly used in low-level or unsafe code."
   },
   "stackalloc": {
-    "Definition": "The stackalloc keyword allocates memory on the stack instead of the heap. It is used for high-performance or low-level scenarios."
+    "Definition": "The {c:color-blue keyword}stackalloc{/c} keyword allocates memory on the stack instead of the heap. It is used for high-performance or low-level scenarios."
   },
   "static": {
-    "Definition": "The static keyword defines members that belong to a type rather than an instance. Static members are shared across all objects."
+    "Definition": "The {c:color-blue keyword}static{/c} keyword defines members that belong to a type rather than an instance. Static members are shared across all objects."
   },
   "string": {
-    "Definition": "The string keyword defines a sequence of characters. It is commonly used to represent text."
+    "Definition": "The {c:color-blue keyword}string{/c} keyword defines a sequence of characters. It is commonly used to represent text."
   },
   "struct": {
-    "Definition": "The struct keyword defines a value type that groups related data together. Structs are often used for small, lightweight objects."
+    "Definition": "The {c:color-blue keyword}struct{/c} keyword defines a value type that groups related data together. Structs are often used for small, lightweight objects."
   },
   "switch": {
-    "Definition": "The switch keyword selects which code to run based on a value or pattern. It provides a clear alternative to multiple if statements."
+    "Definition": "The {c:color-purple keyword}switch{/c} keyword selects which code to run based on a value or pattern. It provides a clear alternative to multiple if statements."
   },
   "this": {
-    "Definition": "The this keyword refers to the current instance of a class or struct. It is used to access instance members."
+    "Definition": "The {c:color-blue keyword}this{/c} keyword refers to the current instance of a class or struct. It is used to access instance members."
   },
   "throw": {
-    "Definition": "The throw keyword raises an exception. It signals that an error has occurred."
+    "Definition": "The {c:color-purple keyword}throw{/c} keyword raises an exception. It signals that an error has occurred."
   },
   "true": {
-    "Definition": "The true keyword represents a Boolean value that means something is correct or enabled. It is used in logical expressions."
+    "Definition": "The {c:color-blue keyword}true{/c} keyword represents a Boolean value that means something is correct or enabled. It is used in logical expressions."
   },
   "try": {
-    "Definition": "The try keyword wraps code that might cause an error. It works with catch and finally to handle exceptions."
+    "Definition": "The {c:color-purple keyword}try{/c} keyword wraps code that might cause an error. It works with catch and finally to handle exceptions."
   },
   "typeof": {
-    "Definition": "The typeof keyword gets information about a type at runtime. It returns a Type object."
+    "Definition": "The {c:color-blue keyword}typeof{/c} keyword gets information about a type at runtime. It returns a Type object."
   },
   "uint": {
-    "Definition": "The uint keyword defines an unsigned whole number type. It stores values from 0 to 4,294,967,295."
+    "Definition": "The {c:color-blue keyword}uint{/c} keyword defines an unsigned whole number type. It stores values from 0 to 4,294,967,295."
   },
   "ulong": {
-    "Definition": "The ulong keyword defines a very large unsigned whole number type. It is used when extremely large values are needed."
+    "Definition": "The {c:color-blue keyword}ulong{/c} keyword defines a very large unsigned whole number type. It is used when extremely large values are needed."
   },
   "unmanaged": {
-    "Definition": "The unmanaged keyword restricts a generic type to unmanaged types. It ensures the type does not contain managed references."
+    "Definition": "The {c:color-blue keyword}unmanaged{/c} keyword restricts a generic type to unmanaged types. It ensures the type does not contain managed references."
   },
   "ushort": {
-    "Definition": "The ushort keyword defines a small unsigned whole number type. It stores values from 0 to 65,535."
+    "Definition": "The {c:color-blue keyword}ushort{/c} keyword defines a small unsigned whole number type. It stores values from 0 to 65,535."
   },
   "unchecked": {
-    "Definition": "The unchecked keyword disables overflow checking for numeric operations. It allows calculations to wrap without errors."
+    "Definition": "The {c:color-blue keyword}unchecked{/c} keyword disables overflow checking for numeric operations. It allows calculations to wrap without errors."
   },
   "unsafe": {
-    "Definition": "The unsafe keyword allows code to use pointers and direct memory access. It bypasses some safety checks."
+    "Definition": "The {c:color-blue keyword}unsafe{/c} keyword allows code to use pointers and direct memory access. It bypasses some safety checks."
   },
   "using": {
     "Definition": "The {c:color-blue keyword}using{/c} keyword imports namespaces into the file so you can reference their types without fully qualifying their names."
   },
   "value": {
-    "Definition": "The value keyword represents the value being assigned to a property or indexer. It is used inside a set or init accessor."
+    "Definition": "The {c:color-blue keyword}value{/c} keyword represents the value being assigned to a property or indexer. It is used inside a set or init accessor."
   },
   "var": {
-    "Definition": "The var keyword lets the compiler infer the type of a variable from its assigned value. The variable still has a strong, fixed type."
+    "Definition": "The {c:color-blue keyword}var{/c} keyword lets the compiler infer the type of a variable from its assigned value. The variable still has a strong, fixed type."
   },
   "virtual": {
-    "Definition": "The virtual keyword allows a method or property to be overridden in a derived class. It supports customizable behavior through inheritance."
+    "Definition": "The {c:color-blue keyword}virtual{/c} keyword allows a method or property to be overridden in a derived class. It supports customizable behavior through inheritance."
   },
   "void": {
     "Definition": "The return type {c:color-blue keyword}void{/c} means the method does not return anything. The point of execution will return to where the method was called from but no data will be returned with it."
   },
   "volatile": {
-    "Definition": "The volatile keyword ensures a field is always read from and written to main memory. It helps prevent issues in multi-threaded code."
+    "Definition": "The {c:color-blue keyword}volatile{/c} keyword ensures a field is always read from and written to main memory. It helps prevent issues in multi-threaded code."
   },
   "when": {
-    "Definition": "The when keyword adds a condition to a catch block or pattern match. It controls when the code should run."
+    "Definition": "The {c:color-purple keyword}when{/c} keyword adds a condition to a catch block or pattern match. It controls when the code should run."
   },
   "where": {
-    "Definition": "The where keyword filters data in a query or applies constraints to generic types. It limits which values or types are allowed."
+    "Definition": "The {c:color-blue keyword}where{/c} keyword filters data in a query or applies constraints to generic types. It limits which values or types are allowed."
   },
   "while": {
-    "Definition": "The while keyword starts a loop that runs as long as a condition is true. The condition is checked before each iteration."
+    "Definition": "The {c:color-purple keyword}while{/c} keyword starts a loop that runs as long as a condition is true. The condition is checked before each iteration."
   },
   "with": {
-    "Definition": "The with keyword creates a copy of an object with selected values changed. It is commonly used with records."
+    "Definition": "The {c:color-blue keyword}with{/c} keyword creates a copy of an object with selected values changed. It is commonly used with records."
   },
   "yield": {
-    "Definition": "The yield keyword returns values one at a time from a method. It allows lazy iteration over a sequence."
+    "Definition": "The {c:color-purple keyword}yield{/c} keyword returns values one at a time from a method. It allows lazy iteration over a sequence."
   }
 }

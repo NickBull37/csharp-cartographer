@@ -13,9 +13,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 var token = navTokens[i];
 
                 token.Map.PrimaryLabel = token.Map.SemanticRole.ToSpacedString();
-                token.Map.SecondaryLabel = GetSecondaryLabel(token);
                 token.Map.PrimaryDefinition = GetPrimaryDefinition(token);
                 token.Map.PrimaryFocusedDefinition = GetPrimaryFocusedDefinition(token);
+                token.Map.SecondaryLabel = GetSecondaryLabel(token);
                 token.Map.SecondaryDefinition = GetSecondaryDefinition(token);
             }
         }
@@ -59,11 +59,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static string? GetSecondaryLabel(NavToken token)
         {
-            if (token.Index == 117)
-            {
-
-            }
-
             if (!token.Map.ModifierStrings.Any())
                 return null;
 

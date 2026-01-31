@@ -32,6 +32,9 @@
   "ClassBoundary": {
     "Definition": "A class boundary marks the start or end of a class definition."
   },
+  "Discard": {
+    "Definition": "The discard symbol {c:color-blue keyword}_{/c} is used when a value is intentionally ignored. It tells the compiler that the value is not needed."
+  },
   "Ternary": {
     "Definition": "The ternary operator consists of three parts: a condition to evaluate, a value to use when the condition is {c:bold}true{/c}, and a value to use when it the condition is {c:bold}false{/c}."
   },

@@ -25,7 +25,8 @@ namespace csharp_cartographer_backend._07.Clients.ChatGpt
         {
             try
             {
-                var requestJson = JsonSerializer.Serialize(CreateRequestDto(code));
+                var dto = CreateRequestDto(code);
+                var requestJson = JsonSerializer.Serialize(dto);
 
                 HttpContent requestContent = new StringContent(
                     requestJson,
@@ -42,7 +43,8 @@ namespace csharp_cartographer_backend._07.Clients.ChatGpt
                 var responseContent = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
                 var response = JsonSerializer.Deserialize<ChatCompletionResponse>(responseContent);
 
-                return CodeAnalysisResult.Ok(ExtractAnalysisFromResponse(response));
+                var analysis = ExtractAnalysisFromResponse(response);
+                return CodeAnalysisResult.Ok(analysis);
             }
             catch (HttpRequestException ex)
             {
@@ -56,7 +58,7 @@ namespace csharp_cartographer_backend._07.Clients.ChatGpt
             }
             catch (OperationCanceledException)
             {
-                return CodeAnalysisResult.Canceled();
+                throw;
             }
         }
 

@@ -127,10 +127,11 @@ const MapTagFocusedDefText = styled(Typography)(() => ({
     fontSize: '14px',
     letterSpacing: '0.04em',
     color: colors.white,
-    padding: '12px 12px',
+    padding: '14px 20px',
+    //border: '1px solid #808080',
     borderRadius: '4px',
-    backgroundColor: 'rgba(51, 51, 51, 0.9)',
-    //marginBottom: '4px',
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.35), 0 2px 6px 0 rgba(0, 0, 0, 0.35)',
 }));
 
 const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHighlightIndices, setActiveHighlightIndices }) => {

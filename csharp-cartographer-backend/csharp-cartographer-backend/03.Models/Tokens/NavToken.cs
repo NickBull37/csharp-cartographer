@@ -384,15 +384,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(2, SyntaxKind.AttributeArgument);
         }
 
-        public bool IsTypeConstraint()
-        {
-            if (Kind == SyntaxKind.QuestionToken)
-                return false;
-
-            return HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause)
-                || HasAncestorAt(2, SyntaxKind.TypeParameterConstraintClause);
-        }
-
         public bool IsBaseType()
         {
             return Kind == SyntaxKind.IdentifierToken &&
@@ -410,6 +401,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Kind == SyntaxKind.IdentifierToken &&
                 HasAncestorAt(1, SyntaxKind.AsExpression) &&
                 PrevToken?.Text == "as";
+        }
+
+        public bool IsDiscard()
+        {
+            return Kind == SyntaxKind.UnderscoreToken
+                && HasAncestorAt(0, SyntaxKind.DiscardPattern);
         }
 
         public bool IsExceptionType()
@@ -467,6 +464,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
                 && !HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression)
                 && PrevToken?.Kind == SyntaxKind.DotToken;
+        }
+
+        public bool IsTypeConstraint()
+        {
+            if (Kind == SyntaxKind.QuestionToken)
+                return false;
+
+            return HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause)
+                || HasAncestorAt(2, SyntaxKind.TypeParameterConstraintClause);
         }
 
         public bool IsTypeReference()
