@@ -82,7 +82,7 @@ const MapTagDefFadedLabel = styled(Typography)(() => ({
 const MapTagDefText = styled(Typography)(() => ({
     fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
     fontSize: '14px',
-    letterSpacing: '0.04em',
+    letterSpacing: '0.05em',
     color: colors.gray95
 }));
 const MapTagFocusedDefText = styled(Typography)(() => ({
@@ -90,11 +90,10 @@ const MapTagFocusedDefText = styled(Typography)(() => ({
     fontSize: '14px',
     letterSpacing: '0.04em',
     color: colors.white,
-    padding: '14px 20px',
-    //border: '1px solid #808080',
+    padding: '6px',
     borderRadius: '4px',
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-    boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.35), 0 2px 6px 0 rgba(0, 0, 0, 0.35)',
+    //backgroundColor: '#333333',
+    //boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.45), 0 2px 6px 0 rgba(0, 0, 0, 0.45)',
 }));
 
 const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHighlightIndices, setActiveHighlightIndices }) => {
@@ -312,7 +311,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
 
                     <Stack>
 
-                        <Divider sx={{ bgcolor: '#808080' }} />
+                        {/* <Divider sx={{ bgcolor: '#808080' }} />
                         <Typography
                             className='code'
                             sx={{
@@ -324,7 +323,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             }}
                         >
                             {roslynClassification}
-                        </Typography>
+                        </Typography> */}
 
                         {/* <Divider sx={{ bgcolor: '#808080' }} />
                         <Typography
@@ -392,71 +391,15 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             ?
                                 <Stack
                                     sx={{
-                                        // p: '1.25rem 1.2rem 1.25rem 1rem',
-                                        p: '0 1rem 0.5rem 1rem',
+                                        p: '0 1rem 0.75rem 1rem',
+                                        // pt: '0',
+                                        // pb: '0.75rem',
+                                        // px: '1.125rem',
                                     }}
                                 >
                                     <Stack
                                         gap={0.75}
                                     >
-                                        {/* <MapTagBox>
-                                            <MapTagLabel
-                                                className="code"
-                                            >
-                                                PK:
-                                            </MapTagLabel>
-                                            <MapTagTextBox>
-                                                <MapTagText
-                                                    className="code"
-                                                >
-                                                    {activeToken.map.primaryKindString}
-                                                </MapTagText>
-                                            </MapTagTextBox>
-                                        </MapTagBox>
-                                        <MapTagBox>
-                                            <MapTagLabel
-                                                className="code"
-                                            >
-                                                SR:
-                                            </MapTagLabel>
-                                            <MapTagTextBox>
-                                                <MapTagText
-                                                    className="code"
-                                                >
-                                                    {activeToken.map.semanticRoleString}
-                                                </MapTagText>
-                                            </MapTagTextBox>
-                                        </MapTagBox>
-
-                                        {activeToken?.map.modifierStrings?.length > 0 && (
-                                            <Box
-                                                display="flex"
-                                                gap={0.5}
-                                            >
-                                                <MapTagLabel
-                                                    className="code"
-                                                >
-                                                    Mods:
-                                                </MapTagLabel>
-                                                <Box
-                                                    display="flex"
-                                                    gap={1}
-                                                    flexWrap="wrap"
-                                                >
-                                                    {activeToken.map.modifierStrings.map((modifier) => (
-                                                        <MapTagTextBox>
-                                                            <MapTagText
-                                                                key={modifier}
-                                                                className="code"
-                                                            >
-                                                                {modifier}
-                                                            </MapTagText>
-                                                        </MapTagTextBox>
-                                                    ))}
-                                                </Box>
-                                            </Box>
-                                        )} */}
-
                                         <Stack
                                             gap={1}
                                             sx={{
@@ -509,15 +452,72 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 </MapTagDefFadedLabel>
                                             </Box>
 
-                                            <Stack gap={2}>
+                                            <Stack
+                                                gap={2}
+                                                sx={{
+                                                    px: '1px'
+                                                }}
+                                            >
                                                 <MapTagDefText>
                                                     {renderMapText(activeToken?.map?.primaryDefinition)}
                                                 </MapTagDefText>
 
                                                 {!!activeToken?.map?.primaryFocusedDefinition?.segments?.length && (
-                                                    <MapTagFocusedDefText>
-                                                        {renderMapText(activeToken?.map?.primaryFocusedDefinition)}
-                                                    </MapTagFocusedDefText>
+                                                    <Box className={
+                                                        highlightColor === 'color-blue'
+                                                                ? 'keyword-definition blue-box'
+                                                            : highlightColor === 'color-purple'
+                                                                ? 'keyword-definition purple-box'
+                                                            : highlightColor === 'color-gray'
+                                                                ? 'keyword-definition gray-box'
+                                                            : ''
+                                                        }
+                                                    >
+                                                        <Box
+                                                            display="flex"
+                                                            alignItems="center"
+                                                            gap={0.75}
+                                                            sx={{
+                                                                mb: '14px'
+                                                            }}
+                                                        >
+                                                            <InfoOutlineIcon
+                                                                className={
+                                                                    highlightColor === 'color-blue'
+                                                                            ? 'blue-icon-text'
+                                                                        : highlightColor === 'color-purple'
+                                                                            ? 'purple-icon-text'
+                                                                        : highlightColor === 'color-gray'
+                                                                            ? 'gray-icon-text'
+                                                                        : ''
+                                                                }
+                                                                sx={{
+                                                                    fontSize: '18px',
+                                                                }}
+                                                            />
+                                                            <Typography
+                                                                className={
+                                                                    highlightColor === 'color-blue'
+                                                                            ? 'blue-icon-text'
+                                                                        : highlightColor === 'color-purple'
+                                                                            ? 'purple-icon-text'
+                                                                        : highlightColor === 'color-gray'
+                                                                            ? 'gray-icon-text'
+                                                                        : ''
+                                                                }
+                                                                sx={{
+                                                                    fontSize: '14px',
+                                                                    letterSpacing: '0.06em',
+                                                                    fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
+                                                                }}
+                                                            >
+                                                                Definition
+                                                            </Typography>
+                                                        </Box>
+                                                        <MapTagFocusedDefText>
+                                                            {renderMapText(activeToken?.map?.primaryFocusedDefinition)}
+                                                        </MapTagFocusedDefText>
+                                                    </Box>
                                                 )}
                                             </Stack>
                                         </Stack>

@@ -362,13 +362,7 @@ body {
 }
 
 
-/* ----- Tag Styling ----- */
-/* .tag {
-    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace !important;
-    font-size: 16px !important;
-    padding-right: 2px !important;
-    text-transform: uppercase;
-} */
+/* ----- Token Map Styling ----- */
 .faded-white {
     /* color: #fff; */
     color: rgba(255, 255, 255, 0.75);
@@ -414,6 +408,8 @@ body {
 /* ----- Definition Styling ----- */
 .keyword {
     font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace!important;
+    /* font-weight: bold; */
+    font-size: 15px!important;
 }
 .bold {
     font-weight: 600!important;
@@ -545,17 +541,32 @@ body {
     padding: 2px 6px;
     margin: -2px 0 8px 0!important;
 } */
-.tag-entry-insight {
-
-    /* background-color: #3b2e58;
-    border: 1px solid #efd9fd; */
-
-    background-color: rgba(0, 72, 128, 0.6);
-    border: 1px solid #6bb7e1;
-
+.keyword-definition {
     border-radius: 4px;
-    padding: 10px 12px;
+    padding: 16px 12px 8px 12px;
 }
+.blue-box{
+    background-color: rgba(0, 72, 128, 0.15);
+    border: 1px solid rgba(107, 183, 225, 0.6);
+}
+.gray-box{
+    background-color: rgba(51, 51, 51, 0.7);
+    border: 1px solid rgba(204, 204, 204, 0.6);
+}
+.purple-box{
+    background-color: rgba(57, 44, 84, 0.2);
+    border: 1px solid rgba(215, 158, 250, 0.6);
+}
+.blue-icon-text{
+    color: #c0e0f2;
+}
+.gray-icon-text{
+    color: #cccccc;
+}
+.purple-icon-text{
+    color: #ebcffc;
+}
+
 
 .tag-link-segment {
     cursor: pointer;
