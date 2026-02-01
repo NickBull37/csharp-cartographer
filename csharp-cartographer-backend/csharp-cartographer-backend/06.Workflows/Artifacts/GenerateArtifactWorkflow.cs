@@ -124,10 +124,13 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
             if (_config.ShouldLogSemanticData)
             {
+                var genParams = artifact.NavTokens
+                    .Where(token => token.RoslynClassification == "type parameter name");
+
                 var identifiers = artifact.NavTokens
                     .Where(token => token.SemanticData is not null);
 
-                CartographerLogger.LogTokens(identifiers);
+                CartographerLogger.LogTokens(genParams);
             }
 
             if (_config.ShouldLogUnidentifiedTokens)

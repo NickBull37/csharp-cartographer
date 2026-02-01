@@ -613,6 +613,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (IsTupleElementName() || IsTupleElementType())
                 return false;
 
+            if (HasAncestorAt(0, SyntaxKind.TypeParameter))
+                return false;
+
+            if (HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause))
+                return false;
+
             return HasAncestorAt(1, SyntaxKind.MethodDeclaration)
                 || HasAncestorAt(2, SyntaxKind.MethodDeclaration);
         }
@@ -883,6 +889,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         }
         #endregion
 
+        #region Keyword Checks
+        public bool IsTypeConstraintKeyword()
+        {
+            return Kind.ToString().Contains("Keyword")
+                && HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
+        }
+
+        public bool IsTypeDeclarationKeyword()
+        {
+            return GlobalConstants.TypeDeclarationKeywords.Contains(Text)
+                && !HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
+        }
+        #endregion
+
         #region Literal Checks
         public bool IsNumericLiteral()
         {
@@ -1045,6 +1065,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.CollectionExpression);
         }
 
+        public bool IsConstraintSeparator()
+        {
+            return Kind == SyntaxKind.ColonToken
+                && HasAncestorAt(0, SyntaxKind.TypeParameterConstraintClause);
+        }
+
         public bool IsEnumMemberSeparator()
         {
             return RoslynClassification is not null
@@ -1189,9 +1215,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsGenericType() => HasAncestorAt(0, SyntaxKind.GenericName);
 
-        public bool IsGenericTypeParameter() => RoslynClassification is not null
-            && RoslynClassification == "type parameter name"
-            && HasAncestorAt(0, SyntaxKind.TypeParameter);
+        public bool IsGenericTypeParameterConstraint()
+        {
+            return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
+        }
+
+        public bool IsGenericTypeParameter() => HasAncestorAt(0, SyntaxKind.TypeParameter);
 
         public bool IsNullableType() => HasAncestorAt(1, SyntaxKind.NullableType);
 

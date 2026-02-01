@@ -327,8 +327,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                 : 'default-text-class'
                         }
                     >
-                        {tokenText}
-                        {/* {tokenText} - {activeTokenIndex} */}
+                        {/* {tokenText} */}
+                        {tokenText} - {activeTokenIndex}
                     </TokenText>
                     <Tooltip title="Next Token">
                         <NextTokenButton
@@ -349,7 +349,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
 
                     <Stack>
 
-                        {/* <Divider sx={{ bgcolor: '#808080' }} />
+                        <Divider sx={{ bgcolor: '#808080' }} />
                         <Typography
                             className='code'
                             sx={{
@@ -361,7 +361,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                             }}
                         >
                             {roslynClassification}
-                        </Typography> */}
+                        </Typography>
 
                         {/* <Divider sx={{ bgcolor: '#808080' }} />
                         <Typography

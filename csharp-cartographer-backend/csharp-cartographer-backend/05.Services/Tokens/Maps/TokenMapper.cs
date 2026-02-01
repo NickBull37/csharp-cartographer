@@ -269,7 +269,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.Unknown;
 
             // --- Separators ---
-            if (token.Text is ",")
+            if (token.Text is "," or ":")
             {
                 if (token.IsArgumentSeperator())
                     return SemanticRole.ArgumentSeparator;
@@ -279,6 +279,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsCollectionElementSeparator())
                     return SemanticRole.CollectionElementSeparator;
+
+                if (token.IsConstraintSeparator())
+                    return SemanticRole.ConstraintSeparator;
 
                 if (token.IsEnumMemberSeparator())
                     return SemanticRole.EnumMemberSeparator;
@@ -500,7 +503,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.SafetyContext;
 
             // --- Type declaration keywords ---
-            if (GlobalConstants.TypeDeclarationKeywords.Contains(token.Text))
+            if (token.IsTypeDeclarationKeyword())
                 return SemanticRole.TypeDeclaration;
 
             // --- Type reference keywords ---
@@ -537,6 +540,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Keyword: generic types ---
             if (token.IsGenericTypeArgument())
                 return SemanticRole.GenericTypeArgument;
+
+            if (token.IsTypeConstraintKeyword())
+                return SemanticRole.TypeConstraint;
 
             return SemanticRole.Unknown;
         }
@@ -581,7 +587,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 "where" => parentKind switch
                 {
                     "WhereClause" => SemanticRole.QueryExpression,
-                    "TypeParameterConstraintClause" => SemanticRole.ConstraintType,
+                    "TypeParameterConstraintClause" => SemanticRole.TypeConstraint,
                     _ => SemanticRole.Unknown
                 },
 
@@ -839,6 +845,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsGenericTypeParameter())
                 return SemanticRole.GenericTypeParameter;
 
+            if (token.IsGenericTypeParameterConstraint())
+                return SemanticRole.GenericTypeParameterConstraint;
+
             // Identifier - tuple types
             if (token.IsTupleElementName())
                 return SemanticRole.TupleElementName;
@@ -871,7 +880,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             // Identifier - type constraints
             if (token.IsTypeConstraint())
-                return SemanticRole.ConstraintType;
+                return SemanticRole.TypeConstraint;
 
             // Identifier - type pattern types
             if (token.IsTypePatternType())
@@ -954,6 +963,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             {
                 if (token.IsInterpolatedValue())
                     modifiers.Add(SemanticModifiers.InterpolatedValue);
+
+                //if (token.IsGenericTypeParameter())
+                //    modifiers.Add(SemanticModifiers.GenericTypeParameter);
             }
 
             // --- General modifiers

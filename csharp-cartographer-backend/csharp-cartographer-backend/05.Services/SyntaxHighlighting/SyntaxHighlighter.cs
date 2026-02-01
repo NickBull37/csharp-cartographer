@@ -319,7 +319,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 // -------------------------------------------------------------- //
                 case SemanticRole.CastType:
                 case SemanticRole.CastTargetType:
-                case SemanticRole.ConstraintType:
+                case SemanticRole.TypeConstraint:
                 case SemanticRole.ConstructorInvocation:
                 case SemanticRole.EventFieldType:
                 case SemanticRole.FieldDataType:

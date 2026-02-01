@@ -446,9 +446,6 @@
   "CastTargetType": {
     "Definition": "A cast target type is the type that a value is being converted into. It determines how the value should be interpreted after the cast."
   },
-  "ConstraintType": {
-    "Definition": "A constraint type restricts what types can be used with a generic type or method. It helps ensure that only valid types are allowed."
-  },
   "DelegateReturnType": {
     "Definition": "A delegate return type defines the type of value returned by methods that match the delegate. It specifies what result the delegate’s methods must produce."
   },
@@ -465,7 +462,10 @@
     "Definition": "A generic type argument is a specific type supplied to a generic class or method. It fills in the placeholder defined by a generic parameter."
   },
   "GenericTypeParameter": {
-    "Definition": "A generic type parameter is a placeholder type used in a generic class or method. It allows the code to work with different types."
+    "Definition": "This identifier is a placeholder that will be replaced by a generic type argument. This allows a generic class or method to have one implementation that works for multiple data types."
+  },
+  "GenericTypeParameterConstraint": {
+    "Definition": "This identifier references the declared generic type parameter inside a constraint clause that sets rules for the arguments that are allowed to be passed in for the generic type parameter."
   },
   "LocalVariableDataType": {
     "Definition": "A local variable data type defines what kind of value a local variable can hold. It determines how the variable can be used within its scope."
@@ -481,6 +481,9 @@
   },
   "SimpleBaseType": {
     "Definition": "A simple base type specifies a type that another type inherits from or implements. It defines a parent relationship in the type hierarchy."
+  },
+  "TypeConstraint": {
+    "Definition": "A type constraint restricts what types can be used with a generic type or method. It helps ensure that only valid types are allowed."
   },
   "TypePatternType": {
     "Definition": "A type pattern type specifies the type being checked in a pattern matching expression. It determines whether a value matches a given type."
