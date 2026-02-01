@@ -409,6 +409,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                             <Box
                                                 display="flex"
                                                 justifyContent="space-between"
+                                                alignItems="flex-end"
                                                 sx={{
                                                     borderBottom: '1px solid #666666'
                                                 }}

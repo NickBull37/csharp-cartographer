@@ -186,18 +186,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
-        public bool IsArrayInitializationDelimiter()
+        public bool IsAnonymousObjectCreationExpressionDelimiter()
         {
             return IsDelimiter()
-                && HasAncestorAt(0, SyntaxKind.ArrayInitializerExpression)
-                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
-        }
-
-        public bool IsCatchBlockDelimiter()
-        {
-            return IsDelimiter()
-                && HasAncestorAt(0, SyntaxKind.Block)
-                && HasAncestorAt(1, SyntaxKind.CatchClause)
+                && HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression)
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
@@ -206,6 +198,21 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.ArgumentList)
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
+        public bool IsArrayInitializationDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.ArrayInitializerExpression)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsArrayTypeDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.ArrayRankSpecifier)
+                && HasAncestorAt(1, SyntaxKind.ArrayType)
+                && (Kind == SyntaxKind.OpenBracketToken || Kind == SyntaxKind.CloseBracketToken);
         }
 
         public bool IsAttributeListDelimiter()
@@ -222,6 +229,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
+        public bool IsBracketedArgumentListDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.BracketedArgumentList)
+                && (Kind == SyntaxKind.OpenBracketToken || Kind == SyntaxKind.CloseBracketToken);
+        }
+
         public bool IsCastTypeDelimiter()
         {
             return IsDelimiter()
@@ -236,6 +250,22 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
+        public bool IsCatchBlockDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.CatchClause)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsCheckedStatementBlockDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.CheckedStatement)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsCatchFilterDelimiter()
         {
             return IsDelimiter()
@@ -247,6 +277,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.ClassDeclaration)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsCollectionInitializerExpressionDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.CollectionInitializerExpression)
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
@@ -353,6 +390,27 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
+        public bool IsSwitchExpressionDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.SwitchExpression)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsSwitchStatementDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.SwitchStatement)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsSwitchStatementConditionDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.SwitchStatement)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
         public bool IsTryBlockDelimiter()
         {
             return IsDelimiter()
@@ -368,10 +426,25 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
+        public bool IsParenthesizedExpressionDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.ParenthesizedExpression)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
         public bool IsInterpolatedValueDelimiter()
         {
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.Interpolation)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsUncheckedStatementBlockDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.UncheckedStatement)
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
         #endregion
@@ -585,6 +658,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
          *  -----------------------------------------------------------------------
          */
 
+        public bool IsArrayDataType()
+        {
+            return HasAncestorAt(1, SyntaxKind.ArrayType);
+        }
+
         public bool IsEventFieldType()
         {
             // covers nullable and non-nullable types
@@ -599,9 +677,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsLocalType() => IsLocalVariableDataType()
             || IsForEachLoopLocalVariableDataType();
 
-        public bool IsLocalVariableDataType() =>
-            HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement) ||
-            HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
+        public bool IsLocalVariableDataType()
+        {
+            if (NextToken?.Text == "[")
+                return false;
+
+            return HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
+                || HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
+        }
 
         public bool IsForEachLoopLocalVariableDataType()
         {
@@ -1219,6 +1302,42 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             // List<string?> LeadingTrivia { get; set; }
             if (HasAncestorAt(2, SyntaxKind.TypeArgumentList)
                 && PrevToken?.Text == "<"
+                && NextToken?.Text == "?")
+            {
+                return true;
+            }
+
+            //       ⌄
+            // Func<int, int> square = x => x * x;
+            if (HasAncestorAt(1, SyntaxKind.TypeArgumentList)
+                && PrevToken?.Text == "<"
+                && NextToken?.Text == ",")
+            {
+                return true;
+            }
+
+            //            ⌄
+            // Func<int, int> square = x => x * x;
+            if (HasAncestorAt(1, SyntaxKind.TypeArgumentList)
+                && PrevToken?.Text == ","
+                && NextToken?.Text == ">")
+            {
+                return true;
+            }
+
+            //       ⌄
+            // Func<int?, int> square = x => x * x;
+            if (HasAncestorAt(2, SyntaxKind.TypeArgumentList)
+                && PrevToken?.Text == "<"
+                && NextToken?.Text == ",")
+            {
+                return true;
+            }
+
+            //            ⌄
+            // Func<int, int?> square = x => x * x;
+            if (HasAncestorAt(2, SyntaxKind.TypeArgumentList)
+                && PrevToken?.Text == ","
                 && NextToken?.Text == "?")
             {
                 return true;

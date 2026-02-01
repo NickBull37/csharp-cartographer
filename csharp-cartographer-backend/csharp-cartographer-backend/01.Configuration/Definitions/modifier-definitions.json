@@ -15,7 +15,7 @@
     "Definition": "This method is designed to work with multiple types and must be supplied a generic type argument when called. The generic type argument passed in will replace the generic type parameter in the method definition."
   },
   "GenericType": {
-    "Definition": "This generic type is designed to work with multiple types must be supplied a generic type argument when used. The generic type argument passed in will replace the generic type parameter in the type definition."
+    "Definition": "This generic type must be supplied a generic type argument(s) when used. The generic type argument passed in will replace the generic type parameter in the type definition."
   },
   "ImplicitlyTyped": {
     "Definition": "Implicitly typed means the type is determined automatically by the compiler. The type is still fixed, even though it is not written explicitly."

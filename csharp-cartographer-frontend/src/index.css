@@ -409,7 +409,8 @@ body {
 .keyword {
     font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace!important;
     /* font-weight: bold; */
-    font-size: 15px!important;
+    padding: 0 1px;
+    font-size: 14px!important;
 }
 .bold {
     font-weight: 600!important;

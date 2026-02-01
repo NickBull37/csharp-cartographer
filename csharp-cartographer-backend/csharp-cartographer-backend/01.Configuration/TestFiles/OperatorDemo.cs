@@ -78,6 +78,7 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
             // lambda: =>
             Func<int, int> square = x => x * x;
+            Func<int?, int?> squareTest = x => x * x;
             int squared = square(5);
 
             // index & range: [], .., ^

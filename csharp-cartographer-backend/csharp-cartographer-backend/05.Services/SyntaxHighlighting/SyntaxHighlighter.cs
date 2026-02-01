@@ -113,6 +113,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 // No color found - color red
                 token.HighlightColor = Red;
             }
+
+            foreach (var token in navTokens)
+            {
+                if (token.Map.SemanticRole == SemanticRole.Unknown)
+                    token.HighlightColor = Red;
+            }
         }
 
         private static void ColorManually(NavToken token)

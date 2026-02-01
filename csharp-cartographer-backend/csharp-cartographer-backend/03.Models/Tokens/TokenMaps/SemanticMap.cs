@@ -24,16 +24,21 @@
         // ------------ DELIMITERS ------------ //
 
         AccessorListBoundary,
-        ArrayInitializationBoundary,
+        AnonymousObjectCreationExpressionBoundary,
         ArgumentListBoundary,
+        ArrayInitializationBoundary,
+        ArrayType,
         AttributeListBoundary,
         AttributeArgumentListBoundary,
         BlockBoundary,
+        BracketedArgumentListBoundary,
         CastTypeBoundary,
         CatchArgumentBoundary,
         CatchBlockBoundary,
         CatchFilterBoundary,
+        CheckedStatementBlockBoundary,
         ClassBoundary,
+        CollectionInitializerExpressionBoundary,
         ConstructorBoundary,
         CollectionExpressionBoundary,
         ForEachBlockBoundary,
@@ -46,11 +51,16 @@
         NamespaceBoundary,
         ObjectInitializerBoundary,
         ParameterListBoundary,
+        ParenthesizedExpressionBoundary,
+        SwitchExpressionBoundary,
+        SwitchStatementBoundary,
+        SwitchStatementConditionBoundary,
         TryBlockBoundary,
         TupleExpressionBoundary,
         TupleTypeBoundary,
         TypeArgumentListBoundary,
         TypeParameterListBoundary,
+        UncheckedStatementBlockBoundary,
 
 
         // ------------ OPERATORS ------------ //
@@ -209,6 +219,7 @@
         // ------------ TYPES ------------ //
 
         // Type positions
+        ArrayDataType,
         CastType,
         CastTargetType,
         DelegateReturnType,

@@ -2,8 +2,14 @@
   "AccessorListBoundary": {
     "Definition": "Marks the boundaries of a property or indexer’s accessor methods, such as {c:color-blue keyword}get{/c} and {c:color-blue keyword}set{/c}."
   },
+  "AnonymousObjectCreationExpressionBoundary": {
+    "Definition": "Marks the boundaries of an anonymous object creation expression."
+  },
   "ArrayInitializationBoundary": {
     "Definition": "Marks the boundaries where the elements of an array are defined."
+  },
+  "ArrayType": {
+    "Definition": "Part of the array type syntax."
   },
   "ArgumentListBoundary": {
     "Definition": "Marks the boundaries of the argument list passed into a method or constructor call."
@@ -17,6 +23,9 @@
   "BlockBoundary": {
     "Definition": "Marks the boundaries of a block of code."
   },
+  "BracketedArgumentListBoundary": {
+    "Definition": "Marks the boundaries of an argument list used to access elements of an array."
+  },
   "CastTypeBoundary": {
     "Definition": "Marks the boundaries of the type used when converting a value to another type."
   },
@@ -29,6 +38,9 @@
   "CatchFilterBoundary": {
     "Definition": "Marks the boundaries of the condition that determines whether a {c:color-purple keyword}catch{/c} block should handle an exception."
   },
+  "CheckedStatementBlockBoundary": {
+    "Definition": "Marks the boundaries of a checked statement block."
+  },
   "ClassBoundary": {
     "Definition": "Marks the boundaries of the class definition."
   },
@@ -38,11 +50,14 @@
   "Ternary": {
     "Definition": "The ternary operator consists of three parts: a condition to evaluate, a value to use when the condition is {c:bold}true{/c}, and a value to use when it the condition is {c:bold}false{/c}."
   },
-  "ConstructorBoundary": {
-    "Definition": "Marks the boundaries of a constructor’s definition."
-  },
   "CollectionExpressionBoundary": {
     "Definition": "Marks the boundaries of a collection expression."
+  },
+  "CollectionInitializerExpressionBoundary": {
+    "Definition": "Marks the boundaries of a collection initializer expression."
+  },
+  "ConstructorBoundary": {
+    "Definition": "Marks the boundaries of a constructor’s definition."
   },
   "ForEachBlockBoundary": {
     "Definition": "Marks the boundaries of the code that runs for each item in a collection."
@@ -57,7 +72,7 @@
     "Definition": "Marks the boundaries of the condition that determines whether the code inside an {c:color-purple keyword}if{/c} statement is executed or not."
   },
   "ImplicitArrayCreation": {
-    "Definition": "Marks the boundaries of an array being created without explicitly specifying its type."
+    "Definition": "Marks the boundaries of an array being created without explicitly specifying its type. The compilier can infer the type in the array creation syntax because it's specified elsewhere in the declaration."
   },
   "InterpolatedValueBoundary": {
     "Definition": "Marks the boundaries of a value or expression embedded inside an interpolated string."
@@ -74,6 +89,18 @@
   "ParameterListBoundary": {
     "Definition": "Marks the boundaries of the parameter list defined for a method or constructor."
   },
+  "ParenthesizedExpressionBoundary": {
+    "Definition": "Marks the boundaries of an expression."
+  },
+  "SwitchExpressionBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} expression."
+  },
+  "SwitchStatementBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} statement."
+  },
+  "SwitchStatementConditionBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} statement condition."
+  },
   "TryBlockBoundary": {
     "Definition": "Marks the boundaries of the code that may throw an exception."
   },
@@ -88,6 +115,9 @@
   },
   "TypeParameterListBoundary": {
     "Definition": "Marks the boundaries of the type parameter list declared by a type or method."
+  },
+  "UnheckedStatementBlockBoundary": {
+    "Definition": "Marks the boundaries of a unchecked statement block."
   },
   "Arithmetic": {
     "Definition": "Arithmetic operators perform basic math operations such as addition, subtraction, multiplication, and division."
@@ -439,6 +469,9 @@
   },
   "InterpolatedVerbatimStringEnd": {
     "Definition": "The end of an interpolated verbatim string marks where the string definition finishes. It closes the interpolated verbatim string."
+  },
+  "ArrayDataType": {
+    "Definition": "The data type supported by the array."
   },
   "CastType": {
     "Definition": "A cast type specifies the type that a value is being converted from or to. It is used when explicitly changing how a value is treated in code."
