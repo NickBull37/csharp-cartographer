@@ -419,11 +419,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             var nextTokenText = NextToken?.Text;
             var hasPermittedNextToken = nextTokenText == "(" || nextTokenText == "<";
-            var hasInvocationAncestor = HasAncestorAt(1, SyntaxKind.InvocationExpression) ||
+            var hasInvocationAncestor =
+                HasAncestorAt(1, SyntaxKind.InvocationExpression) ||
                 HasAncestorAt(2, SyntaxKind.InvocationExpression);
 
             return hasPermittedNextToken && hasInvocationAncestor;
         }
+
+        public bool IsGenericMethodInvocation() => IsMethodInvocation()
+            && NextToken?.Text == "<";
 
         public bool IsObjectCreationExpression()
         {
@@ -533,6 +537,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsMethodDeclaration() =>
             HasAncestorAt(0, SyntaxKind.MethodDeclaration);
 
+        public bool IsGenericMethodDeclaration() =>
+            IsMethodDeclaration() && NextToken?.Text == "<";
+
         public bool IsParameterDeclaration() =>
             HasAncestorAt(0, SyntaxKind.Parameter);
 
@@ -621,6 +628,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             return HasAncestorAt(1, SyntaxKind.MethodDeclaration)
                 || HasAncestorAt(2, SyntaxKind.MethodDeclaration);
+        }
+
+        public bool IsTypeParameter()
+        {
+            // doesn't work for method declarations: GetValue<T>()
+            // works for type param return types & type param constraints & as generic args
+            return SemanticData?.SymbolKind == SymbolKind.TypeParameter;
         }
 
         public bool IsDelegateReturnType()
@@ -1213,13 +1227,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return false;
         }
 
-        public bool IsGenericType() => HasAncestorAt(0, SyntaxKind.GenericName);
-
-        public bool IsGenericTypeParameterConstraint()
-        {
-            return HasAncestorAt(0, SyntaxKind.IdentifierName)
-                && HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
-        }
+        public bool IsGenericType() =>
+            HasAncestorAt(0, SyntaxKind.GenericName) &&
+            !IsMethodInvocation();
 
         public bool IsGenericTypeParameter() => HasAncestorAt(0, SyntaxKind.TypeParameter);
 
@@ -1228,6 +1238,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsNullableConstraintType() => IsTypeConstraint() && NextToken?.Text == "?";
 
         public bool IsPredefinedType() => SyntaxFacts.IsPredefinedType(Kind);
+
+        public bool IsTypeParameterConstraint()
+        {
+            return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
+        }
 
         public bool IsTypePatternType() =>
             HasAncestorAt(1, SyntaxKind.ConstantPattern) ||

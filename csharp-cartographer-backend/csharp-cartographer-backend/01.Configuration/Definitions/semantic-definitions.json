@@ -464,9 +464,6 @@
   "GenericTypeParameter": {
     "Definition": "This identifier is a placeholder that will be replaced by a generic type argument. This allows a generic class or method to have one implementation that works for multiple data types."
   },
-  "GenericTypeParameterConstraint": {
-    "Definition": "This identifier references the declared generic type parameter inside a constraint clause that sets rules for the arguments that are allowed to be passed in for the generic type parameter."
-  },
   "LocalVariableDataType": {
     "Definition": "A local variable data type defines what kind of value a local variable can hold. It determines how the variable can be used within its scope."
   },
@@ -484,6 +481,9 @@
   },
   "TypeConstraint": {
     "Definition": "A type constraint restricts what types can be used with a generic type or method. It helps ensure that only valid types are allowed."
+  },
+  "TypeParameterConstraint": {
+    "Definition": "This identifier references the declared generic type parameter inside a constraint clause that sets rules for the arguments that are allowed to be passed in for the generic type parameter."
   },
   "TypePatternType": {
     "Definition": "A type pattern type specifies the type being checked in a pattern matching expression. It determines whether a value matches a given type."

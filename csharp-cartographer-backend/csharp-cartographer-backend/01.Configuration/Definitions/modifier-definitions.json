@@ -11,8 +11,11 @@
   "Conditional": {
     "Definition": "Conditional indicates that something depends on a condition being true or false. It controls which value or action is chosen."
   },
-  "Generic": {
-    "Definition": "This is a generic type and must be supplied a generic type argument when used. Generic types allow a single implementation to work with multiple data types."
+  "GenericMethod": {
+    "Definition": "This method is designed to work with multiple types and must be supplied a generic type argument when called. The generic type argument passed in will replace the generic type parameter in the method definition."
+  },
+  "GenericType": {
+    "Definition": "This generic type is designed to work with multiple types must be supplied a generic type argument when used. The generic type argument passed in will replace the generic type parameter in the type definition."
   },
   "ImplicitlyTyped": {
     "Definition": "Implicitly typed means the type is determined automatically by the compiler. The type is still fixed, even though it is not written explicitly."
@@ -25,5 +28,8 @@
   },
   "ReturnValue": {
     "Definition": "A return value is the result produced by a method or function. It is sent back to the caller when execution finishes."
+  },
+  "TypeParameter": {
+    "Definition": "A type parameter is a placeholder that is replaced by a concrete type when a generic type or method is used."
   }
 }

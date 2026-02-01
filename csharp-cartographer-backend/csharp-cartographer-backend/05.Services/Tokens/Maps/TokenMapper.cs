@@ -845,8 +845,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsGenericTypeParameter())
                 return SemanticRole.GenericTypeParameter;
 
-            if (token.IsGenericTypeParameterConstraint())
-                return SemanticRole.GenericTypeParameterConstraint;
+            if (token.IsTypeParameterConstraint())
+                return SemanticRole.TypeParameterConstraint;
 
             // Identifier - tuple types
             if (token.IsTupleElementName())
@@ -964,8 +964,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsInterpolatedValue())
                     modifiers.Add(SemanticModifiers.InterpolatedValue);
 
-                //if (token.IsGenericTypeParameter())
-                //    modifiers.Add(SemanticModifiers.GenericTypeParameter);
+                if (token.IsGenericMethodDeclaration() || token.IsGenericMethodInvocation())
+                    modifiers.Add(SemanticModifiers.GenericMethod);
+
+                if (token.IsTypeParameter())
+                    modifiers.Add(SemanticModifiers.TypeParameter);
             }
 
             // --- General modifiers
@@ -973,7 +976,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 modifiers.Add(SemanticModifiers.Argument);
 
             if (token.IsGenericType())
-                modifiers.Add(SemanticModifiers.Generic);
+                modifiers.Add(SemanticModifiers.GenericType);
 
             if (token.IsNullableType() || token.IsNullableConstraintType())
                 modifiers.Add(SemanticModifiers.Nullable);
