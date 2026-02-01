@@ -20,43 +20,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             }
         }
 
-        private static string GetPrimaryLabel(NavToken token)
-        {
-            if (token.Map is null)
-                return string.Empty;
-
-            var semanticRole = token.Map.SemanticRole;
-            var primaryKind = token.Map.PrimaryKind;
-
-            // Special Case: drop Identifier PK for Qualifiers & References
-            if (semanticRole.ToString().Contains("Qualifier"))
-                return semanticRole.ToSpacedString();
-
-            // Special Case: drop Keyword/Identifier PK for DataTypes
-            bool isDataType = semanticRole.ToString().Contains("DataType") || semanticRole.ToString().Contains("ReturnType");
-            if (primaryKind == PrimaryKind.Keyword && isDataType)
-                return semanticRole.ToSpacedString();
-
-            // Special Case: drop Punctuation PK for all punctuation
-            if (primaryKind == PrimaryKind.Punctuation)
-                return semanticRole.ToSpacedString();
-
-            // Special Case: drop Delimiter PK for all delimiters
-            if (primaryKind == PrimaryKind.Delimiter)
-                return semanticRole.ToSpacedString();
-
-            // Special Case: drop Literal PK for all literals
-            if (primaryKind == PrimaryKind.Literal)
-                return semanticRole.ToSpacedString();
-
-            // Special Case: 
-            if (semanticRole == SemanticRole.NullConditionalGuard)
-                return semanticRole.ToSpacedString();
-
-            // Normal Case is SR + PK
-            return semanticRole.ToSpacedString() + " " + primaryKind.ToSpacedString();
-        }
-
         private static string? GetSecondaryLabel(NavToken token)
         {
             if (!token.Map.ModifierStrings.Any())
@@ -72,15 +35,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             var key = token.Map.SemanticRole.ToString();
 
             return DefinitionProvider.GetMapText(key);
-
-            //var definition = key is not null
-            //    ? DefinitionProvider.GetMapText(key)
-            //    : null;
-
-            //if (string.IsNullOrWhiteSpace(definition))
-            //    return new MapText();
-
-            //return ToPlainMapText(definition);
         }
 
         private static MapText GetPrimaryFocusedDefinition(NavToken token)
@@ -90,11 +44,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return key is not null
                 ? DefinitionProvider.GetMapText(key)
                 : null;
-
-            //if (string.IsNullOrWhiteSpace(definition))
-            //    return new MapText();
-
-            //return ToPlainMapText(definition);
         }
 
         private static MapText GetSecondaryDefinition(NavToken token)
@@ -104,28 +53,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return key is not null
                 ? DefinitionProvider.GetMapText(key)
                 : null;
-
-            //if (string.IsNullOrWhiteSpace(definition))
-            //    return new MapText();
-
-            //return ToPlainMapText(definition);
-        }
-
-        private static MapText ToPlainMapText(string definition)
-        {
-            return new MapText
-            {
-                ID = Guid.NewGuid(),
-                Segments =
-                [
-                    new TextSegment
-                    {
-                        ID = Guid.NewGuid(),
-                        Text = definition,
-                        Classes = []
-                    }
-                ]
-            };
         }
     }
 }

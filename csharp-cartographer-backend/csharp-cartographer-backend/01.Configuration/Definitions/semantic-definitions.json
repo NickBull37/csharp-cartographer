@@ -1,36 +1,36 @@
 {
   "AccessorListBoundary": {
-    "Definition": "An accessor list boundary marks the start or end of a property or indexer’s accessors, such as get and set."
+    "Definition": "Marks the boundaries of a property or indexer’s accessor methods, such as {c:color-blue keyword}get{/c} and {c:color-blue keyword}set{/c}."
   },
   "ArrayInitializationBoundary": {
-    "Definition": "An array initialization boundary marks where the elements of an array are defined."
+    "Definition": "Marks the boundaries where the elements of an array are defined."
   },
   "ArgumentListBoundary": {
-    "Definition": "An argument list boundary marks the start or end of the values passed into a method or constructor call."
+    "Definition": "Marks the boundaries of the argument list passed into a method or constructor call."
   },
   "AttributeListBoundary": {
-    "Definition": "An attribute list boundary marks the start or end of attributes applied to a code element."
+    "Definition": "Marks the boundaries of the attribute list applied to a code element."
   },
   "AttributeArgumentListBoundary": {
-    "Definition": "An attribute argument list boundary marks the start or end of arguments passed to an attribute."
+    "Definition": "Marks the boundaries of the argument list passed to an attribute."
   },
   "BlockBoundary": {
-    "Definition": "A block boundary marks the start or end of a block of code enclosed in braces."
+    "Definition": "Marks the boundaries of a block of code."
   },
   "CastTypeBoundary": {
-    "Definition": "A cast type boundary marks the type used when converting a value to another type."
+    "Definition": "Marks the boundaries of the type used when converting a value to another type."
   },
   "CatchArgumentBoundary": {
-    "Definition": "A catch argument boundary marks the exception information provided to a catch clause."
+    "Definition": "Marks the boundaries of the exception data provided when an exception is caught."
   },
   "CatchBlockBoundary": {
-    "Definition": "A catch block boundary marks the start or end of code that handles an exception."
+    "Definition": "Marks the boundaries of code that executes after an exception is caught."
   },
   "CatchFilterBoundary": {
-    "Definition": "A catch filter boundary marks a condition that determines whether a catch block should handle an exception."
+    "Definition": "Marks the boundaries of the condition that determines whether a {c:color-purple keyword}catch{/c} block should handle an exception."
   },
   "ClassBoundary": {
-    "Definition": "A class boundary marks the start or end of a class definition."
+    "Definition": "Marks the boundaries of the class definition."
   },
   "Discard": {
     "Definition": "The discard symbol {c:color-blue keyword}_{/c} is used when a value is intentionally ignored. It tells the compiler that the value is not needed."
@@ -39,55 +39,55 @@
     "Definition": "The ternary operator consists of three parts: a condition to evaluate, a value to use when the condition is {c:bold}true{/c}, and a value to use when it the condition is {c:bold}false{/c}."
   },
   "ConstructorBoundary": {
-    "Definition": "A constructor boundary marks the start or end of a constructor’s definition."
+    "Definition": "Marks the boundaries of a constructor’s definition."
   },
   "CollectionExpressionBoundary": {
-    "Definition": "A collection expression boundary marks the elements of a collection expression."
+    "Definition": "Marks the boundaries of a collection expression."
   },
   "ForEachBlockBoundary": {
-    "Definition": "A foreach block boundary marks the code that runs for each item in a collection."
+    "Definition": "Marks the boundaries of the code that runs for each item in a collection."
   },
   "ForBlockBoundary": {
-    "Definition": "A for block boundary marks the code that runs repeatedly in a for loop."
+    "Definition": "Marks the boundaries of the code that runs repeatedly in a {c:color-purple keyword}for{/c} loop."
   },
   "IfBlockBoundary": {
-    "Definition": "An if block boundary marks the code that runs when a condition is true."
+    "Definition": "Marks the boundaries of the code that runs when an {c:color-purple keyword}if{/c} statement condition is true."
   },
   "IfConditionBoundary": {
-    "Definition": "An if condition boundary marks the condition that determines whether an if statement runs."
+    "Definition": "Marks the boundaries of the condition that determines whether the code inside an {c:color-purple keyword}if{/c} statement is executed or not."
   },
   "ImplicitArrayCreation": {
-    "Definition": "An implicit array creation boundary marks an array being created without explicitly specifying its type."
+    "Definition": "Marks the boundaries of an array being created without explicitly specifying its type."
   },
   "InterpolatedValueBoundary": {
-    "Definition": "An interpolated value boundary marks an expression embedded inside an interpolated string."
+    "Definition": "Marks the boundaries of a value or expression embedded inside an interpolated string."
   },
   "MethodBoundary": {
-    "Definition": "A method boundary marks the start or end of a method’s definition."
+    "Definition": "Marks the boundaries of the method definition."
   },
   "NamespaceBoundary": {
-    "Definition": "A namespace boundary marks the start or end of a namespace declaration."
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}namespace{/c} declaration."
   },
   "ObjectInitializerBoundary": {
-    "Definition": "An object initializer boundary marks where an object’s properties or fields are assigned during creation."
+    "Definition": "Marks the boundaries of where an object’s properties or fields are assigned during creation."
   },
   "ParameterListBoundary": {
-    "Definition": "A parameter list boundary marks the parameters defined for a method or constructor."
+    "Definition": "Marks the boundaries of the parameter list defined for a method or constructor."
   },
   "TryBlockBoundary": {
-    "Definition": "A try block boundary marks the code that may throw an exception."
+    "Definition": "Marks the boundaries of the code that may throw an exception."
   },
   "TupleExpressionBoundary": {
-    "Definition": "A tuple expression boundary marks the values grouped together as a tuple."
+    "Definition": "Marks the boundaries of the elements that are grouped together to create a tuple."
   },
   "TupleTypeBoundary": {
-    "Definition": "A tuple type boundary marks the types that make up a tuple."
+    "Definition": "Marks the boundaries of the elements that make up a tuple."
   },
   "TypeArgumentListBoundary": {
-    "Definition": "A type argument list boundary marks the types supplied to a generic type or method."
+    "Definition": "Marks the boundaries of the type argument list supplied to a generic type or method."
   },
   "TypeParameterListBoundary": {
-    "Definition": "A type parameter list boundary marks the generic type parameters declared by a type or method."
+    "Definition": "Marks the boundaries of the type parameter list declared by a type or method."
   },
   "Arithmetic": {
     "Definition": "Arithmetic operators perform basic math operations such as addition, subtraction, multiplication, and division."

@@ -468,7 +468,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                                 ? 'keyword-definition blue-box'
                                                             : highlightColor === 'color-purple'
                                                                 ? 'keyword-definition purple-box'
-                                                            : highlightColor === 'color-gray'
+                                                            : highlightColor === 'color-gray' || highlightColor === 'color-white'
                                                                 ? 'keyword-definition gray-box'
                                                             : ''
                                                         }
