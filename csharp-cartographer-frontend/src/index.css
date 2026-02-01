@@ -363,12 +363,12 @@ body {
 
 
 /* ----- Tag Styling ----- */
-.tag {
+/* .tag {
     font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace !important;
     font-size: 16px !important;
     padding-right: 2px !important;
     text-transform: uppercase;
-}
+} */
 .faded-white {
     /* color: #fff; */
     color: rgba(255, 255, 255, 0.75);

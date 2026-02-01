@@ -62,7 +62,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!token.Map.ModifierStrings.Any())
                 return null;
 
-            return token.Map.ModifierStrings.First();
+            var label = token.Map.ModifierStrings.First();
+
+            return StringHelpers.AddSpaces(label);
         }
 
         private static MapText GetPrimaryDefinition(NavToken token)

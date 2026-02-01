@@ -1,7 +1,12 @@
-﻿namespace csharp_cartographer_backend._02.Utilities.Helpers
+﻿using System.Text.RegularExpressions;
+
+namespace csharp_cartographer_backend._02.Utilities.Helpers
 {
-    public static class StringHelpers
+    public static partial class StringHelpers
     {
+        [GeneratedRegex("([A-Z])", RegexOptions.Compiled)]
+        private static partial Regex CapitalRegex();
+
         /// <summary>
         ///     Counts the number of times a substring occurs in an input string.
         /// </summary>
@@ -51,6 +56,14 @@
             }
 
             return new string(' ', count);
+        }
+
+        /// <summary>
+        ///     Adds spaces to Enum member names for UI display.
+        /// </summary>
+        public static string AddSpaces(string input)
+        {
+            return CapitalRegex().Replace(input, " $1").TrimStart();
         }
 
 

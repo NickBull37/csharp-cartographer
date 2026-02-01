@@ -68,53 +68,16 @@ const NextTokenButton = styled(IconButton)(() => ({
         backgroundColor: '#333333',
     },
 }));
-
-const MapTagBox = styled(Box)(() => ({
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-}));
-const MapTagLabel = styled(Typography)(() => ({
-    fontSize: '13px',
-    color: colors.gray75
-}));
-const MapTagTextBox = styled(Box)(() => ({
-    padding: '1px 6px 1px 6px',
-    backgroundColor: colors.gray20,
-    borderRadius: '4px',
-}));
-const MapTagText = styled(Typography)(() => ({
-    fontSize: '12px',
-    color: colors.gray90
-}));
-
-const MapTagDefTextStack = styled(Stack)(() => ({
-    gap: '0.7rem',
-    marginTop: '1rem',
-    backgroundColor: colors.gray35,
-    color: '#fff',
-    borderRadius: '4px',
-    padding: '8px 12px 10px 12px',
-}));
-const MapTagModTextStack = styled(Stack)(() => ({
-    gap: '0.7rem',
-    marginTop: '0.5rem',
-    border: '2px solid #666666',
-    color: '#fff',
-    borderRadius: '4px',
-    padding: '8px 10px 10px 10px',
-}));
 const MapTagDefLabel = styled(Typography)(() => ({
     fontSize: '17px',
     color: colors.gray95,
 }));
 const MapTagDefFadedLabel = styled(Typography)(() => ({
+    fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
     fontSize: '17px',
-    paddingRight: '2px'
-}));
-const MapKindTag = styled(Typography)(() => ({
-    fontSize: '15px',
-     marginRight: '2px'
+    paddingRight: '2px',
+    textTransform: 'uppercase',
+    letterSpacing: '0.03em',
 }));
 const MapTagDefText = styled(Typography)(() => ({
     fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
@@ -503,7 +466,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                             <Box
                                                 display="flex"
                                                 justifyContent="space-between"
-                                                alignItems="center"
                                                 sx={{
                                                     borderBottom: '1px solid #666666'
                                                 }}
@@ -515,32 +477,32 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 <MapTagDefFadedLabel
                                                     className={
                                                         highlightColor === 'color-white'
-                                                                ? 'tag faded-white'
+                                                                ? 'faded-white'
                                                             : highlightColor === 'color-gray'
-                                                                ? 'tag faded-gray'
+                                                                ? 'faded-gray'
                                                             : highlightColor === 'color-blue'
-                                                                ? 'tag faded-blue'
+                                                                ? 'faded-blue'
                                                             : highlightColor === 'color-light-blue'
-                                                                ? 'tag faded-light-blue'
+                                                                ? 'faded-light-blue'
                                                             : highlightColor === 'color-dark-blue'
-                                                                ? 'tag faded-dark-blue'
+                                                                ? 'faded-dark-blue'
                                                             : highlightColor === 'color-green'
-                                                                ? 'tag faded-green'
+                                                                ? 'faded-green'
                                                             : highlightColor === 'color-jade'
-                                                                ? 'tag faded-jade'
+                                                                ? 'faded-jade'
                                                             : highlightColor === 'color-light-green'
-                                                                ? 'tag faded-light-green'
+                                                                ? 'faded-light-green'
                                                             : highlightColor === 'color-dark-green'
-                                                                ? 'tag faded-dark-green'
+                                                                ? 'faded-dark-green'
                                                             : highlightColor === 'color-purple'
-                                                                ? 'tag faded-purple'
+                                                                ? 'faded-purple'
                                                             : highlightColor === 'color-orange'
-                                                                ? 'tag faded-orange'
+                                                                ? 'faded-orange'
                                                             : highlightColor === 'color-yellow'
-                                                                ? 'tag faded-yellow'
+                                                                ? 'faded-yellow'
                                                             : highlightColor === 'color-teal'
-                                                                ? 'tag faded-teal'
-                                                            : 'tag faded-white'
+                                                                ? 'faded-teal'
+                                                            : 'faded-white'
                                                     }
                                                 >
                                                     {activeToken.map.primaryKindString}
