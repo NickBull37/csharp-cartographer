@@ -146,14 +146,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsIdentifier() => RoslynToken.IsKind(SyntaxKind.IdentifierToken);
 
-        public bool IsKeyword()
-        {
-            // for some reason nameof isn't considered a keyword but sizeof & typeof are...
-            return SyntaxFacts.IsKeywordKind(Kind) || Text == "nameof";
-        }
-
-        public bool IsContextualKeyword() => SyntaxFacts.IsContextualKeyword(Kind);
-
         public bool IsAccessStaticMember() =>
             HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
 
@@ -639,8 +631,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             HasAncestorAt(0, SyntaxKind.VariableDeclarator) &&
             HasAncestorAt(2, SyntaxKind.FieldDeclaration);
 
-        public bool IsFieldDeclaration2() => SemanticData?.DeclaredSymbol?.Kind == SymbolKind.Field;
-
         public bool IsLocalVariableDeclaration() =>
             HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
             && !HasAncestorAt(0, SyntaxKind.GenericName)
@@ -772,6 +762,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             return HasAncestorAt(1, SyntaxKind.DelegateDeclaration)
                 || HasAncestorAt(2, SyntaxKind.DelegateDeclaration);
+        }
+
+        public bool IsOutVariableDataType()
+        {
+            return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.DeclarationExpression)
+                && PrevToken?.Text == "out";
         }
 
         public bool IsParameterDataType() =>
@@ -1032,6 +1029,28 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Keyword Checks
+        public bool IsKeyword()
+        {
+            return SyntaxFacts.IsKeywordKind(Kind) || IsNameofAndKeyword() || IsVarAndKeyword();
+        }
+
+        public bool IsContextualKeyword() => SyntaxFacts.IsContextualKeyword(Kind);
+
+        public bool IsNameofAndKeyword()
+        {
+            // for some reason nameof isn't considered a keyword but sizeof & typeof are...
+            return Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(1, SyntaxKind.InvocationExpression)
+                && NextToken?.Text == "(";
+        }
+
+        public bool IsVarAndKeyword()
+        {
+            // covers out variable data type
+            return Kind == SyntaxKind.IdentifierToken
+                && PrevToken?.Text == "out";
+        }
+
         public bool IsDefaultOperatorKeyword()
         {
             return Kind == SyntaxKind.DefaultKeyword

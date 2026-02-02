@@ -247,6 +247,7 @@
         LocalVariableDataType,
         MethodReturnType,
         NameOfOperand,
+        OutVariableDataType,
         ParameterDataType,
         PropertyDataType,
         SimpleBaseType,

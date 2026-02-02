@@ -468,11 +468,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole GetSemanticRoleForKeywords(NavToken token)
         {
-            if (token.Index == 571)
-            {
-
-            }
-
             if (!token.IsKeyword())
                 return SemanticRole.Unknown;
 
@@ -635,6 +630,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsDelegateReturnType())
                 return SemanticRole.DelegateReturnType;
+
+            if (token.IsOutVariableDataType())
+                return SemanticRole.OutVariableDataType;
 
             if (token.IsParameterDataType())
                 return SemanticRole.ParameterDataType;

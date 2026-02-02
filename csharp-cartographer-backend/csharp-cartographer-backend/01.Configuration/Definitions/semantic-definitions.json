@@ -534,6 +534,9 @@
   "MethodReturnType": {
     "Definition": "This part of the method signature defines what data will be returned when the method is finished executing."
   },
+  "OutVariableDataType": {
+    "Definition": "The data type of the output variable."
+  },
   "ParameterDataType": {
     "Definition": "A parameter data type defines what kind of value can be passed into a method or constructor. It ensures the argument matches the expected type."
   },
