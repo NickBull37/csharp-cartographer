@@ -88,6 +88,10 @@
             "&",
             "*",
             "->",
+
+            // keyword - operators
+            "sizeof",
+            "typeof",
         ];
 
         /// ------  Special Case Operators  ------ ///

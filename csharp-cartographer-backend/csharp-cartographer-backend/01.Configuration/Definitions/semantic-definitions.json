@@ -92,6 +92,9 @@
   "ParenthesizedExpressionBoundary": {
     "Definition": "Marks the boundaries of an expression."
   },
+  "SizeOfExpressionBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}sizeof{/c} expression."
+  },
   "SwitchExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} expression."
   },
@@ -112,6 +115,9 @@
   },
   "TypeArgumentListBoundary": {
     "Definition": "Marks the boundaries of the type argument list supplied to a generic type or method."
+  },
+  "TypeOfExpressionBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}typeof{/c} expression."
   },
   "TypeParameterListBoundary": {
     "Definition": "Marks the boundaries of the type parameter list declared by a type or method."
@@ -155,17 +161,29 @@
   "Pointer": {
     "Definition": "Pointer operators work with memory addresses in unsafe code. They allow direct access to memory locations."
   },
+  "AnonymousObjectMemberDeclarationSeparator": {
+    "Definition": "Punctuation that separates anonymous object member declarations."
+  },
   "ArgumentSeparator": {
     "Definition": "Punctuation that separates multiple arguments passed to a method or constructor."
+  },
+  "ArrayInitializerElementSeparator": {
+    "Definition": "Punctuation that separates elements within an array initializer expression."
   },
   "BaseTypeSeparator": {
     "Definition": "Punctuation that separates a type from its base class or implemented interfaces."
   },
   "CollectionElementSeparator": {
-    "Definition": "Punctuation that separates individual elements within a collection."
+    "Definition": "Punctuation that separates elements within a collection expression."
+  },
+  "CollectionInitializerElementSeparator": {
+    "Definition": "Punctuation that separates elements within a collection initializer expression."
   },
   "EnumMemberSeparator": {
     "Definition": "Punctuation that separates individual members within an enum."
+  },
+  "OrderByClauseSeparator": {
+    "Definition": "Punctuation that separates elements within an {c:color-blue keyword}orderby{/c} clause."
   },
   "ParameterSeparator": {
     "Definition": "Punctuation that separates parameters in a method, constructor, or lambda declaration."
@@ -195,7 +213,13 @@
     "Definition": "Punctuation that separates multiple variables declared in a single statement."
   },
   "CaseLabelTerminator": {
-    "Definition": "Punctuation that marks the end of a case label in a switch statement."
+    "Definition": "Punctuation that marks the end of a case label in a {c:color-purple keyword}switch{/c} statement."
+  },
+  "CasePatternLabelTerminator": {
+    "Definition": "Punctuation that marks the end of a case pattern label in a {c:color-purple keyword}switch{/c} statement."
+  },
+  "DefaultLabelTerminator": {
+    "Definition": "Punctuation that marks the end of the default case label in a {c:color-purple keyword}switch{/c} statement."
   },
   "ParameterLabelTerminator": {
     "Definition": "Punctuation that marks the end of a parameter label in a named argument."
@@ -512,14 +536,26 @@
   "SimpleBaseType": {
     "Definition": "A simple base type specifies a type that another type inherits from or implements. It defines a parent relationship in the type hierarchy."
   },
+  "SizeOf": {
+    "Definition": "A unary operator that returns the compile-time size, in bytes, of a specified type."
+  },
+  "SizeOfOperand": {
+    "Definition": "The type supplied to the {c:color-blue keyword}sizeof{/c} operator to determine its compile-time memory size in bytes."
+  },
   "TypeConstraint": {
     "Definition": "A type constraint restricts what types can be used with a generic type or method. It helps ensure that only valid types are allowed."
+  },
+  "TypeOf": {
+    "Definition": "A unary operator that produces a {c:color-gray keyword}System.Type{/c} object representing a specified compile-time type."
+  },
+  "TypeOfOperand": {
+    "Definition": "The type supplied to the {c:color-blue keyword}typeof{/c} operator to obtain its runtime {c:color-gray keyword}System.Type{/c} representation."
   },
   "TypeParameterConstraint": {
     "Definition": "This identifier references the declared generic type parameter inside a constraint clause that sets rules for the arguments that are allowed to be passed in for the generic type parameter."
   },
-  "TypePatternType": {
-    "Definition": "A type pattern type specifies the type being checked in a pattern matching expression. It determines whether a value matches a given type."
+  "TypePattern": {
+    "Definition": "A type pattern specifies the type being checked in a pattern matching expression. It determines whether a value matches a given type."
   },
   "TupleElementName": {
     "Definition": "A tuple element name gives a readable name to a value inside a tuple. It makes tuple values easier to understand and access."

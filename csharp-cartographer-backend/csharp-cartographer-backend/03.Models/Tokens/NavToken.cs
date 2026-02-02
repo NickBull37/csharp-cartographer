@@ -178,6 +178,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && NextToken?.Text == "}";
         }
 
+        public bool IsSizeofOperand()
+        {
+            return HasAncestorAt(1, SyntaxKind.SizeOfExpression);
+        }
+
+        public bool IsTypeofOperand()
+        {
+            return HasAncestorAt(1, SyntaxKind.TypeOfExpression);
+        }
+
         #region Delimiter Checks
         public bool IsAccessorListDelimiter()
         {
@@ -440,6 +450,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
+        public bool IsSizeOfExpressionDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.SizeOfExpression)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
+        public bool IsTypeOfExpressionDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.TypeOfExpression)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
         public bool IsUncheckedStatementBlockDelimiter()
         {
             return IsDelimiter()
@@ -471,9 +495,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsCastTargetType()
         {
-            return Kind == SyntaxKind.IdentifierToken &&
-                HasAncestorAt(1, SyntaxKind.AsExpression) &&
-                PrevToken?.Text == "as";
+            return HasAncestorAt(1, SyntaxKind.AsExpression)
+                && PrevToken?.Text == "as";
         }
 
         public bool IsDiscard()
@@ -987,6 +1010,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Keyword Checks
+
+
         public bool IsTypeConstraintKeyword()
         {
             return Kind.ToString().Contains("Keyword")
@@ -1079,12 +1104,24 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsComparisonOperator() =>
             Text is "<" or ">" or "<=" or ">=" or "==" or "!=";
 
+        public bool IsSizeofOperator()
+        {
+            return Kind == SyntaxKind.SizeOfKeyword
+                && HasAncestorAt(0, SyntaxKind.SizeOfExpression);
+        }
+
         public bool IsTernaryOperator()
         {
             if (Kind != SyntaxKind.QuestionToken && Kind != SyntaxKind.ColonToken)
                 return false;
 
             return HasAncestorAt(0, SyntaxKind.ConditionalExpression);
+        }
+
+        public bool IsTypeofOperator()
+        {
+            return Kind == SyntaxKind.TypeOfKeyword
+                && HasAncestorAt(0, SyntaxKind.TypeOfExpression);
         }
 
         public bool IsIndexOrRangeOperator()
@@ -1140,12 +1177,24 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Punctuation Checks
+        public bool IsAnonymousObjectMemberDeclarationSeperator()
+        {
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression);
+        }
+
         public bool IsArgumentSeperator()
         {
             return RoslynClassification is not null
                 && RoslynClassification == "punctuation"
                 && HasAncestorAt(0, SyntaxKind.ArgumentList)
                 && Text == ",";
+        }
+
+        public bool IsArrayInitializerElementSeperator()
+        {
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.ArrayInitializerExpression);
         }
 
         public bool IsBaseTypeSeperator()
@@ -1156,10 +1205,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Text == ":";
         }
 
-        public bool IsCollectionElementSeparator()
+        public bool IsCollectionExpressionElementSeparator()
         {
             return Kind == SyntaxKind.CommaToken
                 && HasAncestorAt(0, SyntaxKind.CollectionExpression);
+        }
+
+        public bool IsCollectionInitializerElementSeparator()
+        {
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.CollectionInitializerExpression);
         }
 
         public bool IsConstraintSeparator()
@@ -1174,6 +1229,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && RoslynClassification == "punctuation"
                 && HasAncestorAt(0, SyntaxKind.EnumDeclaration)
                 && Text == ",";
+        }
+
+        public bool IsOrderByClauseSeparator()
+        {
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.OrderByClause);
         }
 
         public bool IsQualifiedNameSeparator()
@@ -1250,6 +1311,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsSwitchCaseLabelTerminator() => Kind == SyntaxKind.ColonToken
             && HasAncestorAt(0, SyntaxKind.CaseSwitchLabel);
+
+        public bool IsSwitchCasePatternLabelTerminator()
+        {
+            return Kind == SyntaxKind.ColonToken
+                && HasAncestorAt(0, SyntaxKind.CasePatternSwitchLabel);
+        }
+
+        public bool IsDefaultCaseLabelTerminator()
+        {
+            return Kind == SyntaxKind.ColonToken
+                && HasAncestorAt(0, SyntaxKind.DefaultSwitchLabel);
+        }
 
         public bool IsParameterLabelTerminator() => Kind == SyntaxKind.ColonToken
             && HasAncestorAt(0, SyntaxKind.NameColon);

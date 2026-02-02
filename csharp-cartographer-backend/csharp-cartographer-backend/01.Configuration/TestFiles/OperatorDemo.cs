@@ -72,6 +72,9 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                 Console.WriteLine(s);
             }
 
+            if (obj is string sss)
+                Console.WriteLine(sss);
+
             string? casted = obj as string;
             int sizeOfInt = sizeof(int);
             Type t = typeof(OperatorDemo);
@@ -83,6 +86,7 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
             // index & range: [], .., ^
             int[] numbers = new[] { 10, 20, 30, 40, 50 };
+            int[] numbers2 = [10, 20, 30, 40, 50];
             int firstElement = numbers[0];           // []
             int lastElement = numbers[^1];           // ^ (index from end)
             int[] middle = numbers[1..^1];           // .. (range)

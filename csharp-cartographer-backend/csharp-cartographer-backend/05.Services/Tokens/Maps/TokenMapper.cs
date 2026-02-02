@@ -82,6 +82,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 token.RoslynClassification = "keyword";
                 return PrimaryKind.Keyword;
             }
+            if (token.Text is "sizeof" or "typeof" && token.RoslynClassification == "keyword")
+            {
+                return PrimaryKind.Operator;
+            }
 
             switch (token.RoslynClassification)
             {
@@ -193,6 +197,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsParenthesizedExpressionDelimiter())
                     return SemanticRole.ParenthesizedExpressionBoundary;
 
+                if (token.IsSizeOfExpressionDelimiter())
+                    return SemanticRole.SizeOfExpressionBoundary;
+
                 if (token.IsSwitchStatementConditionDelimiter())
                     return SemanticRole.SwitchStatementConditionBoundary;
 
@@ -201,6 +208,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsTupleTypeDelimiter())
                     return SemanticRole.TupleTypeBoundary;
+
+                if (token.IsTypeOfExpressionDelimiter())
+                    return SemanticRole.TypeOfExpressionBoundary;
             }
 
             if (token.Text is "{" or "}")
@@ -301,20 +311,32 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Separators ---
             if (token.Text is "," or ":")
             {
+                if (token.IsAnonymousObjectMemberDeclarationSeperator())
+                    return SemanticRole.AnonymousObjectMemberDeclarationSeparator;
+
                 if (token.IsArgumentSeperator())
                     return SemanticRole.ArgumentSeparator;
+
+                if (token.IsArrayInitializerElementSeperator())
+                    return SemanticRole.ArrayInitializerElementSeparator;
 
                 if (token.IsBaseTypeSeperator())
                     return SemanticRole.BaseTypeSeparator;
 
-                if (token.IsCollectionElementSeparator())
-                    return SemanticRole.CollectionElementSeparator;
+                if (token.IsCollectionExpressionElementSeparator())
+                    return SemanticRole.CollectionExpressionElementSeparator;
+
+                if (token.IsCollectionInitializerElementSeparator())
+                    return SemanticRole.CollectionInitializerElementSeparator;
 
                 if (token.IsConstraintSeparator())
                     return SemanticRole.ConstraintSeparator;
 
                 if (token.IsEnumMemberSeparator())
                     return SemanticRole.EnumMemberSeparator;
+
+                if (token.IsOrderByClauseSeparator())
+                    return SemanticRole.OrderByClauseSeparator;
 
                 if (token.IsTypeArgumentSeperator())
                     return SemanticRole.TypeArgumentSeparator;
@@ -349,6 +371,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsSwitchCaseLabelTerminator())
                     return SemanticRole.CaseLabelTerminator;
+
+                if (token.IsSwitchCasePatternLabelTerminator())
+                    return SemanticRole.CasePatternLabelTerminator;
+
+                if (token.IsDefaultCaseLabelTerminator())
+                    return SemanticRole.DefaultLabelTerminator;
 
                 if (token.IsParameterLabelTerminator())
                     return SemanticRole.ParameterLabelTerminator;
@@ -429,9 +457,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsPointerOperator())
                 return SemanticRole.Pointer;
 
+            // Sizeof
+            if (token.IsSizeofOperator())
+                return SemanticRole.SizeOf;
+
             // Ternary
             if (token.IsTernaryOperator())
                 return SemanticRole.Ternary;
+
+            // Typeof
+            if (token.IsTypeofOperator())
+                return SemanticRole.TypeOf;
 
             return SemanticRole.Unknown;
         }
@@ -452,6 +488,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Accessor keywords ---
             if (GlobalConstants.AccessorKeywords.Contains(token.Text))
                 return SemanticRole.Accessor;
+
+            // --- Cast target type keywords ---
+            if (token.IsCastTargetType())
+                return SemanticRole.CastTargetType;
 
             // --- Concurrency keywords ---
             if (GlobalConstants.ConcurrencyKeywords.Contains(token.Text))
@@ -532,9 +572,21 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (GlobalConstants.SafetyContextKeywords.Contains(token.Text))
                 return SemanticRole.SafetyContext;
 
+            // --- Sizeof operand keywords ---
+            if (token.IsSizeofOperand())
+                return SemanticRole.SizeOfOperand;
+
+            // --- Typeof operand keywords ---
+            if (token.IsTypeofOperand())
+                return SemanticRole.TypeOfOperand;
+
             // --- Type declaration keywords ---
             if (token.IsTypeDeclarationKeyword())
                 return SemanticRole.TypeDeclaration;
+
+            // --- Type pattern keywords ---
+            if (token.IsTypePatternType())
+                return SemanticRole.TypePattern;
 
             // --- Type reference keywords ---
             if (GlobalConstants.PredefinedTypes.Contains(token.Text) && token.IsAccessStaticMember())
@@ -911,13 +963,21 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsObjCreationPropertyAssignment())
                 return SemanticRole.ObjectPropertyAssignment;
 
+            // Identifier - Sizeof operands
+            if (token.IsSizeofOperand())
+                return SemanticRole.SizeOfOperand;
+
+            // Identifier - Typeof operands
+            if (token.IsTypeofOperand())
+                return SemanticRole.TypeOfOperand;
+
             // Identifier - type constraints
             if (token.IsTypeConstraint())
                 return SemanticRole.TypeConstraint;
 
             // Identifier - type pattern types
             if (token.IsTypePatternType())
-                return SemanticRole.TypePatternType;
+                return SemanticRole.TypePattern;
 
             // Identifier - param labels
             if (token.IsParameterLabel())

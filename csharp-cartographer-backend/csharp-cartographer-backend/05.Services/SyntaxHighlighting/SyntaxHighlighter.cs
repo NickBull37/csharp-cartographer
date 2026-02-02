@@ -337,7 +337,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.SimpleBaseType:
                 case SemanticRole.TypeQualifier:
                 case SemanticRole.TupleElementType:
-                case SemanticRole.TypePatternType:
+                case SemanticRole.TypePattern:
                 case SemanticRole.TypeReference:
                     token.HighlightColor = GuessColor(token.Text);
                     break;

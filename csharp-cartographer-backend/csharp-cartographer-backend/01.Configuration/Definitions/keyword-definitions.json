@@ -266,9 +266,6 @@
   "short": {
     "Definition": "The {c:color-blue keyword}short{/c} keyword defines a small whole number type. It stores values from -32,768 to 32,767."
   },
-  "sizeof": {
-    "Definition": "The {c:color-blue keyword}sizeof{/c} keyword returns the size of a type in bytes. It is mainly used in low-level or unsafe code."
-  },
   "stackalloc": {
     "Definition": "The {c:color-blue keyword}stackalloc{/c} keyword allocates memory on the stack instead of the heap. It is used for high-performance or low-level scenarios."
   },
@@ -295,9 +292,6 @@
   },
   "try": {
     "Definition": "The {c:color-purple keyword}try{/c} keyword wraps code that might cause an error. It works with catch and finally to handle exceptions."
-  },
-  "typeof": {
-    "Definition": "The {c:color-blue keyword}typeof{/c} keyword gets information about a type at runtime. It returns a Type object."
   },
   "uint": {
     "Definition": "The {c:color-blue keyword}uint{/c} keyword defines an unsigned whole number type. It stores values from 0 to 4,294,967,295."

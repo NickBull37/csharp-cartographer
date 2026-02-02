@@ -52,6 +52,7 @@
         ObjectInitializerBoundary,
         ParameterListBoundary,
         ParenthesizedExpressionBoundary,
+        SizeOfExpressionBoundary,
         SwitchExpressionBoundary,
         SwitchStatementBoundary,
         SwitchStatementConditionBoundary,
@@ -59,6 +60,7 @@
         TupleExpressionBoundary,
         TupleTypeBoundary,
         TypeArgumentListBoundary,
+        TypeOfExpressionBoundary,
         TypeParameterListBoundary,
         UncheckedStatementBlockBoundary,
 
@@ -76,17 +78,23 @@
         NullCoalescingAssignment,
         NullForgiving,
         Pointer,
+        SizeOf,
         Ternary,
+        TypeOf,
 
 
         // ------------ PUNCTUATION ------------ //
 
         // Separation
+        AnonymousObjectMemberDeclarationSeparator,
         ArgumentSeparator,
+        ArrayInitializerElementSeparator,
         BaseTypeSeparator,
-        CollectionElementSeparator,
+        CollectionExpressionElementSeparator,
+        CollectionInitializerElementSeparator,
         ConstraintSeparator,
         EnumMemberSeparator,
+        OrderByClauseSeparator,
         ParameterSeparator,
         PropertyInitializationSeparator,
         QualifiedNameSeparator,
@@ -99,6 +107,8 @@
 
         // Termination
         CaseLabelTerminator,
+        CasePatternLabelTerminator,
+        DefaultLabelTerminator,
         ParameterLabelTerminator,
         StatementTerminator,
 
@@ -234,10 +244,12 @@
         ParameterDataType,
         PropertyDataType,
         SimpleBaseType,
-        TypeConstraint,
-        TypePatternType,
+        SizeOfOperand,
         TupleElementName,
         TupleElementType,
+        TypeConstraint,
+        TypeOfOperand,
+        TypePattern,
 
 
         // ------------ NAMES / QUALIFIERS ------------ //
