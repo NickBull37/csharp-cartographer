@@ -146,7 +146,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsIdentifier() => RoslynToken.IsKind(SyntaxKind.IdentifierToken);
 
-        public bool IsKeyword() => SyntaxFacts.IsKeywordKind(Kind);
+        public bool IsKeyword()
+        {
+            // for some reason nameof isn't considered a keyword but sizeof & typeof are...
+            return SyntaxFacts.IsKeywordKind(Kind) || Text == "nameof";
+        }
 
         public bool IsContextualKeyword() => SyntaxFacts.IsContextualKeyword(Kind);
 
@@ -178,12 +182,23 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && NextToken?.Text == "}";
         }
 
-        public bool IsSizeofOperand()
+        public bool IsDefaultOperand()
+        {
+            return HasAncestorAt(1, SyntaxKind.DefaultExpression);
+        }
+
+        public bool IsNameOfOperand()
+        {
+            return HasAncestorAt(1, SyntaxKind.Argument)
+                && PrevToken?.PrevToken?.Text == "nameof";
+        }
+
+        public bool IsSizeOfOperand()
         {
             return HasAncestorAt(1, SyntaxKind.SizeOfExpression);
         }
 
-        public bool IsTypeofOperand()
+        public bool IsTypeOfOperand()
         {
             return HasAncestorAt(1, SyntaxKind.TypeOfExpression);
         }
@@ -397,6 +412,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.ObjectInitializerExpression)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsPropertyPatternDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.PropertyPatternClause)
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
@@ -1010,7 +1032,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Keyword Checks
+        public bool IsDefaultOperatorKeyword()
+        {
+            return Kind == SyntaxKind.DefaultKeyword
+                && HasAncestorAt(0, SyntaxKind.DefaultExpression);
+        }
 
+        public bool IsDefaultValueKeyword()
+        {
+            return Kind == SyntaxKind.DefaultKeyword
+                && HasAncestorAt(0, SyntaxKind.DefaultLiteralExpression);
+        }
 
         public bool IsTypeConstraintKeyword()
         {
@@ -1104,7 +1136,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsComparisonOperator() =>
             Text is "<" or ">" or "<=" or ">=" or "==" or "!=";
 
-        public bool IsSizeofOperator()
+        public bool IsNameOfOperator()
+        {
+            return Text == "nameof";
+        }
+
+        public bool IsSizeOfOperator()
         {
             return Kind == SyntaxKind.SizeOfKeyword
                 && HasAncestorAt(0, SyntaxKind.SizeOfExpression);
@@ -1118,7 +1155,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return HasAncestorAt(0, SyntaxKind.ConditionalExpression);
         }
 
-        public bool IsTypeofOperator()
+        public bool IsTypeOfOperator()
         {
             return Kind == SyntaxKind.TypeOfKeyword
                 && HasAncestorAt(0, SyntaxKind.TypeOfExpression);
@@ -1231,6 +1268,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Text == ",";
         }
 
+        public bool IsMemberPatternSeparator()
+        {
+            return Kind == SyntaxKind.ColonToken
+                && HasAncestorAt(0, SyntaxKind.NameColon)
+                && HasAncestorAt(1, SyntaxKind.Subpattern);
+        }
+
         public bool IsOrderByClauseSeparator()
         {
             return Kind == SyntaxKind.CommaToken
@@ -1324,8 +1368,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.DefaultSwitchLabel);
         }
 
-        public bool IsParameterLabelTerminator() => Kind == SyntaxKind.ColonToken
-            && HasAncestorAt(0, SyntaxKind.NameColon);
+        public bool IsParameterLabelTerminator()
+        {
+            return Kind == SyntaxKind.ColonToken
+                && HasAncestorAt(0, SyntaxKind.NameColon)
+                && HasAncestorAt(1, SyntaxKind.Argument);
+        }
         #endregion
 
         #region Type Checks
@@ -1440,7 +1488,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsTypePatternType() =>
             HasAncestorAt(1, SyntaxKind.ConstantPattern) ||
             HasAncestorAt(1, SyntaxKind.DeclarationPattern) ||
-            HasAncestorAt(1, SyntaxKind.IsExpression);
+            HasAncestorAt(1, SyntaxKind.IsExpression) ||
+            HasAncestorAt(1, SyntaxKind.RecursivePattern);
         #endregion
 
         /// <summary>Gets the token's leading trivia.</summary>

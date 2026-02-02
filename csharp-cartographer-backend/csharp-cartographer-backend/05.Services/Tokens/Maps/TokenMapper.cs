@@ -82,10 +82,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 token.RoslynClassification = "keyword";
                 return PrimaryKind.Keyword;
             }
-            if (token.Text is "sizeof" or "typeof" && token.RoslynClassification == "keyword")
-            {
-                return PrimaryKind.Operator;
-            }
 
             switch (token.RoslynClassification)
             {
@@ -260,6 +256,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsObjectInitializerDelimiter())
                     return SemanticRole.ObjectInitializerBoundary;
 
+                if (token.IsPropertyPatternDelimiter())
+                    return SemanticRole.PropertyPatternBoundary;
+
                 if (token.IsSwitchExpressionDelimiter())
                     return SemanticRole.SwitchExpressionBoundary;
 
@@ -334,6 +333,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsEnumMemberSeparator())
                     return SemanticRole.EnumMemberSeparator;
+
+                if (token.IsMemberPatternSeparator())
+                    return SemanticRole.MemberPatternSeparator;
 
                 if (token.IsOrderByClauseSeparator())
                     return SemanticRole.OrderByClauseSeparator;
@@ -457,23 +459,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsPointerOperator())
                 return SemanticRole.Pointer;
 
-            // Sizeof
-            if (token.IsSizeofOperator())
-                return SemanticRole.SizeOf;
-
             // Ternary
             if (token.IsTernaryOperator())
                 return SemanticRole.Ternary;
-
-            // Typeof
-            if (token.IsTypeofOperator())
-                return SemanticRole.TypeOf;
 
             return SemanticRole.Unknown;
         }
 
         private static SemanticRole GetSemanticRoleForKeywords(NavToken token)
         {
+            if (token.Index == 571)
+            {
+
+            }
+
             if (!token.IsKeyword())
                 return SemanticRole.Unknown;
 
@@ -509,6 +508,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (GlobalConstants.ControlFlowKeywords.Contains(token.Text))
                 return SemanticRole.ControlFlow;
 
+            // --- Default keyword ---
+            if (token.IsDefaultOperatorKeyword())
+                return SemanticRole.DefaultOperator;
+
+            if (token.IsDefaultValueKeyword())
+                return SemanticRole.DefaultValue;
+
             // --- Discard contextual keyword ---
             if (token.IsDiscard())
                 return SemanticRole.Discard;
@@ -537,8 +543,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.JumpStatement;
 
             // --- Literal keywords ---
-            if (GlobalConstants.LiteralKeywords.Contains(token.Text))
-                return SemanticRole.LiteralValue;
+            //if (GlobalConstants.LiteralKeywords.Contains(token.Text))
+            //    return SemanticRole.LiteralValue;
 
             // --- Loop statement keywords ---
             if (GlobalConstants.LoopStatementKeywords.Contains(token.Text))
@@ -572,12 +578,29 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (GlobalConstants.SafetyContextKeywords.Contains(token.Text))
                 return SemanticRole.SafetyContext;
 
-            // --- Sizeof operand keywords ---
-            if (token.IsSizeofOperand())
+            // --- Default operator operand keywords ---
+            if (token.IsDefaultOperand())
+                return SemanticRole.DefaultOperand;
+
+            // --- NameOf operator / operand keywords ---
+            if (token.IsNameOfOperator())
+                return SemanticRole.NameOfOperator;
+
+            if (token.IsNameOfOperand())
+                return SemanticRole.NameOfOperand;
+
+            // --- SizeOf operator / operand keywords ---
+            if (token.IsSizeOfOperator())
+                return SemanticRole.SizeOfOperator;
+
+            if (token.IsSizeOfOperand())
                 return SemanticRole.SizeOfOperand;
 
-            // --- Typeof operand keywords ---
-            if (token.IsTypeofOperand())
+            // --- TypeOf operator / operand keywords ---
+            if (token.IsTypeOfOperator())
+                return SemanticRole.TypeOfOperator;
+
+            if (token.IsTypeOfOperand())
                 return SemanticRole.TypeOfOperand;
 
             // --- Type declaration keywords ---
@@ -649,7 +672,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 // switch label, default literal
                 "default" => parentKind switch
                 {
-                    "DefaultExpression" or "DefaultLiteralExpression" => SemanticRole.LiteralValue,
+                    "DefaultLiteralExpression" => SemanticRole.DefaultValue,
+                    "DefaultExpression" => SemanticRole.DefaultOperator,
                     "DefaultSwitchLabel" => SemanticRole.ControlFlow,
                     _ => SemanticRole.Unknown
                 },
@@ -738,6 +762,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsNumericLiteral())
                 return SemanticRole.NumericLiteral;
 
+            // String literals
             if (token.IsQuotedString())
                 return SemanticRole.QuotedString;
 
@@ -963,12 +988,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsObjCreationPropertyAssignment())
                 return SemanticRole.ObjectPropertyAssignment;
 
-            // Identifier - Sizeof operands
-            if (token.IsSizeofOperand())
+            // Identifier - default operands
+            if (token.IsDefaultOperand())
+                return SemanticRole.DefaultOperand;
+
+            // Identifier - NameOf operands
+            if (token.IsNameOfOperand())
+                return SemanticRole.NameOfOperand;
+
+            // Identifier - SizeOf operands
+            if (token.IsSizeOfOperand())
                 return SemanticRole.SizeOfOperand;
 
-            // Identifier - Typeof operands
-            if (token.IsTypeofOperand())
+            // Identifier - TypeOf operands
+            if (token.IsTypeOfOperand())
                 return SemanticRole.TypeOfOperand;
 
             // Identifier - type constraints

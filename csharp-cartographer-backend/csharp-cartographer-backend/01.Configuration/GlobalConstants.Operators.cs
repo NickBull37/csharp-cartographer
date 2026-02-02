@@ -90,8 +90,8 @@
             "->",
 
             // keyword - operators
-            "sizeof",
-            "typeof",
+            //"sizeof",
+            //"typeof",
         ];
 
         /// ------  Special Case Operators  ------ ///

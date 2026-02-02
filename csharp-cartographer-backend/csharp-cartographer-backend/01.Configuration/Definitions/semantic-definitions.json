@@ -92,6 +92,9 @@
   "ParenthesizedExpressionBoundary": {
     "Definition": "Marks the boundaries of an expression."
   },
+  "PropertyPatternBoundary": {
+    "Definition": "Marks the boundaries of a property pattern clause."
+  },
   "SizeOfExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}sizeof{/c} expression."
   },
@@ -181,6 +184,9 @@
   },
   "EnumMemberSeparator": {
     "Definition": "Punctuation that separates individual members within an enum."
+  },
+  "MemberPatternSeparator": {
+    "Definition": "Punctuation that separates the member being inspected from the subpattern applied to that member."
   },
   "OrderByClauseSeparator": {
     "Definition": "Punctuation that separates elements within an {c:color-blue keyword}orderby{/c} clause."
@@ -461,6 +467,7 @@
   "CharacterLiteral": {
     "Definition": "A character literal represents a single character enclosed in single quotes. It is commonly used to work with individual characters."
   },
+
   "DefaultValue": {
     "Definition": "A default value represents the default value of a type. It is often used to initialize variables or reset values."
   },
@@ -536,17 +543,29 @@
   "SimpleBaseType": {
     "Definition": "A simple base type specifies a type that another type inherits from or implements. It defines a parent relationship in the type hierarchy."
   },
-  "SizeOf": {
-    "Definition": "A unary operator that returns the compile-time size, in bytes, of a specified type."
+  "SizeOfOperator": {
+    "Definition": "A unary keyword operator that returns the compile-time size, in bytes, of a specified type."
   },
   "SizeOfOperand": {
     "Definition": "The type supplied to the {c:color-blue keyword}sizeof{/c} operator to determine its compile-time memory size in bytes."
   },
+  "NameOfOperator": {
+    "Definition": "A unary keyword operator that returns the identifier name of the specified type as a string."
+  },
+  "NameOfOperand": {
+    "Definition": "The type supplied to the {c:color-blue keyword}nameof{/c} operator."
+  },
+  "DefaultOperator": {
+    "Definition": "The {c:color-blue keyword}default{/c} keyword operator produces the default value for a given type."
+  },
+  "DefaultOperand": {
+    "Definition": "The type supplied to the {c:color-blue keyword}default{/c} operator."
+  },
   "TypeConstraint": {
     "Definition": "A type constraint restricts what types can be used with a generic type or method. It helps ensure that only valid types are allowed."
   },
-  "TypeOf": {
-    "Definition": "A unary operator that produces a {c:color-gray keyword}System.Type{/c} object representing a specified compile-time type."
+  "TypeOfOperator": {
+    "Definition": "A unary keyword operator that produces a {c:color-gray keyword}System.Type{/c} object representing a specified compile-time type."
   },
   "TypeOfOperand": {
     "Definition": "The type supplied to the {c:color-blue keyword}typeof{/c} operator to obtain its runtime {c:color-gray keyword}System.Type{/c} representation."

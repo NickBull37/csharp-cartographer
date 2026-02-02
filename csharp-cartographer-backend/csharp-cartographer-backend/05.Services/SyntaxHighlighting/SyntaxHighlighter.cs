@@ -345,7 +345,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         }
 
         private static string GetDefaultKeywordColor(NavToken token) =>
-            token.Map?.SemanticRole == SemanticRole.LiteralValue
+            token.Map?.SemanticRole == SemanticRole.DefaultOperator ||
+            token.Map?.SemanticRole == SemanticRole.DefaultValue
                 ? Blue
                 : Purple;
 
