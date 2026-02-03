@@ -310,6 +310,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBracketToken || Kind == SyntaxKind.CloseBracketToken);
         }
 
+        public bool IsDefaultExpressionDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.DefaultExpression)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
         public bool IsForEachBlockDelimiter()
         {
             return IsDelimiter()
@@ -583,13 +590,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && RoslynClassification == "identifier"
                 && HasAncestorAt(1, SyntaxKind.SimpleAssignmentExpression)
                 && HasAncestorAt(2, SyntaxKind.ObjectInitializerExpression);
-        }
-
-        public bool IsExternallyDefinedObjectCreationExpression()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "identifier"
-                && HasAncestorAt(1, SyntaxKind.ObjectCreationExpression);
         }
 
         public bool IsParameterLabel()

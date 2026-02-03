@@ -41,6 +41,7 @@
         CollectionInitializerExpressionBoundary,
         ConstructorBoundary,
         CollectionExpressionBoundary,
+        DefaultExpressionBoundary,
         ForEachBlockBoundary,
         ForEachControlBoundary,
         ForLoopBlockBoundary,

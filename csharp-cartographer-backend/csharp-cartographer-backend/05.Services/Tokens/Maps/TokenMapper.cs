@@ -184,6 +184,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsCatchFilterDelimiter())
                     return SemanticRole.CatchFilterBoundary;
 
+                if (token.IsDefaultExpressionDelimiter())
+                    return SemanticRole.DefaultExpressionBoundary;
+
                 if (token.IsForEachControlDelimiter())
                     return SemanticRole.ForEachControlBoundary;
 
@@ -992,10 +995,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Identifier - exception types
             if (token.IsExceptionType())
                 return SemanticRole.ExceptionType;
-
-            // Identifier - constructors
-            if (token.IsExternallyDefinedObjectCreationExpression())
-                return SemanticRole.ConstructorInvocation;
 
             // Identifier - property assignment on obj creation
             if (token.IsObjCreationPropertyAssignment())

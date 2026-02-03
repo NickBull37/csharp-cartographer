@@ -59,6 +59,9 @@
   "ConstructorBoundary": {
     "Definition": "Marks the boundaries of a constructor’s definition."
   },
+  "DefaultExpressionBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}default{/c} expression."
+  },
   "ForEachBlockBoundary": {
     "Definition": "Marks the boundaries of the code that runs for each item in a collection."
   },
@@ -333,7 +336,7 @@
     "Definition": "Attribute arguments provide values to an attribute. They configure how the attribute behaves or supplies additional information."
   },
   "ObjectPropertyAssignment": {
-    "Definition": "Object property assignment keywords set property values when an object is created. They make it easy to initialize an object’s data in one place."
+    "Definition": "The identifier for a property being assigned a value."
   },
   "ParameterLabel": {
     "Definition": "A parameter label names an argument when calling a method. It improves readability by making it clear which parameter a value is assigned to."

@@ -151,6 +151,11 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
         {
             var token = new MyToken.NavToken();
 
+            var test = new NavToken()
+            {
+                Index = 57
+            };
+
             csharp_cartographer_backend._03.Models.Artifacts.Artifact artifact = new(
                 "",
                 TimeSpan.Zero,

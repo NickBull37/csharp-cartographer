@@ -57,7 +57,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 if (GlobalConstants.CommonIdentifiers.Contains(token.Text))
                 {
                     ColorManually(token);
-                    continue;
+
+                    if (token.HighlightColor is not null)
+                        continue;
                 }
 
                 if (token.Map is null)
@@ -123,6 +125,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static void ColorManually(NavToken token)
         {
+            if (token.NextToken?.Text != ".")
+                return;
+
             if (GlobalConstants.CommonEnums.Contains(token.Text))
                 token.HighlightColor = LightGreen;
 
