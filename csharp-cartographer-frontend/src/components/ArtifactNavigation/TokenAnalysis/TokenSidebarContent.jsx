@@ -69,13 +69,16 @@ const NextTokenButton = styled(IconButton)(() => ({
     },
 }));
 const MapTagDefLabel = styled(Typography)(() => ({
+    //fontSize: '17px',
     fontSize: '17px',
     color: colors.gray95,
 }));
 const MapTagDefFadedLabel = styled(Typography)(() => ({
     fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
+    //fontSize: '17px',
     fontSize: '17px',
-    paddingRight: '2px',
+    //paddingRight: '2px',
+    paddingRight: '6px',
     textTransform: 'uppercase',
     letterSpacing: '0.03em',
 }));
@@ -408,6 +411,51 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                         >
                                             <Box
                                                 display="flex"
+                                                // justifyContent="space-between"
+                                                // alignItems="flex-end"
+                                                sx={{
+                                                    borderBottom: '1px solid #666666'
+                                                }}
+                                            >
+                                                <MapTagDefFadedLabel
+                                                    className={
+                                                        highlightColor === 'color-white'
+                                                                ? 'faded-white'
+                                                            : highlightColor === 'color-gray'
+                                                                ? 'faded-gray'
+                                                            : highlightColor === 'color-blue'
+                                                                ? 'faded-blue'
+                                                            : highlightColor === 'color-light-blue'
+                                                                ? 'faded-light-blue'
+                                                            : highlightColor === 'color-dark-blue'
+                                                                ? 'faded-dark-blue'
+                                                            : highlightColor === 'color-green'
+                                                                ? 'faded-green'
+                                                            : highlightColor === 'color-jade'
+                                                                ? 'faded-jade'
+                                                            : highlightColor === 'color-light-green'
+                                                                ? 'faded-light-green'
+                                                            : highlightColor === 'color-dark-green'
+                                                                ? 'faded-dark-green'
+                                                            : highlightColor === 'color-purple'
+                                                                ? 'faded-purple'
+                                                            : highlightColor === 'color-orange'
+                                                                ? 'faded-orange'
+                                                            : highlightColor === 'color-yellow'
+                                                                ? 'faded-yellow'
+                                                            : highlightColor === 'color-teal'
+                                                                ? 'faded-teal'
+                                                            : 'faded-white'
+                                                    }
+                                                >
+                                                    {activeToken.map.primaryKindString}:
+                                                </MapTagDefFadedLabel>
+                                                <MapTagDefLabel className='code' >
+                                                    {activeToken.map.primaryLabel}
+                                                </MapTagDefLabel>
+                                            </Box>
+                                            {/* <Box
+                                                display="flex"
                                                 justifyContent="space-between"
                                                 alignItems="flex-end"
                                                 sx={{
@@ -451,7 +499,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 >
                                                     {activeToken.map.primaryKindString}
                                                 </MapTagDefFadedLabel>
-                                            </Box>
+                                            </Box> */}
 
                                             <Stack
                                                 gap={2}

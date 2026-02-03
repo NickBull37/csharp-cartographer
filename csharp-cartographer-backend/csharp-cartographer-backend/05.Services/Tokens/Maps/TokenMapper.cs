@@ -184,6 +184,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsCatchFilterDelimiter())
                     return SemanticRole.CatchFilterBoundary;
 
+                if (token.IsForEachControlDelimiter())
+                    return SemanticRole.ForEachControlBoundary;
+
+                if (token.IsForLoopControlDelimiter())
+                    return SemanticRole.ForLoopControlBoundary;
+
                 if (token.IsIfConditionDelimiter())
                     return SemanticRole.IfConditionBoundary;
 
@@ -192,6 +198,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsParenthesizedExpressionDelimiter())
                     return SemanticRole.ParenthesizedExpressionBoundary;
+
+                if (token.IsParenthesizedPatternDelimiter())
+                    return SemanticRole.ParenthesizedPatternBoundary;
 
                 if (token.IsSizeOfExpressionDelimiter())
                     return SemanticRole.SizeOfExpressionBoundary;
@@ -207,6 +216,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsTypeOfExpressionDelimiter())
                     return SemanticRole.TypeOfExpressionBoundary;
+
+                if (token.IsWhileLoopConditionDelimiter())
+                    return SemanticRole.WhileLoopConditionBoundary;
             }
 
             if (token.Text is "{" or "}")
@@ -238,8 +250,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsForEachBlockDelimiter())
                     return SemanticRole.ForEachBlockBoundary;
 
-                if (token.IsForBlockDelimiter())
-                    return SemanticRole.ForBlockBoundary;
+                if (token.IsForLoopBlockDelimiter())
+                    return SemanticRole.ForLoopBlockBoundary;
 
                 if (token.IsIfBlockDelimiter())
                     return SemanticRole.IfBlockBoundary;
@@ -270,6 +282,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsUncheckedStatementBlockDelimiter())
                     return SemanticRole.UncheckedStatementBlockBoundary;
+
+                if (token.IsWhileLoopBlockDelimiter())
+                    return SemanticRole.WhileLoopBlockBoundary;
             }
 
             if (token.Text is "[" or "]")

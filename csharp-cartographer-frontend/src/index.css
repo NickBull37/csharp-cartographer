@@ -171,6 +171,14 @@ body {
     letter-spacing: 1px;
     text-shadow: '1px 1px 2px black, 0 0 20px #00b3a1, 0 0 5px #00665c'!important;
 }
+.cartographer3 {
+    background: linear-gradient(to right, #bfbfbf, #bfbfbf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 12px!important;
+    font-family: Gravedigger!important;
+    letter-spacing: 1.75px!important;
+}
 .net {
     /* background: linear-gradient(to right, #ff3300, #ffa366); */
     background: linear-gradient(to right, #10d594, #0e715e, #10d594);

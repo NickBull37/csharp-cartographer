@@ -42,7 +42,9 @@
         ConstructorBoundary,
         CollectionExpressionBoundary,
         ForEachBlockBoundary,
-        ForBlockBoundary,
+        ForEachControlBoundary,
+        ForLoopBlockBoundary,
+        ForLoopControlBoundary,
         IfBlockBoundary,
         IfConditionBoundary,
         ImplicitArrayCreation,
@@ -52,6 +54,7 @@
         ObjectInitializerBoundary,
         ParameterListBoundary,
         ParenthesizedExpressionBoundary,
+        ParenthesizedPatternBoundary,
         PropertyPatternBoundary,
         SizeOfExpressionBoundary,
         SwitchExpressionBoundary,
@@ -64,6 +67,8 @@
         TypeOfExpressionBoundary,
         TypeParameterListBoundary,
         UncheckedStatementBlockBoundary,
+        WhileLoopConditionBoundary,
+        WhileLoopBlockBoundary,
 
 
         // ------------ OPERATORS ------------ //

@@ -62,8 +62,20 @@
   "ForEachBlockBoundary": {
     "Definition": "Marks the boundaries of the code that runs for each item in a collection."
   },
-  "ForBlockBoundary": {
+  "ForEachControlBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-purple keyword}foreach{/c} control region."
+  },
+  "ForLoopBlockBoundary": {
     "Definition": "Marks the boundaries of the code that runs repeatedly in a {c:color-purple keyword}for{/c} loop."
+  },
+  "ForLoopControlBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-purple keyword}for{/c} loop control region."
+  },
+  "WhileLoopBlockBoundary": {
+    "Definition": "Marks the boundaries of the code that runs repeatedly in a {c:color-purple keyword}while{/c} loop."
+  },
+  "WhileLoopConditionBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-purple keyword}while{/c} loop condition."
   },
   "IfBlockBoundary": {
     "Definition": "Marks the boundaries of the code that runs when an {c:color-purple keyword}if{/c} statement condition is true."
@@ -90,7 +102,10 @@
     "Definition": "Marks the boundaries of the parameter list defined for a method or constructor."
   },
   "ParenthesizedExpressionBoundary": {
-    "Definition": "Marks the boundaries of an expression."
+    "Definition": "Marks the boundaries of a parenthesized expression."
+  },
+  "ParenthesizedPatternBoundary": {
+    "Definition": "Marks the boundaries of a parenthesized pattern."
   },
   "PropertyPatternBoundary": {
     "Definition": "Marks the boundaries of a property pattern clause."

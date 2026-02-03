@@ -93,13 +93,13 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _tokenMapper.MapNavTokens(navTokens);
 
             // Step 7. Generate TokenTags.
-            _tokenTagGenerator.GenerateTokenTags(navTokens);
+            //_tokenTagGenerator.GenerateTokenTags(navTokens);
 
             // Step 8. Add highlight indices to token charts for highlighting ancestors.
             _tokenChartWizard.AddHighlightValuesToNavTokenCharts(navTokens);
 
             // Step 9. Add token chart definitions & insights.
-            _tokenChartWizard.AddFactsAndInsightsToNavTokenCharts(navTokens);
+            //_tokenChartWizard.AddFactsAndInsightsToNavTokenCharts(navTokens);
 
             // Step 10. Add syntax highlighting for all NavTokens (should be last step in workflow).
             _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
@@ -124,13 +124,10 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
             if (_config.ShouldLogSemanticData)
             {
-                var genParams = artifact.NavTokens
-                    .Where(token => token.RoslynClassification == "type parameter name");
-
                 var identifiers = artifact.NavTokens
                     .Where(token => token.SemanticData is not null);
 
-                CartographerLogger.LogTokens(genParams);
+                CartographerLogger.LogTokens(identifiers);
             }
 
             if (_config.ShouldLogUnidentifiedTokens)

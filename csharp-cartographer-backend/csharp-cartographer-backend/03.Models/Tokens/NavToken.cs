@@ -14,8 +14,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
     /// </summary>
     public class NavToken
     {
-        const string TEST_STRING = "Test";
-
         /// <summary>The unique identifier for a NavToken.</summary>
         public Guid ID { get; set; }
 
@@ -36,6 +34,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public string? RoslynClassification { get; set; }
 
         /// <summary>The updated token classification.</summary>
+        [JsonIgnore]
         public string? UpdatedClassification { get; set; }
 
         /// <summary> </summary>
@@ -67,35 +66,29 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         [JsonIgnore]
         public SyntaxNode? Parent { get; set; }
 
-        /// <summary>The Roslyn generated SyntaxNode of the token's grand parent.</summary>
-        [JsonIgnore]
-        public SyntaxNode? GrandParent { get; set; }
-
-        /// <summary>The Roslyn generated SyntaxNode of the token's great grand parent.</summary>
-        [JsonIgnore]
-        public SyntaxNode? GreatGrandParent { get; set; }
-
         /// <summary>The Roslyn generated SyntaxKind of the token's parent as a string.</summary>
+        [JsonIgnore]
         public string? ParentNodeKind { get; set; }
 
         /// <summary>The Roslyn generated SyntaxKind of the token's grand parent as a string.</summary>
+        [JsonIgnore]
         public string? GrandParentNodeKind { get; set; }
 
         /// <summary>The Roslyn generated SyntaxKind of the token's great grand parent as a string.</summary>
+        [JsonIgnore]
         public string? GreatGrandParentNodeKind { get; set; }
 
         /// <summary>The Roslyn generated SyntaxKind of the token's great great grand parent as a string.</summary>
+        [JsonIgnore]
         public string? GreatGreatGrandParentNodeKind { get; set; }
 
         /// <summary> </summary>
+        [JsonIgnore]
         public AncestorNodeKinds AncestorKinds { get; set; }
 
         /// <summary>The token's semantic data.</summary>
         [JsonIgnore]
         public TokenSemanticData? SemanticData { get; set; }
-
-        /// <summary>A list of references to this token in the source code file.</summary>
-        public List<string> References { get; set; } = [];
 
         /// <summary>The color the token will be highlighted in the UI.</summary>
         public string? HighlightColor { get; set; }
@@ -127,8 +120,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             TrailingTrivia = GetTrailingTrivia(roslynToken);
             RoslynToken = roslynToken;
             Parent = GetAncestorNode(roslynToken, 1);
-            GrandParent = GetAncestorNode(roslynToken, 2);
-            GreatGrandParent = GetAncestorNode(roslynToken, 3);
 
             // Syntax data
             ParentNodeKind = GetAncestorNodeKind(roslynToken, 1);
@@ -327,12 +318,41 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
-        public bool IsForBlockDelimiter()
+        public bool IsForEachControlDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.ForEachStatement)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
+        public bool IsForLoopBlockDelimiter()
         {
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.Block)
                 && HasAncestorAt(1, SyntaxKind.ForStatement)
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsForLoopControlDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.ForStatement)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
+        public bool IsWhileLoopBlockDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.WhileStatement)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsWhileLoopConditionDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.WhileStatement)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
         public bool IsIfBlockDelimiter()
@@ -454,6 +474,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.ParenthesizedExpression)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
+        public bool IsParenthesizedPatternDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.ParenthesizedPattern)
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 

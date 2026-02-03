@@ -130,24 +130,30 @@ const RightSidebar = ({
                     <Stack>
                         <Box
                             display="flex"
-                            justifyContent="space-between"
+                            //justifyContent="space-between"
+                            gap={0.5}
                             alignItems="center"
                             sx={{
-                                p: '4px 4px 4px 12px'
+                                p: '1px 4px 1px 4px'
                             }}
                         >
-                            <OpenSidebarHeaderText>
+                            {/* <OpenSidebarHeaderText>
                                 Token Analysis
-                            </OpenSidebarHeaderText>
+                            </OpenSidebarHeaderText> */}
 
                             <OpenSidebarToggle
                                 onClick={handleDrawerToggle}
                                 sx={{
-                                    color: '#cccccc'
+                                    color: '#bfbfbf'
                                 }}
                             >
                                 <KeyboardDoubleArrowRightIcon />
                             </OpenSidebarToggle>
+                            <Typography className='cartographer3'>
+                                Token Analysis
+                            </Typography>
+
+                            
                         </Box>
 
                         <Divider sx={{ bgcolor: '#808080' }} />
