@@ -198,6 +198,7 @@
 
         // References
         ClassReference,
+        ConstantReference,
         ConstructorReference,
         DelegateReference,
         EnumReference,

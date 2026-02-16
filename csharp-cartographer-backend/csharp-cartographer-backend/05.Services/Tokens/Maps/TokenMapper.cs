@@ -922,6 +922,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.ForEachLoopCollectionIdentifier;
 
             // Identifier references
+            if (token.RoslynClassification == "constant name")
+                return SemanticRole.ConstantReference;
+
             if (token.RoslynClassification == "enum name")
                 return SemanticRole.EnumReference;
 
