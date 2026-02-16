@@ -425,6 +425,9 @@
   "ClassReference": {
     "Definition": "A class reference is a usage of a class type in code. It points to a class that has already been defined."
   },
+  "ConstantReference": {
+    "Definition": "This identifier references a constant defined in the uploaded file."
+  },
   "ConstructorReference": {
     "Definition": "A constructor reference refers to a constructor being used to create a new instance of a type. It identifies which constructor is being called."
   },

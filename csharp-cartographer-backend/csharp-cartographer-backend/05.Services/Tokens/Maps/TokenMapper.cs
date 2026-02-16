@@ -67,21 +67,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             {
                 return PrimaryKind.Delimiter;
             }
-            if (token.Text is "nint" && token.SemanticData?.SymbolName == "IntPtr")
-            {
-                token.RoslynClassification = "keyword";
-                return PrimaryKind.Keyword;
-            }
-            if (token.Text is "nuint" && token.SemanticData?.SymbolName == "UIntPtr")
-            {
-                token.RoslynClassification = "keyword";
-                return PrimaryKind.Keyword;
-            }
-            if (token.Text is "var" && token.IsLocalType())
-            {
-                token.RoslynClassification = "keyword";
-                return PrimaryKind.Keyword;
-            }
 
             switch (token.RoslynClassification)
             {

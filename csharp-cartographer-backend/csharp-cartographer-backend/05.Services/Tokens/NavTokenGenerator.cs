@@ -10,10 +10,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens
     public class NavTokenGenerator : INavTokenGenerator
     {
         private readonly IRoslynAnalyzer _roslynAnalyzer;
+        private readonly IRoslynCorrector _roslynCorrector;
 
-        public NavTokenGenerator(IRoslynAnalyzer roslynAnalyzer)
+        public NavTokenGenerator(IRoslynAnalyzer roslynAnalyzer, IRoslynCorrector roslynCorrector)
         {
             _roslynAnalyzer = roslynAnalyzer;
+            _roslynCorrector = roslynCorrector;
         }
 
         public async Task<List<NavToken>> GenerateNavTokens(FileData fileData, CancellationToken cancellationToken)
@@ -30,13 +32,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 
             foreach (var token in roslynTokens)
             {
+                // create new token
                 var newToken = new NavToken(token, index);
 
-                var classification = GetTokenClassification(token, classificationLookup);
-                newToken.RoslynClassification = classification;
-
-                _roslynAnalyzer.AddTokenSemanticData(newToken, semanticModel, syntaxTree, cancellationToken);
-
+                // add to token list
                 navTokens.Add(newToken);
 
                 // each token in list needs data from the ones before & after for token mapping
@@ -47,6 +46,15 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                     newToken.PrevToken = prevToken;
                     prevToken.NextToken = newToken;
                 }
+
+                // add semantic data
+                _roslynAnalyzer.AddTokenSemanticData(newToken, semanticModel, syntaxTree, cancellationToken);
+
+                // add classification
+                var classification = GetTokenClassification(token, classificationLookup);
+                newToken.RoslynClassification = _roslynCorrector.GetCorrectedClassification(newToken, classification)
+                    ?? classification;
+
                 index++;
             }
 
