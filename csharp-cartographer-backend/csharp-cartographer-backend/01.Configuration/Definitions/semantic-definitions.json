@@ -368,6 +368,12 @@
   "FieldDeclaration": {
     "Definition": "A field declaration defines a variable that belongs to a class or struct. Fields store data that represents the state of an object."
   },
+  "ForLoopIteratorDeclaration": {
+    "Definition": "The loop iterator variable declared in a {c:color-purple keyword}for{/c} loop. It is typically used as a counter that changes each iteration to control how many times the loop runs."
+  },
+  "ForEachLoopIteratorDeclaration": {
+    "Definition": "The loop variable declared in a {c:color-purple keyword}foreach{/c} loop that represents the current item. On each iteration, it holds the next element from the collection being processed."
+  },
   "InterfaceDeclaration": {
     "Definition": "An interface declaration defines a contract that specifies what members a class must implement. It allows different classes to share the same behavior without sharing implementation."
   },
@@ -539,6 +545,15 @@
   },
   "FieldDataType": {
     "Definition": "A field data type defines what kind of data a field can store. It determines the values that can be assigned to the field."
+  },
+  "ForLoopIteratorDataType": {
+    "Definition": "The data type of the iterator variable declared in a {c:color-purple keyword}for{/c} loop. It determines what kind of values the loop counter can store and how it can be used."
+  },
+  "ForEachLoopIteratorDataType": {
+    "Definition": "The data type of the iterator variable declared in a {c:color-purple keyword}foreach{/c} loop. It specifies the type of each element that will be read from the collection during iteration."
+  },
+  "ForEachLoopCollectionIdentifier": {
+    "Definition": "The collection being iterated over in a {c:color-purple keyword}foreach{/c} loop. The loop retrieves each element from this collection one at a time."
   },
   "GenericTypeArgument": {
     "Definition": "A generic type argument is a specific type supplied to a generic class or method. It fills in the placeholder defined by a generic parameter."

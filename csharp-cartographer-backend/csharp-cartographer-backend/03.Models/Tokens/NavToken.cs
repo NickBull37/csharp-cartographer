@@ -559,6 +559,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 HasAncestorAt(1, SyntaxKind.CatchDeclaration);
         }
 
+        public bool IsForEachLoopCollectionIdentifier()
+        {
+            return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.ForEachStatement)
+                && NextToken?.Text == ")";
+        }
+
         public bool IsMethodInvocation()
         {
             var nextTokenText = NextToken?.Text;
@@ -663,11 +670,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             && !HasAncestorAt(0, SyntaxKind.GenericName)
             && !HasAncestorAt(0, SyntaxKind.IdentifierName);
 
-        public bool IsLocalForLoopVariableDeclaration() =>
-            HasAncestorAt(2, SyntaxKind.ForStatement);
+        public bool IsForLoopIteratorDeclaration()
+        {
+            return HasAncestorAt(0, SyntaxKind.VariableDeclarator)
+                && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
+                && HasAncestorAt(2, SyntaxKind.ForStatement);
+        }
 
-        public bool IsLocalForEachLoopVariableDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.ForEachStatement);
+        public bool IsForEachLoopIteratorDeclaration()
+        {
+            return Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(0, SyntaxKind.ForEachStatement)
+                && NextToken?.Text == "in";
+        }
 
         public bool IsMethodDeclaration() =>
             HasAncestorAt(0, SyntaxKind.MethodDeclaration);
@@ -749,6 +764,45 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         }
 
         public bool IsForEachLoopLocalVariableDataType()
+        {
+            return HasAncestorAt(1, SyntaxKind.ForEachStatement)
+                && NextToken?.Text != ")";
+        }
+
+        public bool IsForLoopIteratorDataType()
+        {
+            // covers pre-defined types: for (int i = 0; ...)
+            if (HasAncestorAt(0, SyntaxKind.PredefinedType)
+                && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
+                && HasAncestorAt(2, SyntaxKind.ForStatement)
+                && PrevToken?.Text == "(")
+            {
+                return true;
+            }
+
+            // covers ref types: for (Node n = start; ...)
+            if (HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
+                && HasAncestorAt(2, SyntaxKind.ForStatement)
+                && PrevToken?.Text == "(")
+            {
+                return true;
+            }
+
+            // covers nullable ref types: for (Node n = start; ...)
+            if (HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.NullableType)
+                && HasAncestorAt(2, SyntaxKind.VariableDeclaration)
+                && HasAncestorAt(3, SyntaxKind.ForStatement)
+                && PrevToken?.Text == "(")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsForEachLoopIteratorDataType()
         {
             return HasAncestorAt(1, SyntaxKind.ForEachStatement)
                 && NextToken?.Text != ")";

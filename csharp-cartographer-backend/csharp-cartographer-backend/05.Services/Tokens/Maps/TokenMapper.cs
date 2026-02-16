@@ -640,7 +640,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsFieldDataType())
                 return SemanticRole.FieldDataType;
 
-            if (token.IsLocalVariableDataType() || token.IsForEachLoopLocalVariableDataType())
+            if (token.IsForLoopIteratorDataType())
+                return SemanticRole.ForLoopIteratorDataType;
+
+            if (token.IsForEachLoopIteratorDataType())
+                return SemanticRole.ForEachLoopIteratorDataType;
+
+            if (token.IsLocalVariableDataType())
                 return SemanticRole.LocalVariableDataType;
 
             if (token.IsMethodReturnType())
@@ -851,11 +857,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsLocalVariableDeclaration())
                 return SemanticRole.LocalVariableDeclaration;
 
-            if (token.IsLocalForLoopVariableDeclaration())
-                return SemanticRole.LocalVariableDeclaration;
+            if (token.IsForLoopIteratorDeclaration())
+                return SemanticRole.ForLoopIteratorDeclaration;
 
-            if (token.IsLocalForEachLoopVariableDeclaration())
-                return SemanticRole.LocalVariableDeclaration;
+            if (token.IsForEachLoopIteratorDeclaration())
+                return SemanticRole.ForEachLoopIteratorDeclaration;
 
             if (token.IsMethodDeclaration())
                 return SemanticRole.MethodDeclaration;
@@ -891,7 +897,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsFieldDataType())
                 return SemanticRole.FieldDataType;
 
-            if (token.IsLocalVariableDataType() || token.IsForEachLoopLocalVariableDataType())
+            if (token.IsLocalVariableDataType())
                 return SemanticRole.LocalVariableDataType;
 
             if (token.IsMethodReturnType())
@@ -905,6 +911,15 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsPropertyDataType())
                 return SemanticRole.PropertyDataType;
+
+            if (token.IsForLoopIteratorDataType())
+                return SemanticRole.ForLoopIteratorDataType;
+
+            if (token.IsForEachLoopIteratorDataType())
+                return SemanticRole.ForEachLoopIteratorDataType;
+
+            if (token.IsForEachLoopCollectionIdentifier())
+                return SemanticRole.ForEachLoopCollectionIdentifier;
 
             // Identifier references
             if (token.RoslynClassification == "enum name")

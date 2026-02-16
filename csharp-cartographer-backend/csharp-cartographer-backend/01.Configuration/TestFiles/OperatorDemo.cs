@@ -171,12 +171,43 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
         }
     }
 
+    public class TestNode
+    {
+        public string Name { get; }
+        public TestNode? Parent { get; }
+
+        public TestNode(string name, TestNode? parent = null)
+        {
+            Name = name;
+            Parent = parent;
+        }
+    }
+
     public class Test
     {
         public int TestInt { get; set; }
 
         public static string NullConditionalOperatorTest()
         {
+            // Build a simple node chain: root -> child -> grandchild
+            var root = new TestNode("Root");
+            var child = new TestNode("Child", root);
+            var grandchild = new TestNode("Grandchild", child);
+
+            TestNode? start = grandchild;
+            for (int i = 1; i < 100; i++)
+            {
+                Console.WriteLine(i);
+            }
+            for (TestNode n = start; n != null; n = n.Parent)
+            {
+                Console.WriteLine(n.Name);
+            }
+            for (TestNode? n = start; n != null; n = n.Parent)
+            {
+                Console.WriteLine(n.Name);
+            }
+
             int test = GetText().Length;
 
             int? test2 = GetText()?.Length;

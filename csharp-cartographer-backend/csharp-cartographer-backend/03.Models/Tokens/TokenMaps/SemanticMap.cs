@@ -161,6 +161,7 @@
         // ------------ IDENTIFIERS ------------ //
 
         AttributeArgument,
+        ForEachLoopCollectionIdentifier,
         ObjectPropertyAssignment,
         ParameterLabel,
 
@@ -174,6 +175,8 @@
         EventDeclaration,
         EventFieldDeclaration,
         FieldDeclaration,
+        ForLoopIteratorDeclaration,
+        ForEachLoopIteratorDeclaration,
         InterfaceDeclaration,
         LocalVariableDeclaration,
         MethodDeclaration,
@@ -247,6 +250,8 @@
         EventFieldType,
         ExceptionType,
         FieldDataType,
+        ForLoopIteratorDataType,
+        ForEachLoopIteratorDataType,
         GenericTypeArgument,
         GenericTypeParameter,
         TypeParameterConstraint,
