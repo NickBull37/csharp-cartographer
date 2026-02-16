@@ -214,6 +214,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsAccessorListDelimiter())
                     return SemanticRole.AccessorListBoundary;
 
+                if (token.IsAddAccessorBlockDelimiter())
+                    return SemanticRole.AddAccessorBlockBoundary;
+
                 if (token.IsAnonymousObjectCreationExpressionDelimiter())
                     return SemanticRole.AnonymousObjectCreationExpressionBoundary;
 
@@ -259,6 +262,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsPropertyPatternDelimiter())
                     return SemanticRole.PropertyPatternBoundary;
 
+                if (token.IsRecordDelimiter())
+                    return SemanticRole.RecordBoundary;
+
+                if (token.IsRemoveAccessorBlockDelimiter())
+                    return SemanticRole.RemoveAccessorBlockBoundary;
+
                 if (token.IsSwitchExpressionDelimiter())
                     return SemanticRole.SwitchExpressionBoundary;
 
@@ -273,6 +282,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsWhileLoopBlockDelimiter())
                     return SemanticRole.WhileLoopBlockBoundary;
+
+                if (token.IsWithInitializerExpressionDelimiter())
+                    return SemanticRole.WithInitializerExpressionBoundary;
             }
 
             if (token.Text is "[" or "]")
@@ -313,16 +325,19 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Separators ---
             if (token.Text is "," or ":")
             {
-                if (token.IsAnonymousObjectMemberDeclarationSeperator())
+                if (token.IsAnonymousObjectMemberDeclarationSeparator())
                     return SemanticRole.AnonymousObjectMemberDeclarationSeparator;
 
-                if (token.IsArgumentSeperator())
+                if (token.IsArgumentSeparator())
                     return SemanticRole.ArgumentSeparator;
 
-                if (token.IsArrayInitializerElementSeperator())
+                if (token.IsArrayInitializerElementSeparator())
                     return SemanticRole.ArrayInitializerElementSeparator;
 
-                if (token.IsBaseTypeSeperator())
+                if (token.IsAttributeArgumentSeparator())
+                    return SemanticRole.AttributeArgumentSeparator;
+
+                if (token.IsBaseTypeSeparator())
                     return SemanticRole.BaseTypeSeparator;
 
                 if (token.IsCollectionExpressionElementSeparator())
@@ -527,6 +542,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Exception handling ---
             if (GlobalConstants.ExceptionHandlingKeywords.Contains(token.Text))
                 return SemanticRole.ExceptionHandling;
+
+            // --- Implicit parameters ---
+            if (token.IsImplicitParameterKeyword())
+                return SemanticRole.ImplicitParameter;
 
             // --- Inheritance modifier keywords ---
             if (GlobalConstants.InheritanceModifiers.Contains(token.Text))
@@ -833,6 +852,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsEnumMemberDeclaration())
                 return SemanticRole.EnumMemberDeclaration;
 
+            if (token.IsEventPropertyDeclaration())
+                return SemanticRole.EventPropertyDeclaration;
+
             if (token.IsEventFieldDeclaration())
                 return SemanticRole.EventFieldDeclaration;
 
@@ -878,6 +900,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Identifiers: data types ---
             if (token.IsEventFieldType())
                 return SemanticRole.EventFieldType;
+
+            if (token.IsEventPropertyDataType())
+                return SemanticRole.EventPropertyDataType;
 
             if (token.IsFieldDataType())
                 return SemanticRole.FieldDataType;

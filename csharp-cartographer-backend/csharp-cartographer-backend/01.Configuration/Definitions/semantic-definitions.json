@@ -2,6 +2,9 @@
   "AccessorListBoundary": {
     "Definition": "Marks the boundaries of a property or indexer’s accessor methods, such as {c:color-blue keyword}get{/c} and {c:color-blue keyword}set{/c}."
   },
+  "AddAccessorBlockBoundary": {
+    "Definition": "Marks the boundaries of an {c:color-blue keyword}event{/c} {c:color-blue keyword}add{/c} accessor method."
+  },
   "AnonymousObjectCreationExpressionBoundary": {
     "Definition": "Marks the boundaries of an anonymous object creation expression."
   },
@@ -42,7 +45,7 @@
     "Definition": "Marks the boundaries of a checked statement block."
   },
   "ClassBoundary": {
-    "Definition": "Marks the boundaries of the class definition."
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}class{/c} definition."
   },
   "Discard": {
     "Definition": "The discard symbol {c:color-blue keyword}_{/c} is used when a value is intentionally ignored. It tells the compiler that the value is not needed."
@@ -73,12 +76,6 @@
   },
   "ForLoopControlBoundary": {
     "Definition": "Marks the boundaries of a {c:color-purple keyword}for{/c} loop control region."
-  },
-  "WhileLoopBlockBoundary": {
-    "Definition": "Marks the boundaries of the code that runs repeatedly in a {c:color-purple keyword}while{/c} loop."
-  },
-  "WhileLoopConditionBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-purple keyword}while{/c} loop condition."
   },
   "IfBlockBoundary": {
     "Definition": "Marks the boundaries of the code that runs when an {c:color-purple keyword}if{/c} statement condition is true."
@@ -113,6 +110,12 @@
   "PropertyPatternBoundary": {
     "Definition": "Marks the boundaries of a property pattern clause."
   },
+  "RecordBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}record{/c} definition."
+  },
+  "RemoveAccessorBlockBoundary": {
+    "Definition": "Marks the boundaries of an {c:color-blue keyword}event{/c} {c:color-blue keyword}remove{/c} accessor method."
+  },
   "SizeOfExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}sizeof{/c} expression."
   },
@@ -145,6 +148,15 @@
   },
   "UnheckedStatementBlockBoundary": {
     "Definition": "Marks the boundaries of a unchecked statement block."
+  },
+  "WhileLoopBlockBoundary": {
+    "Definition": "Marks the boundaries of the code that runs repeatedly in a {c:color-purple keyword}while{/c} loop."
+  },
+  "WhileLoopConditionBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-purple keyword}while{/c} loop condition."
+  },
+  "WithInitializerExpressionBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}with{/c} expression's initializer block."
   },
   "Arithmetic": {
     "Definition": "Arithmetic operators perform basic math operations such as addition, subtraction, multiplication, and division."
@@ -183,58 +195,61 @@
     "Definition": "Pointer operators work with memory addresses in unsafe code. They allow direct access to memory locations."
   },
   "AnonymousObjectMemberDeclarationSeparator": {
-    "Definition": "Punctuation that separates anonymous object member declarations."
+    "Definition": "Separates anonymous object member declarations."
   },
   "ArgumentSeparator": {
-    "Definition": "Punctuation that separates multiple arguments passed to a method or constructor."
+    "Definition": "Separates multiple arguments passed to a method or constructor."
   },
   "ArrayInitializerElementSeparator": {
-    "Definition": "Punctuation that separates elements within an array initializer expression."
+    "Definition": "Separates elements within an array initializer expression."
+  },
+  "AttributeArgumentSeparator": {
+    "Definition": "Separates elements within an attribute argument list."
   },
   "BaseTypeSeparator": {
-    "Definition": "Punctuation that separates a type from its base class or implemented interfaces."
+    "Definition": "Separates a type from its base class or implemented interfaces."
   },
   "CollectionElementSeparator": {
-    "Definition": "Punctuation that separates elements within a collection expression."
+    "Definition": "Separates elements within a collection expression."
   },
   "CollectionInitializerElementSeparator": {
-    "Definition": "Punctuation that separates elements within a collection initializer expression."
+    "Definition": "Separates elements within a collection initializer expression."
   },
   "EnumMemberSeparator": {
-    "Definition": "Punctuation that separates individual members within an enum."
+    "Definition": "Separates individual members within an enum."
   },
   "MemberPatternSeparator": {
-    "Definition": "Punctuation that separates the member being inspected from the subpattern applied to that member."
+    "Definition": "Separates the member being inspected from the subpattern applied to that member."
   },
   "OrderByClauseSeparator": {
-    "Definition": "Punctuation that separates elements within an {c:color-blue keyword}orderby{/c} clause."
+    "Definition": "Separates elements within an {c:color-blue keyword}orderby{/c} clause."
   },
   "ParameterSeparator": {
-    "Definition": "Punctuation that separates parameters in a method, constructor, or lambda declaration."
+    "Definition": "Separates parameters in a method, constructor, or lambda declaration."
   },
   "PropertyInitializationSeparator": {
-    "Definition": "Punctuation that separates a property name from its assigned value during initialization."
+    "Definition": "Separates a property name from its assigned value during initialization."
   },
   "QualifiedNameSeparator": {
-    "Definition": "Punctuation that separates parts of a fully qualified namespace or type name."
+    "Definition": "Separates parts of a fully qualified namespace or type name."
   },
   "SwitchArmSeparator": {
-    "Definition": "Punctuation that separates a pattern or condition from the result in a switch expression."
+    "Definition": "Separates a pattern or condition from the result in a switch expression."
   },
   "TupleElementSeparator": {
-    "Definition": "Punctuation that separates individual values within a tuple."
+    "Definition": "Separates individual values within a tuple."
   },
   "TypeArgumentSeparator": {
-    "Definition": "Punctuation that separates multiple type arguments supplied to a generic type or method."
+    "Definition": "Separates multiple type arguments supplied to a generic type or method."
   },
   "TypeParameterConstraintClauseSeparator": {
-    "Definition": "Punctuation that separates a generic type parameter from its constraints."
+    "Definition": "Separates a generic type parameter from its constraints."
   },
   "TypeParameterSeparator": {
-    "Definition": "Punctuation that separates multiple generic type parameters."
+    "Definition": "Separates multiple generic type parameters."
   },
   "VariableDeclaratorSeparator": {
-    "Definition": "Punctuation that separates multiple variables declared in a single statement."
+    "Definition": "Separates multiple variables declared in a single statement."
   },
   "CaseLabelTerminator": {
     "Definition": "Punctuation that marks the end of a case label in a {c:color-purple keyword}switch{/c} statement."
@@ -283,6 +298,9 @@
   },
   "ExceptionHandling": {
     "Definition": "Exception handling keywords manage errors that occur while a program is running. They allow errors to be caught and handled safely."
+  },
+  "ImplicitParameter": {
+    "Definition": "Similar to how methods can receive input parameters, accessors can receive input data whenever they are invoked. C# provides an implicit parameter named {c:color-blue keyword}value{/c} that represents the data being assigned, added, or removed by the accessor."
   },
   "InheritanceModifier": {
     "Definition": "Inheritance modifiers control how classes and members can be inherited or overridden. They affect how behavior is extended in derived types."

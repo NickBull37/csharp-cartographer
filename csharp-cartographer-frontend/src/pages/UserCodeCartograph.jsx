@@ -22,7 +22,8 @@ const UserCodeCartograph = ({artifact}) => {
     
     // Code content state variables
     const [navTokens, setNavTokens] = useState([]);
-    const [activeHighlightIndices, setActiveHighlightIndices] = useState([]);
+    const [activeHighlightRange, setActiveHighlightRange] = useState(null);
+    // const [activeHighlightIndices, setActiveHighlightIndices] = useState([]);
 
     // Right sidebar state variables
     const [activeToken, setActiveToken] = useState();
@@ -102,8 +103,10 @@ const UserCodeCartograph = ({artifact}) => {
                 tokenList={navTokens}
                 activeToken={activeToken}
                 setActiveToken={setActiveToken}
-                activeHighlightIndices={activeHighlightIndices}
-                setActiveHighlightIndices={setActiveHighlightIndices}
+                // activeHighlightIndices={activeHighlightIndices}
+                // setActiveHighlightIndices={setActiveHighlightIndices}
+                activeHighlightRange={activeHighlightRange}
+                setActiveHighlightRange={setActiveHighlightRange}
                 selectedTokens={selectedTokens}
                 setSelectedTokens={setSelectedTokens}
             />
@@ -112,8 +115,12 @@ const UserCodeCartograph = ({artifact}) => {
                 navTokens={navTokens}
                 activeToken={activeToken}
                 setActiveToken={setActiveToken}
-                activeHighlightIndices={activeHighlightIndices}
-                setActiveHighlightIndices={setActiveHighlightIndices}
+
+                activeHighlightRange={activeHighlightRange}
+                setActiveHighlightRange={setActiveHighlightRange}
+
+                // activeHighlightIndices={activeHighlightIndices}
+                // setActiveHighlightIndices={setActiveHighlightIndices}
             />
             
         </Box>

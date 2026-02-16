@@ -158,6 +158,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return isValidToken && HasAncestorAt(1, SyntaxKind.ReturnStatement);
         }
 
+        public bool IsImplicitParameterKeyword()
+        {
+            // Won't handle identifiers named "value".
+            // TODO: Add check for Accessor ancestor
+            return Kind == SyntaxKind.IdentifierToken
+                && Text == "value";
+        }
+
         public bool IsInterpolatedValue()
         {
             return HasAncestorAt(1, SyntaxKind.Interpolation)
@@ -191,6 +199,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.AccessorList)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsAddAccessorBlockDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.AddAccessorDeclaration)
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
@@ -355,6 +371,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
+        public bool IsWithInitializerExpressionDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.WithInitializerExpression)
+                && HasAncestorAt(1, SyntaxKind.WithExpression)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsWhileLoopConditionDelimiter()
         {
             return IsDelimiter()
@@ -438,6 +462,21 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.PropertyPatternClause)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsRecordDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.RecordDeclaration)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsRemoveAccessorBlockDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.RemoveAccessorDeclaration)
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
@@ -656,6 +695,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsEnumMemberDeclaration() =>
             HasAncestorAt(0, SyntaxKind.EnumMemberDeclaration);
 
+        public bool IsEventPropertyDeclaration()
+        {
+            return Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(0, SyntaxKind.EventDeclaration);
+        }
+
         public bool IsEventFieldDeclaration() =>
             HasAncestorAt(0, SyntaxKind.VariableDeclarator) &&
             HasAncestorAt(1, SyntaxKind.VariableDeclaration) &&
@@ -745,6 +790,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             // covers nullable and non-nullable types
             return HasAncestorAt(2, SyntaxKind.EventFieldDeclaration)
                 || HasAncestorAt(3, SyntaxKind.EventFieldDeclaration);
+        }
+
+        public bool IsEventPropertyDataType()
+        {
+            return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.EventDeclaration);
         }
 
         public bool IsFieldDataType() =>
@@ -1112,7 +1163,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #region Keyword Checks
         public bool IsKeyword()
         {
-            return SyntaxFacts.IsKeywordKind(Kind) || IsNameofAndKeyword() || IsVarAndKeyword();
+            return SyntaxFacts.IsKeywordKind(Kind)
+                || IsNameofAndKeyword()
+                || IsValueAndKeyword()
+                || IsVarAndKeyword();
         }
 
         public bool IsContextualKeyword() => SyntaxFacts.IsContextualKeyword(Kind);
@@ -1123,6 +1177,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Kind == SyntaxKind.IdentifierToken
                 && HasAncestorAt(1, SyntaxKind.InvocationExpression)
                 && NextToken?.Text == "(";
+        }
+
+        public bool IsValueAndKeyword()
+        {
+            // covers implicit accessor parameters
+            return Kind == SyntaxKind.IdentifierToken
+                && Text == "value";
         }
 
         public bool IsVarAndKeyword()
@@ -1314,13 +1375,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Punctuation Checks
-        public bool IsAnonymousObjectMemberDeclarationSeperator()
+        public bool IsAnonymousObjectMemberDeclarationSeparator()
         {
             return Kind == SyntaxKind.CommaToken
                 && HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression);
         }
 
-        public bool IsArgumentSeperator()
+        public bool IsArgumentSeparator()
         {
             return RoslynClassification is not null
                 && RoslynClassification == "punctuation"
@@ -1328,13 +1389,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Text == ",";
         }
 
-        public bool IsArrayInitializerElementSeperator()
+        public bool IsArrayInitializerElementSeparator()
         {
             return Kind == SyntaxKind.CommaToken
                 && HasAncestorAt(0, SyntaxKind.ArrayInitializerExpression);
         }
 
-        public bool IsBaseTypeSeperator()
+        public bool IsAttributeArgumentSeparator()
+        {
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.AttributeArgumentList);
+        }
+
+        public bool IsBaseTypeSeparator()
         {
             return RoslynClassification is not null
                 && RoslynClassification == "punctuation"

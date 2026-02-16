@@ -24,6 +24,7 @@
         // ------------ DELIMITERS ------------ //
 
         AccessorListBoundary,
+        AddAccessorBlockBoundary,
         AnonymousObjectCreationExpressionBoundary,
         ArgumentListBoundary,
         ArrayInitializationBoundary,
@@ -57,6 +58,8 @@
         ParenthesizedExpressionBoundary,
         ParenthesizedPatternBoundary,
         PropertyPatternBoundary,
+        RecordBoundary,
+        RemoveAccessorBlockBoundary,
         SizeOfExpressionBoundary,
         SwitchExpressionBoundary,
         SwitchStatementBoundary,
@@ -70,6 +73,7 @@
         UncheckedStatementBlockBoundary,
         WhileLoopConditionBoundary,
         WhileLoopBlockBoundary,
+        WithInitializerExpressionBoundary,
 
 
         // ------------ OPERATORS ------------ //
@@ -94,6 +98,7 @@
         AnonymousObjectMemberDeclarationSeparator,
         ArgumentSeparator,
         ArrayInitializerElementSeparator,
+        AttributeArgumentSeparator,
         BaseTypeSeparator,
         CollectionExpressionElementSeparator,
         CollectionInitializerElementSeparator,
@@ -137,6 +142,7 @@
         Discard,
         EventHandling,
         ExceptionHandling,
+        ImplicitParameter,
         InheritanceModifier,
         Iterator,
         JumpStatement,
@@ -172,8 +178,8 @@
         DelegateDeclaration,
         EnumDeclaration,
         EnumMemberDeclaration,
-        EventDeclaration,
         EventFieldDeclaration,
+        EventPropertyDeclaration,
         FieldDeclaration,
         ForLoopIteratorDeclaration,
         ForEachLoopIteratorDeclaration,
@@ -249,6 +255,7 @@
         DefaultOperand,
         DelegateReturnType,
         EventFieldType,
+        EventPropertyDataType,
         ExceptionType,
         FieldDataType,
         ForLoopIteratorDataType,

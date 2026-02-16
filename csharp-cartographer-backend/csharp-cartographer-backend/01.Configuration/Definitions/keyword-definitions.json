@@ -315,7 +315,7 @@
     "Definition": "The {c:color-blue keyword}using{/c} keyword imports namespaces into the file so you can reference their types without fully qualifying their names."
   },
   "value": {
-    "Definition": "The {c:color-blue keyword}value{/c} keyword represents the value being assigned to a property or indexer. It is used inside a set or init accessor."
+    "Definition": "The {c:color-blue keyword}value{/c} keyword represents the value being assigned to a property or indexer. It is implicitly provided by C# whenever the {c:color-blue keyword}set{/c}, {c:color-blue keyword}init{/c}, {c:color-blue keyword}add{/c}, or {c:color-blue keyword}remove{/c} accessors are invoked."
   },
   "var": {
     "Definition": "The {c:color-blue keyword}var{/c} keyword lets the compiler infer the type of a variable from its assigned value. The variable still has a strong, fixed type."
