@@ -9,6 +9,7 @@ namespace csharp_cartographer_backend._05.Services.Charts
         private static readonly List<SyntaxKind> _KindsToSkip =
         [
             SyntaxKind.CompilationUnit,
+            SyntaxKind.EndOfFileToken,
             //SyntaxKind.QualifiedName,
             //SyntaxKind.Block,
             //SyntaxKind.IdentifierToken,
@@ -19,28 +20,25 @@ namespace csharp_cartographer_backend._05.Services.Charts
         /// <param name="navTokens">The list of NavTokens.</param>
         public void GenerateTokenCharts(List<NavToken> navTokens)
         {
-            foreach (var navToken in navTokens)
+            foreach (var token in navTokens)
             {
-                int level = 1;
-                AddTokenChart(navToken, navToken.Kind.ToString(), level, navToken.RoslynToken);
-                level++;
+                // add chart for the token itself
+                CreateAndAddChart(token, token.Kind.ToString(), token.RoslynToken);
 
-                foreach (var parentNode in GetParentNodes(navToken.RoslynToken))
+                // add chart for each ancestor
+                foreach (var ancestor in GetAncestorNodes(token.RoslynToken))
                 {
-                    if (_KindsToSkip.Contains(parentNode.Kind()))
-                    {
+                    if (_KindsToSkip.Contains(ancestor.Kind()))
                         continue;
-                    }
 
-                    AddTokenChart(navToken, parentNode.Kind().ToString(), level, parentNode);
-                    level++;
+                    CreateAndAddChart(token, ancestor.Kind().ToString(), ancestor);
                 }
             }
         }
 
-        private static void AddTokenChart(NavToken navToken, string label, int level, SyntaxNodeOrToken nodeOrToken)
+        private static void CreateAndAddChart(NavToken navToken, string label, SyntaxNodeOrToken nodeOrToken)
         {
-            List<SyntaxToken> tokens;
+            List<SyntaxToken> tokens = [];
 
             if (nodeOrToken.AsNode() != null && nodeOrToken.IsNode)
             {
@@ -49,32 +47,26 @@ namespace csharp_cartographer_backend._05.Services.Charts
             }
             else if (nodeOrToken.IsToken)
             {
-                // if it's a SyntaxToken, wrap it in a list
+                // if it's a singular SyntaxToken there's no need for descendants
                 tokens = [nodeOrToken.AsToken()];
-            }
-            else
-            {
-                // handle unexpected case (this shouldn't happen in normal Roslyn APIs)
-                throw new InvalidOperationException("Unsupported SyntaxNodeOrToken type.");
             }
 
             var tokenChart = new TokenChart
             {
                 Label = label,
-                Level = level,
                 Tokens = tokens
             };
 
             navToken.Charts.Add(tokenChart);
         }
 
-        private static IEnumerable<SyntaxNode> GetParentNodes(SyntaxToken token)
+        private static IEnumerable<SyntaxNode> GetAncestorNodes(SyntaxToken token)
         {
-            var parentNode = token.Parent;
-            while (parentNode != null)
+            var parent = token.Parent;
+            while (parent != null)
             {
-                yield return parentNode;
-                parentNode = parentNode.Parent;
+                yield return parent;
+                parent = parent.Parent;
             }
         }
     }

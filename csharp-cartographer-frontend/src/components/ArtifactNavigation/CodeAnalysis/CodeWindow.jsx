@@ -26,7 +26,18 @@ const LineNumberText = styled(Typography)(() => ({
     lineHeight: '23px'
 }));
 
-const CodeWindow = ({ leftSidebarOpen, tokenList, activeToken, setActiveToken, activeHighlightIndices, setActiveHighlightIndices, selectedTokens, setSelectedTokens }) => {
+const CodeWindow = ({
+    leftSidebarOpen,
+    tokenList,
+    activeToken,
+    setActiveToken,
+    // activeHighlightIndices,
+    // setActiveHighlightIndices,
+    activeHighlightRange,
+    setActiveHighlightRange,
+    selectedTokens,
+    setSelectedTokens
+}) => {
 
     // Constants
     const activeTokenIndex = tokenList.findIndex(token => token === activeToken);
@@ -35,6 +46,21 @@ const CodeWindow = ({ leftSidebarOpen, tokenList, activeToken, setActiveToken, a
     const [selectModeActive, setSelectModeActive] = useState(true);
     const [highlightModeActive, setHighlightModeActive] = useState(false);
     const [selectedTokenIndex, setSelectedTokenIndex] = useState(null);
+
+    const isInActiveHighlightRange = (tokenIndex) => {
+        if (!activeHighlightRange) return false;
+
+        const start = activeHighlightRange.startIndex;
+        const end = activeHighlightRange.endIndex;
+
+        // Guard in case start/end are null/undefined
+        if (start === undefined || end === undefined || start === null || end === null) return false;
+
+        const min = Math.min(start, end);
+        const max = Math.max(start, end);
+
+        return tokenIndex >= min && tokenIndex <= max;
+    };
 
     // highlighting tokens
     const [isDragging, setIsDragging] = useState(false);
@@ -171,7 +197,7 @@ const CodeWindow = ({ leftSidebarOpen, tokenList, activeToken, setActiveToken, a
 
                         // Determine if this token is selected
                         const isSelected = selectedTokenIndex === index;
-                        const isTagHighlight = activeHighlightIndices.includes(token.index);
+                        const isTagHighlight = isInActiveHighlightRange(token.index);
 
                         // Combine classes, but only add "token-hover", "selected", and "dev-insight" if applicable
                         const highlightColor = `pad-token code ${colorClass} ${isSelected ? 'token-active' : 'token-hover'} ${isTagHighlight ? 'tag-highlight' : ''} ${isAiHighlight ? 'dev-highlight' : ''}`;
@@ -200,7 +226,7 @@ const CodeWindow = ({ leftSidebarOpen, tokenList, activeToken, setActiveToken, a
                                     return <br key={`trivia-${index}-${triviaIndex}`} />;
                                 }
                         
-                                const isTagHighlight = activeHighlightIndices.includes(token.index);
+                                const isTagHighlight = isInActiveHighlightRange(token.index);
 
                                 // render single space trivia
                                 if (triviaItem === ' ' && !isTagHighlight) {

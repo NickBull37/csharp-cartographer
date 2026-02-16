@@ -99,7 +99,15 @@ const MapTagFocusedDefText = styled(Typography)(() => ({
     //boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.45), 0 2px 6px 0 rgba(0, 0, 0, 0.45)',
 }));
 
-const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHighlightIndices, setActiveHighlightIndices }) => {
+const TokenSidebarContent = ({
+    navTokens,
+    activeToken,
+    setActiveToken,
+    // activeHighlightIndices,
+    // setActiveHighlightIndices,
+    activeHighlightRange,
+    setActiveHighlightRange
+}) => {
 
     // Find the index of the activeToken in navTokens
     const activeTokenIndex = navTokens.findIndex(token => token === activeToken);
@@ -122,7 +130,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
     const handleNextTokenClick = () => {
 
         // Clear insight highlighting
-        setActiveHighlightIndices([]);
+        //setActiveHighlightIndices([]);
+        setActiveHighlightRange(null);
 
         let nextIndex = activeTokenIndex + 1;
 
@@ -142,7 +151,8 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
     const handlePrevTokenClick = () => {
 
         // Clear insight highlighting
-        setActiveHighlightIndices([]);
+        //setActiveHighlightIndices([]);
+        setActiveHighlightRange(null);
 
         let prevIndex = activeTokenIndex - 1;
 
@@ -163,10 +173,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
         setTokenChartExpanded(prev => !prev);
     };
 
-    const handleExpandTokenTagClick = (identifier) => {
-
-    };
-
     const handleTagClick = (tag) => {
         if (activeTag === tag) {
             setActiveTag(null);
@@ -176,13 +182,21 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
         }
     };
 
-    const toggleChartHighlighting = (tag) => {
-        if (tag.highlightIndices.length === 0 || activeHighlightIndices === tag.highlightIndices) {
-            setActiveHighlightIndices([]);
+    const toggleChartHighlighting = (chart) => {
+
+        if (chart.highlightRange === null || chart.highlightRange === activeHighlightRange) {
+            setActiveHighlightRange(null);
         }
         else {
-            setActiveHighlightIndices(tag.highlightIndices);
+            setActiveHighlightRange(chart.highlightRange);
         }
+
+        // if (chart.highlightIndices.length === 0 || activeHighlightIndices === chart.highlightIndices) {
+        //     setActiveHighlightIndices([]);
+        // }
+        // else {
+        //     setActiveHighlightIndices(chart.highlightIndices);
+        // }
     };
 
     const handleExpandChartClick = (chart) => {
@@ -649,7 +663,6 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 </Typography>
 
                                                 <IconButton
-                                                    onClick={() => handleExpandTokenTagClick(tag.tagIdentifier)}
                                                     sx={{
                                                         p: 0,
                                                         m: 0
@@ -1070,7 +1083,7 @@ const TokenSidebarContent = ({ navTokens, activeToken, setActiveToken, activeHig
                                                 m: 0
                                             }}
                                         >
-                                            { activeHighlightIndices === chart.highlightIndices
+                                            { activeHighlightRange === chart.highlightRange
                                                 ?
                                                     <ExploreIcon
                                                         fontSize='small'

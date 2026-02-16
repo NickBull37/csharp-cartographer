@@ -87,7 +87,9 @@ const RightSidebar = ({
     activeToken,
     setActiveToken,
     activeHighlightIndices,
-    setActiveHighlightIndices
+    setActiveHighlightIndices,
+    activeHighlightRange,
+    setActiveHighlightRange
 }) => {
 
     // State Variables
@@ -162,8 +164,10 @@ const RightSidebar = ({
                             navTokens={navTokens}
                             activeToken={activeToken}
                             setActiveToken={setActiveToken}
-                            activeHighlightIndices={activeHighlightIndices}
-                            setActiveHighlightIndices={setActiveHighlightIndices}
+                            activeHighlightRange={activeHighlightRange}
+                            setActiveHighlightRange={setActiveHighlightRange}
+                            // activeHighlightIndices={activeHighlightIndices}
+                            // setActiveHighlightIndices={setActiveHighlightIndices}
                         />
                     </Stack>
             }

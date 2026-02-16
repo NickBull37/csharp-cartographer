@@ -96,7 +96,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             //_tokenTagGenerator.GenerateTokenTags(navTokens);
 
             // Step 8. Add highlight indices to token charts for highlighting ancestors.
-            _tokenChartWizard.AddHighlightValuesToNavTokenCharts(navTokens);
+            _tokenChartWizard.AddHighlightRangeToNavTokenCharts(navTokens);
 
             // Step 9. Add token chart definitions & insights.
             //_tokenChartWizard.AddFactsAndInsightsToNavTokenCharts(navTokens);

@@ -27,7 +27,8 @@ const CartographerDemo = () => {
     
     // Code content state variables
     const [navTokens, setNavTokens] = useState([]);
-    const [activeHighlightIndices, setActiveHighlightIndices] = useState([]);
+    const [activeHighlightRange, setActiveHighlightRange] = useState(null);
+    // const [activeHighlightIndices, setActiveHighlightIndices] = useState([]);
 
     // Right sidebar state variables
     const [activeToken, setActiveToken] = useState();
@@ -128,8 +129,13 @@ const CartographerDemo = () => {
                 tokenList={navTokens}
                 activeToken={activeToken}
                 setActiveToken={setActiveToken}
-                activeHighlightIndices={activeHighlightIndices}
-                setActiveHighlightIndices={setActiveHighlightIndices}
+
+                activeHighlightRange={activeHighlightRange}
+                setActiveHighlightRange={setActiveHighlightRange}
+
+                // activeHighlightIndices={activeHighlightIndices}
+                // setActiveHighlightIndices={setActiveHighlightIndices}
+
                 selectedTokens={selectedTokens}
                 setSelectedTokens={setSelectedTokens}
             />
@@ -138,8 +144,12 @@ const CartographerDemo = () => {
                 navTokens={navTokens}
                 activeToken={activeToken}
                 setActiveToken={setActiveToken}
-                activeHighlightIndices={activeHighlightIndices}
-                setActiveHighlightIndices={setActiveHighlightIndices}
+
+                activeHighlightRange={activeHighlightRange}
+                setActiveHighlightRange={setActiveHighlightRange}
+                
+                // activeHighlightIndices={activeHighlightIndices}
+                // setActiveHighlightIndices={setActiveHighlightIndices}
             />
             
         </Box>
