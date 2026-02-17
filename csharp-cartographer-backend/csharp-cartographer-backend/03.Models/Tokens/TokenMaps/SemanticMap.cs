@@ -60,6 +60,7 @@
         PropertyPatternBoundary,
         RecordBoundary,
         RemoveAccessorBlockBoundary,
+        SetAccessorBlockBoundary,
         SizeOfExpressionBoundary,
         SwitchExpressionBoundary,
         SwitchStatementBoundary,
@@ -162,6 +163,7 @@
         TypeOfOperator,
         TypeReference,
         TypeSystem,
+        WithExpression,
 
 
         // ------------ IDENTIFIERS ------------ //

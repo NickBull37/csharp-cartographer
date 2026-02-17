@@ -1,6 +1,7 @@
 ﻿using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._06.Workflows.Artifacts;
 using Microsoft.CodeAnalysis;
+using Handler = System.Action<int>;
 using IO = System.IO;
 using MyToken = csharp_cartographer_backend._03.Models.Tokens;
 
@@ -83,6 +84,8 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             Func<int, int> square = x => x * x;
             Func<int?, int?> squareTest = x => x * x;
             int squared = square(5);
+
+            Handler typeAlias;
 
             // index & range: [], .., ^
             int[] numbers = new[] { 10, 20, 30, 40, 50 };

@@ -268,6 +268,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsRemoveAccessorBlockDelimiter())
                     return SemanticRole.RemoveAccessorBlockBoundary;
 
+                if (token.IsSetAccessorBlockDelimiter())
+                    return SemanticRole.SetAccessorBlockBoundary;
+
                 if (token.IsSwitchExpressionDelimiter())
                     return SemanticRole.SwitchExpressionBoundary;
 
@@ -635,6 +638,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Type system keywords ---
             if (GlobalConstants.TypeSystemKeywords.Contains(token.Text))
                 return SemanticRole.TypeSystem;
+
+            // --- With expression keyword ---
+            if (token.IsWithExpressionKeyword())
+                return SemanticRole.WithExpression;
 
 
             // --- Keyword: data types ---

@@ -480,6 +480,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
+        public bool IsSetAccessorBlockDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.SetAccessorDeclaration)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsSwitchExpressionDelimiter()
         {
             return IsDelimiter()
@@ -1215,6 +1223,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return GlobalConstants.TypeDeclarationKeywords.Contains(Text)
                 && !HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
+        }
+
+        public bool IsWithExpressionKeyword()
+        {
+            return Kind == SyntaxKind.WithKeyword
+                && HasAncestorAt(0, SyntaxKind.WithExpression);
         }
         #endregion
 

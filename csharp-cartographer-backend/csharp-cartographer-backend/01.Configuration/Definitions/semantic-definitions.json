@@ -116,6 +116,9 @@
   "RemoveAccessorBlockBoundary": {
     "Definition": "Marks the boundaries of an {c:color-blue keyword}event{/c} {c:color-blue keyword}remove{/c} accessor method."
   },
+  "SetAccessorBlockBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}set{/c} accessor method."
+  },
   "SizeOfExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}sizeof{/c} expression."
   },
@@ -626,6 +629,9 @@
   },
   "TypeOfOperand": {
     "Definition": "The type supplied to the {c:color-blue keyword}typeof{/c} operator to obtain its runtime {c:color-gray keyword}System.Type{/c} representation."
+  },
+  "WithExpression": {
+    "Definition": "Creates a new object by copying an existing instance and applying specified member changes. This non-destructive instantiation leaves the original object unchanged."
   },
   "TypeParameterConstraint": {
     "Definition": "This identifier references the declared generic type parameter inside a constraint clause that sets rules for the arguments that are allowed to be passed in for the generic type parameter."

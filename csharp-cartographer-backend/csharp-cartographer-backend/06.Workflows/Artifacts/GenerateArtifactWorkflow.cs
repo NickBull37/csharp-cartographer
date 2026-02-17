@@ -127,7 +127,10 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
                 var identifiers = artifact.NavTokens
                     .Where(token => token.SemanticData is not null);
 
-                CartographerLogger.LogTokens(identifiers);
+                var tokens = artifact.NavTokens
+                    .Where(token => token.Index >= 23 && token.Index <= 40);
+
+                CartographerLogger.LogTokens(tokens);
             }
 
             if (_config.ShouldLogUnidentifiedTokens)
