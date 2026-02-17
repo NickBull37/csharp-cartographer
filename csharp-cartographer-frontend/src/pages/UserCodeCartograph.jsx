@@ -23,7 +23,6 @@ const UserCodeCartograph = ({artifact}) => {
     // Code content state variables
     const [navTokens, setNavTokens] = useState([]);
     const [activeHighlightRange, setActiveHighlightRange] = useState(null);
-    // const [activeHighlightIndices, setActiveHighlightIndices] = useState([]);
 
     // Right sidebar state variables
     const [activeToken, setActiveToken] = useState();
@@ -36,6 +35,10 @@ const UserCodeCartograph = ({artifact}) => {
         setArtifactType(artifact.artifactType);
         setDateCreated(artifact.createdDate);
         setNavTokens(artifact.navTokens);
+        setNumTokens(artifact.numTokensAnalyzed);
+        setNumTags(artifact.numLanguageElementTags);
+        setNumAncestors(artifact.numAncestorsMapped);
+        setGenerationTime(artifact.timeToGenerate);
 
         console.log("Artifact", artifact);
 
@@ -47,39 +50,6 @@ const UserCodeCartograph = ({artifact}) => {
 
     return (
         <Box>
-
-            {/* <TitleBox
-                artifactTitle={artifactTitle}
-                leftSidebarOpen={leftSidebarOpen}
-                numTokens={numTokens}
-                numTags={numTags}
-                numAncestors={numAncestors}
-                generationTime={generationTime}
-            />
-
-            <StructureSidebar
-                leftSidebarOpen={leftSidebarOpen}
-                setLeftSidebarOpen={setLeftSidebarOpen}
-            />
-
-            <CodeWindow
-                leftSidebarOpen={leftSidebarOpen}
-                tokenList={navTokens}
-                activeToken={activeToken}
-                setActiveToken={setActiveToken}
-                activeHighlightIndices={activeHighlightIndices}
-                setActiveHighlightIndices={setActiveHighlightIndices}
-                selectedTokens={selectedTokens}
-                setSelectedTokens={setSelectedTokens}
-            />
-
-            <TokenSidebar
-                navTokens={navTokens}
-                activeToken={activeToken}
-                setActiveToken={setActiveToken}
-                activeHighlightIndices={[]}
-                setActiveHighlightIndices={setActiveHighlightIndices}
-            /> */}
 
             <ArtifactBanner
                 artifactTitle={artifactTitle}
@@ -103,8 +73,6 @@ const UserCodeCartograph = ({artifact}) => {
                 tokenList={navTokens}
                 activeToken={activeToken}
                 setActiveToken={setActiveToken}
-                // activeHighlightIndices={activeHighlightIndices}
-                // setActiveHighlightIndices={setActiveHighlightIndices}
                 activeHighlightRange={activeHighlightRange}
                 setActiveHighlightRange={setActiveHighlightRange}
                 selectedTokens={selectedTokens}
@@ -115,12 +83,8 @@ const UserCodeCartograph = ({artifact}) => {
                 navTokens={navTokens}
                 activeToken={activeToken}
                 setActiveToken={setActiveToken}
-
                 activeHighlightRange={activeHighlightRange}
                 setActiveHighlightRange={setActiveHighlightRange}
-
-                // activeHighlightIndices={activeHighlightIndices}
-                // setActiveHighlightIndices={setActiveHighlightIndices}
             />
             
         </Box>

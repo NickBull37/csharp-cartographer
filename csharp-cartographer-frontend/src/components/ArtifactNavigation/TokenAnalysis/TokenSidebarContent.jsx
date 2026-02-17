@@ -69,15 +69,12 @@ const NextTokenButton = styled(IconButton)(() => ({
     },
 }));
 const MapTagDefLabel = styled(Typography)(() => ({
-    //fontSize: '17px',
     fontSize: '17px',
     color: colors.gray95,
 }));
 const MapTagDefFadedLabel = styled(Typography)(() => ({
     fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
-    //fontSize: '17px',
     fontSize: '17px',
-    //paddingRight: '2px',
     paddingRight: '6px',
     textTransform: 'uppercase',
     letterSpacing: '0.03em',
@@ -103,8 +100,6 @@ const TokenSidebarContent = ({
     navTokens,
     activeToken,
     setActiveToken,
-    // activeHighlightIndices,
-    // setActiveHighlightIndices,
     activeHighlightRange,
     setActiveHighlightRange
 }) => {
@@ -130,7 +125,6 @@ const TokenSidebarContent = ({
     const handleNextTokenClick = () => {
 
         // Clear insight highlighting
-        //setActiveHighlightIndices([]);
         setActiveHighlightRange(null);
 
         let nextIndex = activeTokenIndex + 1;
@@ -151,7 +145,6 @@ const TokenSidebarContent = ({
     const handlePrevTokenClick = () => {
 
         // Clear insight highlighting
-        //setActiveHighlightIndices([]);
         setActiveHighlightRange(null);
 
         let prevIndex = activeTokenIndex - 1;
@@ -173,30 +166,13 @@ const TokenSidebarContent = ({
         setTokenChartExpanded(prev => !prev);
     };
 
-    const handleTagClick = (tag) => {
-        if (activeTag === tag) {
-            setActiveTag(null);
-        }
-        else {
-            setActiveTag(tag);
-        }
-    };
-
     const toggleChartHighlighting = (chart) => {
-
         if (chart.highlightRange === null || chart.highlightRange === activeHighlightRange) {
             setActiveHighlightRange(null);
         }
         else {
             setActiveHighlightRange(chart.highlightRange);
         }
-
-        // if (chart.highlightIndices.length === 0 || activeHighlightIndices === chart.highlightIndices) {
-        //     setActiveHighlightIndices([]);
-        // }
-        // else {
-        //     setActiveHighlightIndices(chart.highlightIndices);
-        // }
     };
 
     const handleExpandChartClick = (chart) => {
@@ -248,6 +224,12 @@ const TokenSidebarContent = ({
             </>
         );
     };
+
+    const combinedLength =
+        (activeToken.map.primaryKindString?.length ?? 0) +
+        (activeToken.map.primaryLabel?.length ?? 0);
+
+    const isLong = combinedLength > 38;
 
     return (
         <ContentContainer>
@@ -306,8 +288,8 @@ const TokenSidebarContent = ({
                                 : 'default-text-class'
                         }
                     >
-                        {/* {tokenText} */}
-                        {tokenText} - {activeTokenIndex}
+                        {tokenText}
+                        {/* {tokenText} - {activeTokenIndex} */}
                     </TokenText>
                     <Tooltip title="Next Token">
                         <NextTokenButton
@@ -328,7 +310,7 @@ const TokenSidebarContent = ({
 
                     <Stack>
 
-                        <Divider sx={{ bgcolor: '#808080' }} />
+                        {/* <Divider sx={{ bgcolor: '#808080' }} />
                         <Typography
                             className='code'
                             sx={{
@@ -340,7 +322,7 @@ const TokenSidebarContent = ({
                             }}
                         >
                             {roslynClassification}
-                        </Typography>
+                        </Typography> */}
 
                         {/* <Divider sx={{ bgcolor: '#808080' }} />
                         <Typography
@@ -409,9 +391,6 @@ const TokenSidebarContent = ({
                                 <Stack
                                     sx={{
                                         p: '0 1rem 0.75rem 1rem',
-                                        // pt: '0',
-                                        // pb: '0.75rem',
-                                        // px: '1.125rem',
                                     }}
                                 >
                                     <Stack
@@ -425,10 +404,10 @@ const TokenSidebarContent = ({
                                         >
                                             <Box
                                                 display="flex"
-                                                // justifyContent="space-between"
-                                                // alignItems="flex-end"
                                                 sx={{
-                                                    borderBottom: '1px solid #666666'
+                                                    borderBottom: '1px solid #666666',
+                                                    flexDirection: isLong ? 'column' : 'row',
+                                                    gap: isLong ? '0' : '2px',
                                                 }}
                                             >
                                                 <MapTagDefFadedLabel
@@ -464,7 +443,7 @@ const TokenSidebarContent = ({
                                                 >
                                                     {activeToken.map.primaryKindString}:
                                                 </MapTagDefFadedLabel>
-                                                <MapTagDefLabel className='code' >
+                                                <MapTagDefLabel className='code'>
                                                     {activeToken.map.primaryLabel}
                                                 </MapTagDefLabel>
                                             </Box>

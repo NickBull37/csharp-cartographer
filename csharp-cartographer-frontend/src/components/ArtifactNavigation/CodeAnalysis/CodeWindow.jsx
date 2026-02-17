@@ -31,10 +31,7 @@ const CodeWindow = ({
     tokenList,
     activeToken,
     setActiveToken,
-    // activeHighlightIndices,
-    // setActiveHighlightIndices,
     activeHighlightRange,
-    setActiveHighlightRange,
     selectedTokens,
     setSelectedTokens
 }) => {
@@ -76,7 +73,6 @@ const CodeWindow = ({
     const handleMouseDown = (index) => {
         if (highlightModeActive) {
             setIsDragging(true);
-            // Check if the token is already selected; if yes, deselect it; otherwise, select it.
             if (!isDragging) {
                 setSelectedTokens((prevSelectedTokens) => {
                     if (prevSelectedTokens.includes(index)) {

@@ -267,7 +267,7 @@
     "Definition": "Punctuation that marks the end of a parameter label in a named argument."
   },
   "StatementTerminator": {
-    "Definition": "Punctuation that marks the end of a statement."
+    "Definition": "Marks the end of a statement."
   },
   "NullableTypeMarker": {
     "Definition": "Punctuation that indicates that a value type can also represent null."

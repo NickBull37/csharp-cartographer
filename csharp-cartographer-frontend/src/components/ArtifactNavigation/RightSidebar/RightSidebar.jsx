@@ -1,13 +1,11 @@
-import * as React from 'react';
 import { useState } from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Box, Stack, Typography, Divider } from '@mui/material';
 import { Drawer, IconButton } from '@mui/material';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import { TokenSidebarContent } from "../../../components";
 import colors from '../../../utils/colors';
-import { BorderColor } from '@mui/icons-material';
 
 const HEADER_HEIGHT = 55;
 const ARTIFACTBANNER_HEIGHT = 55;
@@ -66,28 +64,18 @@ const OpenSidebarToggle = styled(IconButton)(() => ({
 }));
 
 const ClosedSidebarHeaderText = styled(Typography)(() => ({
-    fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
     color: '#cccccc',
     position: 'absolute',
     top: '47%',
     left: '50%',
-    transform: 'translate(-50%, -50%) rotate(-90deg)', // center and rotate text
+    transform: 'translate(-50%, -95%)', // center text
     whiteSpace: 'nowrap',
-    fontSize: '1.25rem',
-    textShadow: '1px 1px 2px #000, 0 0 16px #333333, 0 0 5px #1a1a1a',
-}));
-
-const OpenSidebarHeaderText = styled(Typography)(() => ({
-    fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
-    color: '#00e6cf',
 }));
 
 const RightSidebar = ({
     navTokens,
     activeToken,
     setActiveToken,
-    activeHighlightIndices,
-    setActiveHighlightIndices,
     activeHighlightRange,
     setActiveHighlightRange
 }) => {
@@ -99,6 +87,16 @@ const RightSidebar = ({
     const handleDrawerToggle = () => {
         setSidebarOpen(!sidebarOpen);
     };
+
+    const VerticalText = ({ text }) => (
+    <Stack alignItems="center" spacing={0}>
+        {text.split('').map((char, i) => (
+            <span key={i}>
+                {char === ' ' ? '\u00A0' : char}
+            </span>
+        ))}
+    </Stack>
+);
 
     return (
 
@@ -124,25 +122,20 @@ const RightSidebar = ({
 
                         <Divider sx={{ bgcolor: '#808080' }} />
 
-                        <ClosedSidebarHeaderText>
-                            Token Analysis
-                        </ClosedSidebarHeaderText>
+                        <ClosedSidebarHeaderText className='cartographer4'>
+        <VerticalText text="Token Analysis" />
+    </ClosedSidebarHeaderText>
                     </Stack>
                 :
                     <Stack>
                         <Box
                             display="flex"
-                            //justifyContent="space-between"
                             gap={0.5}
                             alignItems="center"
                             sx={{
                                 p: '1px 4px 1px 4px'
                             }}
                         >
-                            {/* <OpenSidebarHeaderText>
-                                Token Analysis
-                            </OpenSidebarHeaderText> */}
-
                             <OpenSidebarToggle
                                 onClick={handleDrawerToggle}
                                 sx={{
@@ -154,8 +147,6 @@ const RightSidebar = ({
                             <Typography className='cartographer3'>
                                 Token Analysis
                             </Typography>
-
-                            
                         </Box>
 
                         <Divider sx={{ bgcolor: '#808080' }} />
@@ -166,8 +157,6 @@ const RightSidebar = ({
                             setActiveToken={setActiveToken}
                             activeHighlightRange={activeHighlightRange}
                             setActiveHighlightRange={setActiveHighlightRange}
-                            // activeHighlightIndices={activeHighlightIndices}
-                            // setActiveHighlightIndices={setActiveHighlightIndices}
                         />
                     </Stack>
             }

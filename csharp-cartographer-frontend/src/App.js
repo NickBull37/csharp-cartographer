@@ -1,15 +1,11 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navbar } from "./components";
-import { DemoUploadChoice, DemoOptionSelection, CartographerDemo, UserCodeUpload, UserCodeStaging, UserCodeCartograph, CartographerLandingPage } from "./pages";
+import { DemoUploadChoice, DemoOptionSelection, CartographerDemo, UserCodeUpload, UserCodeCartograph, CartographerLandingPage } from "./pages";
 
 function App() {
 
     const [artifact, setArtifact] = useState(null);
-
-    // useEffect(() => {
-    //     console.log("Artifact: ", artifact);
-    // }, [artifact]);
 
     return (
         <BrowserRouter>
@@ -22,7 +18,6 @@ function App() {
                 <Route path="/cartographer-demo" element={<CartographerDemo />} />
 
                 <Route path="/upload" element={<UserCodeUpload setArtifact={setArtifact} />} />
-                <Route path="/staging" element={<UserCodeStaging artifact={artifact} />} />
                 <Route path="/cartograph" element={<UserCodeCartograph artifact={artifact} />} />
             </Routes>
         </BrowserRouter>
