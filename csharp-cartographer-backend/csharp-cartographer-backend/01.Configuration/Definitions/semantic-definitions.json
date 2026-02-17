@@ -648,6 +648,12 @@
   "AliasDeclaration": {
     "Definition": "An alias declaration creates an alternate name for a type or namespace. It provides a shorter or clearer name to use in code."
   },
+  "NamespaceAliasDeclaration": {
+    "Definition": "An alias name that represents a {c:color-blue keyword}namespace{/c}. It allows shorter or alternative naming when referencing types within that namespace."
+  },
+  "TypeAliasDeclaration": {
+    "Definition": "An alias name that represents a specific type. It provides an alternate name for a type, including generic or fully qualified types."
+  },
   "AliasQualifier": {
     "Definition": "An alias qualifier refers to an alias used to access a type or namespace. It helps distinguish which aliased name is being used."
   },

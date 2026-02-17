@@ -64,17 +64,75 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                 data.Symbol = declaredSymbol;
             }
 
-            // 3) ALIAS UNWRAP (global::, using-alias, extern alias, etc.)
-            //    If the chosen symbol is an alias, unwrap to its target.
-            if (data.Symbol is IAliasSymbol alias)
+            // Only attempt alias binding when we did NOT already resolve this token as a declaration symbol.
+            if (declaredSymbol is null)
             {
-                data.IsAlias = true;
-                data.AliasName = alias.Name;
-                data.AliasTargetSymbol = alias.Target;
-                data.AliasTargetName = alias.Target.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                // 0) ALIAS INFO (declarations + usages)
+                IAliasSymbol? aliasSymbol = null;
 
-                // Update the semantic symbol to target after saving alias info
-                data.Symbol = alias.Target;
+                // A) Alias *usage* (e.g., IO.File, Handler x;)
+                // Only attempt alias lookup when the identifier is acting as a qualifier (left side of '.' or '::')
+
+                // Skip identifiers that are part of a using directive's target name (right side of using alias)
+                var containingUsing = node.FirstAncestorOrSelf<UsingDirectiveSyntax>();
+                var isInUsingTargetName =
+                    containingUsing is not null &&
+                    containingUsing.Alias is not null &&
+                    containingUsing.Name is not null &&
+                    node.Span.IntersectsWith(containingUsing.Name.Span); // RHS: System.IO / System.Action<int>
+
+                if (!isInUsingTargetName && node is IdentifierNameSyntax identifierNameSyntax)
+                {
+                    var parent = identifierNameSyntax.Parent;
+
+                    var isDotQualifier = parent is MemberAccessExpressionSyntax maes
+                        && maes.Expression == identifierNameSyntax;
+
+                    var isQualifiedNameQualifier = parent is QualifiedNameSyntax qns
+                        && qns.Left == identifierNameSyntax;
+
+                    var isAliasQualified = parent is AliasQualifiedNameSyntax aqns
+                        && aqns.Alias == identifierNameSyntax;
+
+                    if (isDotQualifier || isQualifiedNameQualifier || isAliasQualified)
+                    {
+                        aliasSymbol = semanticModel.GetAliasInfo(identifierNameSyntax, cancellationToken);
+                        data.AliasSymbol = aliasSymbol;
+                        //data.IsAliasSymbol = true;
+                    }
+                }
+
+                // B) Alias *declaration* (e.g., using IO = System.IO;)
+                if (aliasSymbol is null)
+                {
+                    var usingDirective = node.FirstAncestorOrSelf<UsingDirectiveSyntax>();
+
+                    if (usingDirective?.Alias is not null)
+                    {
+                        // Only when *this token* is the alias identifier (IO / Handler)
+                        if (token.RoslynToken == usingDirective.Alias.Name.Identifier)
+                        {
+                            aliasSymbol = semanticModel.GetDeclaredSymbol(usingDirective, cancellationToken) as IAliasSymbol;
+                            data.AliasSymbol = aliasSymbol;
+                            //data.IsAliasSymbol = true;
+                        }
+                    }
+                }
+
+                if (aliasSymbol is not null)
+                {
+                    data.IsAlias = true;
+                    data.AliasName = aliasSymbol.Name;
+                    data.AliasTargetSymbol = aliasSymbol.Target;
+                    data.AliasTargetName = aliasSymbol.Target.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+
+                    // IMPORTANT: Keep BOTH so you can differentiate "this was an alias" vs "this resolves to X"
+                    data.Symbol = aliasSymbol;              // preserve alias symbol identity
+                    data.AliasTargetSymbol = aliasSymbol.Target;
+
+                    // If you want your downstream mapping to act on the target, also store:
+                    data.SymbolUnwrapped = aliasSymbol.Target;
+                }
             }
 
             // 4) Fill symbol properties

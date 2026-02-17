@@ -24,6 +24,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public ISymbol? Symbol { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public INamespaceOrTypeSymbol? SymbolUnwrapped { get; set; }
+
+        /// <summary>
         /// The symbol declared by the syntax node when the token is at a declaration site.
         ///
         /// Expected tokens:
@@ -40,6 +45,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// (i.e., the token is considered a declaration site rather than a reference).
         /// </summary>
         public bool IsDeclaredSymbol { get; set; } = false;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IAliasSymbol? AliasSymbol { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsAliasSymbol { get; set; } = false;
 
         /// <summary>
         /// The unwrapped target symbol when the bound symbol is an alias.
@@ -189,7 +204,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// The Roslyn <see cref="Microsoft.CodeAnalysis.SymbolKind"/> for the selected symbol.
         /// Useful for high-level categorization (method/field/property/type/namespace/etc.).
         /// </summary>
-        public SymbolKind SymbolKind { get; set; }
+        public SymbolKind? SymbolKind { get; set; }
 
         /// <summary>
         /// The containing type name (simple display) when the symbol is a member

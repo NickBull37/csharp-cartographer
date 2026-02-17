@@ -125,7 +125,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static void ColorManually(NavToken token)
         {
-            if (token.NextToken?.Text != ".")
+            if (token.NextToken?.Text != "." && token.NextToken?.Text != "<")
                 return;
 
             if (GlobalConstants.CommonEnums.Contains(token.Text))
@@ -242,13 +242,13 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         {
             switch (token.Map!.SemanticRole)
             {
-                case SemanticRole.AliasDeclaration:
                 case SemanticRole.AttributeArgument:
                 case SemanticRole.EnumMemberDeclaration:
                 case SemanticRole.EnumMemberReference:
                 case SemanticRole.FieldDeclaration:
                 case SemanticRole.FieldReference:
                 case SemanticRole.MemberAccess:
+                case SemanticRole.NamespaceAliasDeclaration:
                 case SemanticRole.NamespaceDeclarationQualifer:
                 case SemanticRole.ObjectPropertyAssignment:
                 case SemanticRole.PropertyAccess:
@@ -286,6 +286,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.RecordConstructorInvocation:
                 case SemanticRole.RecordDeclaration:
                 case SemanticRole.RecordReference:
+                case SemanticRole.TypeAliasDeclaration:
                     token.HighlightColor = Green;
                     break;
                 case SemanticRole.EnumDeclaration:

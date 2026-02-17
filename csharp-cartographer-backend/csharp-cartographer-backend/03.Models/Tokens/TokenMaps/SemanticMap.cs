@@ -282,12 +282,12 @@
 
         // ------------ NAMES / QUALIFIERS ------------ //
 
-        AliasDeclaration,
         AliasQualifier,
-        //QualifiedTarget,
         MemberName,
+        NamespaceAliasDeclaration,
         NamespaceQualifer,
         NamespaceDeclarationQualifer,
+        TypeAliasDeclaration,
         TypeQualifier,
         UsingDirectiveQualifier,
 

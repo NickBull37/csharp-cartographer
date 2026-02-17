@@ -992,8 +992,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsNamespaceQualifier())
                 return SemanticRole.NamespaceQualifer;
 
-            if (token.IsAliasDeclarationIdentifier())
-                return SemanticRole.AliasDeclaration;
+            if (token.IsNamespaceAliasDeclarationIdentifier())
+                return SemanticRole.NamespaceAliasDeclaration;
+
+            if (token.IsTypeAliasDeclarationIdentifier())
+                return SemanticRole.TypeAliasDeclaration;
 
             if (token.IsAliasQualifier())
                 return SemanticRole.AliasQualifier;

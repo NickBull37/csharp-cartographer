@@ -140,6 +140,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsAccessStaticMember() =>
             HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
 
+        private bool HasAncestor(SyntaxKind kind)
+        {
+            var ancestors = AncestorKinds.Ancestors;
+            return !ancestors.IsEmpty
+                && ancestors.Contains(kind);
+        }
+
         private bool HasAncestorAt(int index, SyntaxKind kind)
         {
             var ancestors = AncestorKinds.Ancestors;
@@ -970,29 +977,23 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsNamespaceQualifier()
         {
-            // skip using dir qualifiers that are shared between using dirs and namespace declaration
+            // skip using dir qualifiers
             if (AncestorKinds.GetLast() == SyntaxKind.UsingDirective)
                 return false;
 
             if (RoslynClassification is not null && RoslynClassification == "namespace name")
                 return true;
 
-            //             ⌄                ⌄    ⌄       ⌄ 
-            // csharp_cartographer_backend._03.Models.Artifacts.Artifact artifact = new();
-            if (HasAncestorAt(0, SyntaxKind.IdentifierName)
-                && HasAncestorAt(1, SyntaxKind.QualifiedName)
-                && HasAncestorAt(2, SyntaxKind.QualifiedName)
-                && NextToken?.Text == "."
-                && AncestorKinds.GetLast() != SyntaxKind.UsingDirective)
+            bool hasValidKind = Kind == SyntaxKind.IdentifierToken;
+            bool hasQualifiedNameAncestor = HasAncestor(SyntaxKind.QualifiedName);
+            bool isAlias = IsAliasQualifier();
+
+            if (hasValidKind && hasQualifiedNameAncestor && !isAlias)
             {
                 return true;
             }
 
-            //            ⌄
-            // global::System.DateTime.Now
-            if (HasAncestorAt(0, SyntaxKind.IdentifierName)
-                && HasAncestorAt(1, SyntaxKind.AliasQualifiedName)
-                && PrevToken?.Text == "::")
+            if (SemanticData?.SymbolKind == SymbolKind.Namespace)
             {
                 return true;
             }
@@ -1002,35 +1003,73 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsAliasDeclarationIdentifier()
         {
-            //       ⌄
-            // using IO = System.IO;
+            // covers namespace & type aliases
             return HasAncestorAt(0, SyntaxKind.IdentifierName)
                 && HasAncestorAt(1, SyntaxKind.NameEquals)
                 && PrevToken?.Text == "using";
         }
 
+        public bool IsNamespaceAliasDeclarationIdentifier()
+        {
+            if (SemanticData is null)
+                return false;
+
+            // alias declarations only appear in using statements, other instances are alias references
+            if (AncestorKinds.GetLast() != SyntaxKind.UsingDirective)
+                return false;
+
+            //       ⌄
+            // using IO = System.IO;
+            bool hasValidTarget = SemanticData.AliasTargetSymbol?.Kind
+                is SymbolKind.Namespace
+                or SymbolKind.ErrorType; // default to namespace alias if target symbol can't be identified
+
+            return SemanticData.IsAlias && hasValidTarget;
+        }
+
+        public bool IsTypeAliasDeclarationIdentifier()
+        {
+            if (SemanticData is null)
+                return false;
+
+            // alias declarations only appear in using statements, other instances are alias references
+            if (AncestorKinds.GetLast() != SyntaxKind.UsingDirective)
+                return false;
+
+            //          ⌄
+            // using Handler = System.Action<int>;
+            return SemanticData.IsAlias
+                && SemanticData.AliasTargetSymbol?.Kind == SymbolKind.NamedType;
+        }
+
         public bool IsAliasQualifier()
         {
-            //                    ⌄
-            // var token = new MyToken.NavToken();
-            if (HasAncestorAt(0, SyntaxKind.IdentifierName)
-                && HasAncestorAt(1, SyntaxKind.QualifiedName)
-                && !HasAncestorAt(2, SyntaxKind.QualifiedName)
-                && PrevToken?.Text != "."
-                && NextToken?.Text == ".")
-                return true;
+            // skip using dir aliases
+            if (AncestorKinds.GetLast() == SyntaxKind.UsingDirective)
+                return false;
 
-            //        ⌄
-            // return IO.File.Exists(path);
-            if (HasAncestorAt(0, SyntaxKind.IdentifierName)
-                && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
-                && PrevToken?.Text != "."
-                && NextToken?.Text == "."
-                && SemanticData?.SymbolKind == SymbolKind.Namespace
-                && SemanticData?.MemberTypeKind == SymbolKind.Alias)
-                return true;
+            return SemanticData?.IsAlias == true;
 
-            return false;
+            ////                    ⌄
+            //// var token = new MyToken.NavToken();
+            //if (HasAncestorAt(0, SyntaxKind.IdentifierName)
+            //    && HasAncestorAt(1, SyntaxKind.QualifiedName)
+            //    && !HasAncestorAt(2, SyntaxKind.QualifiedName)
+            //    && PrevToken?.Text != "."
+            //    && NextToken?.Text == ".")
+            //    return true;
+
+            ////        ⌄
+            //// return IO.File.Exists(path);
+            //if (HasAncestorAt(0, SyntaxKind.IdentifierName)
+            //    && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
+            //    && PrevToken?.Text != "."
+            //    && NextToken?.Text == "."
+            //    && SemanticData?.SymbolKind == SymbolKind.Namespace
+            //    && SemanticData?.MemberTypeKind == SymbolKind.Alias)
+            //    return true;
+
+            //return false;
         }
 
         public bool IsTypeQualifier()
