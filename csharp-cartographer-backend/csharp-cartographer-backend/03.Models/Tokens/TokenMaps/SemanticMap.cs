@@ -43,6 +43,7 @@
         ConstructorBoundary,
         CollectionExpressionBoundary,
         DefaultExpressionBoundary,
+        ElseBlockBoundary,
         EnumBoundary,
         ForEachBlockBoundary,
         ForEachControlBoundary,

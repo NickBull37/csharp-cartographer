@@ -238,6 +238,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsConstructorDelimiter())
                     return SemanticRole.ConstructorBoundary;
 
+                if (token.IsElseBlockDelimiter())
+                    return SemanticRole.ElseBlockBoundary;
+
                 if (token.IsEnumDelimiter())
                     return SemanticRole.EnumBoundary;
 

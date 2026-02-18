@@ -28,14 +28,21 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             return null;
         }
 
-        // Currently only handles constant identifier declarations
+        // Currently only handles constant identifier declarations & field references
         private static string? GetStaticSymbolCorrection(NavToken token)
         {
+            // constant identifiers
             bool isFieldSymbol = token.SemanticData?.IsFieldSymbol ?? false;
             bool IsConstant = token.SemanticData?.IsConst ?? false;
             if (isFieldSymbol && IsConstant)
             {
                 return "constant name";
+            }
+
+            // field refs
+            if (isFieldSymbol)
+            {
+                return "field name";
             }
 
             return null;

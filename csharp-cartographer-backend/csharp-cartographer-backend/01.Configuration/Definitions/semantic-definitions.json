@@ -65,6 +65,9 @@
   "DefaultExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}default{/c} expression."
   },
+  "ElseBlockBoundary": {
+    "Definition": "Marks the boundaries of the code that runs when an {c:color-purple keyword}if{/c} statement condition is false."
+  },
   "EnumBoundary": {
     "Definition": "Marks a boundary of an {c:color-blue keyword}enum{/c} definition."
   },
