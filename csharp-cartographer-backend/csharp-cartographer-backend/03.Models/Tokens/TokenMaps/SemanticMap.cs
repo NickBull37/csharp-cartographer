@@ -107,6 +107,7 @@
         CollectionInitializerElementSeparator,
         ConstraintSeparator,
         EnumMemberSeparator,
+        InterpolationFormatSeparator,
         MemberPatternSeparator,
         OrderByClauseSeparator,
         ParameterSeparator,
@@ -236,10 +237,10 @@
 
         // ------------ LITERALS ------------ //
 
-        // Literals & values
         BooleanLiteral,
         CharacterLiteral,
         NullValue,
+        NumericFormatSpecifier,
         NumericLiteral,
         QuotedString,
         VerbatimString,
@@ -247,13 +248,10 @@
         InterpolatedStringText,
         InterpolatedStringEnd,
         InterpolatedVerbatimStringStart,
-        InterpolatedVerbatimStringText,
-        InterpolatedVerbatimStringEnd,
 
 
         // ------------ TYPES ------------ //
 
-        // Type positions
         ArrayDataType,
         CastType,
         CastTargetType,

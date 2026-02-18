@@ -361,6 +361,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsEnumMemberSeparator())
                     return SemanticRole.EnumMemberSeparator;
 
+                if (token.IsInterpolationFormatSeparator())
+                    return SemanticRole.InterpolationFormatSeparator;
+
                 if (token.IsMemberPatternSeparator())
                     return SemanticRole.MemberPatternSeparator;
 
@@ -805,29 +808,29 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.NumericLiteral;
 
             // String literals
-            if (token.IsQuotedString())
-                return SemanticRole.QuotedString;
+            if (token.IsStringLiteral())
+            {
+                if (token.IsQuotedString())
+                    return SemanticRole.QuotedString;
 
-            if (token.IsVerbatimString())
-                return SemanticRole.VerbatimString;
+                if (token.IsVerbatimString())
+                    return SemanticRole.VerbatimString;
 
-            if (token.IsInterpolatedString() && token.Kind == SyntaxKind.InterpolatedStringStartToken)
-                return SemanticRole.InterpolatedStringStart;
+                if (token.IsInterpolatedStringStart())
+                    return SemanticRole.InterpolatedStringStart;
 
-            if (token.IsInterpolatedString() && token.Kind == SyntaxKind.InterpolatedStringTextToken)
-                return SemanticRole.InterpolatedStringText;
+                if (token.IsInterpolatedStringText())
+                    return SemanticRole.InterpolatedStringText;
 
-            if (token.IsInterpolatedString() && token.Kind == SyntaxKind.InterpolatedStringEndToken)
-                return SemanticRole.InterpolatedStringEnd;
+                if (token.IsInterpolatedStringEnd())
+                    return SemanticRole.InterpolatedStringEnd;
 
-            if (token.IsInterpolatedVerbatimString() && token.Kind == SyntaxKind.InterpolatedVerbatimStringStartToken)
-                return SemanticRole.InterpolatedVerbatimStringStart;
+                if (token.IsInterpolatedVerbatimStringStart())
+                    return SemanticRole.InterpolatedVerbatimStringStart;
 
-            if (token.IsInterpolatedVerbatimString() && token.Kind == SyntaxKind.InterpolatedStringTextToken && token.RoslynClassification is not null && token.RoslynClassification.Contains("verbatim"))
-                return SemanticRole.InterpolatedVerbatimStringText;
-
-            if (token.IsInterpolatedVerbatimString() && token.Kind == SyntaxKind.InterpolatedStringEndToken && token.RoslynClassification is not null && token.RoslynClassification.Contains("verbatim"))
-                return SemanticRole.InterpolatedVerbatimStringEnd;
+                if (token.IsNumericFormatSpecifier())
+                    return SemanticRole.NumericFormatSpecifier;
+            }
 
             // Char literals
             if (token.IsCharacterLiteral())

@@ -1312,46 +1312,58 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.CharacterLiteralExpression);
         }
 
-        public bool IsNullLiteral() => Kind == SyntaxKind.NullKeyword;
+        public bool IsNullLiteral()
+        {
+            return Kind == SyntaxKind.NullKeyword;
+        }
+
+        public bool IsStringLiteral()
+        {
+            return Kind
+                is SyntaxKind.StringLiteralToken
+                or SyntaxKind.InterpolatedStringStartToken
+                or SyntaxKind.InterpolatedStringTextToken
+                or SyntaxKind.InterpolatedStringEndToken
+                or SyntaxKind.InterpolatedVerbatimStringStartToken;
+        }
 
         public bool IsQuotedString()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "string"
-                && Kind == SyntaxKind.StringLiteralToken
-                && HasAncestorAt(0, SyntaxKind.StringLiteralExpression);
+            return Kind == SyntaxKind.StringLiteralToken
+                && Text.StartsWith('"');
         }
 
         public bool IsVerbatimString()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "string - verbatim"
-                && Kind == SyntaxKind.StringLiteralToken
-                && HasAncestorAt(0, SyntaxKind.StringLiteralExpression);
+            return Kind == SyntaxKind.StringLiteralToken
+                && Text.StartsWith('@');
         }
 
-        public bool IsInterpolatedString()
+        public bool IsInterpolatedStringStart()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "string"
-                &&
-                    (
-                        Kind == SyntaxKind.InterpolatedStringStartToken ||
-                        Kind == SyntaxKind.InterpolatedStringTextToken ||
-                        Kind == SyntaxKind.InterpolatedStringEndToken
-                    );
+            return Kind == SyntaxKind.InterpolatedStringStartToken;
         }
 
-        public bool IsInterpolatedVerbatimString()
+        public bool IsInterpolatedStringText()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "string - verbatim"
-                &&
-                    (
-                        Kind == SyntaxKind.InterpolatedVerbatimStringStartToken ||
-                        Kind == SyntaxKind.InterpolatedStringTextToken ||
-                        Kind == SyntaxKind.InterpolatedStringEndToken
-                    );
+            return Kind == SyntaxKind.InterpolatedStringTextToken
+                && !HasAncestorAt(0, SyntaxKind.InterpolationFormatClause);
+        }
+
+        public bool IsInterpolatedStringEnd()
+        {
+            return Kind == SyntaxKind.InterpolatedStringEndToken;
+        }
+
+        public bool IsInterpolatedVerbatimStringStart()
+        {
+            return Kind == SyntaxKind.InterpolatedVerbatimStringStartToken;
+        }
+
+        public bool IsNumericFormatSpecifier()
+        {
+            return Kind == SyntaxKind.InterpolatedStringTextToken
+                && HasAncestorAt(0, SyntaxKind.InterpolationFormatClause);
         }
         #endregion
 
@@ -1507,6 +1519,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && RoslynClassification == "punctuation"
                 && HasAncestorAt(0, SyntaxKind.EnumDeclaration)
                 && Text == ",";
+        }
+
+        public bool IsInterpolationFormatSeparator()
+        {
+            return Kind == SyntaxKind.ColonToken
+                && HasAncestorAt(0, SyntaxKind.InterpolationFormatClause);
         }
 
         public bool IsMemberPatternSeparator()

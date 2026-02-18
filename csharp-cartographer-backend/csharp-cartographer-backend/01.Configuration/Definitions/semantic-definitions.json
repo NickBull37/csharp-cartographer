@@ -535,28 +535,28 @@
     "Definition": "Represents a number written directly in the code. It can be written as an integer, decimal, or floating-point value."
   },
   "QuotedString": {
-    "Definition": "Quoted strings represent a sequence of characters enclosed in double quotes (\") on the same line."
+    "Definition": "Quoted strings represent a sequence of characters enclosed in double quotes {c:keyword}\" \"{/c} on the same line."
   },
   "VerbatimString": {
-    "Definition": "A verbatim string represents text exactly as written, without processing escape sequences. It allows multi-line text and uses the @ symbol."
+    "Definition": "Represents text exactly as written, without processing escape sequences. It allows multi-line text and uses the {c:keyword}@{/c} prefix before the opening quote."
   },
   "InterpolatedStringStart": {
-    "Definition": "The start of an interpolated string marks the beginning of a string that can include expressions. It uses the $ symbol before the opening quote."
+    "Definition": "Marks the beginning of a string that can include expressions. It uses the {c:keyword}${/c} prefix before the opening quote."
   },
   "InterpolatedStringText": {
-    "Definition": "Interpolated string text represents the literal text inside an interpolated string. It appears between expressions and is output as-is."
+    "Definition": "The literal text inside an interpolated string that can appear before or after interpolated values."
   },
   "InterpolatedStringEnd": {
-    "Definition": "The end of an interpolated string marks where the interpolated string finishes. It closes the string definition."
+    "Definition": "Marks the end of the interpolated string."
   },
   "InterpolatedVerbatimStringStart": {
-    "Definition": "The start of an interpolated verbatim string marks the beginning of a string that supports interpolation and multi-line text. It uses the $@ or @$ prefix."
+    "Definition": "Marks the beginning of a string that supports interpolation and multi-line text. It uses the {c:keyword}$@{/c} or {c:keyword}@${/c} prefix before the opening quote."
   },
-  "InterpolatedVerbatimStringText": {
-    "Definition": "Interpolated verbatim string text represents the literal text inside an interpolated verbatim string. It is written exactly as it appears."
+  "InterpolationFormatSeparator": {
+    "Definition": "Separates the interpolated value on the left from the specified format on the right."
   },
-  "InterpolatedVerbatimStringEnd": {
-    "Definition": "The end of an interpolated verbatim string marks where the string definition finishes. It closes the interpolated verbatim string."
+  "NumericFormatSpecifier": {
+    "Definition": "A format pattern used inside an interpolated string that defines how a numeric value should be converted to text."
   },
   "ArrayDataType": {
     "Definition": "The data type supported by the array."

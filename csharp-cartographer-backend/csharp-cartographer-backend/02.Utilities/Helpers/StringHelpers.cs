@@ -94,5 +94,17 @@ namespace csharp_cartographer_backend._02.Utilities.Helpers
         {
             return $@"C:\Projects\Cartographer\Artifacts\{fileName}";
         }
+
+        public static string InterpolatedStringWithFormatDemo(TimeSpan time)
+        {
+            if (time.TotalSeconds < 1)
+                return $"{time.TotalMilliseconds:0} ms"; // Less than 1 second: show milliseconds
+
+            else if (time.TotalMinutes < 1)
+                return $"{time.Seconds}.{time.Milliseconds:000} seconds"; // Less than 1 minute: show seconds and milliseconds
+
+            else
+                return time.ToString(@"hh\:mm\:ss\.fff"); // Standard HH:MM:SS.MS format
+        }
     }
 }
