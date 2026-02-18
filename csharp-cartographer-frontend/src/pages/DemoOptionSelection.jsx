@@ -159,14 +159,6 @@ const DemoOptionSelection = () => {
                             >
                                 [OperatorDemo.cs]
                             </BtnText>
-                            <BtnText
-                                onClick={() => handleFileClick("CollectionDemo.cs")}
-                                sx={{
-                                    color: selectedFile === 'CollectionDemo.cs' ? colors.code : '#fff'
-                                }}
-                            >
-                                [CollectionDemo.cs]
-                            </BtnText>
                         </Stack>
                     </Stack>
 
@@ -541,42 +533,6 @@ const DemoOptionSelection = () => {
                                     }}
                                 >
                                     Operator Demo
-                                </InfoText>
-                                <Stack
-                                    display={'flex'}
-                                    gap={4}
-                                    sx={{
-                                        bgcolor: colors.gray25,
-                                        padding: 2,
-                                        borderRadius: '5px'
-                                    }}
-                                >
-                                    <InfoText>
-                                    </InfoText>
-                                    <InfoText>
-                                    </InfoText>
-                                    <InfoText>
-                                    </InfoText>
-                                </Stack>
-                            </Stack>
-                        )
-                        : selectedFile === "CollectionDemo.cs"
-                        ? (
-                            <Stack
-                                width={'40%'}
-                                gap={3}
-                                sx={{
-                                    px: 8
-                                }}
-                            >
-                                <InfoText
-                                    className='color-code'
-                                    textAlign={"center"}
-                                    sx={{
-                                        fontSize: '1.65rem'
-                                    }}
-                                >
-                                    Collection Demo
                                 </InfoText>
                                 <Stack
                                     display={'flex'}

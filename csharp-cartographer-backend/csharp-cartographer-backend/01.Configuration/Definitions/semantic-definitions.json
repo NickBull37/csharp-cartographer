@@ -294,7 +294,7 @@
     "Definition": "Concurrency keywords control how code runs across multiple threads or tasks. They help manage work that happens at the same time."
   },
   "ConditionalBranching": {
-    "Definition": "Conditional branching keywords choose which code runs based on a condition. They allow programs to make decisions."
+    "Definition": "Conditional branching keywords evaluate a condition to determine whether a block of code should be executed or not. The condition can be a single boolean-type identifier or an expression that evaluates to a boolean value."
   },
   "Constraint": {
     "Definition": "Constraint keywords restrict which types can be used with generics. They help ensure generic code is used safely."
@@ -535,13 +535,13 @@
     "Definition": "Represents a number written directly in the code. It can be written as an integer, decimal, or floating-point value."
   },
   "QuotedString": {
-    "Definition": "Quoted strings represent a sequence of characters enclosed in double quotes {c:keyword}\" \"{/c} on the same line."
+    "Definition": "Quoted strings represent a sequence of characters enclosed in double quotes {c:bold}\" \"{/c} on the same line."
   },
   "VerbatimString": {
-    "Definition": "Represents text exactly as written, without processing escape sequences. It allows multi-line text and uses the {c:keyword}@{/c} prefix before the opening quote."
+    "Definition": "Represents text exactly as written, without processing escape sequences. It allows multi-line text and uses the {c:bold}@{/c} prefix before the opening quote."
   },
   "InterpolatedStringStart": {
-    "Definition": "Marks the beginning of a string that can include expressions. It uses the {c:keyword}${/c} prefix before the opening quote."
+    "Definition": "Marks the beginning of a string that can include expressions. It uses the {c:bold}${/c} prefix before the opening quote."
   },
   "InterpolatedStringText": {
     "Definition": "The literal text inside an interpolated string that can appear before or after interpolated values."
@@ -550,7 +550,7 @@
     "Definition": "Marks the end of the interpolated string."
   },
   "InterpolatedVerbatimStringStart": {
-    "Definition": "Marks the beginning of a string that supports interpolation and multi-line text. It uses the {c:keyword}$@{/c} or {c:keyword}@${/c} prefix before the opening quote."
+    "Definition": "Marks the beginning of a string that supports interpolation and multi-line text. It uses the {c:bold}$@{/c} or {c:bold}@${/c} prefix before the opening quote."
   },
   "InterpolationFormatSeparator": {
     "Definition": "Separates the interpolated value on the left from the specified format on the right."

@@ -63,7 +63,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             {
                 return PrimaryKind.Operator;
             }
-            if (GlobalConstants.Delimiters.Contains(token.Text))
+            if (GlobalConstants.Delimiters.Contains(token.Text) && token.RoslynClassification == "punctuation")
             {
                 return PrimaryKind.Delimiter;
             }

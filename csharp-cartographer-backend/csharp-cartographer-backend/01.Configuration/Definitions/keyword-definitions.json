@@ -132,7 +132,7 @@
     "Definition": "The {c:color-purple keyword}goto{/c} keyword jumps execution to a labeled statement. It is rarely used because it can make code harder to follow."
   },
   "if": {
-    "Definition": "The {c:color-purple keyword}if{/c} keyword runs code only when a condition is true. It allows programs to make decisions."
+    "Definition": "The {c:color-purple keyword}if{/c} keyword executes code only when it's condition is {c:bold}true{/c}."
   },
   "implicit": {
     "Definition": "The {c:color-blue keyword}implicit{/c} keyword defines a conversion that happens automatically. It allows safe type conversions without extra syntax."
