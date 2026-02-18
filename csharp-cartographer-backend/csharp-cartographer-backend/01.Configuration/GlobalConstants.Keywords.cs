@@ -397,11 +397,13 @@
         [
             "checked",
             "fixed",
-            //"sizeof",
             "stackalloc",
-            //"typeof",
             "unchecked",
             "unsafe",
+
+            // covered by individual operator roles
+            //"sizeof",
+            //"typeof",
         ];
 
         /// Type Declarations

@@ -14,7 +14,9 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
     {
         public SyntaxTree GetSyntaxTree(FileData fileData, CancellationToken cancellationToken)
         {
-            return CSharpSyntaxTree.ParseText(fileData.Content, cancellationToken: cancellationToken);
+            return CSharpSyntaxTree.ParseText(
+                fileData.Content,
+                cancellationToken: cancellationToken);
         }
 
         public SemanticModel GetSemanticModel(SyntaxTree syntaxTree, CancellationToken cancellationToken)

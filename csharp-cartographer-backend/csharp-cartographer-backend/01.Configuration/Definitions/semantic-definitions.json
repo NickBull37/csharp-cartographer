@@ -65,6 +65,9 @@
   "DefaultExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}default{/c} expression."
   },
+  "EnumBoundary": {
+    "Definition": "Marks a boundary of an {c:color-blue keyword}enum{/c} definition."
+  },
   "ForEachBlockBoundary": {
     "Definition": "Marks the boundaries of the code that runs for each item in a collection."
   },
@@ -331,6 +334,9 @@
   },
   "ObjectConstruction": {
     "Definition": "Object construction keywords create new instances of types. They allocate and initialize objects in memory."
+  },
+  "ObjectConstructionType": {
+    "Definition": "The type name that appears in an object creation expression, identifying the {c:color-blue keyword}class{/c} or {c:color-blue keyword}struct{/c} whose constructor is being invoked."
   },
   "ParameterModifier": {
     "Definition": "Parameter modifiers change how arguments are passed into methods. They control behaviors like passing by reference."

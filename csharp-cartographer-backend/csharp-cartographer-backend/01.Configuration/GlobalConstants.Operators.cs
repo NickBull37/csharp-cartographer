@@ -1,7 +1,7 @@
 ﻿namespace csharp_cartographer_backend._01.Configuration
 {
     /// **************************************************
-    /// |                    KEYWORDS                    |
+    /// |                   OPERATORS                    |
     /// **************************************************
     public partial class GlobalConstants
     {

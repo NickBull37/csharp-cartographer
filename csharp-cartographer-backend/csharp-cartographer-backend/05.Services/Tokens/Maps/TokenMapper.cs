@@ -238,6 +238,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsConstructorDelimiter())
                     return SemanticRole.ConstructorBoundary;
 
+                if (token.IsEnumDelimiter())
+                    return SemanticRole.EnumBoundary;
+
                 if (token.IsForEachBlockDelimiter())
                     return SemanticRole.ForEachBlockBoundary;
 
@@ -581,6 +584,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Object construction keywords ---
             if (GlobalConstants.ObjectConstructionKeywords.Contains(token.Text))
                 return SemanticRole.ObjectConstruction;
+
+            if (token.IsObjectConstructionTypeKeyword())
+                return SemanticRole.ObjectConstructionType;
 
             // --- Parameter modifiers ---
             if (GlobalConstants.ParameterModifiers.Contains(token.Text))

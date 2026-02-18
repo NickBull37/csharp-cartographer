@@ -125,7 +125,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static void ColorManually(NavToken token)
         {
-            if (token.NextToken?.Text != "." && token.NextToken?.Text != "<")
+            // avoids accidentally coloring a member identifier as a type
+            if (token.Map.SemanticRole == SemanticRole.MemberAccess)
                 return;
 
             if (GlobalConstants.CommonEnums.Contains(token.Text))

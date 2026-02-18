@@ -191,6 +191,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && PrevToken?.PrevToken?.Text == "nameof";
         }
 
+        public bool IsObjectConstructionTypeKeyword()
+        {
+            return SyntaxFacts.IsPredefinedType(Kind)
+                && HasAncestorAt(1, SyntaxKind.ObjectCreationExpression);
+        }
+
         public bool IsSizeOfOperand()
         {
             return HasAncestorAt(1, SyntaxKind.SizeOfExpression);
@@ -338,6 +344,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.DefaultExpression)
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
+        public bool IsEnumDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.EnumDeclaration)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
         public bool IsForEachBlockDelimiter()

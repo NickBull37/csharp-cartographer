@@ -84,7 +84,7 @@
     "Definition": "The {c:color-purple keyword}else{/c} keyword defines code that runs when an if condition is false. It provides an alternative execution path."
   },
   "enum": {
-    "Definition": "The {c:color-light-green keyword}enum{/c} keyword defines a set of named constant values. It is used to represent a fixed list of options."
+    "Definition": "The {c:color-blue keyword}enum{/c} keyword defines a set of named constant values. It is used to represent a fixed list of options."
   },
   "equals": {
     "Definition": "The {c:color-blue keyword}equals{/c} keyword specifies a value comparison in pattern matching. It checks whether two values are equal."

@@ -9,6 +9,7 @@
         public static readonly List<string> CommonIdentifiers =
         [
             // Enums
+            "Accessibility",
             "AttributeTargets",
             "BindingFlags",
             "ConsoleColor",
@@ -59,6 +60,7 @@
         /// ------  Common Enums  ------ ///
         public static readonly List<string> CommonEnums =
         [
+            "Accessibility",
             "AttributeTargets",
             "BindingFlags",
             "ConsoleColor",
