@@ -288,8 +288,8 @@ const TokenSidebarContent = ({
                                 : 'default-text-class'
                         }
                     >
-                        {/* {tokenText} */}
-                        {tokenText} - {activeTokenIndex}
+                        {tokenText}
+                        {/* {tokenText} - {activeTokenIndex} */}
                     </TokenText>
                     <Tooltip title="Next Token">
                         <NextTokenButton
@@ -385,7 +385,7 @@ const TokenSidebarContent = ({
                                         <Stack
                                             gap={1}
                                             sx={{
-                                                mt: '1.75rem'
+                                                mt: '1.25rem'
                                             }}
                                         >
                                             <Box

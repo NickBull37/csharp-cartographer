@@ -1093,35 +1093,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             //return false;
         }
 
-        public bool IsTypeQualifier()
-        {
-            // skips 
-            if (NextToken?.Text != ".")
-                return false;
-
-            // skips query expression vars when they ref a property
-            //               ⌄
-            // let doubled = n.Value * 2 
-            if (IsQueryExpressionVariable())
-                return false;
-
-            //           ⌄
-            // System.Console.WriteLine(text);
-            if (PrevToken?.Text == ".")
-                return HasAncestorAt(0, SyntaxKind.IdentifierName)
-                    && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
-                    && HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression)
-                    && PrevToken?.PrevToken?.Map?.SemanticRole is SemanticRole.NamespaceQualifer or SemanticRole.AliasQualifier;
-
-            //    ⌄                         ⌄
-            // Console.WriteLine(text);    Guid.NewGuid();
-            if (PrevToken?.Text != ".")
-                return HasAncestorAt(0, SyntaxKind.IdentifierName)
-                    && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
-
-            return false;
-        }
-
         /*
          *  -----------------------------------------------------------------------
          *      Query Expression Identifiers
@@ -1749,6 +1720,45 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             HasAncestorAt(1, SyntaxKind.DeclarationPattern) ||
             HasAncestorAt(1, SyntaxKind.IsExpression) ||
             HasAncestorAt(1, SyntaxKind.RecursivePattern);
+
+        public bool IsTypeQualifier()
+        {
+            // skips non-qualifier tokens
+            if (NextToken?.Text != ".")
+                return false;
+
+            // avoids accidentally catching on instance vars that look like qualifiers
+            if (RoslynClassification
+                is "field name"
+                or "local name"
+                or "parameter name"
+                or "property name")
+            {
+                return false;
+            }
+
+            // skips query expression vars when they ref a property
+            //               ⌄
+            // let doubled = n.Value * 2 
+            if (IsQueryExpressionVariable())
+                return false;
+
+            //           ⌄
+            // System.Console.WriteLine(text);
+            if (PrevToken?.Text == ".")
+                return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                    && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
+                    && HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression)
+                    && PrevToken?.PrevToken?.Map?.SemanticRole is SemanticRole.NamespaceQualifer or SemanticRole.AliasQualifier;
+
+            //    ⌄                         ⌄
+            // Console.WriteLine(text);    Guid.NewGuid();
+            if (PrevToken?.Text != ".")
+                return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                    && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
+
+            return false;
+        }
         #endregion
 
         /// <summary>Gets the token's leading trivia.</summary>

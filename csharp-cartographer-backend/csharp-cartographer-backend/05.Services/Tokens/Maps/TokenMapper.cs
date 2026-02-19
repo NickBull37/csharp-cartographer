@@ -141,9 +141,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (semanticRole != SemanticRole.Unknown)
                 return semanticRole;
 
-            // --- Members ---
-            //return SemanticRole.MemberAccess;
-
             return SemanticRole.Unknown;
         }
 
@@ -950,31 +947,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsForEachLoopCollectionIdentifier())
                 return SemanticRole.ForEachLoopCollectionIdentifier;
 
-            // Identifier references
-            if (token.RoslynClassification == "constant name")
-                return SemanticRole.ConstantReference;
-
-            if (token.RoslynClassification == "enum name")
-                return SemanticRole.EnumReference;
-
-            if (token.RoslynClassification == "enum member name")
-                return SemanticRole.EnumMemberReference;
-
-            if (token.RoslynClassification == "event name")
-                return SemanticRole.EventReference;
-
-            if (token.RoslynClassification == "field name")
-                return SemanticRole.FieldReference;
-
-            if (token.RoslynClassification == "local name")
-                return SemanticRole.LocalVariableReference;
-
-            if (token.RoslynClassification == "parameter name")
-                return SemanticRole.ParameterReference;
-
-            if (token.RoslynClassification == "property name")
-                return SemanticRole.PropertyReference;
-
             // Identifier invocations
             if (token.IsMethodInvocation())
                 return SemanticRole.MethodInvocation;
@@ -1116,6 +1088,33 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.PrevToken?.Text == ".")
                 return SemanticRole.MemberAccess;
+
+            // --------------------------------------------------------- //
+
+            // Identifier references - likely to catch early (check last)
+            if (token.RoslynClassification == "constant name")
+                return SemanticRole.ConstantReference;
+
+            if (token.RoslynClassification == "enum name")
+                return SemanticRole.EnumReference;
+
+            if (token.RoslynClassification == "enum member name")
+                return SemanticRole.EnumMemberReference;
+
+            if (token.RoslynClassification == "event name")
+                return SemanticRole.EventReference;
+
+            if (token.RoslynClassification == "field name")
+                return SemanticRole.FieldReference;
+
+            if (token.RoslynClassification == "local name")
+                return SemanticRole.LocalVariableReference;
+
+            if (token.RoslynClassification == "parameter name")
+                return SemanticRole.ParameterReference;
+
+            if (token.RoslynClassification == "property name")
+                return SemanticRole.PropertyReference;
 
             return SemanticRole.Unknown;
         }

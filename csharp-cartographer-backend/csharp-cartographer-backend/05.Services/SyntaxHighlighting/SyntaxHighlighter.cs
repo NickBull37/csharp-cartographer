@@ -129,6 +129,14 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             if (token.Map.SemanticRole == SemanticRole.MemberAccess)
                 return;
 
+            // avoids accidentally coloring a declaration identifier as a type
+            if (token.Map.SemanticRole.ToString().Contains("Declaration"))
+                return;
+
+            // avoids accidentally coloring a reference identifier as a type
+            if (token.Map.SemanticRole.ToString().Contains("Reference"))
+                return;
+
             if (GlobalConstants.CommonEnums.Contains(token.Text))
                 token.HighlightColor = LightGreen;
 
