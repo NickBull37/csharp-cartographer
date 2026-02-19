@@ -258,13 +258,14 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.FieldReference:
                 case SemanticRole.MemberAccess:
                 case SemanticRole.NamespaceAliasDeclaration:
-                case SemanticRole.NamespaceDeclarationQualifer:
+                //case SemanticRole.NamespaceQualifer:
+                //case SemanticRole.NamespaceDeclarationQualifer:
                 case SemanticRole.ObjectPropertyAssignment:
                 case SemanticRole.PropertyAccess:
                 case SemanticRole.PropertyDeclaration:
                 case SemanticRole.PropertyReference:
                 case SemanticRole.TupleElementName:
-                case SemanticRole.UsingDirectiveQualifier:
+                //case SemanticRole.UsingDirectiveQualifier:
                 // query expression vars
                 case SemanticRole.GroupContinuationRangeVariable:
                 case SemanticRole.JoinIntoRangeVariable:
@@ -282,7 +283,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     token.HighlightColor = White;
                     break;
                 case SemanticRole.AliasQualifier:
-                case SemanticRole.NamespaceQualifer:
+                    //case SemanticRole.NamespaceQualifer:
                     token.HighlightColor = Gray;
                     break;
                 case SemanticRole.AttributeDeclaration:
@@ -326,6 +327,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.MethodInvocation:
                     token.HighlightColor = Yellow;
                     break;
+                case SemanticRole.NamespaceQualifier:
+                    token.HighlightColor = GetNamespaceQualifierColor(token);
+                    break;
                 // -------------------------------------------------------------- //
                 case SemanticRole.CastType:
                 case SemanticRole.CastTargetType:
@@ -358,6 +362,13 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             token.Map?.SemanticRole == SemanticRole.LoopStatement
                 ? Purple
                 : Blue;
+        private static string GetNamespaceQualifierColor(NavToken token)
+        {
+            if (token.IsUsingDirectiveQualifier() || token.IsNamespaceDeclarationQualifier())
+                return White;
+
+            return Gray;
+        }
 
         private static string GuessColor(string text)
         {

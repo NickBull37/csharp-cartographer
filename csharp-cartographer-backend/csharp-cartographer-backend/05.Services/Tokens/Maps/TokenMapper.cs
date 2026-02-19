@@ -967,14 +967,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.ConstructorInvocation;
 
             // Identifier - namespaces, aliases, qualifiers
-            if (token.IsUsingDirectiveQualifier())
-                return SemanticRole.UsingDirectiveQualifier;
-
-            if (token.IsNamespaceDeclarationQualifier())
-                return SemanticRole.NamespaceDeclarationQualifer;
-
             if (token.IsNamespaceQualifier())
-                return SemanticRole.NamespaceQualifer;
+                return SemanticRole.NamespaceQualifier;
 
             if (token.IsNamespaceAliasDeclarationIdentifier())
                 return SemanticRole.NamespaceAliasDeclaration;
@@ -1156,6 +1150,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsTypeParameter())
                     modifiers.Add(SemanticModifiers.TypeParameter);
+
+                if (token.IsUsingDirectiveQualifier())
+                    modifiers.Add(SemanticModifiers.ImportedNamespace);
             }
 
             // --- General modifiers

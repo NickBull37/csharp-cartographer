@@ -20,6 +20,9 @@
   "ImplicitlyTyped": {
     "Definition": "Implicitly typed means the type is determined automatically by the compiler. The type is still fixed, even though it is not written explicitly."
   },
+  "ImportedNamespace": {
+    "Definition": "A segment of a {c:bold}using directive{/c} that imports a {c:color-blue keyword}namespace{/c} into the current file. Namespaces are imported to allow their types to be referenced {c:bold}without fully qualified names{/c}."
+  },
   "InterpolatedValue": {
     "Definition": "An interpolated value is an expression embedded inside an interpolated string. Its result is inserted into the string at runtime."
   },

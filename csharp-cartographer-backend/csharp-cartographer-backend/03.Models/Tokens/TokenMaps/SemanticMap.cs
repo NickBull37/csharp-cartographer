@@ -284,13 +284,12 @@
         // ------------ NAMES / QUALIFIERS ------------ //
 
         AliasQualifier,
-        MemberName,
         NamespaceAliasDeclaration,
-        NamespaceQualifer,
-        NamespaceDeclarationQualifer,
+        NamespaceQualifier,
+        //NamespaceDeclarationQualifer,
         TypeAliasDeclaration,
         TypeQualifier,
-        UsingDirectiveQualifier,
+        //UsingDirectiveQualifier,
 
 
         // ------------ QUERY EXPRESSIONS ------------ //
@@ -348,35 +347,8 @@
     {
         None,
 
-        // Accessibility & scope
-        //Public,
-        //Private,
-        //Protected,
-        //Internal,
-        //FileScoped,
-
-        // Member behavior
-        //Abstract,
-        //Async,
-        //Const,
-        //Override,
-        //Partial,
-        //Readonly,
-        //Required,
-        //Sealed,
-        //Static,
-        //Virtual,
-        //Volatile,
-
-        // Identifier types
-        //Class,
-        //Delegate,
-        //Enum,
-        //Interface,
-        //PredefinedType,
-        //Record,
-        //RecordStruct,
-        //Struct,
+        // Identifier modifiers
+        ImportedNamespace,
 
         // Type form modifiers
         Anonymous,
@@ -392,25 +364,11 @@
         Pointer,
         ReturnValue,
 
-        // Property / accessor modifiers
-        //Getter,
-        //Setter,
-        //InitOnly,
-
         // Variable behavior
         ImplicitlyTyped,
         Ref,
         Out,
         In,
-
-        // Literal modifiers
-        //Numeric,
-        //QuotedString,
-        //VerbatimString,
-        //InterpolatedString,
-        //InterpolatedVerbatimString,
-        //Boolean,
-        //Character,
 
         // Control-flow modifiers
         ShortCircuit,

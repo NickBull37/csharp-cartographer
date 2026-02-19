@@ -4,12 +4,15 @@ using Microsoft.CodeAnalysis;
 using Handler = System.Action<int>;
 using IO = System.IO;
 using MyToken = csharp_cartographer_backend._03.Models.Tokens;
+using SB = System.Text.StringBuilder;
 
 namespace csharp_cartographer_backend._01.Configuration.TestFiles
 {
     public class OperatorDemo
     {
         private int _counter = 0;
+
+        private readonly SB StringBuilder = new();
 
         public void DemoAll(int a, int b)
         {

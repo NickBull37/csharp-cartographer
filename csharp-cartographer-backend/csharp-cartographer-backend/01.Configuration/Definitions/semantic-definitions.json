@@ -666,20 +666,11 @@
   "AliasQualifier": {
     "Definition": "An alias qualifier refers to an alias used to access a type or namespace. It helps distinguish which aliased name is being used."
   },
-  "MemberName": {
-    "Definition": "A member name identifies a specific member of a type, such as a method, property, or field. It is used to access that member in code."
-  },
-  "NamespaceQualifer": {
-    "Definition": "A namespace qualifier identifies the namespace that a type belongs to. It helps fully qualify names and avoid naming conflicts."
-  },
-  "NamespaceDeclarationQualifer": {
-    "Definition": "Specifies part of the namespace being declared in the current source file. It defines where the contained types logically belong."
+  "NamespaceQualifier": {
+    "Definition": "A segment of a fully qualified {c:color-blue keyword}namespace{/c}."
   },
   "TypeQualifier": {
     "Definition": "A type qualifier identifies a specific type within a namespace or enclosing type. It helps precisely locate the type being referenced."
-  },
-  "UsingDirectiveQualifier": {
-    "Definition": "Specifies part of a namespace or alias that allows types to be referenced without fully qualified names."
   },
   "GroupContinuationRangeVariable": {
     "Definition": "A group continuation range variable represents a variable introduced after a group operation in a query. It allows the grouped results to be queried further."

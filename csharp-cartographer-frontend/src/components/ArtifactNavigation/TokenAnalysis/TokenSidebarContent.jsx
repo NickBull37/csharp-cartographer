@@ -288,8 +288,8 @@ const TokenSidebarContent = ({
                                 : 'default-text-class'
                         }
                     >
-                        {tokenText}
-                        {/* {tokenText} - {activeTokenIndex} */}
+                        {/* {tokenText} */}
+                        {tokenText} - {activeTokenIndex}
                     </TokenText>
                     <Tooltip title="Next Token">
                         <NextTokenButton

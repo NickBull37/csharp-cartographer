@@ -998,18 +998,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsNamespaceQualifier()
         {
-            // skip using dir qualifiers
-            if (AncestorKinds.GetLast() == SyntaxKind.UsingDirective)
+            // skip alias qualifiers
+            if (IsAliasQualifier())
                 return false;
 
-            if (RoslynClassification is not null && RoslynClassification == "namespace name")
+            if (IsUsingDirectiveQualifier() || IsNamespaceDeclarationQualifier())
+            {
                 return true;
+            }
 
             bool hasValidKind = Kind == SyntaxKind.IdentifierToken;
             bool hasQualifiedNameAncestor = HasAncestor(SyntaxKind.QualifiedName);
-            bool isAlias = IsAliasQualifier();
-
-            if (hasValidKind && hasQualifiedNameAncestor && !isAlias)
+            if (hasValidKind && hasQualifiedNameAncestor)
             {
                 return true;
             }
@@ -1070,27 +1070,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return false;
 
             return SemanticData?.IsAlias == true;
-
-            ////                    ⌄
-            //// var token = new MyToken.NavToken();
-            //if (HasAncestorAt(0, SyntaxKind.IdentifierName)
-            //    && HasAncestorAt(1, SyntaxKind.QualifiedName)
-            //    && !HasAncestorAt(2, SyntaxKind.QualifiedName)
-            //    && PrevToken?.Text != "."
-            //    && NextToken?.Text == ".")
-            //    return true;
-
-            ////        ⌄
-            //// return IO.File.Exists(path);
-            //if (HasAncestorAt(0, SyntaxKind.IdentifierName)
-            //    && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
-            //    && PrevToken?.Text != "."
-            //    && NextToken?.Text == "."
-            //    && SemanticData?.SymbolKind == SymbolKind.Namespace
-            //    && SemanticData?.MemberTypeKind == SymbolKind.Alias)
-            //    return true;
-
-            //return false;
         }
 
         /*
@@ -1749,7 +1728,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return HasAncestorAt(0, SyntaxKind.IdentifierName)
                     && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
                     && HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression)
-                    && PrevToken?.PrevToken?.Map?.SemanticRole is SemanticRole.NamespaceQualifer or SemanticRole.AliasQualifier;
+                    && PrevToken?.PrevToken?.Map?.SemanticRole is SemanticRole.NamespaceQualifier or SemanticRole.AliasQualifier;
 
             //    ⌄                         ⌄
             // Console.WriteLine(text);    Guid.NewGuid();
