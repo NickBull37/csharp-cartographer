@@ -180,7 +180,7 @@
         // Declarations
         AttributeDeclaration,
         ClassDeclaration,
-        ClassConstructorDeclaration,
+        ConstructorDeclaration,
         DelegateDeclaration,
         EnumDeclaration,
         EnumMemberDeclaration,
@@ -195,23 +195,12 @@
         ParameterDeclaration,
         PropertyDeclaration,
         RecordDeclaration,
-        RecordConstructorDeclaration,
         RecordStructDeclaration,
-        RecordStructConstructorDeclaration,
         StructDeclaration,
-        StructConstructorDeclaration,
-
-        // Constructor invocations
-        ConstructorInvocation,
-        ClassConstructorInvocation,
-        RecordConstructorInvocation,
-        RecordStructConstructorInvocation,
-        StructConstructorInvocation,
 
         // References
         ClassReference,
         ConstantReference,
-        ConstructorReference,
         DelegateReference,
         EnumReference,
         EnumMemberReference,
@@ -227,6 +216,7 @@
         StructReference,
 
         // Invocations & access
+        ConstructorInvocation,
         MethodInvocation,
         FieldAccess,
         EventSubscription,
@@ -286,10 +276,8 @@
         AliasQualifier,
         NamespaceAliasDeclaration,
         NamespaceQualifier,
-        //NamespaceDeclarationQualifer,
         TypeAliasDeclaration,
         TypeQualifier,
-        //UsingDirectiveQualifier,
 
 
         // ------------ QUERY EXPRESSIONS ------------ //

@@ -856,8 +856,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsClassDeclaration())
                 return SemanticRole.ClassDeclaration;
 
-            if (token.IsClassConstructorDeclaration())
-                return SemanticRole.ClassConstructorDeclaration;
+            if (token.IsConstructorDeclaration())
+                return SemanticRole.ConstructorDeclaration;
 
             if (token.IsDelegateDeclaration())
                 return SemanticRole.DelegateDeclaration;
@@ -898,20 +898,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsRecordDeclaration())
                 return SemanticRole.RecordDeclaration;
 
-            if (token.IsRecordConstructorDeclaration())
-                return SemanticRole.RecordConstructorDeclaration;
-
             if (token.IsRecordStructDeclaration())
                 return SemanticRole.RecordStructDeclaration;
 
-            if (token.IsRecordStructConstructorDeclaration())
-                return SemanticRole.RecordStructConstructorDeclaration;
-
             if (token.IsStructDeclaration())
                 return SemanticRole.StructDeclaration;
-
-            if (token.IsStructConstructorDeclaration())
-                return SemanticRole.StructConstructorDeclaration;
 
             // --- Identifiers: data types ---
             if (token.IsEventFieldType())
@@ -951,19 +942,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsMethodInvocation())
                 return SemanticRole.MethodInvocation;
 
-            if (token.RoslynClassification == "class name" && token.IsObjectCreationExpression())
-                return SemanticRole.ClassConstructorInvocation;
-
-            if (token.RoslynClassification == "record class name" && token.IsObjectCreationExpression())
-                return SemanticRole.RecordConstructorInvocation;
-
-            if (token.RoslynClassification == "record struct name" && token.IsObjectCreationExpression())
-                return SemanticRole.RecordStructConstructorInvocation;
-
-            if (token.RoslynClassification == "struct name" && token.IsObjectCreationExpression())
-                return SemanticRole.StructConstructorInvocation;
-
-            if (token.IsObjectCreationExpression())
+            if (token.IsConstructorInvocation())
                 return SemanticRole.ConstructorInvocation;
 
             // Identifier - namespaces, aliases, qualifiers

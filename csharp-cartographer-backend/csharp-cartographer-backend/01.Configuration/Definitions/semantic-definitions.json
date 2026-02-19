@@ -377,8 +377,8 @@
   "ClassDeclaration": {
     "Definition": "A class declaration defines a blueprint for creating objects that contain data and behavior. It groups related variables and methods into a single reusable unit."
   },
-  "ClassConstructorDeclaration": {
-    "Definition": "A class constructor is a special method that runs when a new object of a class is created. It is used to set up the initial state of the object."
+  "ConstructorDeclaration": {
+    "Definition": "A {c:bold}constructor{/c} is a special method that runs when a new instance of an object is created. Defining input parameters is {c:bold}optional{/c} but can be helpful in setting up the object's initial state."
   },
   "DelegateDeclaration": {
     "Definition": "A delegate declaration defines a type that represents a reference to a method. Delegates allow methods to be passed around and called later."
@@ -422,44 +422,20 @@
   "RecordDeclaration": {
     "Definition": "A record declaration defines a reference type designed for storing data. Records provide built-in support for value-based equality and immutability."
   },
-  "RecordConstructorDeclaration": {
-    "Definition": "A record constructor defines how a record is created and how its values are initialized. It runs when a new record instance is created."
-  },
   "RecordStructDeclaration": {
     "Definition": "A record struct declaration defines a value type designed for storing data. Record structs combine the efficiency of structs with record-style features."
-  },
-  "RecordStructConstructorDeclaration": {
-    "Definition": "A record struct constructor defines how a record struct is initialized when it is created. It sets the initial values of the record struct."
   },
   "StructDeclaration": {
     "Definition": "A struct declaration defines a value type that groups related data together. Structs are often used for small, lightweight data objects."
   },
-  "StructConstructorDeclaration": {
-    "Definition": "A struct constructor defines how a struct is initialized when it is created. It sets up the initial state of the struct."
-  },
   "ConstructorInvocation": {
-    "Definition": "A constructor invocation creates a new instance of a type by calling its constructor. This is how objects and value types are created in code."
-  },
-  "ClassConstructorInvocation": {
-    "Definition": "A class constructor invocation creates a new object by calling a class constructor. It allocates memory and initializes the object."
-  },
-  "RecordConstructorInvocation": {
-    "Definition": "A record constructor invocation creates a new record instance. It initializes the record’s values using its constructor."
-  },
-  "RecordStructConstructorInvocation": {
-    "Definition": "A record struct constructor invocation creates a new record struct value. It initializes the record struct’s data."
-  },
-  "StructConstructorInvocation": {
-    "Definition": "A struct constructor invocation creates a new struct value. It initializes the struct’s fields or properties."
+    "Definition": "This identifier refers to a constructor being invoked in an object creation expression. It shares a name with the type whose constructor is being called to create the new object instance."
   },
   "ClassReference": {
     "Definition": "A class reference is a usage of a class type in code. It points to a class that has already been defined."
   },
   "ConstantReference": {
     "Definition": "This identifier references a constant defined in the uploaded file."
-  },
-  "ConstructorReference": {
-    "Definition": "A constructor reference refers to a constructor being used to create a new instance of a type. It identifies which constructor is being called."
   },
   "DelegateReference": {
     "Definition": "A delegate reference refers to a delegate type or instance used in code. It allows methods to be treated like values that can be passed or stored."

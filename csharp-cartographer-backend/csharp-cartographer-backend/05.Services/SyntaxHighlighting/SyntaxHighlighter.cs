@@ -258,14 +258,11 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.FieldReference:
                 case SemanticRole.MemberAccess:
                 case SemanticRole.NamespaceAliasDeclaration:
-                //case SemanticRole.NamespaceQualifer:
-                //case SemanticRole.NamespaceDeclarationQualifer:
                 case SemanticRole.ObjectPropertyAssignment:
                 case SemanticRole.PropertyAccess:
                 case SemanticRole.PropertyDeclaration:
                 case SemanticRole.PropertyReference:
                 case SemanticRole.TupleElementName:
-                //case SemanticRole.UsingDirectiveQualifier:
                 // query expression vars
                 case SemanticRole.GroupContinuationRangeVariable:
                 case SemanticRole.JoinIntoRangeVariable:
@@ -283,17 +280,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     token.HighlightColor = White;
                     break;
                 case SemanticRole.AliasQualifier:
-                    //case SemanticRole.NamespaceQualifer:
                     token.HighlightColor = Gray;
                     break;
                 case SemanticRole.AttributeDeclaration:
-                case SemanticRole.ClassConstructorDeclaration:
-                case SemanticRole.ClassConstructorInvocation:
                 case SemanticRole.ClassDeclaration:
                 case SemanticRole.ClassReference:
                 case SemanticRole.ExceptionType:
-                case SemanticRole.RecordConstructorDeclaration:
-                case SemanticRole.RecordConstructorInvocation:
                 case SemanticRole.RecordDeclaration:
                 case SemanticRole.RecordReference:
                 case SemanticRole.TypeAliasDeclaration:
@@ -307,12 +299,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     token.HighlightColor = LightGreen;
                     break;
                 case SemanticRole.RecordStructDeclaration:
-                case SemanticRole.RecordStructConstructorDeclaration:
-                case SemanticRole.RecordStructConstructorInvocation:
                 case SemanticRole.RecordStructReference:
                 case SemanticRole.StructDeclaration:
-                case SemanticRole.StructConstructorDeclaration:
-                case SemanticRole.StructConstructorInvocation:
                 case SemanticRole.StructReference:
                     token.HighlightColor = Jade;
                     break;

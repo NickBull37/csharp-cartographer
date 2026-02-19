@@ -622,6 +622,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && PrevToken?.Text == "as";
         }
 
+        public bool IsConstructorInvocation()
+        {
+            if (HasAncestorAt(1, SyntaxKind.ObjectCreationExpression))
+                return true;
+
+            // alias qualified constructors
+            return HasAncestorAt(1, SyntaxKind.QualifiedName)
+                && HasAncestorAt(2, SyntaxKind.ObjectCreationExpression)
+                && PrevToken?.Kind == SyntaxKind.DotToken;
+        }
+
         public bool IsDiscard()
         {
             return Kind == SyntaxKind.UnderscoreToken
@@ -641,6 +652,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && NextToken?.Text == ")";
         }
 
+        public bool IsGenericMethodInvocation() => IsMethodInvocation()
+            && NextToken?.Text == "<";
+
         public bool IsMethodInvocation()
         {
             var nextTokenText = NextToken?.Text;
@@ -650,20 +664,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 HasAncestorAt(2, SyntaxKind.InvocationExpression);
 
             return hasPermittedNextToken && hasInvocationAncestor;
-        }
-
-        public bool IsGenericMethodInvocation() => IsMethodInvocation()
-            && NextToken?.Text == "<";
-
-        public bool IsObjectCreationExpression()
-        {
-            if (HasAncestorAt(1, SyntaxKind.ObjectCreationExpression))
-                return true;
-
-            // alias qualified constructors
-            return HasAncestorAt(1, SyntaxKind.QualifiedName)
-                && HasAncestorAt(2, SyntaxKind.ObjectCreationExpression)
-                && PrevToken?.Kind == SyntaxKind.DotToken;
         }
 
         public bool IsObjCreationPropertyAssignment()
@@ -679,14 +679,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Kind == SyntaxKind.IdentifierToken &&
                 HasAncestorAt(1, SyntaxKind.NameColon) &&
                 NextToken?.Text == ":";
-        }
-
-        public bool IsPropertyOrEnumMemberReference()
-        {
-            return Kind == SyntaxKind.IdentifierToken
-                && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
-                && !HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression)
-                && PrevToken?.Kind == SyntaxKind.DotToken;
         }
 
         public bool IsTypeConstraint()
@@ -721,6 +713,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             RoslynClassification is not null &&
             RoslynClassification == "class name" &&
             HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
+
+        public bool IsConstructorDeclaration()
+        {
+            return HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
+        }
 
         public bool IsDelegateDeclaration() =>
             HasAncestorAt(0, SyntaxKind.DelegateDeclaration);
