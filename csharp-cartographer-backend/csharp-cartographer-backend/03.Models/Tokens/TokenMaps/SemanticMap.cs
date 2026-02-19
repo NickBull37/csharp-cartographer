@@ -192,7 +192,7 @@
         InterfaceDeclaration,
         LocalVariableDeclaration,
         MethodDeclaration,
-        ParameterDeclaration,
+        Parameter,
         PropertyDeclaration,
         RecordDeclaration,
         RecordStructDeclaration,
@@ -243,6 +243,7 @@
         // ------------ TYPES ------------ //
 
         ArrayDataType,
+        BaseType,
         CastType,
         CastTargetType,
         DefaultOperand,
@@ -262,7 +263,6 @@
         OutVariableDataType,
         ParameterDataType,
         PropertyDataType,
-        SimpleBaseType,
         SizeOfOperand,
         TupleElementName,
         TupleElementType,

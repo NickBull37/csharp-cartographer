@@ -568,10 +568,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (GlobalConstants.JumpStatementKeywords.Contains(token.Text))
                 return SemanticRole.JumpStatement;
 
-            // --- Literal keywords ---
-            //if (GlobalConstants.LiteralKeywords.Contains(token.Text))
-            //    return SemanticRole.LiteralValue;
-
             // --- Loop statement keywords ---
             if (GlobalConstants.LoopStatementKeywords.Contains(token.Text))
                 return SemanticRole.LoopStatement;
@@ -652,8 +648,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsWithExpressionKeyword())
                 return SemanticRole.WithExpression;
 
-
-            // --- Keyword: data types ---
+            // --- Data type keywords ---
             if (token.IsArrayDataType())
                 return SemanticRole.ArrayDataType;
 
@@ -687,7 +682,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsTupleElementType())
                 return SemanticRole.TupleElementType;
 
-            // --- Keyword: generic types ---
+            // --- Generic type keywords ---
             if (token.IsGenericTypeArgument())
                 return SemanticRole.GenericTypeArgument;
 
@@ -890,7 +885,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.MethodDeclaration;
 
             if (token.IsParameterDeclaration())
-                return SemanticRole.ParameterDeclaration;
+                return SemanticRole.Parameter;
 
             if (token.IsPropertyDeclaration())
                 return SemanticRole.PropertyDeclaration;
@@ -938,14 +933,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsForEachLoopCollectionIdentifier())
                 return SemanticRole.ForEachLoopCollectionIdentifier;
 
-            // Identifier invocations
+            // --- Identifiers: invocations ---
             if (token.IsMethodInvocation())
                 return SemanticRole.MethodInvocation;
 
             if (token.IsConstructorInvocation())
                 return SemanticRole.ConstructorInvocation;
 
-            // Identifier - namespaces, aliases, qualifiers
+            // --- Identifiers: namespaces, aliases, qualifiers ---
             if (token.IsNamespaceQualifier())
                 return SemanticRole.NamespaceQualifier;
 
@@ -958,38 +953,33 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsAliasQualifier())
                 return SemanticRole.AliasQualifier;
 
-            // Identifier - generic type args
-            if (token.IsGenericTypeArgument())
-                return SemanticRole.GenericTypeArgument;
-
-            // Identifier - generic type params
-            if (token.IsGenericTypeParameter())
-                return SemanticRole.GenericTypeParameter;
-
-            if (token.IsTypeParameterConstraint())
-                return SemanticRole.TypeParameterConstraint;
-
-            // Identifier - tuple types
-            if (token.IsTupleElementName())
-                return SemanticRole.TupleElementName;
-
-            if (token.IsTupleElementType())
-                return SemanticRole.TupleElementType;
-
-            // Identifier - base types
+            // --- Identifiers: misc types ---
             if (token.IsBaseType())
-                return SemanticRole.SimpleBaseType;
+                return SemanticRole.BaseType;
 
-            // Identifier - cast types
             if (token.IsCastType())
                 return SemanticRole.CastType;
 
             if (token.IsCastTargetType())
                 return SemanticRole.CastTargetType;
 
-            // Identifier - exception types
             if (token.IsExceptionType())
                 return SemanticRole.ExceptionType;
+
+            if (token.IsGenericTypeArgument())
+                return SemanticRole.GenericTypeArgument;
+
+            if (token.IsGenericTypeParameter())
+                return SemanticRole.GenericTypeParameter;
+
+            if (token.IsTupleElementName())
+                return SemanticRole.TupleElementName;
+
+            if (token.IsTupleElementType())
+                return SemanticRole.TupleElementType;
+
+            if (token.IsTypeParameterConstraint())
+                return SemanticRole.TypeParameterConstraint;
 
             // Identifier - property assignment on obj creation
             if (token.IsObjCreationPropertyAssignment())

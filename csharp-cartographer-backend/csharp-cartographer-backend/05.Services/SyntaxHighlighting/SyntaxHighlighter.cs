@@ -306,7 +306,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     break;
                 case SemanticRole.LocalVariableDeclaration:
                 case SemanticRole.LocalVariableReference:
-                case SemanticRole.ParameterDeclaration:
+                case SemanticRole.Parameter:
                 case SemanticRole.ParameterLabel:
                 case SemanticRole.ParameterReference:
                     token.HighlightColor = LightBlue;
@@ -330,7 +330,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.MethodReturnType:
                 case SemanticRole.ParameterDataType:
                 case SemanticRole.PropertyDataType:
-                case SemanticRole.SimpleBaseType:
+                case SemanticRole.BaseType:
                 case SemanticRole.TypeQualifier:
                 case SemanticRole.TupleElementType:
                 case SemanticRole.TypePattern:
