@@ -1124,6 +1124,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsConcatenationAddOperator())
                     modifiers.Add(SemanticModifiers.Concatenation);
+
+                if (token.IsShortCircuitOperator())
+                    modifiers.Add(SemanticModifiers.ShortCircuit);
             }
 
             // --- Identifier modifiers

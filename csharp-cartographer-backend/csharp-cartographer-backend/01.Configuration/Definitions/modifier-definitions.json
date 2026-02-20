@@ -32,6 +32,9 @@
   "ReturnValue": {
     "Definition": "A return value is the result produced by a method or function. It is sent back to the caller when execution finishes."
   },
+  "ShortCircuit": {
+    "Definition": "When the left-hand expression determines the result, {c:bold}short circuit{/c} and skip evaluation of the right-hand expression."
+  },
   "TypeParameter": {
     "Definition": "A type parameter is a {c:bold}placeholder{/c} that is replaced by a concrete type when a generic type or method is used."
   }

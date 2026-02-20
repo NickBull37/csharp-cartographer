@@ -1404,6 +1404,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             && (PrevToken?.Kind == SyntaxKind.StringLiteralToken
             || NextToken?.Kind == SyntaxKind.StringLiteralToken);
 
+        public bool IsShortCircuitOperator()
+        {
+            return Text is "&&" or "||" or "??" or "??=";
+        }
+
         public bool IsNamespaceAliasQualifier() => Kind == SyntaxKind.ColonColonToken
             && HasAncestorAt(0, SyntaxKind.AliasQualifiedName);
 
