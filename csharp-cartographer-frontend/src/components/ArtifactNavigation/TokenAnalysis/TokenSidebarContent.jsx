@@ -390,6 +390,53 @@ const TokenSidebarContent = ({
                                         >
                                             <Box
                                                 display="flex"
+                                                justifyContent="space-between"
+                                                alignItems="flex-end"
+                                                sx={{
+                                                    borderBottom: '1px solid #666666',
+                                                }}
+                                            >
+                                                <MapTagDefLabel className='code'>
+                                                    {activeToken.map.primaryLabel}
+                                                </MapTagDefLabel>
+                                                <MapTagDefFadedLabel
+                                                    className={
+                                                        highlightColor === 'color-white'
+                                                                ? 'faded-white'
+                                                            : highlightColor === 'color-gray'
+                                                                ? 'faded-gray'
+                                                            : highlightColor === 'color-blue'
+                                                                ? 'faded-blue'
+                                                            : highlightColor === 'color-light-blue'
+                                                                ? 'faded-light-blue'
+                                                            : highlightColor === 'color-dark-blue'
+                                                                ? 'faded-dark-blue'
+                                                            : highlightColor === 'color-green'
+                                                                ? 'faded-green'
+                                                            : highlightColor === 'color-jade'
+                                                                ? 'faded-jade'
+                                                            : highlightColor === 'color-light-green'
+                                                                ? 'faded-light-green'
+                                                            : highlightColor === 'color-dark-green'
+                                                                ? 'faded-dark-green'
+                                                            : highlightColor === 'color-purple'
+                                                                ? 'faded-purple'
+                                                            : highlightColor === 'color-orange'
+                                                                ? 'faded-orange'
+                                                            : highlightColor === 'color-yellow'
+                                                                ? 'faded-yellow'
+                                                            : highlightColor === 'color-teal'
+                                                                ? 'faded-teal'
+                                                            : 'faded-white'
+                                                    }
+                                                >
+                                                    {activeToken.map.primaryKindString}
+                                                </MapTagDefFadedLabel>
+                                                
+                                            </Box>
+
+                                            {/* <Box
+                                                display="flex"
                                                 sx={{
                                                     borderBottom: '1px solid #666666',
                                                     flexDirection: isLong ? 'column' : 'row',
@@ -432,7 +479,11 @@ const TokenSidebarContent = ({
                                                 <MapTagDefLabel className='code'>
                                                     {activeToken.map.primaryLabel}
                                                 </MapTagDefLabel>
-                                            </Box>
+                                            </Box> */}
+
+
+
+
                                             {/* <Box
                                                 display="flex"
                                                 justifyContent="space-between"

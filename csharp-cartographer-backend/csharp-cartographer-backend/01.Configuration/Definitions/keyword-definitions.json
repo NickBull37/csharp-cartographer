@@ -222,7 +222,7 @@
     "Definition": "The {c:color-blue keyword}params{/c} keyword allows a method to accept a variable number of arguments. It simplifies passing multiple values."
   },
   "partial": {
-    "Definition": "The {c:color-blue keyword}partial{/c} keyword splits a class, struct, or method across multiple files. It helps organize large codebases."
+    "Definition": "The {c:color-blue keyword}partial{/c} keyword splits a class, record, struct, interface, or method declaration across multiple files. Each piece of the declaration must have the {c:color-blue keyword}partial{/c} modifier."
   },
   "private": {
     "Definition": "{c:color-blue keyword}private{/c} members are only accessible within the class or struct in which they are declared."
@@ -270,7 +270,7 @@
     "Definition": "The {c:color-blue keyword}stackalloc{/c} keyword allocates memory on the stack instead of the heap. It is used for high-performance or low-level scenarios."
   },
   "static": {
-    "Definition": "The {c:color-blue keyword}static{/c} keyword defines members that belong to a type rather than an instance. Static members are shared across all objects."
+    "Definition": "{c:color-blue keyword}static{/c} types are types that cannot be instantiated and can only contain {c:color-blue keyword}static{/c} members. {c:color-blue keyword}static{/c} members belong to their type rather than an instance and are shared across all objects."
   },
   "string": {
     "Definition": "The {c:color-blue keyword}string{/c} keyword defines a sequence of characters. It is commonly used to represent text."

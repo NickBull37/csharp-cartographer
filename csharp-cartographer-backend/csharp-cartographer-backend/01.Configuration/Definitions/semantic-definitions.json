@@ -354,7 +354,7 @@
     "Definition": "Safety context keywords control whether code is allowed to perform unsafe operations. They help protect memory and program stability."
   },
   "TypeDeclaration": {
-    "Definition": "Type declaration keywords define new types such as classes, structs, or interfaces. They describe the structure of data and behavior."
+    "Definition": "Type declaration keywords define new types such as classes, structs, or interfaces. They are preceded by an optional list of modifiers and followed by an identifier for the new type."
   },
   "TypeReference": {
     "Definition": "Type reference keywords refer to existing types in code. They are used when declaring variables, parameters, or return values."
