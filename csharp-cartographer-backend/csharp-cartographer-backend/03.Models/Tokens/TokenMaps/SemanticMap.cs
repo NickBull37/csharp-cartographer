@@ -11,7 +11,8 @@
         Operator,
         Punctuation,
         Identifier,
-        Literal
+        Literal,
+        Other
     }
 
     /// <summary>
@@ -85,12 +86,14 @@
         BitwiseShift,
         BooleanLogical,
         Comparison,
+        ExpressionBodyArrow,
         IndexRange,
         Lambda,
         MemberAccess,
         NullCoalescing,
         NullCoalescingAssignment,
         NullForgiving,
+        PatternMatchArrow,
         Pointer,
         Ternary,
 
@@ -194,6 +197,7 @@
         InterfaceDeclaration,
         LocalVariableDeclaration,
         MethodDeclaration,
+        OutVariableDeclaration,
         Parameter,
         PropertyDeclaration,
         RecordDeclaration,

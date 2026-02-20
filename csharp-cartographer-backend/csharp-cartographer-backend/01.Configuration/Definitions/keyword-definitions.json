@@ -213,7 +213,7 @@
     "Definition": "The {c:color-blue keyword}orderby{/c} keyword sorts query results. It is commonly used in LINQ expressions."
   },
   "out": {
-    "Definition": "The {c:color-blue keyword}out{/c} keyword passes a variable by reference to a method. The method assigns the value before returning."
+    "Definition": "The {c:color-blue keyword}out{/c} modifier indicates that a value will be assigned to the argument or parameter and returned by the method in addition to the method's return value."
   },
   "override": {
     "Definition": "The {c:color-blue keyword}override{/c} keyword replaces a base class method with a new implementation. It allows derived classes to change behavior."

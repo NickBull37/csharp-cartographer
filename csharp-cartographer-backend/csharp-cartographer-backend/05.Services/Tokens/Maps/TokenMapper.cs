@@ -460,6 +460,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsComparisonOperator())
                 return SemanticRole.Comparison;
 
+            // Expression body arrows
+            if (token.IsExpressionBodyArrow())
+                return SemanticRole.ExpressionBodyArrow;
+
             // Index & Range
             if (token.IsIndexOrRangeOperator())
                 return SemanticRole.IndexRange;
@@ -481,6 +485,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsNullForgivingOperator())
                 return SemanticRole.NullForgiving;
+
+            // Pattern matching
+            if (token.IsPatternMatchArrow())
+                return SemanticRole.PatternMatchArrow;
 
             // Pointer
             if (token.IsPointerOperator())
@@ -887,6 +895,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsMethodDeclaration())
                 return SemanticRole.MethodDeclaration;
+
+            if (token.IsOutVariableDeclaration())
+                return SemanticRole.OutVariableDeclaration;
 
             if (token.IsParameterDeclaration())
                 return SemanticRole.Parameter;

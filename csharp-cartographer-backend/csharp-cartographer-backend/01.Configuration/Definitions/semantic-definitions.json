@@ -270,7 +270,7 @@
     "Definition": "Punctuation that marks the end of a case pattern label in a {c:color-purple keyword}switch{/c} statement."
   },
   "DefaultLabelTerminator": {
-    "Definition": "Punctuation that marks the end of the default case label in a {c:color-purple keyword}switch{/c} statement."
+    "Definition": "Punctuation that marks the end of the {c:color-purple keyword}default{/c} case label in a {c:color-purple keyword}switch{/c} statement."
   },
   "ParameterLabelTerminator": {
     "Definition": "Punctuation that marks the end of a parameter label in a named argument."
@@ -418,6 +418,9 @@
   },
   "MethodDeclaration": {
     "Definition": "A method declaration defines a block of code that performs an action or returns a value. Methods are called to run the code they contain."
+  },
+  "OutVariableDeclaration": {
+    "Definition": "A new variable introduced by the {c:color-blue keyword}out{/c} argument modifier. The variable receives the value assigned by the called method and becomes available after the invocation."
   },
   "Parameter": {
     "Definition": "A variable defined in the {c:bold}signature{/c} of a method or constructor that receives a value from wherever it's called. The value passed in from the caller is referred to as an {c:bold}argument{/c}."
@@ -692,5 +695,11 @@
   },
   "RangeVariableReference": {
     "Definition": "A range variable reference refers to a range variable being used in a query. It accesses the current element from the data source."
+  },
+  "ExpressionBodyArrow": {
+    "Definition": "Introduces the expression body of a member, indicating that the member's implementation or returned value is provided by the expression that follows."
+  },
+  "PatternMatchArrow": {
+    "Definition": "Connects a {c:color-purple keyword}switch{/c} expression arm's pattern to the value returned when that pattern matches."
   }
 }

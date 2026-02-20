@@ -9,13 +9,13 @@
     "Definition": "Concatenation combines two or more values into a single value. It is most commonly used to join strings together."
   },
   "Conditional": {
-    "Definition": "Conditional indicates that something depends on a condition being true or false. It controls which value or action is chosen."
+    "Definition": "Member access that is only allowed when the preceding value is not {c:color-blue keyword}null{/c}. If it is, evaluation of the expression is stopped and returns {c:color-blue keyword}null{/c} immediately. {c:keyword}?.{/c} is also known as the {c:bold}conditional-member access operator{/c}."
   },
   "GenericMethod": {
-    "Definition": "This method is designed to work with multiple types and must be supplied a generic type argument when called. The generic type argument passed in will replace the generic type parameter in the method definition."
+    "Definition": "A method designed to work with multiple types and must be passed a {c:bold}generic type argument{/c} when invoked. The generic type argument passed in will replace the {c:bold}generic type parameter{/c} defined in the method signature."
   },
   "GenericType": {
-    "Definition": "This generic type must be supplied a generic type argument(s) when used. The generic type argument passed in will replace the generic type parameter in the type definition."
+    "Definition": "A type that must be supplied a {c:bold}generic type argument{/c} when used. The generic type argument passed in will replace the {c:bold}generic type parameter{/c} in the type definition."
   },
   "ImplicitlyTyped": {
     "Definition": "Implicitly typed means the type is determined automatically by the compiler. The type is still fixed, even though it is not written explicitly."
@@ -27,12 +27,12 @@
     "Definition": "An interpolated value is an expression embedded inside an interpolated string. Its result is inserted into the string at runtime."
   },
   "Nullable": {
-    "Definition": "Nullable indicates that a value can also be null. It is used to represent the absence of a value safely."
+    "Definition": "Nullable indicates that a value can also be {c:color-blue keyword}null{/c}. It is used to represent the absence of a value safely."
   },
   "ReturnValue": {
     "Definition": "A return value is the result produced by a method or function. It is sent back to the caller when execution finishes."
   },
   "TypeParameter": {
-    "Definition": "A type parameter is a placeholder that is replaced by a concrete type when a generic type or method is used."
+    "Definition": "A type parameter is a {c:bold}placeholder{/c} that is replaced by a concrete type when a generic type or method is used."
   }
 }

@@ -731,11 +731,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             HasAncestorAt(0, SyntaxKind.VariableDeclarator) &&
             HasAncestorAt(2, SyntaxKind.FieldDeclaration);
 
-        public bool IsLocalVariableDeclaration() =>
-            HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
-            && !HasAncestorAt(0, SyntaxKind.GenericName)
-            && !HasAncestorAt(0, SyntaxKind.IdentifierName);
-
         public bool IsForLoopIteratorDeclaration()
         {
             return HasAncestorAt(0, SyntaxKind.VariableDeclarator)
@@ -750,11 +745,24 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && NextToken?.Text == "in";
         }
 
+        public bool IsGenericMethodDeclaration() =>
+            IsMethodDeclaration() && NextToken?.Text == "<";
+
+        public bool IsLocalVariableDeclaration() =>
+            HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
+            && !HasAncestorAt(0, SyntaxKind.GenericName)
+            && !HasAncestorAt(0, SyntaxKind.IdentifierName);
+
         public bool IsMethodDeclaration() =>
             HasAncestorAt(0, SyntaxKind.MethodDeclaration);
 
-        public bool IsGenericMethodDeclaration() =>
-            IsMethodDeclaration() && NextToken?.Text == "<";
+        public bool IsOutVariableDeclaration()
+        {
+            return Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(0, SyntaxKind.SingleVariableDesignation)
+                && HasAncestorAt(1, SyntaxKind.DeclarationExpression)
+                && HasAncestorAt(2, SyntaxKind.Argument);
+        }
 
         public bool IsParameterDeclaration() =>
             HasAncestorAt(0, SyntaxKind.Parameter);
@@ -1328,6 +1336,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsComparisonOperator() =>
             Text is "<" or ">" or "<=" or ">=" or "==" or "!=";
 
+        public bool IsExpressionBodyArrow()
+        {
+            return Kind == SyntaxKind.EqualsGreaterThanToken
+                && HasAncestorAt(0, SyntaxKind.ArrowExpressionClause);
+        }
+
         public bool IsNameOfOperator()
         {
             return Text == "nameof";
@@ -1366,7 +1380,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return false;
         }
 
-        public bool IsLambdaOperator() => Text is "=>";
+        public bool IsLambdaOperator()
+        {
+            bool hasValidAncestor = HasAncestorAt(0, SyntaxKind.SimpleLambdaExpression)
+                || HasAncestorAt(0, SyntaxKind.ParenthesizedLambdaExpression);
+
+            return Kind == SyntaxKind.EqualsGreaterThanToken
+                && hasValidAncestor;
+        }
 
         public bool IsLogicalNotOperator()
         {
@@ -1400,6 +1421,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsNullForgivingOperator() =>
             Kind == SyntaxKind.ExclamationToken &&
             HasAncestorAt(0, SyntaxKind.SuppressNullableWarningExpression);
+
+        public bool IsPatternMatchArrow()
+        {
+            return Kind == SyntaxKind.EqualsGreaterThanToken
+                && HasAncestorAt(0, SyntaxKind.SwitchExpressionArm);
+        }
 
         public bool IsPointerOperator() =>
             Text is "&" or "*" or "->";
@@ -1605,6 +1632,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             // string literals
             if (HasAncestorAt(0, SyntaxKind.StringLiteralExpression)
                 && HasAncestorAt(1, SyntaxKind.Argument))
+            {
+                return true;
+            }
+
+            // out variable declarations
+            if (IsOutVariableDeclaration())
             {
                 return true;
             }

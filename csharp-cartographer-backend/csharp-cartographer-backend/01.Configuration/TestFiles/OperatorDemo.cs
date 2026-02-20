@@ -238,7 +238,7 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
         static void ReadIn(in int value)
         {
             Console.WriteLine($"In value = {value}");
-            // value = 99; // ❌ compile error: cannot modify in parameter
+            // value = 99; // compile error: cannot modify in parameter
 
             var numbers = new[]
             {
@@ -553,7 +553,7 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
         {
             var numbers = new List<Item>
             {
-                new Item { Id = 1, Value = 5,  Category = "A" },
+                new Item { Id = 1, Value = 5, Category = "A" },
                 new Item { Id = 2, Value = 20, Category = "A" },
                 new Item { Id = 3, Value = 15, Category = "B" },
                 new Item { Id = 4, Value = 30, Category = "B" },
