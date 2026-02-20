@@ -165,14 +165,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return isValidToken && HasAncestorAt(1, SyntaxKind.ReturnStatement);
         }
 
-        public bool IsImplicitParameterKeyword()
-        {
-            // Won't handle identifiers named "value".
-            // TODO: Add check for Accessor ancestor
-            return Kind == SyntaxKind.IdentifierToken
-                && Text == "value";
-        }
-
         public bool IsInterpolatedValue()
         {
             return HasAncestorAt(1, SyntaxKind.Interpolation)
@@ -633,10 +625,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && PrevToken?.Kind == SyntaxKind.DotToken;
         }
 
-        public bool IsDiscard()
+        public bool IsDiscardValue()
         {
-            return Kind == SyntaxKind.UnderscoreToken
-                && HasAncestorAt(0, SyntaxKind.DiscardPattern);
+            // covers discard assignments & out params
+            return Kind == SyntaxKind.IdentifierToken
+                && Text == "_";
         }
 
         public bool IsExceptionType()
@@ -709,11 +702,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsClassDeclaration() =>
             HasAncestorAt(0, SyntaxKind.ClassDeclaration);
 
-        public bool IsClassConstructorDeclaration() =>
-            RoslynClassification is not null &&
-            RoslynClassification == "class name" &&
-            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
-
         public bool IsConstructorDeclaration()
         {
             return HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
@@ -777,26 +765,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsRecordDeclaration() =>
             HasAncestorAt(0, SyntaxKind.RecordDeclaration);
 
-        public bool IsRecordConstructorDeclaration() =>
-            RoslynClassification is not null &&
-            RoslynClassification == "record class name" &&
-            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
-
         public bool IsRecordStructDeclaration() =>
             HasAncestorAt(0, SyntaxKind.RecordStructDeclaration);
 
-        public bool IsRecordStructConstructorDeclaration() =>
-            RoslynClassification is not null &&
-            RoslynClassification == "record struct name" &&
-            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
-
         public bool IsStructDeclaration() =>
             HasAncestorAt(0, SyntaxKind.StructDeclaration);
-
-        public bool IsStructConstructorDeclaration() =>
-            RoslynClassification is not null &&
-            RoslynClassification == "struct name" &&
-            HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
 
         /*
          *  -----------------------------------------------------------------------
@@ -834,9 +807,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsFieldDataType() =>
             HasAncestorAt(2, SyntaxKind.FieldDeclaration) ||
             HasAncestorAt(3, SyntaxKind.FieldDeclaration);
-
-        public bool IsLocalType() => IsLocalVariableDataType()
-            || IsForEachLoopLocalVariableDataType();
 
         public bool IsLocalVariableDataType()
         {
@@ -1112,14 +1082,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && PrevToken?.Text == "from";
         }
 
-        public bool IsQueryVariableReference()
-        {
-            // TODO: split this into specific query exp vars (not reliable)
-            //                                       ⌄
-            // from n in numbers join l in labels on n.Id
-            return SemanticData?.SymbolKind == SymbolKind.RangeVariable;
-        }
-
         public bool IsQuerySource()
         {
             //                          ⌄
@@ -1186,6 +1148,26 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsContextualKeyword() => SyntaxFacts.IsContextualKeyword(Kind);
 
+        public bool IsDiscardPattern()
+        {
+            // covers discard in switch expressions
+            return Kind == SyntaxKind.UnderscoreToken
+                && HasAncestorAt(0, SyntaxKind.DiscardPattern);
+        }
+
+        public bool IsImplicitParameterKeyword()
+        {
+            bool hasKeywordClassification = RoslynClassification is not null
+                && RoslynClassification == "keyword";
+
+            bool hasAccessorAncestor = HasAncestor(SyntaxKind.AccessorList);
+
+            return hasAccessorAncestor
+                && hasKeywordClassification
+                && Kind == SyntaxKind.IdentifierToken
+                && Text == "value";
+        }
+
         public bool IsNameofAndKeyword()
         {
             // for some reason nameof isn't considered a keyword but sizeof & typeof are...
@@ -1196,9 +1178,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsValueAndKeyword()
         {
+            bool hasKeywordClassification = RoslynClassification is not null
+                && RoslynClassification == "keyword";
+
             // covers implicit accessor parameters
             return Kind == SyntaxKind.IdentifierToken
-                && Text == "value";
+                && Text == "value"
+                && hasKeywordClassification;
         }
 
         public bool IsVarAndKeyword()
@@ -1218,6 +1204,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return Kind == SyntaxKind.DefaultKeyword
                 && HasAncestorAt(0, SyntaxKind.DefaultLiteralExpression);
+        }
+
+        public bool IsArgumentModifierKeyword()
+        {
+            return GlobalConstants.ArgParamModifiers.Contains(Text)
+                && HasAncestorAt(0, SyntaxKind.Argument);
+        }
+
+        public bool IsParameterModifierKeyword()
+        {
+            return GlobalConstants.ArgParamModifiers.Contains(Text)
+                && HasAncestorAt(0, SyntaxKind.Parameter);
         }
 
         public bool IsTypeConstraintKeyword()
@@ -1691,11 +1689,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
         }
 
-        public bool IsTypePatternType() =>
-            HasAncestorAt(1, SyntaxKind.ConstantPattern) ||
-            HasAncestorAt(1, SyntaxKind.DeclarationPattern) ||
-            HasAncestorAt(1, SyntaxKind.IsExpression) ||
-            HasAncestorAt(1, SyntaxKind.RecursivePattern);
+        public bool IsTypePatternType()
+        {
+            return HasAncestorAt(1, SyntaxKind.ConstantPattern)
+                || HasAncestorAt(1, SyntaxKind.DeclarationPattern)
+                || HasAncestorAt(1, SyntaxKind.IsExpression)
+                || HasAncestorAt(1, SyntaxKind.RecursivePattern)
+                || HasAncestorAt(1, SyntaxKind.TypePattern);
+        }
 
         public bool IsTypeQualifier()
         {

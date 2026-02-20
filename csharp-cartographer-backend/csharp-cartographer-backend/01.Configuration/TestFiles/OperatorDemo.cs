@@ -303,7 +303,36 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                 _items[key] = value;
             }
 
+            string test = "Test String.";
+            _ = string.IsNullOrEmpty(test);
+
+            string text = "123";
+
+            if (int.TryParse(text, out _))
+            {
+                Console.WriteLine("Valid integer");
+            }
+
             return value;
+        }
+
+        public T EchoUnmanaged<T>(T value) where T : unmanaged
+        {
+            return value;
+        }
+
+        public static bool TryParse(string s, out int result)
+        {
+            try
+            {
+                result = int.Parse(s);
+                return true;
+            }
+            catch
+            {
+                result = 0;
+                return false;
+            }
         }
     }
 

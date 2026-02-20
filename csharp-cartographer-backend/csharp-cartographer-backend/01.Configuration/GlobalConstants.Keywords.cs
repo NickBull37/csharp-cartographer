@@ -331,8 +331,8 @@
             "this",
         ];
 
-        /// Parameter Modifiers
-        public static readonly List<string> ParameterModifiers =
+        /// Argument / Parameter Modifiers
+        public static readonly List<string> ArgParamModifiers =
         [
             "in",
             "out",

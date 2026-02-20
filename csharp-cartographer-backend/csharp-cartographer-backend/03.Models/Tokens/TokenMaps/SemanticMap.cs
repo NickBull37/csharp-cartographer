@@ -136,6 +136,7 @@
 
         AccessModifier,
         Accessor,
+        ArgumentModifier,
         CompilationScope,
         Concurrency,
         ConditionalBranching,
@@ -143,7 +144,8 @@
         ControlFlow,
         DefaultOperator,
         DefaultValue,
-        Discard,
+        DiscardValue,
+        DiscardPattern,
         EventHandling,
         ExceptionHandling,
         ImplicitParameter,

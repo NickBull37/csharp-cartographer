@@ -510,6 +510,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (GlobalConstants.AccessorKeywords.Contains(token.Text))
                 return SemanticRole.Accessor;
 
+            // --- Argument modifier keywords ---
+            if (token.IsArgumentModifierKeyword())
+                return SemanticRole.ArgumentModifier;
+
             // --- Cast target type keywords ---
             if (token.IsCastTargetType())
                 return SemanticRole.CastTargetType;
@@ -537,9 +541,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsDefaultValueKeyword())
                 return SemanticRole.DefaultValue;
 
-            // --- Discard contextual keyword ---
-            if (token.IsDiscard())
-                return SemanticRole.Discard;
+            // --- Discard keywords ---
+            if (token.IsDiscardPattern())
+                return SemanticRole.DiscardPattern;
 
             // --- Event keywords ---
             if (GlobalConstants.EventKeywords.Contains(token.Text) && token.Kind == SyntaxKind.EventKeyword)
@@ -587,8 +591,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsObjectConstructionTypeKeyword())
                 return SemanticRole.ObjectConstructionType;
 
-            // --- Parameter modifiers ---
-            if (GlobalConstants.ParameterModifiers.Contains(token.Text))
+            // --- Parameter modifier keywords ---
+            if (token.IsParameterModifierKeyword())
                 return SemanticRole.ParameterModifier;
 
             // --- Pattern matching keywords ---
@@ -988,6 +992,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Identifier - default operands
             if (token.IsDefaultOperand())
                 return SemanticRole.DefaultOperand;
+
+            if (token.IsDiscardValue())
+                return SemanticRole.DiscardValue;
 
             // Identifier - NameOf operands
             if (token.IsNameOfOperand())

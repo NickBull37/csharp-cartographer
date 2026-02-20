@@ -47,8 +47,11 @@
   "ClassBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}class{/c} definition."
   },
-  "Discard": {
-    "Definition": "The discard symbol {c:color-blue keyword}_{/c} is used when a value is intentionally ignored. It tells the compiler that the value is not needed."
+  "DiscardPattern": {
+    "Definition": "The discard pattern {c:color-blue keyword bold}_{/c} matches any input value and is used as a {c:bold}catch-all{/c} option in pattern matching."
+  },
+  "DiscardValue": {
+    "Definition": "The discard symbol {c:color-blue keyword bold}_{/c} indicates that a produced value is {c:bold}intentionally ignored{/c} in an assignment or {c:color-blue keyword}out{/c} argument."
   },
   "Ternary": {
     "Definition": "The ternary operator consists of three parts: a condition to evaluate, a value to use when the condition is {c:bold}true{/c}, and a value to use when it the condition is {c:bold}false{/c}."
@@ -286,6 +289,9 @@
   },
   "Accessor": {
     "Definition": "Accessors define how a property or indexer value is read or written. Common accessors include get and set."
+  },
+  "ArgumentModifier": {
+    "Definition": "Argument modifiers change how arguments are passed into methods. They control behaviors like passing by reference."
   },
   "CompilationScope": {
     "Definition": "These keywords set up the overall structure and context of a file before any code runs. They control where code belongs, how names are organized, and which other code can be referenced."
