@@ -95,6 +95,9 @@
   "ImplicitArrayCreation": {
     "Definition": "Marks the boundaries of an array being created without explicitly specifying its type. The compilier can infer the type in the array creation syntax because it's specified elsewhere in the declaration."
   },
+  "InterfaceBoundary": {
+    "Definition": "Marks the boundaries of an {c:color-blue keyword}interface{/c} definition."
+  },
   "InterpolatedValueBoundary": {
     "Definition": "Marks the boundaries of a value or expression embedded inside an interpolated string."
   },
@@ -411,10 +414,13 @@
     "Definition": "The loop variable declared in a {c:color-purple keyword}foreach{/c} loop that represents the current item. On each iteration, it holds the next element from the collection being processed."
   },
   "InterfaceDeclaration": {
-    "Definition": "An interface declaration defines a contract that specifies what members a class must implement. It allows different classes to share the same behavior without sharing implementation."
+    "Definition": "The identifier of an {c:color-blue keyword}interface{/c} declaration. An implementation must be provided by any type that implements this interface. This allows different classes to share the same behavior without sharing implementation."
   },
   "LocalVariableDeclaration": {
     "Definition": "A local variable declaration defines a variable inside a method or block of code. Local variables are only accessible within the scope where they are declared."
+  },
+  "LoopIteratorDeclaration": {
+    "Definition": "The variable declared in a {c:color-purple keyword}for{/c} or {c:color-purple keyword}foreach{/c} that gets updated for each iteration of the loop. This iterator variable is only accessible from within the scope of the loop statement."
   },
   "MethodDeclaration": {
     "Definition": "A method declaration defines a block of code that performs an action or returns a value. Methods are called to run the code they contain."
@@ -584,6 +590,9 @@
   },
   "LocalVariableDataType": {
     "Definition": "A local variable data type defines what kind of value a local variable can hold. It determines how the variable can be used within its scope."
+  },
+  "LoopIteratorDataType": {
+    "Definition": "The data type of the iterator variable declared in a {c:color-purple keyword}for{/c} or {c:color-purple keyword}foreach{/c} loop."
   },
   "MethodReturnType": {
     "Definition": "This part of the method signature defines what data will be returned when the method is finished executing."

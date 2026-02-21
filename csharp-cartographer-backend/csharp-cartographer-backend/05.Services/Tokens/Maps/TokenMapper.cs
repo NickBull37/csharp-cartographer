@@ -250,6 +250,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsIfBlockDelimiter())
                     return SemanticRole.IfBlockBoundary;
 
+                if (token.IsInterfaceDelimiter())
+                    return SemanticRole.InterfaceBoundary;
+
                 if (token.IsInterpolatedValueDelimiter())
                     return SemanticRole.InterpolatedValueBoundary;
 
@@ -667,14 +670,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsFieldDataType())
                 return SemanticRole.FieldDataType;
 
-            if (token.IsForLoopIteratorDataType())
-                return SemanticRole.ForLoopIteratorDataType;
+            //if (token.IsForLoopIteratorDataType())
+            //    return SemanticRole.ForLoopIteratorDataType;
 
-            if (token.IsForEachLoopIteratorDataType())
-                return SemanticRole.ForEachLoopIteratorDataType;
+            //if (token.IsForEachLoopIteratorDataType())
+            //    return SemanticRole.ForEachLoopIteratorDataType;
 
             if (token.IsLocalVariableDataType())
                 return SemanticRole.LocalVariableDataType;
+
+            if (token.IsLoopIteratorDataType())
+                return SemanticRole.LoopIteratorDataType;
 
             if (token.IsMethodReturnType())
                 return SemanticRole.MethodReturnType;
@@ -730,7 +736,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 // foreach loops, query expressions, param modifiers
                 "in" => parentKind switch
                 {
-                    "ForEachStatement" => SemanticRole.LoopStatement,
+                    "ForEachStatement" or "ForEachVariableStatement" => SemanticRole.LoopStatement,
                     "Parameter" => SemanticRole.ParameterModifier,
                     _ when !string.IsNullOrEmpty(parentKind) && parentKind.Contains("Clause") => SemanticRole.QueryExpression,
                     _ => SemanticRole.Unknown
@@ -887,11 +893,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsLocalVariableDeclaration())
                 return SemanticRole.LocalVariableDeclaration;
 
-            if (token.IsForLoopIteratorDeclaration())
-                return SemanticRole.ForLoopIteratorDeclaration;
+            //if (token.IsForLoopIteratorDeclaration())
+            //    return SemanticRole.ForLoopIteratorDeclaration;
 
-            if (token.IsForEachLoopIteratorDeclaration())
-                return SemanticRole.ForEachLoopIteratorDeclaration;
+            //if (token.IsForEachLoopIteratorDeclaration())
+            //    return SemanticRole.ForEachLoopIteratorDeclaration;
+
+            if (token.IsInterfaceDeclaration())
+                return SemanticRole.InterfaceDeclaration;
+
+            if (token.IsLoopIteratorDeclaration())
+                return SemanticRole.LoopIteratorDeclaration;
 
             if (token.IsMethodDeclaration())
                 return SemanticRole.MethodDeclaration;
@@ -939,14 +951,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsPropertyDataType())
                 return SemanticRole.PropertyDataType;
 
-            if (token.IsForLoopIteratorDataType())
-                return SemanticRole.ForLoopIteratorDataType;
+            //if (token.IsForLoopIteratorDataType())
+            //    return SemanticRole.ForLoopIteratorDataType;
 
-            if (token.IsForEachLoopIteratorDataType())
-                return SemanticRole.ForEachLoopIteratorDataType;
+            //if (token.IsForEachLoopIteratorDataType())
+            //    return SemanticRole.ForEachLoopIteratorDataType;
 
             if (token.IsForEachLoopCollectionIdentifier())
                 return SemanticRole.ForEachLoopCollectionIdentifier;
+
+            if (token.IsLoopIteratorDataType())
+                return SemanticRole.LoopIteratorDataType;
 
             // --- Identifiers: invocations ---
             if (token.IsMethodInvocation())
@@ -1143,6 +1158,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsUsingDirectiveQualifier())
                     modifiers.Add(SemanticModifiers.ImportedNamespace);
+
+                // TODO: Add modifier for un-implemented interface methods
             }
 
             // --- General modifiers

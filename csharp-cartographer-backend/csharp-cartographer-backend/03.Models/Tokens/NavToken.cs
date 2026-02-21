@@ -357,14 +357,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.Block)
-                && HasAncestorAt(1, SyntaxKind.ForEachStatement)
+                && (HasAncestorAt(1, SyntaxKind.ForEachStatement) || HasAncestorAt(1, SyntaxKind.ForEachVariableStatement))
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
         public bool IsForEachControlDelimiter()
         {
             return IsDelimiter()
-                && HasAncestorAt(0, SyntaxKind.ForEachStatement)
+                && (HasAncestorAt(0, SyntaxKind.ForEachStatement) || HasAncestorAt(0, SyntaxKind.ForEachVariableStatement))
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
@@ -556,6 +556,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.ParenthesizedPattern)
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
+        public bool IsInterfaceDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.InterfaceDeclaration)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
         public bool IsInterpolatedValueDelimiter()
@@ -753,6 +760,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             && !HasAncestorAt(0, SyntaxKind.GenericName)
             && !HasAncestorAt(0, SyntaxKind.IdentifierName);
 
+        public bool IsLoopIteratorDeclaration()
+        {
+            return IsForLoopIteratorDeclaration() || IsForEachLoopIteratorDeclaration();
+        }
+
+        public bool IsInterfaceDeclaration()
+        {
+            return HasAncestorAt(0, SyntaxKind.InterfaceDeclaration);
+        }
+
         public bool IsMethodDeclaration() =>
             HasAncestorAt(0, SyntaxKind.MethodDeclaration);
 
@@ -868,6 +885,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return HasAncestorAt(1, SyntaxKind.ForEachStatement)
                 && NextToken?.Text != ")";
+        }
+
+        public bool IsLoopIteratorDataType()
+        {
+            return IsForLoopIteratorDataType() || IsForEachLoopIteratorDataType();
         }
 
         public bool IsTupleElementName()

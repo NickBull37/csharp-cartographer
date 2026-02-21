@@ -327,6 +327,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.FieldDataType:
                 case SemanticRole.GenericTypeArgument:
                 case SemanticRole.LocalVariableDataType:
+                case SemanticRole.LoopIteratorDataType:
                 case SemanticRole.MethodReturnType:
                 case SemanticRole.ParameterDataType:
                 case SemanticRole.PropertyDataType:
