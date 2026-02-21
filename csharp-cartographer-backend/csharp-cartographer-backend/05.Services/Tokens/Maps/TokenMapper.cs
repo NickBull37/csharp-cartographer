@@ -205,6 +205,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsTypeOfExpressionDelimiter())
                     return SemanticRole.TypeOfExpressionBoundary;
 
+                if (token.IsUsingResourceDeclarationDelimiter())
+                    return SemanticRole.UsingResourceDeclarationBoundary;
+
                 if (token.IsWhileLoopConditionDelimiter())
                     return SemanticRole.WhileLoopConditionBoundary;
             }
@@ -294,6 +297,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsUncheckedStatementBlockDelimiter())
                     return SemanticRole.UncheckedStatementBlockBoundary;
+
+                if (token.IsUsingStatementBlockDelimiter())
+                    return SemanticRole.UsingStatementBlockBoundary;
 
                 if (token.IsWhileLoopBlockDelimiter())
                     return SemanticRole.WhileLoopBlockBoundary;
@@ -1127,7 +1133,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Keyword modifiers ---
             if (token.IsKeyword() || token.IsContextualKeyword())
             {
-                if (token.Text == "var" || token.Parent.IsKind(SyntaxKind.DefaultLiteralExpression))
+                if (token.Text == "var")
                     modifiers.Add(SemanticModifiers.ImplicitlyTyped);
 
                 if (token.IsAnonymousObjectCreation())
@@ -1161,6 +1167,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsUsingDirectiveQualifier())
                     modifiers.Add(SemanticModifiers.ImportedNamespace);
+
+                if (token.IsUsingStatementResource())
+                    modifiers.Add(SemanticModifiers.UsingStatementResource);
 
                 // TODO: Add modifier for un-implemented interface methods
             }

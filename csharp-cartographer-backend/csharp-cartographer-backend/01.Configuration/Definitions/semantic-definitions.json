@@ -168,7 +168,13 @@
     "Definition": "Marks the boundaries of the type parameter list declared by a type or method."
   },
   "UnheckedStatementBlockBoundary": {
-    "Definition": "Marks the boundaries of a unchecked statement block."
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}unchecked{/c} statement block."
+  },
+  "UsingResourceDeclarationBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}using{/c} statement resource declaration."
+  },
+  "UsingStatementBlockBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}using{/c} statement block."
   },
   "WhileLoopBlockBoundary": {
     "Definition": "Marks the boundaries of the code that runs repeatedly in a {c:color-purple keyword}while{/c} loop."

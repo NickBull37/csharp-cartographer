@@ -600,11 +600,26 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
+        public bool IsUsingResourceDeclarationDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.UsingStatement)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
         public bool IsUncheckedStatementBlockDelimiter()
         {
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.Block)
                 && HasAncestorAt(1, SyntaxKind.UncheckedStatement)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
+        public bool IsUsingStatementBlockDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.UsingStatement)
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
         #endregion
@@ -711,6 +726,30 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(1, SyntaxKind.TypeArgumentList);
         }
 
+        public bool IsUsingStatementResource()
+        {
+            // covers inline using statement
+            if (Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(0, SyntaxKind.VariableDeclarator)
+                && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
+                && HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
+                && (PrevToken?.PrevToken?.Text == "using") || PrevToken?.PrevToken?.PrevToken?.Text == "using")
+            {
+                return true;
+            }
+
+            // covers block using statement
+            if (Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(0, SyntaxKind.VariableDeclarator)
+                && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
+                && HasAncestorAt(2, SyntaxKind.UsingStatement))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         /*
          *  -----------------------------------------------------------------------
          *      Declaration Identifiers
@@ -774,10 +813,22 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsGenericMethodDeclaration() =>
             IsMethodDeclaration() && NextToken?.Text == "<";
 
-        public bool IsLocalVariableDeclaration() =>
-            HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
-            && !HasAncestorAt(0, SyntaxKind.GenericName)
-            && !HasAncestorAt(0, SyntaxKind.IdentifierName);
+        public bool IsLocalVariableDeclaration()
+        {
+            // covers local vars
+            if (HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
+                && !HasAncestorAt(0, SyntaxKind.GenericName)
+                && !HasAncestorAt(0, SyntaxKind.IdentifierName))
+            {
+                return true;
+            }
+
+            // covers using statement vars
+            if (IsUsingStatementResource())
+                return true;
+
+            return false;
+        }
 
         public bool IsLoopIteratorDeclaration()
         {
@@ -877,7 +928,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return false;
 
             return HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
-                || HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
+                || HasAncestorAt(2, SyntaxKind.UsingStatement)
+                || HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement)
+                || HasAncestorAt(3, SyntaxKind.UsingStatement);
         }
 
         public bool IsForEachLoopLocalVariableDataType()
@@ -1000,6 +1053,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             return AncestorKinds.Ancestors.Contains(SyntaxKind.UsingDirective);
         }
+
+
 
         public bool IsNamespaceDeclarationQualifier()
         {
@@ -1268,6 +1323,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsVarAndKeyword()
         {
+            // covers local variable data type: var value = 5;
+            if (Text == "var"
+                && Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
+                && HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement))
+            {
+                return true;
+            }
+
             // covers out variable data type: TryGetValue(key, out var value)
             if (Text == "var"
                 && PrevToken?.Text == "out"
@@ -1281,6 +1346,26 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && NextToken?.Text == "("
                 && Kind == SyntaxKind.IdentifierToken
                 && HasAncestorAt(1, SyntaxKind.DeclarationExpression))
+            {
+                return true;
+            }
+
+            // covers using statements: using (var wr = new StreamWriter(file))
+            if (Text == "var"
+                && PrevToken?.Text == "("
+                && Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
+                && HasAncestorAt(2, SyntaxKind.UsingStatement))
+            {
+                return true;
+            }
+
+            // covers inline using statements: using var wr = new StreamWriter(file);
+            if (Text == "var"
+                && PrevToken?.Text == "using"
+                && Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
+                && HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement))
             {
                 return true;
             }

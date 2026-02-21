@@ -37,5 +37,8 @@
   },
   "TypeParameter": {
     "Definition": "A type parameter is a {c:bold}placeholder{/c} that is replaced by a concrete type when a generic type or method is used."
+  },
+  "UsingStatementResource": {
+    "Definition": "The C# compiler will automatically call {c:color-yellow code}Dispose{/c}{c:code}(){/c} on this resource at the end of statement."
   }
 }

@@ -78,6 +78,8 @@
         TypeOfExpressionBoundary,
         TypeParameterListBoundary,
         UncheckedStatementBlockBoundary,
+        UsingResourceDeclarationBoundary,
+        UsingStatementBlockBoundary,
         WhileLoopConditionBoundary,
         WhileLoopBlockBoundary,
         WithInitializerExpressionBoundary,
@@ -351,6 +353,7 @@
 
         // Identifier modifiers
         ImportedNamespace,
+        UsingStatementResource,
 
         // Type form modifiers
         Anonymous,

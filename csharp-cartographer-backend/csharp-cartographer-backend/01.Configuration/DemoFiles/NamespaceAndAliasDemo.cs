@@ -41,7 +41,19 @@ namespace csharp_cartographer_backend._01.Configuration.DemoFiles
             // ------------------------------------------------------------
             // Namespace Alias: MyToken, IO
             // ------------------------------------------------------------
+            using var wr = new StreamWriter("demo.txt");
+            using StreamWriter wrt = new StreamWriter("demo.txt");
+            using StreamWriter? wrt2 = new StreamWriter("demo.txt");
+
             using (var writer = new IO.StreamWriter("demo.txt"))    // nested alias
+            {
+                writer.WriteLine("Hello from IO.StreamWriter");
+            }
+            using (StreamWriter writer = new IO.StreamWriter("demo.txt"))    // nested alias
+            {
+                writer.WriteLine("Hello from IO.StreamWriter");
+            }
+            using (StreamWriter? writer = new IO.StreamWriter("demo.txt"))    // nested alias
             {
                 writer.WriteLine("Hello from IO.StreamWriter");
             }
