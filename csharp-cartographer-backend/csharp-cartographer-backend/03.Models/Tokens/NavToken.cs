@@ -302,6 +302,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
+        public bool IsDeconstructionDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.ParenthesizedVariableDesignation)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+        }
+
         public bool IsClassDelimiter()
         {
             return IsDelimiter()
@@ -508,6 +515,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
+        public bool IsStructDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.StructDeclaration)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsSwitchExpressionDelimiter()
         {
             return IsDelimiter()
@@ -648,7 +662,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsForEachLoopCollectionIdentifier()
         {
             return HasAncestorAt(0, SyntaxKind.IdentifierName)
-                && HasAncestorAt(1, SyntaxKind.ForEachStatement)
+                && (HasAncestorAt(1, SyntaxKind.ForEachStatement) || HasAncestorAt(1, SyntaxKind.ForEachVariableStatement))
                 && NextToken?.Text == ")";
         }
 
@@ -712,6 +726,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsConstructorDeclaration()
         {
             return HasAncestorAt(0, SyntaxKind.ConstructorDeclaration);
+        }
+
+        public bool IsDeconstructionVariable()
+        {
+            return HasAncestorAt(0, SyntaxKind.SingleVariableDesignation);
         }
 
         public bool IsDelegateDeclaration() =>
@@ -814,6 +833,25 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsArrayDataType()
         {
             return HasAncestorAt(1, SyntaxKind.ArrayType);
+        }
+
+        public bool IsDeconstructionVariableDataType()
+        {
+            //  ⌄
+            // var (id, name) = GetUser();
+            if (HasAncestorAt(1, SyntaxKind.DeclarationExpression) && NextToken?.Text == "(")
+            {
+                return true;
+            }
+
+            //   ⌄         ⌄
+            // (int id2, string name2) = GetUser();
+            if (HasAncestorAt(1, SyntaxKind.DeclarationExpression) && (PrevToken?.Text is "(" or ","))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public bool IsEventFieldType()
@@ -1178,11 +1216,22 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsContextualKeyword() => SyntaxFacts.IsContextualKeyword(Kind);
 
+        public bool IsDiscardKeyword()
+        {
+            // covers discard in deconstruction variables
+            if (Kind == SyntaxKind.UnderscoreToken && HasAncestorAt(0, SyntaxKind.DiscardDesignation))
+                return true;
+
+            return false;
+        }
+
         public bool IsDiscardPattern()
         {
             // covers discard in switch expressions
-            return Kind == SyntaxKind.UnderscoreToken
-                && HasAncestorAt(0, SyntaxKind.DiscardPattern);
+            if (Kind == SyntaxKind.UnderscoreToken && HasAncestorAt(0, SyntaxKind.DiscardPattern))
+                return true;
+
+            return false;
         }
 
         public bool IsImplicitParameterKeyword()
@@ -1219,9 +1268,24 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsVarAndKeyword()
         {
-            // covers out variable data type
-            return Kind == SyntaxKind.IdentifierToken
-                && PrevToken?.Text == "out";
+            // covers out variable data type: TryGetValue(key, out var value)
+            if (Text == "var"
+                && PrevToken?.Text == "out"
+                && Kind == SyntaxKind.IdentifierToken)
+            {
+                return true;
+            }
+
+            // covers variable deconstruction: var (id, name) = GetUser();
+            if (Text == "var"
+                && NextToken?.Text == "("
+                && Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(1, SyntaxKind.DeclarationExpression))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public bool IsDefaultOperatorKeyword()
@@ -1510,6 +1574,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return Kind == SyntaxKind.ColonToken
                 && HasAncestorAt(0, SyntaxKind.TypeParameterConstraintClause);
+        }
+
+        public bool IsDeconstructionValueSeparator()
+        {
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.ParenthesizedVariableDesignation);
         }
 
         public bool IsEnumMemberSeparator()

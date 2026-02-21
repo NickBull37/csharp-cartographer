@@ -649,5 +649,163 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             public int Id { get; set; }
             public string Name { get; set; } = "";
         }
+
+        public class DeconstructionTest
+        {
+            public static class DeconstructionDemo
+            {
+                public static void Run()
+                {
+                    // 1) Tuple deconstruction (primitive + reference)
+                    (int id, string name) GetUser() => (42, "Nick");
+                    var (id, name) = GetUser();
+                    Console.WriteLine($"{id} {name}");
+
+                    // Explicit tuple deconstruction
+                    (int id2, string name2) = GetUser();
+                    Console.WriteLine($"{id2} {name2}");
+
+                    // 2) Tuple literal deconstruction
+                    var (x, y) = (10, 20);
+                    Console.WriteLine(x + y);
+
+                    var (count, title) = (3, "Definitions");
+                    Console.WriteLine($"{count} {title}");
+
+                    // 3) Nested tuple deconstruction
+                    var (a, (b, c)) = (1, (2, 3));
+                    Console.WriteLine($"{a} {b} {c}");
+
+                    // 4) Discards
+                    var (_, second, _) = (1, 2, 3);
+                    Console.WriteLine(second);
+
+                    // 5) Dictionary / KeyValuePair foreach deconstruction
+                    var dict = new Dictionary<string, List<int>>
+                    {
+                        ["evens"] = new() { 2, 4, 6 },
+                        ["odds"] = new() { 1, 3, 5 },
+                    };
+
+                    foreach (var (key, valuetwo) in dict)
+                    {
+                        Console.WriteLine($"{key}: {valuetwo.Count}");
+                    }
+
+                    // Explicit KeyValuePair foreach deconstruction
+                    Dictionary<string, int> d = new() { ["a"] = 1, ["b"] = 2 };
+                    foreach ((string k, int v) in d)
+                    {
+                        Console.WriteLine($"{k}={v}");
+                    }
+
+                    // 6) Record deconstruction
+                    var p = new Person("Ava", 28);
+                    var (personName, personAge) = p;
+                    Console.WriteLine($"{personName} is {personAge}");
+
+                    var (_, ageOnly) = new Person("Sam", 35);
+                    Console.WriteLine(ageOnly);
+
+                    // 7) Custom class Deconstruct
+                    var box = new Box("Tools", 12);
+                    var (label, weight) = box;
+                    Console.WriteLine($"{label} weighs {weight}");
+
+                    // 8) Struct Deconstruct
+                    var pt = new Point2D(5, 7);
+                    var (px, py) = pt;
+                    Console.WriteLine(px * py);
+
+                    // 9) Deconstruct into existing variables
+                    int left;
+                    int right;
+                    (left, right) = (100, 200);
+                    Console.WriteLine($"{left} {right}");
+
+                    string person;
+                    int age;
+                    (person, age) = ("Jordan", 31);
+                    Console.WriteLine($"{person} {age}");
+
+                    // 10) Method returning tuple + explicit types
+                    (string path, Uri uri) GetResource()
+                        => ("docs/semantic.json", new Uri("https://example.com/docs/semantic.json"));
+
+                    (string pth, Uri u) = GetResource();
+                    Console.WriteLine($"{pth} -> {u.Host}");
+
+                    // 11) out var (not deconstruction but related binding)
+                    var map = new Dictionary<string, int> { ["a"] = 1 };
+                    if (map.TryGetValue("a", out var value))
+                    {
+                        Console.WriteLine(value);
+                    }
+
+                    // 12) LINQ projection then foreach deconstruct
+                    var people = new[]
+                    {
+                        new { Name = "Kim", Age = 20 },
+                        new { Name = "Lee", Age = 25 },
+                    };
+
+                    var tuples = people.Select(p2 => (p2.Name, p2.Age));
+                    foreach (var (n, a2) in tuples)
+                    {
+                        Console.WriteLine($"{n}:{a2}");
+                    }
+
+                    // 13) Extension-method Deconstruct
+                    var (r, m, d2) = DateTime.UtcNow;
+                    Console.WriteLine($"{y}-{m}-{d2}");
+
+                    // 14) Typed designation
+                    var (name3, age3) = ("Pat", 44);
+                    (string n2, int a3) = (name3, age3);
+                    Console.WriteLine($"{n2} {a3}");
+                }
+
+                // Record
+                public record Person(string Name, int Age);
+
+                // Class with Deconstruct
+                public class Box
+                {
+                    public string Label { get; }
+                    public int Weight { get; }
+
+                    public Box(string label, int weight)
+                    {
+                        Label = label;
+                        Weight = weight;
+                    }
+
+                    public void Deconstruct(out string label, out int weight)
+                    {
+                        label = Label;
+                        weight = Weight;
+                    }
+                }
+
+                // Struct with Deconstruct
+                public readonly struct Point2D
+                {
+                    public int X { get; }
+                    public int Y { get; }
+
+                    public Point2D(int x, int y)
+                    {
+                        X = x;
+                        Y = y;
+                    }
+
+                    public void Deconstruct(out int x, out int y)
+                    {
+                        x = X;
+                        y = Y;
+                    }
+                }
+            }
+        }
     }
 }

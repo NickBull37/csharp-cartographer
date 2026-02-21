@@ -65,6 +65,9 @@
   "ConstructorBoundary": {
     "Definition": "Marks the boundaries of a constructor’s definition."
   },
+  "DeconstructionBoundary": {
+    "Definition": "Marks the boundaries of a deconstruction variable list."
+  },
   "DefaultExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}default{/c} expression."
   },
@@ -133,6 +136,9 @@
   },
   "SizeOfExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}sizeof{/c} expression."
+  },
+  "StructBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}struct{/c} definition."
   },
   "SwitchExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} expression."
@@ -229,6 +235,9 @@
   },
   "CollectionInitializerElementSeparator": {
     "Definition": "Separates elements within a collection initializer expression."
+  },
+  "DeconstructionValueSeparator": {
+    "Definition": "Separates variables within a deconstruction expression."
   },
   "EnumMemberSeparator": {
     "Definition": "Separates individual members within an enum."
@@ -388,6 +397,9 @@
   },
   "ConstructorDeclaration": {
     "Definition": "A {c:bold}constructor{/c} is a special method that runs when a new instance of an object is created. Defining input parameters is {c:bold}optional{/c} but can be helpful in setting up the object's initial state."
+  },
+  "DeconstructionVariable": {
+    "Definition": "The identifier for a new {c:bold}local variable{/c} that will receive a value when the assigned value is deconstructed."
   },
   "DelegateDeclaration": {
     "Definition": "A delegate declaration defines a type that represents a reference to a method. Delegates allow methods to be passed around and called later."
@@ -561,6 +573,9 @@
   "CastTargetType": {
     "Definition": "A cast target type is the type that a value is being converted into. It determines how the value should be interpreted after the cast."
   },
+  "DeconstructionVariableDataType": {
+    "Definition": "The data type a variable will have after it has been deconstructed."
+  },
   "DelegateReturnType": {
     "Definition": "A delegate return type defines the type of value returned by methods that match the delegate. It specifies what result the delegate’s methods must produce."
   },
@@ -579,8 +594,8 @@
   "ForEachLoopIteratorDataType": {
     "Definition": "The data type of the iterator variable declared in a {c:color-purple keyword}foreach{/c} loop. It specifies the type of each element that will be read from the collection during iteration."
   },
-  "ForEachLoopCollectionIdentifier": {
-    "Definition": "The collection being iterated over in a {c:color-purple keyword}foreach{/c} loop. The loop retrieves each element from this collection one at a time."
+  "ForEachLoopCollection": {
+    "Definition": "The collection being iterated over in a {c:color-purple keyword}foreach{/c} loop. The loop retrieves the next element from this collection each iteration."
   },
   "GenericTypeArgument": {
     "Definition": "A generic type argument is a specific type supplied to a generic class or method. It fills in the placeholder defined by a generic parameter."

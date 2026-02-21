@@ -18,10 +18,10 @@
     "Definition": "A type that must be supplied a {c:bold}generic type argument{/c} when used. The generic type argument passed in will replace the {c:bold}generic type parameter{/c} in the type definition."
   },
   "ImplicitlyTyped": {
-    "Definition": "Implicitly typed means the type is determined automatically by the compiler. The type is still fixed, even though it is not written explicitly."
+    "Definition": "The type is determined automatically by the compiler. The type is still fixed, even though it is not written explicitly."
   },
   "ImportedNamespace": {
-    "Definition": "A segment of a {c:bold}using directive{/c} that imports a {c:color-blue keyword}namespace{/c} into the current file. Namespaces are imported to allow their types to be referenced {c:bold}without fully qualified names{/c}."
+    "Definition": "This {c:bold}using directive{/c} segment imports a {c:color-blue keyword}namespace{/c} defined in another file. Namespaces are imported to allow their types to be referenced {c:bold}without fully qualified names{/c}."
   },
   "InterpolatedValue": {
     "Definition": "An interpolated value is an expression embedded inside an interpolated string. Its result is inserted into the string at runtime."

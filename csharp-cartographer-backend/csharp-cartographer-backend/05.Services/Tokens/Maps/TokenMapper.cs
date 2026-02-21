@@ -166,6 +166,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsCatchFilterDelimiter())
                     return SemanticRole.CatchFilterBoundary;
 
+                if (token.IsDeconstructionDelimiter())
+                    return SemanticRole.DeconstructionBoundary;
+
                 if (token.IsDefaultExpressionDelimiter())
                     return SemanticRole.DefaultExpressionBoundary;
 
@@ -277,6 +280,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsSetAccessorBlockDelimiter())
                     return SemanticRole.SetAccessorBlockBoundary;
 
+                if (token.IsStructDelimiter())
+                    return SemanticRole.StructBoundary;
+
                 if (token.IsSwitchExpressionDelimiter())
                     return SemanticRole.SwitchExpressionBoundary;
 
@@ -357,6 +363,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsConstraintSeparator())
                     return SemanticRole.ConstraintSeparator;
+
+                if (token.IsDeconstructionValueSeparator())
+                    return SemanticRole.DeconstructionValueSeparator;
 
                 if (token.IsEnumMemberSeparator())
                     return SemanticRole.EnumMemberSeparator;
@@ -553,6 +562,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.DefaultValue;
 
             // --- Discard keywords ---
+            if (token.IsDiscardKeyword())
+                return SemanticRole.DiscardValue;
+
             if (token.IsDiscardPattern())
                 return SemanticRole.DiscardPattern;
 
@@ -667,14 +679,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsArrayDataType())
                 return SemanticRole.ArrayDataType;
 
+            if (token.IsDeconstructionVariableDataType())
+                return SemanticRole.DeconstructionVariableDataType;
+
             if (token.IsFieldDataType())
                 return SemanticRole.FieldDataType;
-
-            //if (token.IsForLoopIteratorDataType())
-            //    return SemanticRole.ForLoopIteratorDataType;
-
-            //if (token.IsForEachLoopIteratorDataType())
-            //    return SemanticRole.ForEachLoopIteratorDataType;
 
             if (token.IsLocalVariableDataType())
                 return SemanticRole.LocalVariableDataType;
@@ -872,6 +881,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsConstructorDeclaration())
                 return SemanticRole.ConstructorDeclaration;
 
+            if (token.IsDeconstructionVariable())
+                return SemanticRole.DeconstructionVariable;
+
             if (token.IsDelegateDeclaration())
                 return SemanticRole.DelegateDeclaration;
 
@@ -892,12 +904,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsLocalVariableDeclaration())
                 return SemanticRole.LocalVariableDeclaration;
-
-            //if (token.IsForLoopIteratorDeclaration())
-            //    return SemanticRole.ForLoopIteratorDeclaration;
-
-            //if (token.IsForEachLoopIteratorDeclaration())
-            //    return SemanticRole.ForEachLoopIteratorDeclaration;
 
             if (token.IsInterfaceDeclaration())
                 return SemanticRole.InterfaceDeclaration;
@@ -942,6 +948,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsMethodReturnType())
                 return SemanticRole.MethodReturnType;
 
+            if (token.IsDeconstructionVariableDataType())
+                return SemanticRole.DeconstructionVariableDataType;
+
             if (token.IsDelegateReturnType())
                 return SemanticRole.DelegateReturnType;
 
@@ -951,14 +960,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsPropertyDataType())
                 return SemanticRole.PropertyDataType;
 
-            //if (token.IsForLoopIteratorDataType())
-            //    return SemanticRole.ForLoopIteratorDataType;
-
-            //if (token.IsForEachLoopIteratorDataType())
-            //    return SemanticRole.ForEachLoopIteratorDataType;
-
             if (token.IsForEachLoopCollectionIdentifier())
-                return SemanticRole.ForEachLoopCollectionIdentifier;
+                return SemanticRole.ForEachLoopCollection;
 
             if (token.IsLoopIteratorDataType())
                 return SemanticRole.LoopIteratorDataType;

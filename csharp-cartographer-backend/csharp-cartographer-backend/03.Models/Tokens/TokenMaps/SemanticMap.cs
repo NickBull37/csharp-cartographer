@@ -43,6 +43,7 @@
         CollectionInitializerExpressionBoundary,
         ConstructorBoundary,
         CollectionExpressionBoundary,
+        DeconstructionBoundary,
         DefaultExpressionBoundary,
         ElseBlockBoundary,
         EnumBoundary,
@@ -66,6 +67,7 @@
         RemoveAccessorBlockBoundary,
         SetAccessorBlockBoundary,
         SizeOfExpressionBoundary,
+        StructBoundary,
         SwitchExpressionBoundary,
         SwitchStatementBoundary,
         SwitchStatementConditionBoundary,
@@ -110,6 +112,7 @@
         CollectionExpressionElementSeparator,
         CollectionInitializerElementSeparator,
         ConstraintSeparator,
+        DeconstructionValueSeparator,
         EnumMemberSeparator,
         InterpolationFormatSeparator,
         MemberPatternSeparator,
@@ -179,7 +182,7 @@
         // ------------ IDENTIFIERS ------------ //
 
         AttributeArgument,
-        ForEachLoopCollectionIdentifier,
+        ForEachLoopCollection,
         ObjectPropertyAssignment,
         ParameterLabel,
 
@@ -187,6 +190,7 @@
         AttributeDeclaration,
         ClassDeclaration,
         ConstructorDeclaration,
+        DeconstructionVariable,
         DelegateDeclaration,
         EnumDeclaration,
         EnumMemberDeclaration,
@@ -254,6 +258,7 @@
         BaseType,
         CastType,
         CastTargetType,
+        DeconstructionVariableDataType,
         DefaultOperand,
         DelegateReturnType,
         EventFieldType,
