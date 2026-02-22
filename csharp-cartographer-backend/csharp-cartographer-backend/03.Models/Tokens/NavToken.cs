@@ -1489,6 +1489,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Text.StartsWith('@');
         }
 
+        public bool IsInterpolatedString()
+        {
+            return IsInterpolatedStringStart()
+                || IsInterpolatedStringText()
+                || IsInterpolatedStringEnd()
+                || IsNumericFormatSpecifier()
+                || IsInterpolationFormatSeparator();
+        }
+
+        public bool IsInterpolatedVerbatimString()
+        {
+            return IsInterpolatedVerbatimStringStart();
+        }
+
         public bool IsInterpolatedStringStart()
         {
             return Kind == SyntaxKind.InterpolatedStringStartToken;
@@ -1826,7 +1840,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             // single token identifiers, numeric literals, string literals
             bool parentIsValid = HasAncestorAt(0, SyntaxKind.IdentifierName)
                 || HasAncestorAt(0, SyntaxKind.NumericLiteralExpression)
-                || HasAncestorAt(0, SyntaxKind.StringLiteralExpression);
+                || HasAncestorAt(0, SyntaxKind.StringLiteralExpression)
+                || HasAncestorAt(0, SyntaxKind.CharacterLiteralExpression);
 
             bool grandParentIsValid = HasAncestorAt(1, SyntaxKind.Argument)
                 || HasAncestorAt(1, SyntaxKind.AttributeArgument);
@@ -1837,6 +1852,125 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             // out variable declarations
             if (IsOutVariableDeclaration())
                 return true;
+
+            return false;
+        }
+
+        public bool IsAssignmentValue()
+        {
+            if (PrevToken is not null && !PrevToken.Text.Contains('='))
+                return false;
+
+            if (HasAncestorAt(1, SyntaxKind.EqualsValueClause)
+                || HasAncestorAt(1, SyntaxKind.AddAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.SubtractAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.MultiplyAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.DivideAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.ModuloAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.AndAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.OrAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.ExclusiveOrAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.LeftShiftAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.RightShiftAssignmentExpression))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsArithmeticOperand()
+        {
+            // covered by string concatenation
+            if (IsStringLiteral())
+                return false;
+
+            if (HasAncestorAt(1, SyntaxKind.AddExpression)
+                || HasAncestorAt(1, SyntaxKind.SubtractExpression)
+                || HasAncestorAt(1, SyntaxKind.MultiplyExpression)
+                || HasAncestorAt(1, SyntaxKind.DivideExpression)
+                || HasAncestorAt(1, SyntaxKind.ModuloExpression)
+                || HasAncestorAt(1, SyntaxKind.UnaryPlusExpression)
+                || HasAncestorAt(1, SyntaxKind.UnaryMinusExpression)
+                || HasAncestorAt(1, SyntaxKind.PostIncrementExpression)
+                || HasAncestorAt(1, SyntaxKind.PostDecrementExpression)
+                || HasAncestorAt(1, SyntaxKind.PreIncrementExpression)
+                || HasAncestorAt(1, SyntaxKind.PreDecrementExpression))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsBitwiseOperand()
+        {
+            if (HasAncestorAt(1, SyntaxKind.BitwiseAndExpression)
+                || HasAncestorAt(1, SyntaxKind.BitwiseOrExpression)
+                || HasAncestorAt(1, SyntaxKind.ExclusiveOrExpression)
+                || HasAncestorAt(1, SyntaxKind.BitwiseNotExpression))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsComparisonOperand()
+        {
+            bool hasValidAncestor = HasAncestorAt(1, SyntaxKind.EqualsExpression)
+                || HasAncestorAt(1, SyntaxKind.NotEqualsExpression)
+                || HasAncestorAt(1, SyntaxKind.GreaterThanExpression)
+                || HasAncestorAt(1, SyntaxKind.LessThanExpression)
+                || HasAncestorAt(1, SyntaxKind.GreaterThanOrEqualExpression)
+                || HasAncestorAt(1, SyntaxKind.LessThanOrEqualExpression);
+
+            if (hasValidAncestor)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsConcatenationOperand()
+        {
+            if (Kind != SyntaxKind.StringLiteralToken)
+                return false;
+
+            if (HasAncestorAt(1, SyntaxKind.AddExpression))
+                return true;
+
+            return false;
+        }
+
+        public bool IsExpressionOperand()
+        {
+
+
+            return false;
+        }
+
+        public bool IsLogicalOperand()
+        {
+            if (HasAncestorAt(1, SyntaxKind.LogicalAndExpression)
+                || HasAncestorAt(1, SyntaxKind.LogicalOrExpression)
+                || HasAncestorAt(1, SyntaxKind.LogicalNotExpression))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsShiftOperand()
+        {
+            if (HasAncestorAt(1, SyntaxKind.LeftShiftExpression)
+                || HasAncestorAt(1, SyntaxKind.RightShiftExpression)
+                || HasAncestorAt(1, SyntaxKind.UnsignedRightShiftExpression))
+            {
+                return true;
+            }
 
             return false;
         }

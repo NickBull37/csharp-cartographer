@@ -389,6 +389,9 @@
   "TypeSystem": {
     "Definition": "Type system keywords describe how types behave and interact. They define rules for assigning and converting values."
   },
+  "Argument": {
+    "Definition": "A value passed to a method, constructor, or function when its called. Arguments get assigned to the corresponding parameters so they can be used wherever they are passed."
+  },
   "AttributeArgument": {
     "Definition": "Attribute arguments provide values to an attribute. They configure how the attribute behaves or supplies additional information."
   },
@@ -544,22 +547,25 @@
     "Definition": "A null value represents the absence of a value or object reference. It indicates that something does not point to any data."
   },
   "NumericLiteral": {
-    "Definition": "Represents a number written directly in the code. It can be written as an integer, decimal, or floating-point value."
+    "Definition": "{c:bold}Numeric literals{/c} represents an integer written directly in the code."
   },
   "QuotedString": {
-    "Definition": "Quoted strings represent a sequence of characters enclosed in double quotes {c:bold}\" \"{/c} on the same line."
+    "Definition": "{c:bold}Quoted{/c} strings represent a sequence of characters enclosed in double quotes {c:color-orange bold}\" \"{/c} on a single line."
   },
   "VerbatimString": {
-    "Definition": "Represents text exactly as written, without processing escape sequences. It allows multi-line text and uses the {c:bold}@{/c} prefix before the opening quote."
+    "Definition": "{c:bold}Verbatim{/c} strings represent text exactly as written, without processing escape sequences. It allows multi-line text and uses the {c:color-orange bold}@{/c} prefix before the opening quote."
+  },
+  "InterpolatedString": {
+    "Definition": "{c:bold}Interpolated{/c} strings allow expressions to be embedded directly within text using placeholders enclosed in braces {c:keyword}{ }{/c}. They use the {c:color-orange keyword}${/c} prefix before the opening quote and automatically convert embedded values to strings."
   },
   "InterpolatedStringStart": {
-    "Definition": "Marks the beginning of a string that can include expressions. It uses the {c:bold}${/c} prefix before the opening quote."
+    "Definition": "Marks the beginning of an interpolated string."
   },
   "InterpolatedStringText": {
-    "Definition": "The literal text inside an interpolated string that can appear before or after interpolated values."
+    "Definition": "The literal text inside of an interpolated string."
   },
   "InterpolatedStringEnd": {
-    "Definition": "Marks the end of the interpolated string."
+    "Definition": "Marks the end of an interpolated string."
   },
   "InterpolatedVerbatimStringStart": {
     "Definition": "Marks the beginning of a string that supports interpolation and multi-line text. It uses the {c:bold}$@{/c} or {c:bold}@${/c} prefix before the opening quote."
@@ -734,5 +740,23 @@
   },
   "PatternMatchArrow": {
     "Definition": "Connects a {c:color-purple keyword}switch{/c} expression arm's pattern to the value returned when that pattern matches."
+  },
+  "ArithmeticOperand": {
+    "Definition": "A numeric value participating in an arithmetic expression, combined with another operand using an arithmetic operator."
+  },
+  "AssignmentValue": {
+    "Definition": "The value assigned to a variable, field, or property by an assignment or initializer expression."
+  },
+  "ComparisonOperand": {
+    "Definition": "A value participating in a comparison expression, evaluated against another operand using a relational or equality operator."
+  },
+  "ConcatenationOperand": {
+    "Definition": "A value combined with another operand using the string concatenation operator to produce a single composed string."
+  },
+  "ExpressionOperand": {
+    "Definition": "A value used by an expression or operator. Operands can be literals, identifiers, member accesses, or other expressions."
+  },
+  "LogicalOperand": {
+    "Definition": "A boolean value participating in a logical expression, combined with another operand using a logical operator."
   }
 }

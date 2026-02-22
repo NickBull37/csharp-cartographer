@@ -28,6 +28,8 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             int unaryMinus = -a;
             a++;
             b--;
+            ++a;
+            --b;
             bool boolVal = true;
             bool notBool = !boolVal;
             int bitNot = ~a;
@@ -43,6 +45,7 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             // logical: &&, ||
             bool logicalAnd = (a > 0) && (b > 0);
             bool logicalOr = (a > 0) || (b < 0);
+            bool land = eq && neq;
 
             // bitwise: &, |, ^, ~, <<, >>
             int andBits = a & b;
@@ -180,7 +183,10 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
     public class TestNode
     {
         public string Name { get; }
+
         public TestNode? Parent { get; }
+
+        public List<TestNode>? Ancestors { get; }
 
         public TestNode(string name, TestNode? parent = null)
         {

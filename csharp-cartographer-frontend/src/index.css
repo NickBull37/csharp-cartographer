@@ -445,6 +445,14 @@ body {
     background-color: rgba(51, 51, 51, 0.7);
     border: 1px solid rgba(204, 204, 204, 0.6);
 }
+.light-green-box{
+    background-color: rgba(47, 71, 31, 0.2);
+    border: 1px solid rgba(186, 216, 166, 0.6);
+}
+.orange-box{
+    background-color: rgba(96, 51, 32, 0.15);
+    border: 1px solid rgba(191, 102, 64, 0.6);
+}
 .purple-box{
     background-color: rgba(57, 44, 84, 0.2);
     border: 1px solid rgba(215, 158, 250, 0.6);
@@ -457,6 +465,12 @@ body {
 }
 .purple-icon-text{
     color: #ebcffc;
+}
+.orange-icon-text{
+    color: #ecd1c6;
+}
+.light-green-icon-text{
+    color: #d6e8ca;
 }
 
 

@@ -82,6 +82,10 @@ namespace csharp_cartographer_backend._02.Utilities.Helpers
 
         public static string VerbatimStringDemo()
         {
+            var test = @"First" + @"+" + @"Second";
+
+            var test2 = $"First" + "+" + @"Second";
+
             return @"C:\Projects\Cartographer\Logs\analysis.log";
         }
 

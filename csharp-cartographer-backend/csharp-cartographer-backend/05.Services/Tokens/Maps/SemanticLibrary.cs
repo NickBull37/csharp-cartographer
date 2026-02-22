@@ -30,23 +30,78 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return StringHelpers.AddSpaces(label);
         }
 
-        private static MapText GetPrimaryDefinition(NavToken token)
+        private static MapText? GetPrimaryDefinition(NavToken token)
         {
-            var key = token.Map.SemanticRole.ToString();
+            var role = token.Map.SemanticRole;
 
-            return DefinitionProvider.GetMapText(key);
+            //if (role is SemanticRole.QuotedString
+            //    or SemanticRole.VerbatimString
+            //    or SemanticRole.NumericLiteral)
+            //{
+            //    return DefinitionProvider.GetMapText("StringLiteral");
+            //    //return null;
+            //}
+            //if (role is SemanticRole.NumericLiteral)
+            //{
+            //    return DefinitionProvider.GetMapText("NumericLiteralShort");
+            //    //return null;
+            //}
+
+            return DefinitionProvider.GetMapText(role.ToString());
         }
 
-        private static MapText GetPrimaryFocusedDefinition(NavToken token)
+        private static MapText? GetPrimaryFocusedDefinition(NavToken token)
         {
-            var key = token.Text;
+            string? key = null;
+            var role = token.Map.SemanticRole;
+
+            if (role is SemanticRole.Argument
+                or SemanticRole.AssignmentValue
+                or SemanticRole.ReturnValue
+                or SemanticRole.ConcatenationOperand
+                or SemanticRole.ComparisonOperand
+                or SemanticRole.BitwiseOperand
+                or SemanticRole.ShiftOperand)
+            {
+                if (token.IsQuotedString())
+                {
+                    key = "QuotedString";
+                }
+                if (token.IsVerbatimString())
+                {
+                    key = "VerbatimString";
+                }
+                if (token.IsNumericLiteral())
+                {
+                    key = "NumericLiteral";
+                }
+                if (token.IsBooleanLiteral())
+                {
+                    key = "BooleanLiteral";
+                }
+            }
+            //else if (role is SemanticRole.QuotedString
+            //    or SemanticRole.VerbatimString
+            //    or SemanticRole.NumericLiteral
+            //    or SemanticRole.CharacterLiteral)
+            //{
+            //    key = role.ToString();
+            //}
+            else if (token.IsInterpolatedString())
+            {
+                key = "InterpolatedString";
+            }
+            else if (token.IsKeyword() || token.IsOperator())
+            {
+                key = token.Text;
+            }
 
             return key is not null
                 ? DefinitionProvider.GetMapText(key)
                 : null;
         }
 
-        private static MapText GetSecondaryDefinition(NavToken token)
+        private static MapText? GetSecondaryDefinition(NavToken token)
         {
             var key = token.Map.ModifierStrings.FirstOrDefault();
 

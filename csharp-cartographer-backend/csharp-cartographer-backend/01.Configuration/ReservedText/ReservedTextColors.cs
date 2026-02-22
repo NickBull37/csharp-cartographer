@@ -57,6 +57,11 @@
             },
             new ReservedTextColor
             {
+                Text = "args",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "as",
                 HighlightColor = _blue,
             },

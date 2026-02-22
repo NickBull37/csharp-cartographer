@@ -26,6 +26,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             MapSpecialCaseSemanticRoles(navTokens);
 
+            // add role definitions
             _semanticLibrary.AddSemanticInfo(navTokens);
         }
 
@@ -66,6 +67,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (GlobalConstants.Delimiters.Contains(token.Text) && token.RoslynClassification == "punctuation")
             {
                 return PrimaryKind.Delimiter;
+            }
+            if (token.Text == "args" && token.RoslynClassification == "keyword")
+            {
+                return PrimaryKind.Identifier;
             }
 
             switch (token.RoslynClassification)
@@ -133,6 +138,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             // --- Literals ---
             semanticRole = GetSemanticRoleForLiterals(token);
+            if (semanticRole != SemanticRole.Unknown)
+                return semanticRole;
+
+            // --- Misc ---
+            semanticRole = GetSemanticRoleForMisc(token);
             if (semanticRole != SemanticRole.Unknown)
                 return semanticRole;
 
@@ -834,18 +844,24 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole GetSemanticRoleForLiterals(NavToken token)
         {
+            // Arguments - priority over literal roles
+            //if (token.IsArgument())
+            //    return SemanticRole.Argument;
+
+            // ---------- Argument takes priority, keep Literal roles as fallbacks ---------- //
+
             // Numeric literals
-            if (token.IsNumericLiteral())
-                return SemanticRole.NumericLiteral;
+            //if (token.IsNumericLiteral())
+            //    return SemanticRole.NumericLiteral;
 
             // String literals
             if (token.IsStringLiteral())
             {
-                if (token.IsQuotedString())
-                    return SemanticRole.QuotedString;
+                //if (token.IsQuotedString())
+                //    return SemanticRole.QuotedString;
 
-                if (token.IsVerbatimString())
-                    return SemanticRole.VerbatimString;
+                //if (token.IsVerbatimString())
+                //    return SemanticRole.VerbatimString;
 
                 if (token.IsInterpolatedStringStart())
                     return SemanticRole.InterpolatedStringStart;
@@ -863,17 +879,56 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     return SemanticRole.NumericFormatSpecifier;
             }
 
-            // Char literals
-            if (token.IsCharacterLiteral())
-                return SemanticRole.CharacterLiteral;
+            //// Char literals
+            //if (token.IsCharacterLiteral())
+            //    return SemanticRole.CharacterLiteral;
 
-            // Boolean literals
-            if (token.IsBooleanLiteral())
-                return SemanticRole.BooleanLiteral;
+            //// Boolean literals
+            //if (token.IsBooleanLiteral())
+            //    return SemanticRole.BooleanLiteral;
 
-            // Null literals
-            if (token.IsNullLiteral())
-                return SemanticRole.NullValue;
+            //// Null literals
+            //if (token.IsNullLiteral())
+            //    return SemanticRole.NullValue;
+
+            return SemanticRole.Unknown;
+        }
+
+        private static SemanticRole GetSemanticRoleForMisc(NavToken token)
+        {
+            // Arguments
+            if (token.IsArgument())
+                return SemanticRole.Argument;
+
+            // Assignment values
+            if (token.IsAssignmentValue())
+                return SemanticRole.AssignmentValue;
+
+            // Operands
+            if (token.IsArithmeticOperand())
+                return SemanticRole.ArithmeticOperand;
+
+            if (token.IsBitwiseOperand())
+                return SemanticRole.BitwiseOperand;
+
+            if (token.IsComparisonOperand())
+                return SemanticRole.ComparisonOperand;
+
+            if (token.IsConcatenationOperand())
+                return SemanticRole.ConcatenationOperand;
+
+            if (token.IsExpressionOperand())
+                return SemanticRole.ExpressionOperand;
+
+            if (token.IsLogicalOperand())
+                return SemanticRole.LogicalOperand;
+
+            if (token.IsShiftOperand())
+                return SemanticRole.ShiftOperand;
+
+            // Return values
+            if (token.IsReturnValue())
+                return SemanticRole.ReturnValue;
 
             return SemanticRole.Unknown;
         }
@@ -1061,7 +1116,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsParameterLabel())
                 return SemanticRole.ParameterLabel;
 
-            // Identifier - attribute arguments
+            // Identifier - arguments
+            if (token.IsArgument())
+                return SemanticRole.Argument;
+
             if (token.IsAttributeArgument())
                 return SemanticRole.AttributeArgument;
 
@@ -1103,29 +1161,29 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --------------------------------------------------------- //
 
             // Identifier references - likely to catch early (check last)
-            if (token.RoslynClassification == "constant name")
-                return SemanticRole.ConstantReference;
+            //if (token.RoslynClassification == "constant name")
+            //    return SemanticRole.ConstantReference;
 
-            if (token.RoslynClassification == "enum name")
-                return SemanticRole.EnumReference;
+            //if (token.RoslynClassification == "enum name")
+            //    return SemanticRole.EnumReference;
 
-            if (token.RoslynClassification == "enum member name")
-                return SemanticRole.EnumMemberReference;
+            //if (token.RoslynClassification == "enum member name")
+            //    return SemanticRole.EnumMemberReference;
 
-            if (token.RoslynClassification == "event name")
-                return SemanticRole.EventReference;
+            //if (token.RoslynClassification == "event name")
+            //    return SemanticRole.EventReference;
 
-            if (token.RoslynClassification == "field name")
-                return SemanticRole.FieldReference;
+            //if (token.RoslynClassification == "field name")
+            //    return SemanticRole.FieldReference;
 
-            if (token.RoslynClassification == "local name")
-                return SemanticRole.LocalVariableReference;
+            //if (token.RoslynClassification == "local name")
+            //    return SemanticRole.LocalVariableReference;
 
-            if (token.RoslynClassification == "parameter name")
-                return SemanticRole.ParameterReference;
+            //if (token.RoslynClassification == "parameter name")
+            //    return SemanticRole.ParameterReference;
 
-            if (token.RoslynClassification == "property name")
-                return SemanticRole.PropertyReference;
+            //if (token.RoslynClassification == "property name")
+            //    return SemanticRole.PropertyReference;
 
             return SemanticRole.Unknown;
         }
@@ -1186,13 +1244,42 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Literal modifiers
             if (token.IsLiteral())
             {
-                if (token.IsDecimalValue())
-                    modifiers.Add(SemanticModifiers.DecimalValue);
+                //// Numeric literals
+                //if (token.IsNumericLiteral())
+                //    modifiers.Add(SemanticModifiers.NumericLiteral);
+
+                //// String literals
+                //if (token.IsStringLiteral())
+                //{
+                //    if (token.IsQuotedString())
+                //        modifiers.Add(SemanticModifiers.QuotedString);
+
+                //    if (token.IsVerbatimString())
+                //        modifiers.Add(SemanticModifiers.VerbatimString);
+                //}
+
+                //// Char literals
+                //if (token.IsCharacterLiteral())
+                //    modifiers.Add(SemanticModifiers.CharacterLiteral);
+
+                //// Boolean literals
+                //if (token.IsBooleanLiteral())
+                //    modifiers.Add(SemanticModifiers.BooleanLiteral);
+
+                //// Null literals
+                //if (token.IsNullLiteral())
+                //    modifiers.Add(SemanticModifiers.NullValue);
+
+                // --------------------------------------------------------- //
+
+                // Decimal values
+                //if (token.IsDecimalValue())
+                //    modifiers.Add(SemanticModifiers.DecimalValue);
             }
 
             // --- General modifiers
-            if (token.IsArgument())
-                modifiers.Add(SemanticModifiers.Argument);
+            //if (token.IsArgument())
+            //    modifiers.Add(SemanticModifiers.Argument);
 
             if (token.IsGenericType())
                 modifiers.Add(SemanticModifiers.GenericType);
@@ -1200,8 +1287,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsNullableType() || token.IsNullableConstraintType())
                 modifiers.Add(SemanticModifiers.Nullable);
 
-            if (token.IsReturnValue())
-                modifiers.Add(SemanticModifiers.ReturnValue);
+            //if (token.IsReturnValue())
+            //    modifiers.Add(SemanticModifiers.ReturnValue);
 
             return modifiers;
         }

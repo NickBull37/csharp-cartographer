@@ -107,6 +107,9 @@ const TokenSidebarContent = ({
     // Find the index of the activeToken in navTokens
     const activeTokenIndex = navTokens.findIndex(token => token === activeToken);
 
+    const hasPrimaryDefinition =
+        !!activeToken?.map?.primaryDefinition?.segments?.length;
+
     // State Variables
     const [tokenText, setTokenText] = useState('');
     const [tokenLabel, setTokenLabel] = useState('');
@@ -288,8 +291,8 @@ const TokenSidebarContent = ({
                                 : 'default-text-class'
                         }
                     >
-                        {/* {tokenText} */}
-                        {tokenText} - {activeTokenIndex}
+                        {tokenText}
+                        {/* {tokenText} - {activeTokenIndex} */}
                     </TokenText>
                     <Tooltip title="Next Token">
                         <NextTokenButton
@@ -321,7 +324,7 @@ const TokenSidebarContent = ({
                                 py: '2px'
                             }}
                         >
-                            {roslynClassification}
+                            {roslynClassification} - {activeTokenIndex}
                         </Typography>
 
                         <Divider sx={{ bgcolor: '#808080' }} />
@@ -435,104 +438,8 @@ const TokenSidebarContent = ({
                                                 
                                             </Box>
 
-                                            {/* <Box
-                                                display="flex"
-                                                sx={{
-                                                    borderBottom: '1px solid #666666',
-                                                    flexDirection: isLong ? 'column' : 'row',
-                                                    gap: isLong ? '0' : '2px',
-                                                }}
-                                            >
-                                                <MapTagDefFadedLabel
-                                                    className={
-                                                        highlightColor === 'color-white'
-                                                                ? 'faded-white'
-                                                            : highlightColor === 'color-gray'
-                                                                ? 'faded-gray'
-                                                            : highlightColor === 'color-blue'
-                                                                ? 'faded-blue'
-                                                            : highlightColor === 'color-light-blue'
-                                                                ? 'faded-light-blue'
-                                                            : highlightColor === 'color-dark-blue'
-                                                                ? 'faded-dark-blue'
-                                                            : highlightColor === 'color-green'
-                                                                ? 'faded-green'
-                                                            : highlightColor === 'color-jade'
-                                                                ? 'faded-jade'
-                                                            : highlightColor === 'color-light-green'
-                                                                ? 'faded-light-green'
-                                                            : highlightColor === 'color-dark-green'
-                                                                ? 'faded-dark-green'
-                                                            : highlightColor === 'color-purple'
-                                                                ? 'faded-purple'
-                                                            : highlightColor === 'color-orange'
-                                                                ? 'faded-orange'
-                                                            : highlightColor === 'color-yellow'
-                                                                ? 'faded-yellow'
-                                                            : highlightColor === 'color-teal'
-                                                                ? 'faded-teal'
-                                                            : 'faded-white'
-                                                    }
-                                                >
-                                                    {activeToken.map.primaryKindString}:
-                                                </MapTagDefFadedLabel>
-                                                <MapTagDefLabel className='code'>
-                                                    {activeToken.map.primaryLabel}
-                                                </MapTagDefLabel>
-                                            </Box> */}
-
-
-
-
-                                            {/* <Box
-                                                display="flex"
-                                                justifyContent="space-between"
-                                                alignItems="flex-end"
-                                                sx={{
-                                                    borderBottom: '1px solid #666666'
-                                                }}
-                                            >
-                                                <MapTagDefLabel className='code' >
-                                                    {activeToken.map.primaryLabel}
-                                                </MapTagDefLabel>
-
-                                                <MapTagDefFadedLabel
-                                                    className={
-                                                        highlightColor === 'color-white'
-                                                                ? 'faded-white'
-                                                            : highlightColor === 'color-gray'
-                                                                ? 'faded-gray'
-                                                            : highlightColor === 'color-blue'
-                                                                ? 'faded-blue'
-                                                            : highlightColor === 'color-light-blue'
-                                                                ? 'faded-light-blue'
-                                                            : highlightColor === 'color-dark-blue'
-                                                                ? 'faded-dark-blue'
-                                                            : highlightColor === 'color-green'
-                                                                ? 'faded-green'
-                                                            : highlightColor === 'color-jade'
-                                                                ? 'faded-jade'
-                                                            : highlightColor === 'color-light-green'
-                                                                ? 'faded-light-green'
-                                                            : highlightColor === 'color-dark-green'
-                                                                ? 'faded-dark-green'
-                                                            : highlightColor === 'color-purple'
-                                                                ? 'faded-purple'
-                                                            : highlightColor === 'color-orange'
-                                                                ? 'faded-orange'
-                                                            : highlightColor === 'color-yellow'
-                                                                ? 'faded-yellow'
-                                                            : highlightColor === 'color-teal'
-                                                                ? 'faded-teal'
-                                                            : 'faded-white'
-                                                    }
-                                                >
-                                                    {activeToken.map.primaryKindString}
-                                                </MapTagDefFadedLabel>
-                                            </Box> */}
-
                                             <Stack
-                                                gap={2}
+                                                gap={hasPrimaryDefinition ? 2 : 1.25}
                                                 sx={{
                                                     px: '1px'
                                                 }}
@@ -547,8 +454,12 @@ const TokenSidebarContent = ({
                                                                 ? 'keyword-definition blue-box'
                                                             : highlightColor === 'color-purple'
                                                                 ? 'keyword-definition purple-box'
+                                                            : highlightColor === 'color-light-green'
+                                                                ? 'keyword-definition light-green-box'
                                                             : highlightColor === 'color-gray' || highlightColor === 'color-white'
                                                                 ? 'keyword-definition gray-box'
+                                                            : highlightColor === 'color-orange'
+                                                                ? 'keyword-definition orange-box'
                                                             : ''
                                                         }
                                                     >
@@ -568,6 +479,10 @@ const TokenSidebarContent = ({
                                                                             ? 'purple-icon-text'
                                                                         : highlightColor === 'color-gray'
                                                                             ? 'gray-icon-text'
+                                                                        : highlightColor === 'color-orange'
+                                                                            ? 'orange-icon-text'
+                                                                        : highlightColor === 'color-light-green'
+                                                                            ? 'light-green-icon-text'
                                                                         : ''
                                                                 }
                                                                 sx={{
@@ -582,6 +497,10 @@ const TokenSidebarContent = ({
                                                                             ? 'purple-icon-text'
                                                                         : highlightColor === 'color-gray'
                                                                             ? 'gray-icon-text'
+                                                                        : highlightColor === 'color-orange'
+                                                                            ? 'orange-icon-text'
+                                                                        : highlightColor === 'color-light-green'
+                                                                            ? 'light-green-icon-text'
                                                                         : ''
                                                                 }
                                                                 sx={{

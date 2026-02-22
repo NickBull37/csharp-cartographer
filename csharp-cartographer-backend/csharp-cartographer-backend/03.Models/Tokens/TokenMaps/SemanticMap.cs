@@ -312,6 +312,19 @@
         JoinRangeVariableReference,
         LetVariableReference,
         RangeVariableReference,
+
+        // ------------ Misc ------------ //
+
+        ArithmeticOperand,
+        AssignmentValue,
+        Argument,
+        BitwiseOperand,
+        ComparisonOperand,
+        ConcatenationOperand,
+        ExpressionOperand,
+        LogicalOperand,
+        ShiftOperand,
+        ReturnValue
     }
 
     public enum TypeSymbols
@@ -389,7 +402,16 @@
         ConditionalExecution,
 
         // Literal modifiers
-        DecimalValue,
+        BooleanLiteral,
+        CharacterLiteral,
+        DecimalLiteral,
+        FloatingPointLiteral,
+        //DecimalValue,
+        //InterpolatedString,
+        NullValue,
+        NumericLiteral,
+        QuotedString,
+        VerbatimString,
     }
 
     public enum Color
@@ -462,9 +484,9 @@
     public sealed record SemanticMap
     {
         // Used for classifying a token
-        public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
-
         public PrimaryKind PrimaryKind { get; set; } = PrimaryKind.Unknown;
+
+        public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
 
         public IEnumerable<SemanticModifiers> Modifiers { get; set; } = [];
 
