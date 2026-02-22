@@ -137,6 +137,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsIdentifier() => RoslynToken.IsKind(SyntaxKind.IdentifierToken);
 
+        public bool IsLiteral()
+        {
+            return Kind is SyntaxKind.NumericLiteralToken
+                or SyntaxKind.CharacterLiteralToken
+                or SyntaxKind.StringLiteralToken;
+        }
+
         public bool IsAccessStaticMember() =>
             HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
 
@@ -586,6 +593,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
+        public bool IsLambdaExpressionBlockDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && (HasAncestorAt(1, SyntaxKind.SimpleLambdaExpression) || HasAncestorAt(1, SyntaxKind.ParenthesizedLambdaExpression))
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsSizeOfExpressionDelimiter()
         {
             return IsDelimiter()
@@ -733,7 +748,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.VariableDeclarator)
                 && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
                 && HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
-                && (PrevToken?.PrevToken?.Text == "using") || PrevToken?.PrevToken?.PrevToken?.Text == "using")
+                && (PrevToken?.PrevToken?.Text == "using" || PrevToken?.PrevToken?.PrevToken?.Text == "using"))
             {
                 return true;
             }
@@ -1054,8 +1069,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return AncestorKinds.Ancestors.Contains(SyntaxKind.UsingDirective);
         }
 
-
-
         public bool IsNamespaceDeclarationQualifier()
         {
             // skip using dir qualifiers that are shared between using dirs and namespace declaration
@@ -1289,6 +1302,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return false;
         }
 
+        public bool IsImplicitCreationKeyword()
+        {
+            return Kind == SyntaxKind.NewKeyword
+                && HasAncestorAt(0, SyntaxKind.ImplicitObjectCreationExpression);
+        }
+
         public bool IsImplicitParameterKeyword()
         {
             bool hasKeywordClassification = RoslynClassification is not null
@@ -1434,6 +1453,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && RoslynClassification == "string"
                 && Kind == SyntaxKind.CharacterLiteralToken
                 && HasAncestorAt(0, SyntaxKind.CharacterLiteralExpression);
+        }
+
+        public bool IsDecimalValue()
+        {
+            return Kind == SyntaxKind.NumericLiteralToken
+                && Text.Length > 0
+                && (Text[^1] == 'm' || Text[^1] == 'M');
         }
 
         public bool IsNullLiteral()
@@ -1797,32 +1823,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsArgument()
         {
-            // single token identifiers
-            if (HasAncestorAt(0, SyntaxKind.IdentifierName)
-                && HasAncestorAt(1, SyntaxKind.Argument))
-            {
-                return true;
-            }
+            // single token identifiers, numeric literals, string literals
+            bool parentIsValid = HasAncestorAt(0, SyntaxKind.IdentifierName)
+                || HasAncestorAt(0, SyntaxKind.NumericLiteralExpression)
+                || HasAncestorAt(0, SyntaxKind.StringLiteralExpression);
 
-            // numeric literals
-            if (HasAncestorAt(0, SyntaxKind.NumericLiteralExpression)
-                && HasAncestorAt(1, SyntaxKind.Argument))
-            {
-                return true;
-            }
+            bool grandParentIsValid = HasAncestorAt(1, SyntaxKind.Argument)
+                || HasAncestorAt(1, SyntaxKind.AttributeArgument);
 
-            // string literals
-            if (HasAncestorAt(0, SyntaxKind.StringLiteralExpression)
-                && HasAncestorAt(1, SyntaxKind.Argument))
-            {
+            if (parentIsValid && grandParentIsValid)
                 return true;
-            }
 
             // out variable declarations
             if (IsOutVariableDeclaration())
-            {
                 return true;
-            }
 
             return false;
         }

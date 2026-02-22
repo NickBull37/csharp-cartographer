@@ -10,6 +10,14 @@ using SB = System.Text.StringBuilder;
 // Generic type alias (2 gen args)
 using StringIntDict = System.Collections.Generic.Dictionary<string, int>;
 
+namespace Testing_Multiple_Namespaces_In_One_File
+{
+    public class TestClass
+    {
+
+    }
+}
+
 namespace csharp_cartographer_backend._01.Configuration.DemoFiles
 {
     public class NamespaceAndAliasDemo

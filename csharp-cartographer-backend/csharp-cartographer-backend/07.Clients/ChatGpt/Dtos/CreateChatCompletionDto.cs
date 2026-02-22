@@ -7,6 +7,10 @@
 
         public decimal Temperature { get; init; } = 0.7m;
 
+        public decimal TemperatureTest { get; init; } = 0.7M;
+
+        public double TemperatureTestTest { get; init; } = 0.7;
+
         public List<Message> Messages { get; init; } = [];
     }
 }

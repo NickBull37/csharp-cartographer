@@ -262,6 +262,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsInterpolatedValueDelimiter())
                     return SemanticRole.InterpolatedValueBoundary;
 
+                if (token.IsLambdaExpressionBlockDelimiter())
+                    return SemanticRole.LambdaExpressionBlockBoundary;
+
                 if (token.IsMethodDelimiter())
                     return SemanticRole.MethodBoundary;
 
@@ -758,9 +761,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 },
 
                 // object creation, member hiding
-                "new" => parentKind is "ObjectCreationExpression" or "ImplicitArrayCreationExpression" or "AnonymousObjectCreationExpression"
-                    ? SemanticRole.ObjectConstruction
-                    : SemanticRole.InheritanceModifier,
+                "new" => parentKind is "ObjectCreationExpression"
+                    or "ImplicitObjectCreationExpression"
+                    or "ImplicitArrayCreationExpression"
+                    or "AnonymousObjectCreationExpression"
+                        ? SemanticRole.ObjectConstruction
+                        : SemanticRole.InheritanceModifier,
 
                 // query expressions, generic constraints
                 "where" => parentKind switch
@@ -1136,6 +1142,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.Text == "var")
                     modifiers.Add(SemanticModifiers.ImplicitlyTyped);
 
+                if (token.IsImplicitCreationKeyword())
+                    modifiers.Add(SemanticModifiers.ImplicitCreation);
+
                 if (token.IsAnonymousObjectCreation())
                     modifiers.Add(SemanticModifiers.Anonymous);
             }
@@ -1172,6 +1181,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     modifiers.Add(SemanticModifiers.UsingStatementResource);
 
                 // TODO: Add modifier for un-implemented interface methods
+            }
+
+            // --- Literal modifiers
+            if (token.IsLiteral())
+            {
+                if (token.IsDecimalValue())
+                    modifiers.Add(SemanticModifiers.DecimalValue);
             }
 
             // --- General modifiers

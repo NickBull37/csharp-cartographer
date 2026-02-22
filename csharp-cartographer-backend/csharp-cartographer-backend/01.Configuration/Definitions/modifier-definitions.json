@@ -11,11 +11,17 @@
   "Conditional": {
     "Definition": "Member access that is only allowed when the preceding value is not {c:color-blue keyword}null{/c}. If it is, evaluation of the expression is stopped and returns {c:color-blue keyword}null{/c} immediately. {c:keyword}?.{/c} is also known as the {c:bold}conditional-member access operator{/c}."
   },
+  "DecimalValue": {
+    "Definition": "The {c:color-light-green keyword}m{/c} suffix on a numeric literal specifies the {c:color-blue keyword}decimal{/c} type."
+  },
   "GenericMethod": {
     "Definition": "A method designed to work with multiple types and must be passed a {c:bold}generic type argument{/c} when invoked. The generic type argument passed in will replace the {c:bold}generic type parameter{/c} defined in the method signature."
   },
   "GenericType": {
     "Definition": "A type that must be supplied a {c:bold}generic type argument{/c} when used. The generic type argument passed in will replace the {c:bold}generic type parameter{/c} in the type definition."
+  },
+  "ImplicitCreation": {
+    "Definition": "The type does not need to be specified in this syntax because it is already defined earlier in the statement."
   },
   "ImplicitlyTyped": {
     "Definition": "The type is determined automatically by the compiler. The type is still fixed, even though it is not written explicitly."

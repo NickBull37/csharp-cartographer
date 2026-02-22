@@ -104,6 +104,9 @@
   "InterpolatedValueBoundary": {
     "Definition": "Marks the boundaries of a value or expression embedded inside an interpolated string."
   },
+  "LambdaExpressionBlockBoundary": {
+    "Definition": "Marks the boundaries of a lambda expression block."
+  },
   "MethodBoundary": {
     "Definition": "Marks the boundaries of the method definition."
   },

@@ -56,6 +56,7 @@
         ImplicitArrayCreation,
         InterfaceBoundary,
         InterpolatedValueBoundary,
+        LambdaExpressionBlockBoundary,
         MethodBoundary,
         NamespaceBoundary,
         ObjectInitializerBoundary,
@@ -351,6 +352,14 @@
     {
         None,
 
+        // Operator modifiers
+        Concatenation,
+        Conditional,
+
+        // Keyword modifiers
+        ImplicitCreation,
+        ShortCircuit,
+
         // Identifier modifiers
         ImportedNamespace,
         UsingStatementResource,
@@ -376,13 +385,11 @@
         In,
 
         // Control-flow modifiers
-        ShortCircuit,
         FallThrough,
         ConditionalExecution,
 
-        // Operator modifiers
-        Concatenation,
-        Conditional,
+        // Literal modifiers
+        DecimalValue,
     }
 
     public enum Color
