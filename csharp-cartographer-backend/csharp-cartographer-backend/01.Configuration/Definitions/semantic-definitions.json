@@ -194,8 +194,11 @@
   "Assignment": {
     "Definition": "Assignment operators store a value in a variable. They set or update the variable’s value."
   },
-  "BitwiseShift": {
-    "Definition": "Bitwise shift operators move the bits of a number left or right. They are often used for low-level or performance-related operations."
+  "Bitwise": {
+    "Definition": "Bitwise operators perform operations directly on the individual bits of a numeric value. They combine or invert bits using the operators {c:color-orange bold}&{/c}, {c:color-orange bold}|{/c}, {c:color-orange bold}^{/c}, and {c:color-orange bold}~{/c}."
+  },
+  "Shift": {
+    "Definition": "Shift operators move the bits of a numeric value left or right by a specified number of positions. They use the operators {c:color-orange bold}<<{/c}, {c:color-orange bold}>>{/c}, and {c:color-orange bold}>>>{/c}."
   },
   "BooleanLogical": {
     "Definition": "Boolean logical operators combine or invert true and false values. They are commonly used in conditional expressions."
@@ -582,12 +585,6 @@
   "BaseType": {
     "Definition": "A base type specifies a type that another type inherits from or implements. It defines a parent relationship in the type hierarchy."
   },
-  "CastType": {
-    "Definition": "A cast type specifies the type that a value is being converted from or to. It is used when explicitly changing how a value is treated in code."
-  },
-  "CastTargetType": {
-    "Definition": "A cast target type is the type that a value is being converted into. It determines how the value should be interpreted after the cast."
-  },
   "DeconstructionVariableDataType": {
     "Definition": "The data type a variable will have after it has been deconstructed."
   },
@@ -668,9 +665,6 @@
   },
   "TypeParameterConstraint": {
     "Definition": "This identifier references the declared generic type parameter inside a constraint clause that sets rules for the arguments that are allowed to be passed in for the generic type parameter."
-  },
-  "TypePattern": {
-    "Definition": "A type pattern specifies the type being checked in a pattern matching expression. It determines whether a value matches a given type."
   },
   "TupleElementName": {
     "Definition": "A tuple element name gives a readable name to a value inside a tuple. It makes tuple values easier to understand and access."
@@ -758,5 +752,50 @@
   },
   "LogicalOperand": {
     "Definition": "A boolean value participating in a logical expression, combined with another operand using a logical operator."
+  },
+  "ConditionalAccessTarget": {
+    "Definition": "The expression evaluated for null before a conditional member or element access. If it is null, the access is skipped and the overall expression returns null."
+  },
+  "NullCoalescingAssignmentValue": {
+    "Definition": "The value assigned to the target variable in a null-coalescing assignment (??=) when the target is null."
+  },
+  "NullCoalescingTarget": {
+    "Definition": "The value evaluated for null in a null-coalescing expression. If it is not null, it becomes the result of the expression."
+  },
+  "NullCoalescingFallback": {
+    "Definition": "The value returned by a null-coalescing expression when the target value is null."
+  },
+  "NullForgivingOperand": {
+    "Definition": "The expression whose null-state is overridden by the null-forgiving operator (!), forcing the compiler to treat it as non-null."
+  },
+  "PatternBindingVariable": {
+    "Definition": "A variable introduced by a pattern that is assigned the matched value or a component of it when the pattern succeeds."
+  },
+  "PatternMatchTarget": {
+    "Definition": "The expression whose runtime value is tested against a pattern in an is expression or switch pattern match."
+  },
+  "TypePattern": {
+    "Definition": "A type pattern specifies the type being checked in a pattern matching expression. It determines whether a value matches a given type."
+  },
+  "ConstantPattern": {
+    "Definition": "A constant pattern specifies a constant value being checked in a pattern matching expression."
+  },
+  "PropertyPattern": {
+    "Definition": "A property name token within a property pattern that specifies which member of the matched value is evaluated against a nested pattern."
+  },
+  "RelationalPattern": {
+    "Definition": "A constant or expression token in a relational pattern that is compared to the matched value using a relational operator (>, <, >=, <=)."
+  },
+  "VarPattern": {
+    "Definition": "The {c:color-blue keyword}var{/c} keyword in a pattern that matches any value and introduces a binding variable for that value or a component of it."
+  },
+  "CastType": {
+    "Definition": "A cast type specifies the type that a value is being converted to. It is used when explicitly changing how a value is treated in code."
+  },
+  "CastTarget": {
+    "Definition": "A cast target is the value being converted to a new type."
+  },
+  "": {
+    "Definition": ""
   }
 }

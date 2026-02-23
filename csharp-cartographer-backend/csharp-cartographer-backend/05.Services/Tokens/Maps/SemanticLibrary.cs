@@ -77,7 +77,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 }
                 if (token.IsBooleanLiteral())
                 {
-                    key = "BooleanLiteral";
+                    if (token.Text == "true")
+                        key = "true";
+                    else
+                        key = "false";
+                }
+                if (token.Text == "null")
+                {
+                    key = "null";
                 }
             }
             //else if (role is SemanticRole.QuotedString

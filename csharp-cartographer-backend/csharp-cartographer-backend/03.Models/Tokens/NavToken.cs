@@ -655,14 +655,41 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsCastType()
         {
-            return (Kind == SyntaxKind.IdentifierToken || IsPredefinedType())
-                && HasAncestorAt(1, SyntaxKind.CastExpression);
+            // safe-cast with "as"
+            if (HasAncestorAt(1, SyntaxKind.AsExpression)
+                && PrevToken?.Kind == SyntaxKind.AsKeyword)
+            {
+                return true;
+            }
+
+            // explicit-cast (int)value
+            if (HasAncestorAt(1, SyntaxKind.CastExpression)
+                && PrevToken?.Kind == SyntaxKind.OpenParenToken
+                && NextToken?.Kind == SyntaxKind.CloseParenToken)
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        public bool IsCastTargetType()
+        public bool IsCastTarget()
         {
-            return HasAncestorAt(1, SyntaxKind.AsExpression)
-                && PrevToken?.Text == "as";
+            // safe-cast with "as"
+            if (HasAncestorAt(1, SyntaxKind.AsExpression)
+                && NextToken?.Kind == SyntaxKind.AsKeyword)
+            {
+                return true;
+            }
+
+            // explicit-cast (int)value
+            if (HasAncestorAt(1, SyntaxKind.CastExpression)
+                && PrevToken?.Kind == SyntaxKind.CloseParenToken)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public bool IsConstructorInvocation()
@@ -720,6 +747,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsParameterLabel()
         {
+            if (IsPropertyPattern())
+                return false;
+
             return Kind == SyntaxKind.IdentifierToken &&
                 HasAncestorAt(1, SyntaxKind.NameColon) &&
                 NextToken?.Text == ":";
@@ -1282,6 +1312,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 || IsVarAndKeyword();
         }
 
+        public bool IsPatternMatchingKeyword(SyntaxKind? kind)
+        {
+            if (kind is null)
+                return false;
+
+            return kind
+                is SyntaxKind.AndKeyword
+                or SyntaxKind.AsKeyword
+                or SyntaxKind.IsKeyword
+                or SyntaxKind.NotKeyword
+                or SyntaxKind.OrKeyword
+                or SyntaxKind.WhenKeyword;
+        }
+
         public bool IsContextualKeyword() => SyntaxFacts.IsContextualKeyword(Kind);
 
         public bool IsDiscardKeyword()
@@ -1540,6 +1584,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsBitwiseShiftOperator() =>
             Text is "&" or "|" or "^" or "~" or "<<" or ">>" or ">>>";
+
+        public bool IsBitwiseOperator() =>
+            Text is "&" or "|" or "^" or "~";
+
+        public bool IsShiftOperator() =>
+            Text is "<<" or ">>" or ">>>";
 
         public bool IsBooleanLogicalOperator() =>
             Text is "!" or "&" or "|" or "^" or "&&" or "||";
@@ -1837,6 +1887,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsArgument()
         {
+            // covered by operand-specific roles
+            if (IsDefaultOperand() || IsNameOfOperand() || IsSizeOfOperand() || IsTypeOfOperand())
+                return false;
+
             // single token identifiers, numeric literals, string literals
             bool parentIsValid = HasAncestorAt(0, SyntaxKind.IdentifierName)
                 || HasAncestorAt(0, SyntaxKind.NumericLiteralExpression)
@@ -1862,6 +1916,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return false;
 
             if (HasAncestorAt(1, SyntaxKind.EqualsValueClause)
+                || HasAncestorAt(1, SyntaxKind.SimpleAssignmentExpression)
                 || HasAncestorAt(1, SyntaxKind.AddAssignmentExpression)
                 || HasAncestorAt(1, SyntaxKind.SubtractAssignmentExpression)
                 || HasAncestorAt(1, SyntaxKind.MultiplyAssignmentExpression)
@@ -1944,6 +1999,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return false;
         }
 
+        public bool IsConditionalAccessTarget()
+        {
+            return HasAncestorAt(1, SyntaxKind.ConditionalAccessExpression)
+                && NextToken?.Text == "?";
+        }
+
         public bool IsExpressionOperand()
         {
 
@@ -1961,6 +2022,102 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             }
 
             return false;
+        }
+
+        public bool IsNullCoalescingAssignmentValue()
+        {
+            return HasAncestorAt(1, SyntaxKind.CoalesceAssignmentExpression)
+                && PrevToken?.Text == "??=";
+        }
+
+        public bool IsPatternBindingVariable()
+        {
+            bool hasValidParent = HasAncestorAt(0, SyntaxKind.SingleVariableDesignation);
+            bool hasIsPatternAncestor = HasAncestor(SyntaxKind.IsPatternExpression);
+
+            return hasValidParent && hasIsPatternAncestor;
+        }
+
+        public bool IsPatternMatchTarget()
+        {
+            bool hasValidNextToken = IsPatternMatchingKeyword(NextToken?.Kind);
+            if (!hasValidNextToken)
+                return false;
+
+            return HasAncestorAt(1, SyntaxKind.IsExpression)
+                || HasAncestorAt(1, SyntaxKind.IsPatternExpression);
+        }
+
+        public bool IsConstantPattern()
+        {
+            if (!IsPatternMatchingKeyword(PrevToken?.Kind))
+                return false;
+
+            return HasAncestorAt(1, SyntaxKind.ConstantPattern);
+        }
+
+        public bool IsPropertyPattern()
+        {
+            return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.NameColon)
+                && HasAncestorAt(2, SyntaxKind.Subpattern)
+                && HasAncestorAt(3, SyntaxKind.PropertyPatternClause);
+        }
+
+        public bool IsRelationalPattern()
+        {
+            bool hasValidPrevToken = PrevToken is not null && PrevToken.IsOperator();
+            if (!hasValidPrevToken)
+                return false;
+
+            return HasAncestorAt(1, SyntaxKind.RelationalPattern);
+        }
+
+        public bool IsTypePattern()
+        {
+            if (!IsPatternMatchingKeyword(PrevToken?.Kind))
+                return false;
+
+            // type pattern: _ = obj is string;
+            if (HasAncestorAt(1, SyntaxKind.IsExpression))
+                return true;
+
+            // declaration: _ = obj is string s;
+            if (HasAncestorAt(1, SyntaxKind.DeclarationPattern)
+                && HasAncestor(SyntaxKind.IsPatternExpression))
+            {
+                return true;
+            }
+
+            // type combinations: _ = numericObj is int or long;
+            if (HasAncestorAt(1, SyntaxKind.TypePattern))
+                return true;
+
+            return false;
+        }
+
+        public bool IsVarPattern()
+        {
+            return Kind == SyntaxKind.VarKeyword
+                && HasAncestorAt(0, SyntaxKind.VarPattern);
+        }
+
+        public bool IsNullCoalescingFallback()
+        {
+            return HasAncestorAt(1, SyntaxKind.CoalesceExpression)
+                && PrevToken?.Text == "??";
+        }
+
+        public bool IsNullCoalescingTarget()
+        {
+            return HasAncestorAt(1, SyntaxKind.CoalesceExpression)
+                && NextToken?.Text == "??";
+        }
+
+        public bool IsNullForgivingOperand()
+        {
+            return HasAncestorAt(1, SyntaxKind.SuppressNullableWarningExpression)
+                && NextToken?.Text == "!";
         }
 
         public bool IsShiftOperand()
@@ -2050,15 +2207,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return HasAncestorAt(0, SyntaxKind.IdentifierName)
                 && HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
-        }
-
-        public bool IsTypePatternType()
-        {
-            return HasAncestorAt(1, SyntaxKind.ConstantPattern)
-                || HasAncestorAt(1, SyntaxKind.DeclarationPattern)
-                || HasAncestorAt(1, SyntaxKind.IsExpression)
-                || HasAncestorAt(1, SyntaxKind.RecursivePattern)
-                || HasAncestorAt(1, SyntaxKind.TypePattern);
         }
 
         public bool IsTypeQualifier()

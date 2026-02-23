@@ -11,7 +11,7 @@
             {
                 // ------------------------------------------------------------
                 // Arithmetic: +, -, *, /, %, ++, --
-                // Unary: +, -, ++, --, !, ~
+                // Unary: +, -, ++, --
                 // ------------------------------------------------------------
                 int sum = a + b;
                 int diff = a - b;
@@ -22,12 +22,11 @@
                 int unaryPlus = +a;
                 int unaryMinus = -a;
 
-                a++;                                    // increment
-                b--;                                    // decrement
+                a++;         // post-increment
+                b--;         // post-decrement
+                ++a;         // pre-increment
+                --b;         // pre-decrement
 
-                bool boolVal = true;
-                bool logicalNot = !boolVal;             // ! (logical not)
-                int bitwiseNot = ~a;                    // ~
 
                 // ------------------------------------------------------------
                 // Comparison: ==, !=, >, <, >=, <=
@@ -39,6 +38,7 @@
                 bool gte = a >= b;
                 bool lte = a <= b;
 
+
                 // ------------------------------------------------------------
                 // Boolean Logical: &&, ||, & , |, ^
                 // ------------------------------------------------------------
@@ -47,14 +47,18 @@
                 bool andBool = (a > 0) & (b > 0);            // & (non-short-circuit boolean)
                 bool orBool = (a > 0) | (b < 0);             // | (non-short-circuit boolean)
                 bool xorBool = (a > 0) ^ (b > 0);            // ^
+                bool boolVal = true;
+                bool logicalNot = !boolVal;                  // ! (logical not)
+
 
                 // ------------------------------------------------------------
                 // Bitwise: &, |, ^, ~
                 // ------------------------------------------------------------
-                int andBits = a & b;
-                int orBits = a | b;
-                int xorBits = a ^ b;
-                int bitNot = ~a;
+                int andBits = a & b;                         // & bitwise AND
+                int orBits = a | b;                          // | bitwise OR
+                int xorBits = a ^ b;                         // ^ bitwise XOR
+                int bitNot = ~a;                             // ~ bitwise NOT
+
 
                 // ------------------------------------------------------------
                 // Shift: <<, >>, >>>
@@ -83,17 +87,15 @@
                 // ------------------------------------------------------------
                 // Null: ??, ??=, ?. , ?[] , !
                 // ------------------------------------------------------------
-                string? maybeName = null;
-                string name = maybeName ?? "default-name";   // ??
-                maybeName ??= "now-initialized";             // ??=
-
                 string? nullableString = null;
-                int? length = nullableString?.Length;        // ?.
+                string name = nullableString ?? "default-name";   // ??  (null-coalescing)
+                nullableString ??= "now-initialized";             // ??= (null-coalescing assignment)
+                int? length = nullableString?.Length;             // ?.  (null-conditional access)
 
                 int[]? maybeNumbers = null;
-                int? first = maybeNumbers?[0];               // ?[] (null-conditional indexer)
+                int? first = maybeNumbers?[0];                    // ?[] (null-conditional indexer)
 
-                string definitelyNotNull = maybeName!;       // ! (null-forgiving)
+                string definitelyNotNull = nullableString!;       // !   (null-forgiving)
 
 
                 // ------------------------------------------------------------
@@ -102,7 +104,7 @@
                 object obj = "hello";
 
                 if (obj is string s) { }                     // is
-                string? casted = obj as string;              // as
+                string? casted = obj as string;              // as (safe-cast)
                 string className = nameof(OperatorDemo);     // nameof
                 int sizeOfInt = sizeof(int);                 // sizeof
                 Type t = typeof(OperatorDemo);               // typeof

@@ -479,9 +479,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsAssignmentOperator())
                 return SemanticRole.Assignment;
 
-            // Bitwise-shift
-            if (token.IsBitwiseShiftOperator())
-                return SemanticRole.BitwiseShift;
+            // Bitwise
+            if (token.IsBitwiseOperator())
+                return SemanticRole.Bitwise;
+
+            // Shift
+            if (token.IsShiftOperator())
+                return SemanticRole.Shift;
 
             // Boolean logical
             if (token.IsBooleanLogicalOperator())
@@ -553,9 +557,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsArgumentModifierKeyword())
                 return SemanticRole.ArgumentModifier;
 
-            // --- Cast target type keywords ---
-            if (token.IsCastTargetType())
-                return SemanticRole.CastTargetType;
+            //// --- Cast target type keywords ---
+            //if (token.IsCastTargetType())
+            //    return SemanticRole.CastTargetType;
 
             // --- Concurrency keywords ---
             if (GlobalConstants.ConcurrencyKeywords.Contains(token.Text))
@@ -679,7 +683,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.TypeDeclaration;
 
             // --- Type pattern keywords ---
-            if (token.IsTypePatternType())
+            if (token.IsTypePattern())
                 return SemanticRole.TypePattern;
 
             // --- Type reference keywords ---
@@ -809,7 +813,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 {
                     "BitwiseAndExpression" => isBool
                         ? SemanticRole.BooleanLogical
-                        : SemanticRole.BitwiseShift,
+                        : SemanticRole.Bitwise,
                     "AddressOfExpression" => SemanticRole.Pointer,
                     _ => SemanticRole.Unknown
                 },
@@ -818,7 +822,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 {
                     "BitwiseOrExpression" => isBool
                         ? SemanticRole.BooleanLogical
-                        : SemanticRole.BitwiseShift,
+                        : SemanticRole.Bitwise,
                     _ => SemanticRole.Unknown
                 },
 
@@ -826,7 +830,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 {
                     "ExclusiveOrExpression" => isBool
                         ? SemanticRole.BooleanLogical
-                        : SemanticRole.BitwiseShift,
+                        : SemanticRole.Bitwise,
                     "IndexExpression" => SemanticRole.IndexRange,
                     _ => SemanticRole.Unknown
                 },
@@ -904,6 +908,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsAssignmentValue())
                 return SemanticRole.AssignmentValue;
 
+            // Casting
+            if (token.IsCastTarget())
+                return SemanticRole.CastTarget;
+
+            if (token.IsCastType())
+                return SemanticRole.CastType;
+
             // Operands
             if (token.IsArithmeticOperand())
                 return SemanticRole.ArithmeticOperand;
@@ -917,14 +928,45 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsConcatenationOperand())
                 return SemanticRole.ConcatenationOperand;
 
-            if (token.IsExpressionOperand())
-                return SemanticRole.ExpressionOperand;
+            if (token.IsConditionalAccessTarget())
+                return SemanticRole.ConditionalAccessTarget;
 
             if (token.IsLogicalOperand())
                 return SemanticRole.LogicalOperand;
 
+            if (token.IsNullCoalescingAssignmentValue())
+                return SemanticRole.NullCoalescingAssignmentValue;
+
+            if (token.IsNullCoalescingFallback())
+                return SemanticRole.NullCoalescingFallback;
+
+            if (token.IsNullCoalescingTarget())
+                return SemanticRole.NullCoalescingTarget;
+
+            if (token.IsNullForgivingOperand())
+                return SemanticRole.NullForgivingOperand;
+
             if (token.IsShiftOperand())
                 return SemanticRole.ShiftOperand;
+
+            // Pattern matching
+            if (token.IsConstantPattern())
+                return SemanticRole.ConstantPattern;
+
+            if (token.IsPatternBindingVariable())
+                return SemanticRole.PatternBindingVariable;
+
+            if (token.IsPatternMatchTarget())
+                return SemanticRole.PatternMatchTarget;
+
+            if (token.IsPropertyPattern())
+                return SemanticRole.PropertyPattern;
+
+            if (token.IsRelationalPattern())
+                return SemanticRole.RelationalPattern;
+
+            if (token.IsVarPattern())
+                return SemanticRole.VarPattern;
 
             // Return values
             if (token.IsReturnValue())
@@ -948,8 +990,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsConstructorDeclaration())
                 return SemanticRole.ConstructorDeclaration;
 
-            if (token.IsDeconstructionVariable())
-                return SemanticRole.DeconstructionVariable;
+            //if (token.IsDeconstructionVariable())
+            //    return SemanticRole.DeconstructionVariable;
 
             if (token.IsDelegateDeclaration())
                 return SemanticRole.DelegateDeclaration;
@@ -1057,11 +1099,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsBaseType())
                 return SemanticRole.BaseType;
 
-            if (token.IsCastType())
-                return SemanticRole.CastType;
+            //if (token.IsCastType())
+            //    return SemanticRole.CastType;
 
-            if (token.IsCastTargetType())
-                return SemanticRole.CastTargetType;
+            //if (token.IsCastTargetType())
+            //    return SemanticRole.CastTarget;
 
             if (token.IsExceptionType())
                 return SemanticRole.ExceptionType;
@@ -1109,7 +1151,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.TypeConstraint;
 
             // Identifier - type pattern types
-            if (token.IsTypePatternType())
+            if (token.IsTypePattern())
                 return SemanticRole.TypePattern;
 
             // Identifier - param labels

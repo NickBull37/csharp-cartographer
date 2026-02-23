@@ -89,7 +89,8 @@
         // ------------ OPERATORS ------------ //
         Arithmetic,
         Assignment,
-        BitwiseShift,
+        Bitwise,
+        //BitwiseShift,
         BooleanLogical,
         Comparison,
         ExpressionBodyArrow,
@@ -101,6 +102,7 @@
         NullForgiving,
         PatternMatchArrow,
         Pointer,
+        Shift,
         Ternary,
 
 
@@ -200,8 +202,6 @@
         EventFieldDeclaration,
         EventPropertyDeclaration,
         FieldDeclaration,
-        //ForLoopIteratorDeclaration,
-        //ForEachLoopIteratorDeclaration,
         InterfaceDeclaration,
         LocalVariableDeclaration,
         LoopIteratorDeclaration,
@@ -259,33 +259,35 @@
 
         ArrayDataType,
         BaseType,
-        CastType,
-        CastTargetType,
+
         DeconstructionVariableDataType,
-        DefaultOperand,
         DelegateReturnType,
         EventFieldType,
         EventPropertyDataType,
         ExceptionType,
         FieldDataType,
-        //ForLoopIteratorDataType,
-        //ForEachLoopIteratorDataType,
         GenericTypeArgument,
         GenericTypeParameter,
         TypeParameterConstraint,
         LocalVariableDataType,
         LoopIteratorDataType,
         MethodReturnType,
-        NameOfOperand,
         OutVariableDataType,
         ParameterDataType,
         PropertyDataType,
-        SizeOfOperand,
         TupleElementName,
         TupleElementType,
         TypeConstraint,
-        TypeOfOperand,
+
+
+        // ------------ PATTERN MATCHING ------------ //
+        ConstantPattern,
+        PatternBindingVariable,
+        PatternMatchTarget,
+        PropertyPattern,
+        RelationalPattern,
         TypePattern,
+        VarPattern,
 
 
         // ------------ NAMES / QUALIFIERS ------------ //
@@ -319,12 +321,23 @@
         AssignmentValue,
         Argument,
         BitwiseOperand,
+        CastType,
+        CastTarget,
         ComparisonOperand,
         ConcatenationOperand,
+        ConditionalAccessTarget,
+        DefaultOperand,
         ExpressionOperand,
         LogicalOperand,
+        NameOfOperand,
+        NullCoalescingAssignmentValue,
+        NullCoalescingFallback,
+        NullCoalescingTarget,
+        NullForgivingOperand,
         ShiftOperand,
-        ReturnValue
+        SizeOfOperand,
+        ReturnValue,
+        TypeOfOperand,
     }
 
     public enum TypeSymbols
