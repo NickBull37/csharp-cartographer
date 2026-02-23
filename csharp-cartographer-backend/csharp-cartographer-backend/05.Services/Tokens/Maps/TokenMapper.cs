@@ -500,8 +500,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.ExpressionBodyArrow;
 
             // Index & Range
-            if (token.IsIndexOrRangeOperator())
-                return SemanticRole.IndexRange;
+            if (token.IsIndexFromEndOperator())
+                return SemanticRole.IndexFromEnd;
+
+            if (token.IsRangeOperator())
+                return SemanticRole.Range;
 
             // Lambda
             if (token.IsLambdaOperator())
@@ -831,7 +834,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     "ExclusiveOrExpression" => isBool
                         ? SemanticRole.BooleanLogical
                         : SemanticRole.Bitwise,
-                    "IndexExpression" => SemanticRole.IndexRange,
+                    "IndexExpression" => SemanticRole.IndexFromEnd,
                     _ => SemanticRole.Unknown
                 },
 
@@ -914,6 +917,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsCastType())
                 return SemanticRole.CastType;
+
+            // Collections
+            if (token.IsCollectionElement())
+                return SemanticRole.CollectionElement;
+
+            // Index values
+            if (token.IsIndexValue())
+                return SemanticRole.IndexValue;
+
+            if (token.IsInterpolatedValue())
+                return SemanticRole.InterpolatedValue;
 
             // Operands
             if (token.IsArithmeticOperand())
@@ -1265,8 +1279,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Identifier modifiers
             if (token.IsIdentifier())
             {
-                if (token.IsInterpolatedValue())
-                    modifiers.Add(SemanticModifiers.InterpolatedValue);
+                //if (token.IsInterpolatedValue())
+                //    modifiers.Add(SemanticModifiers.InterpolatedValue);
 
                 if (token.IsGenericMethodDeclaration() || token.IsGenericMethodInvocation())
                     modifiers.Add(SemanticModifiers.GenericMethod);

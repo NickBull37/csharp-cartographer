@@ -432,6 +432,9 @@ body {
 .bold {
     font-weight: 600!important;
 }
+.italic {
+    font-style: italic!important;
+}
 
 .keyword-definition {
     border-radius: 4px;

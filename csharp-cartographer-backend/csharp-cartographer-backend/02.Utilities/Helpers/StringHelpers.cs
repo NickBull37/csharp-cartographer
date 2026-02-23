@@ -91,7 +91,7 @@ namespace csharp_cartographer_backend._02.Utilities.Helpers
 
         public static string InterpolatedStringDemo(int tokenCount)
         {
-            return $"Artifact contains {tokenCount} tokens.";
+            return $"Artifact contains {tokenCount} tokens and {10} nodes.";
         }
 
         public static string VerbatimInterpolatedStringDemo(string fileName)

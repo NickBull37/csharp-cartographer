@@ -1628,13 +1628,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.TypeOfExpression);
         }
 
-        public bool IsIndexOrRangeOperator()
+        public bool IsIndexFromEndOperator()
         {
-            // index
             if (Kind == SyntaxKind.CaretToken && HasAncestorAt(0, SyntaxKind.IndexExpression))
                 return true;
 
-            // range
+            return false;
+        }
+
+        public bool IsRangeOperator()
+        {
             if (Kind == SyntaxKind.DotDotToken && HasAncestorAt(0, SyntaxKind.RangeExpression))
                 return true;
 
@@ -1883,31 +1886,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsAnonymousObjectCreation()
         {
             return HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression);
-        }
-
-        public bool IsArgument()
-        {
-            // covered by operand-specific roles
-            if (IsDefaultOperand() || IsNameOfOperand() || IsSizeOfOperand() || IsTypeOfOperand())
-                return false;
-
-            // single token identifiers, numeric literals, string literals
-            bool parentIsValid = HasAncestorAt(0, SyntaxKind.IdentifierName)
-                || HasAncestorAt(0, SyntaxKind.NumericLiteralExpression)
-                || HasAncestorAt(0, SyntaxKind.StringLiteralExpression)
-                || HasAncestorAt(0, SyntaxKind.CharacterLiteralExpression);
-
-            bool grandParentIsValid = HasAncestorAt(1, SyntaxKind.Argument)
-                || HasAncestorAt(1, SyntaxKind.AttributeArgument);
-
-            if (parentIsValid && grandParentIsValid)
-                return true;
-
-            // out variable declarations
-            if (IsOutVariableDeclaration())
-                return true;
-
-            return false;
         }
 
         public bool IsAssignmentValue()
@@ -2244,6 +2222,98 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (PrevToken?.Text != ".")
                 return HasAncestorAt(0, SyntaxKind.IdentifierName)
                     && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
+
+            return false;
+        }
+        #endregion
+
+        #region Misc Checks
+        public bool IsArgument()
+        {
+            // covered by index value role
+            if (IsIndexValue())
+                return false;
+
+            // covered by operand-specific roles
+            if (IsDefaultOperand() || IsNameOfOperand() || IsSizeOfOperand() || IsTypeOfOperand())
+                return false;
+
+            // single token identifiers, numeric literals, string literals
+            bool parentIsValid = HasAncestorAt(0, SyntaxKind.IdentifierName)
+                || HasAncestorAt(0, SyntaxKind.NumericLiteralExpression)
+                || HasAncestorAt(0, SyntaxKind.StringLiteralExpression)
+                || HasAncestorAt(0, SyntaxKind.CharacterLiteralExpression);
+
+            bool grandParentIsValid = HasAncestorAt(1, SyntaxKind.Argument)
+                || HasAncestorAt(1, SyntaxKind.AttributeArgument);
+
+            if (parentIsValid && grandParentIsValid)
+                return true;
+
+            // out variable declarations
+            if (IsOutVariableDeclaration())
+                return true;
+
+            return false;
+        }
+
+        public bool IsCollectionElement()
+        {
+            // covers collection expression (new)
+            // int[] nums = [10, 20, 30, 40, 50];
+            if (HasAncestorAt(1, SyntaxKind.ExpressionElement)
+                && HasAncestorAt(2, SyntaxKind.CollectionExpression))
+            {
+                return true;
+            }
+
+            // covers collection expression (old)
+            // var list = new List<int> { 1, 2, 3 };
+            if (HasAncestorAt(1, SyntaxKind.CollectionInitializerExpression)
+                && HasAncestorAt(2, SyntaxKind.ObjectCreationExpression))
+            {
+                return true;
+            }
+
+            // covers array creation (implicit & explicit)
+            // int[] nums = { 10, 20, 30, 40, 50 };
+            // int[] nums = new[] { 10, 20, 30, 40, 50 };
+            // int[] nums = new int[] { 10, 20, 30, 40, 50 };
+            bool hasValidParent = HasAncestorAt(1, SyntaxKind.ArrayInitializerExpression);
+
+            bool hasArrayCreationAncestor = HasAncestorAt(2, SyntaxKind.EqualsValueClause)
+                || HasAncestorAt(2, SyntaxKind.ArrayCreationExpression)
+                || HasAncestorAt(2, SyntaxKind.ImplicitArrayCreationExpression);
+
+            if (hasValidParent && hasArrayCreationAncestor)
+                return true;
+
+            return false;
+        }
+
+        public bool IsIndexValue()
+        {
+            // covers single token index argument
+            if (HasAncestorAt(1, SyntaxKind.Argument)
+                && PrevToken?.Text == "["
+                && NextToken?.Text == "]")
+            {
+                return true;
+            }
+
+            // covers when index is after ^
+            if (HasAncestorAt(1, SyntaxKind.IndexExpression)
+                && PrevToken?.Text == "^")
+            {
+                return true;
+            }
+
+            // covers when index is before ..
+            if (HasAncestorAt(1, SyntaxKind.RangeExpression)
+                && NextToken?.Text == "..")
+            {
+                return true;
+            }
 
             return false;
         }

@@ -135,10 +135,63 @@
                 // ------------------------------------------------------------
                 // Index & range: ^, ..
                 // ------------------------------------------------------------
+                //int[] numbers = [10, 20, 30, 40, 50, 60, 70];
+                int index = 1;
+                int offset = 1;
+                int start = 1;
+                int end = 2;
+
                 int[] numbersArray = { 10, 20, 30, 40, 50 };
 
-                int lastElement = numbersArray[^1];               // ^  (Index)
-                int[] middle = numbersArray[1..^1];               // .. (Range)
+                int indexDemo = numbersArray[^1];               // ^  (Index)
+                int[] rangeDemo = numbersArray[1..^1];               // .. (Range)
+
+                // ----- Index from end (^) -----
+
+                int lastElement = numbersArray[^1];                 // literal offset from end
+                int lastElementVar = numbersArray[^offset];         // variable offset from end
+                int lastElementExpr = numbersArray[^(offset + 1)];  // expression offset from end
+
+                // ----- Direct index -----
+
+                int firstIndex = numbersArray[0];                        // literal index
+                int byVar = numbersArray[index];                    // variable index
+                int byExpr = numbersArray[index + 2];               // expression index
+
+                // ----- Range (..) -----
+
+                int[] middle = numbersArray[1..^1];                 // literal start and end-from-end
+                int[] middleVar = numbersArray[start..^end];        // variable start and end-from-end
+                int[] middleExpr = numbersArray[(start + 1)..^(end - 1)]; // expression bounds
+
+                // ----- Open-ended ranges -----
+
+                int[] fromStart = numbersArray[..^1];               // start omitted
+                int[] toEnd = numbersArray[1..];                    // end omitted
+                int[] fullCopy = numbersArray[..];                  // entire range
+
+                // ----- Using Index struct -----
+
+                Index idx = ^2;
+                int fromIndexStruct = numbersArray[idx];            // Index value
+
+                Index idxExpr = ^(offset + 1);
+                int fromIndexExpr = numbersArray[idxExpr];
+
+                // ----- Using Range struct -----
+
+                Range r = 1..^1;
+                int[] fromRangeStruct = numbersArray[r];
+
+                Range rVar = start..^end;
+                int[] fromRangeVar = numbersArray[rVar];
+
+                // ----- Mixed forms -----
+
+                int mixed1 = numbersArray[^start];                  // variable in ^
+                int[] mixed2 = numbersArray[index..^end];           // direct + from-end
+                int[] mixed3 = numbersArray[(index + 1)..];         // expression start
+                int[] mixed4 = numbersArray[..^(offset + 2)];       // expression end-from-end
 
 
                 // ------------------------------------------------------------

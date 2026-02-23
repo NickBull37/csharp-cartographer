@@ -206,9 +206,6 @@
   "Comparison": {
     "Definition": "Comparison operators compare two values and produce a true or false result. They are used in conditions and decision-making."
   },
-  "IndexRange": {
-    "Definition": "Index range operators select a range of elements from a sequence. They are commonly used with arrays and spans."
-  },
   "Lambda": {
     "Definition": "The lambda operator defines an inline function using a concise syntax. It is often used to pass behavior as data."
   },
@@ -306,7 +303,7 @@
     "Definition": "Punctuation that indicates that a value type can also represent null."
   },
   "NullConditionalGuard": {
-    "Definition": "Punctuation that prevents member access when the target value is null."
+    "Definition": "Punctuation that prevents member access when the target value {c:color-gray italic}(prev token){/c} is null."
   },
   "AccessModifier": {
     "Definition": "Access modifiers control where code elements like classes, methods, and fields can be accessed from, helping enforce encapsulation and safe boundaries between parts of a program."
@@ -794,6 +791,18 @@
   },
   "CastTarget": {
     "Definition": "A cast target is the value being converted to a new type."
+  },
+  "CollectionElement": {
+    "Definition": "A value or expression supplied as an element within a collection expression or initializer."
+  },
+  "IndexValue": {
+    "Definition": "An expression that specifies a position or offset used in an index or range when accessing a sequence."
+  },
+  "IndexFromEnd": {
+    "Definition": "The {c:bold}index{/c} operator {c:keyword}^{/c} specifies a position counted from the end of a sequence."
+  },
+  "Range": {
+    "Definition": "The .. operator in an index or slice expression that specifies a range between a start and end position in a sequence."
   },
   "": {
     "Definition": ""

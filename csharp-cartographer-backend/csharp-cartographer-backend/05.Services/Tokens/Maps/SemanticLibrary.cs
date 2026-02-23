@@ -61,7 +61,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 or SemanticRole.ConcatenationOperand
                 or SemanticRole.ComparisonOperand
                 or SemanticRole.BitwiseOperand
-                or SemanticRole.ShiftOperand)
+                or SemanticRole.ShiftOperand
+                or SemanticRole.CollectionElement
+                or SemanticRole.IndexValue
+                or SemanticRole.InterpolatedValue)
             {
                 if (token.IsQuotedString())
                 {
