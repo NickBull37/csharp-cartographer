@@ -125,6 +125,20 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static void ColorManually(NavToken token)
         {
+            // Used for coloring tokens when type (class, struct, enum) can't be
+            // determined. But some types (System.Index) can share a name with other
+            // identifiers such as properties or local vars.
+            //
+            // Skip manual highlighting for identifiers with the following roles
+            // 
+            //  - 
+            //  - 
+            //  - 
+            //  - 
+            //  - 
+            //  - 
+
+
             // avoids accidentally coloring a member identifier as a type
             if (token.Map.SemanticRole == SemanticRole.MemberAccess)
                 return;
@@ -135,6 +149,10 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
             // avoids accidentally coloring a reference identifier as a type
             if (token.Map.SemanticRole.ToString().Contains("Reference"))
+                return;
+
+            // avoids accidentally coloring a property identifier as a type
+            if (token.Map.SemanticRole == SemanticRole.AssignmentRecipient)
                 return;
 
             if (GlobalConstants.CommonEnums.Contains(token.Text))
@@ -256,9 +274,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.EnumMemberReference:
                 case SemanticRole.FieldDeclaration:
                 case SemanticRole.FieldReference:
-                case SemanticRole.MemberAccess:
+                case SemanticRole.TargetMember:
                 case SemanticRole.NamespaceAliasDeclaration:
-                case SemanticRole.ObjectPropertyAssignment:
                 case SemanticRole.PropertyAccess:
                 case SemanticRole.PropertyDeclaration:
                 case SemanticRole.PropertyReference:

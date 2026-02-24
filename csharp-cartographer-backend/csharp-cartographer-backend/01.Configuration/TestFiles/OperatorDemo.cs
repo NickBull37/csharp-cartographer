@@ -133,6 +133,52 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             Span<int> span = stackalloc int[5];
             span[0] = 42;
 
+            int[] data = [1, 2, 3];  // 1,2,3 → CollectionElement
+            int x = data[5];         // 5 → IndexValue
+            int y = data[10];
+            int z = data[1];
+            // ----- Array creation -----
+
+            int size = 5;
+            int count = 100;
+            int width = 8;
+            int height = 12;
+            int[] ar = new int[5];                 // 5 → CollectionLength
+            var br = new string[10];               // 10 → CollectionLength
+            byte[] buffer = new byte[size];       // size → CollectionLength
+
+            // ----- Multidimensional arrays -----
+
+            int[,] grid = new int[3, 4];          // 3 → CollectionLength, 4 → CollectionLength
+            int[,,] cube = new int[x, y, z];      // x, y, z → CollectionLength
+
+            // ----- Jagged arrays -----
+
+            int[][] jagged = new int[3][];        // 3 → CollectionLength
+            jagged[0] = new int[4];               // 4 → CollectionLength
+
+            // ----- stackalloc (Span / pointer-backed buffers) -----
+
+            Span<int> spanr = stackalloc int[5];   // 5 → CollectionLength
+            Span<byte> bytes = stackalloc byte[count]; // count → CollectionLength
+
+            // ----- Expressions used as length -----
+
+            int[] exprLen = new int[x + 1];       // n + 1 → CollectionLength
+            Span<char> chars = stackalloc char[(width * height)]; // expression → CollectionLength
+
+            // ----- Range-based allocation scenarios -----
+
+            int lengthr = 8;
+            int[] dynamicLen = new int[lengthr];   // length → CollectionLength
+            Span<int> dynamicSpan = stackalloc int[lengthr]; // length → CollectionLength
+
+            // ----- Nested collection creation -----
+            int rows = 3;
+            int cols = 5;
+            int[][] matrix = new int[rows][];     // rows → CollectionLength
+            matrix[0] = new int[cols];            // cols → CollectionLength
+
             // use the field with operators
             _counter += sum;
             _counter -= diff;
@@ -439,6 +485,11 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                 // Type pattern + when guard
                 case Person p when p.Age < 18:
                     Console.WriteLine($"Minor: {p.Name}");
+                    break;
+
+                // Type pattern
+                case int:
+                    Console.WriteLine($"rteststes");
                     break;
 
                 // Constant pattern

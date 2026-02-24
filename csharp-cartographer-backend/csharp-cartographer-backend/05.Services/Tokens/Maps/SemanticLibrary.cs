@@ -63,6 +63,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 or SemanticRole.BitwiseOperand
                 or SemanticRole.ShiftOperand
                 or SemanticRole.CollectionElement
+                or SemanticRole.CollectionLength
                 or SemanticRole.IndexValue
                 or SemanticRole.InterpolatedValue)
             {

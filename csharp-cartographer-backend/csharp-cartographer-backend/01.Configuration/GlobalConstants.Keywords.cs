@@ -284,15 +284,6 @@
             "return",
         ];
 
-        /// Literals
-        //public static readonly List<string> LiteralKeywords =
-        //[
-        //    //"true",  covered by BooleanLiteral semantic role
-        //    //"false",
-        //    "null",
-        //    "default",
-        //];
-
         /// Loop Statements
         public static readonly List<string> LoopStatementKeywords =
         [

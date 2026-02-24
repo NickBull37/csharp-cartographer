@@ -922,6 +922,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsCollectionElement())
                 return SemanticRole.CollectionElement;
 
+            if (token.IsCollectionLength())
+                return SemanticRole.CollectionLength;
+
             // Index values
             if (token.IsIndexValue())
                 return SemanticRole.IndexValue;
@@ -985,6 +988,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Return values
             if (token.IsReturnValue())
                 return SemanticRole.ReturnValue;
+
+            // Switch roles
+            if (token.IsSwitchArmValue())
+                return SemanticRole.SwitchArmValue;
+
+            if (token.IsSwitchMatchTarget())
+                return SemanticRole.SwitchMatchTarget;
+
+            // Ternary values
+            if (token.IsTernaryFalseValue())
+                return SemanticRole.TernaryFalseValue;
+
+            if (token.IsTernaryTrueValue())
+                return SemanticRole.TernaryTrueValue;
 
             return SemanticRole.Unknown;
         }
@@ -1113,12 +1130,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsBaseType())
                 return SemanticRole.BaseType;
 
-            //if (token.IsCastType())
-            //    return SemanticRole.CastType;
-
-            //if (token.IsCastTargetType())
-            //    return SemanticRole.CastTarget;
-
             if (token.IsExceptionType())
                 return SemanticRole.ExceptionType;
 
@@ -1136,10 +1147,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsTypeParameterConstraint())
                 return SemanticRole.TypeParameterConstraint;
-
-            // Identifier - property assignment on obj creation
-            if (token.IsObjCreationPropertyAssignment())
-                return SemanticRole.ObjectPropertyAssignment;
 
             // Identifier - default operands
             if (token.IsDefaultOperand())
@@ -1211,8 +1218,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsJoinIntoRangeVariable())
                 return SemanticRole.JoinIntoRangeVariable;
 
-            if (token.PrevToken?.Text == ".")
-                return SemanticRole.MemberAccess;
+            if (token.IsInstanceQualifier())
+                return SemanticRole.InstanceQualifier;
+
+            if (token.IsTargetMember())
+                return SemanticRole.TargetMember;
+
+            if (token.IsAssignmentRecipient())
+                return SemanticRole.AssignmentRecipient;
+
+            if (token.IsNullCoalescingAssignmentRecipient())
+                return SemanticRole.NullCoalescingAssignmentRecipient;
 
             // --------------------------------------------------------- //
 

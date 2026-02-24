@@ -172,6 +172,56 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return isValidToken && HasAncestorAt(1, SyntaxKind.ReturnStatement);
         }
 
+        public bool IsSwitchArmValue()
+        {
+            // covers switch expressions
+            if (HasAncestorAt(1, SyntaxKind.SwitchExpressionArm))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsSwitchMatchTarget()
+        {
+            // covers switch statements
+            bool hasValidPrevToken = PrevToken?.Text == "(";
+            bool hasValidNextToken = NextToken?.Text == ")";
+            bool hasValidAncestor = HasAncestorAt(1, SyntaxKind.SwitchStatement);
+            if (hasValidPrevToken && hasValidNextToken && hasValidAncestor)
+                return true;
+
+            // covers switch expressions
+            hasValidNextToken = NextToken?.Text == "switch";
+            hasValidAncestor = HasAncestorAt(1, SyntaxKind.SwitchExpression);
+            if (hasValidNextToken && hasValidAncestor)
+                return true;
+            return false;
+        }
+
+        public bool IsTernaryFalseValue()
+        {
+            if (HasAncestorAt(1, SyntaxKind.ConditionalExpression)
+                && PrevToken?.Text == ":")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsTernaryTrueValue()
+        {
+            if (HasAncestorAt(1, SyntaxKind.ConditionalExpression)
+                && PrevToken?.Text == "?"
+                && NextToken?.Text == ":")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public bool IsInterpolatedValue()
         {
             return HasAncestorAt(1, SyntaxKind.Interpolation)
@@ -725,6 +775,64 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsGenericMethodInvocation() => IsMethodInvocation()
             && NextToken?.Text == "<";
+
+        public bool IsInstanceQualifier()
+        {
+            // covers member access: return reader.ReadLine();
+            if (HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
+                && NextToken?.Text == "."
+                && PrevToken?.Text != ".")
+            {
+                return true;
+            }
+
+            // covers collection access: span[0] = 42;
+            if (HasAncestorAt(1, SyntaxKind.ElementAccessExpression)
+                && NextToken?.Text == "[")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsTargetMember()
+        {
+            // covers normal member access: return SemanticRole.AssignmentRecipient;
+            if (HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
+                && PrevToken?.Text == ".")
+            {
+                return true;
+            }
+
+            // covers conditional access: PrevToken?.Text == "."
+            if (HasAncestorAt(1, SyntaxKind.MemberBindingExpression)
+                && HasAncestorAt(2, SyntaxKind.ConditionalAccessExpression)
+                && PrevToken?.Text == ".")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsAssignmentRecipient()
+        {
+            if (NextToken is null)
+                return false;
+
+            return Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && NextToken.IsAssignmentOperator();
+        }
+
+        public bool IsNullCoalescingAssignmentRecipient()
+        {
+            return Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.CoalesceAssignmentExpression)
+                && NextToken?.Text == "??=";
+        }
 
         public bool IsMethodInvocation()
         {
@@ -2011,9 +2119,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsPatternBindingVariable()
         {
             bool hasValidParent = HasAncestorAt(0, SyntaxKind.SingleVariableDesignation);
-            bool hasIsPatternAncestor = HasAncestor(SyntaxKind.IsPatternExpression);
+            bool hasValidGrandParent = HasAncestorAt(1, SyntaxKind.IsPatternExpression)
+                || HasAncestorAt(1, SyntaxKind.RecursivePattern)
+                || HasAncestorAt(1, SyntaxKind.DeclarationPattern)
+                || HasAncestorAt(1, SyntaxKind.VarPattern);
 
-            return hasValidParent && hasIsPatternAncestor;
+            return hasValidParent && hasValidGrandParent;
         }
 
         public bool IsPatternMatchTarget()
@@ -2028,8 +2139,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsConstantPattern()
         {
-            if (!IsPatternMatchingKeyword(PrevToken?.Kind))
-                return false;
+            // covers switch statement: case null:
+            if (Kind == SyntaxKind.NullKeyword
+                && HasAncestorAt(1, SyntaxKind.CaseSwitchLabel))
+            {
+                return true;
+            }
 
             return HasAncestorAt(1, SyntaxKind.ConstantPattern);
         }
@@ -2053,8 +2168,23 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsTypePattern()
         {
-            if (!IsPatternMatchingKeyword(PrevToken?.Kind))
-                return false;
+            // switch case type pattern: case Person { Age: >= 18 } adult:
+            if (Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(1, SyntaxKind.RecursivePattern)
+                && HasAncestorAt(2, SyntaxKind.CasePatternSwitchLabel)
+                && PrevToken?.Text == "case")
+            {
+                return true;
+            }
+
+            // switch case declaration pattern: case Person p when p.Age < 18:
+            if (Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(1, SyntaxKind.DeclarationPattern)
+                && HasAncestorAt(2, SyntaxKind.CasePatternSwitchLabel)
+                && PrevToken?.Text == "case")
+            {
+                return true;
+            }
 
             // type pattern: _ = obj is string;
             if (HasAncestorAt(1, SyntaxKind.IsExpression))
@@ -2287,6 +2417,29 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             if (hasValidParent && hasArrayCreationAncestor)
                 return true;
+
+            return false;
+        }
+
+        public bool IsCollectionLength()
+        {
+            // covers stackalloc
+            // Span<int> span = stackalloc int[5];
+            if (HasAncestorAt(1, SyntaxKind.ArrayRankSpecifier)
+                && HasAncestorAt(2, SyntaxKind.ArrayType)
+                && HasAncestorAt(3, SyntaxKind.StackAllocArrayCreationExpression))
+            {
+                return true;
+            }
+
+            // covers array creation
+            // int[] ar = new int[5];
+            if (HasAncestorAt(1, SyntaxKind.ArrayRankSpecifier)
+                && HasAncestorAt(2, SyntaxKind.ArrayType)
+                && HasAncestorAt(3, SyntaxKind.ArrayCreationExpression))
+            {
+                return true;
+            }
 
             return false;
         }

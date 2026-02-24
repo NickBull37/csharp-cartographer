@@ -90,11 +90,9 @@
         Arithmetic,
         Assignment,
         Bitwise,
-        //BitwiseShift,
         BooleanLogical,
         Comparison,
         ExpressionBodyArrow,
-        //IndexRange,
         IndexFromEnd,
         Lambda,
         MemberAccess,
@@ -190,7 +188,6 @@
 
         AttributeArgument,
         ForEachLoopCollection,
-        ObjectPropertyAssignment,
         ParameterLabel,
 
         // Declarations
@@ -233,12 +230,16 @@
         StructReference,
 
         // Invocations & access
+        AssignmentRecipient,
+        NullCoalescingAssignmentRecipient,
         ConstructorInvocation,
         MethodInvocation,
-        FieldAccess,
         EventSubscription,
         EventUnsubscription,
+        FieldAccess,
         IndexerAccess,
+        InstanceQualifier,
+        TargetMember,
         PropertyAccess,
 
 
@@ -342,7 +343,11 @@
         NullForgivingOperand,
         ShiftOperand,
         SizeOfOperand,
+        SwitchArmValue,
+        SwitchMatchTarget,
         ReturnValue,
+        TernaryTrueValue,
+        TernaryFalseValue,
         TypeOfOperand,
     }
 
@@ -424,8 +429,6 @@
         CharacterLiteral,
         DecimalLiteral,
         FloatingPointLiteral,
-        //DecimalValue,
-        //InterpolatedString,
         NullValue,
         NumericLiteral,
         QuotedString,

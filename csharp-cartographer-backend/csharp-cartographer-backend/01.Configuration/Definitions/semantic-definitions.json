@@ -795,6 +795,9 @@
   "CollectionElement": {
     "Definition": "A value or expression supplied as an element within a collection expression or initializer."
   },
+  "CollectionLength": {
+    "Definition": "A value that specifies the number of elements in a newly created collection or span."
+  },
   "IndexValue": {
     "Definition": "An expression that specifies a position or offset used in an index or range when accessing a sequence."
   },
@@ -803,6 +806,30 @@
   },
   "Range": {
     "Definition": "The .. operator in an index or slice expression that specifies a range between a start and end position in a sequence."
+  },
+  "InstanceQualifier": {
+    "Definition": "The identifier of the the instance object."
+  },
+  "TargetMember": {
+    "Definition": "The member name token that identifies the property, field, method, or event being accessed on an instance or type."
+  },
+  "AssignmentRecipient": {
+    "Definition": "The variable, field, or location that receives the value of an assignment."
+  },
+  "NullCoalescingAssignmentRecipient": {
+    "Definition": "The variable will only be assigned a value if it is null."
+  },
+  "TernaryTrueValue": {
+    "Definition": "The value returned by a ternary expression when the condition evaluates to true."
+  },
+  "TernaryFalseValue": {
+    "Definition": "The value returned by a ternary expression when the condition evaluates to false."
+  },
+  "SwitchMatchTarget": {
+    "Definition": "The expression whose value is matched against the patterns of a switch expression."
+  },
+  "SwitchArmValue": {
+    "Definition": "The expression produced by a switch expression arm when its pattern matches."
   },
   "": {
     "Definition": ""
