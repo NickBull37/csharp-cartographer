@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExploreIcon from '@mui/icons-material/Explore';
 import KeyIcon from '@mui/icons-material/Key';
 import CodeIcon from '@mui/icons-material/Code';
+import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
 import LinkIcon from '@mui/icons-material/Link';
 import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 
@@ -438,6 +439,53 @@ const TokenSidebarContent = ({
                                                 
                                             </Box>
 
+                                            {/* {!!activeToken?.map?.symbolReference?.length && (
+                                                <Box className={
+                                                    highlightColor === 'color-light-blue'
+                                                            ? 'sym-ref light-blue-box'
+                                                        : highlightColor === 'color-light-green'
+                                                            ? 'sym-ref light-green-box'
+                                                        : highlightColor === 'color-gray' || highlightColor === 'color-white'
+                                                            ? 'sym-ref gray-box'
+                                                        : ''
+                                                    }
+                                                >
+                                                    <Box
+                                                        display="flex"
+                                                        alignItems="center"
+                                                        gap={1.5}
+                                                    >
+                                                        <CodeIcon
+                                                            className={
+                                                                highlightColor === 'color-light-blue'
+                                                                        ? 'light-blue-icon-text'
+                                                                    : highlightColor === 'color-light-green'
+                                                                        ? 'light-green-icon-text'
+                                                                    : ''
+                                                            }
+                                                            sx={{
+                                                                fontSize: '18px',
+                                                            }}
+                                                        />
+                                                        <Typography
+                                                            className={
+                                                                highlightColor === 'color-light-blue'
+                                                                        ? 'light-blue-icon-text code'
+                                                                    : highlightColor === 'color-light-green'
+                                                                        ? 'light-green-icon-text code'
+                                                                    : ''
+                                                            }
+                                                            sx={{
+                                                                fontSize: '14px',
+                                                                letterSpacing: '0.06em',
+                                                            }}
+                                                        >
+                                                            {activeToken?.map?.symbolReference}
+                                                        </Typography>
+                                                    </Box>
+                                                </Box>
+                                            )} */}
+
                                             <Stack
                                                 gap={hasPrimaryDefinition ? 2 : 1.25}
                                                 sx={{
@@ -518,16 +566,111 @@ const TokenSidebarContent = ({
                                                     </Box>
                                                 )}
                                             </Stack>
+
+                                            {!!activeToken?.map?.symbolReference?.length && (
+                                                <Box className={
+                                                    highlightColor === 'color-light-blue'
+                                                            ? 'sym-ref light-blue-box'
+                                                        : highlightColor === 'color-white'
+                                                            ? 'sym-ref gray-box'
+                                                        : ''
+                                                    }
+                                                    sx={{
+                                                        mt: '8px'
+                                                    }}
+                                                >
+                                                    <Box
+                                                        display="flex"
+                                                        alignItems="center"
+                                                        gap={1.5}
+                                                    >
+                                                        <CodeIcon
+                                                            className={
+                                                                highlightColor === 'color-light-blue'
+                                                                        ? 'light-blue-icon-text'
+                                                                    : highlightColor === 'color-white'
+                                                                        ? 'white-icon-text'
+                                                                    : ''
+                                                            }
+                                                            sx={{
+                                                                fontSize: '18px',
+                                                            }}
+                                                        />
+                                                        <Typography
+                                                            className={
+                                                                highlightColor === 'color-light-blue'
+                                                                        ? 'light-blue-icon-text code'
+                                                                    : highlightColor === 'color-white'
+                                                                        ? 'white-icon-text code'
+                                                                    : ''
+                                                            }
+                                                            sx={{
+                                                                fontSize: '13px',
+                                                                letterSpacing: '0.06em',
+                                                            }}
+                                                        >
+                                                            {activeToken?.map?.symbolReference}
+                                                        </Typography>
+                                                    </Box>
+                                                </Box>
+                                            )}
                                         </Stack>
 
                                         {!!activeToken?.map?.secondaryLabel && (
                                             <Stack
                                                 gap={1}
                                                 sx={{
-                                                    mt: '1.5rem'
+                                                    mt: '1rem'
                                                 }}
                                             >
-                                                <MapTagDefLabel className='code'
+                                                <Box className='keyword-definition teal-box'>
+                                                    <Box
+                                                        display="flex"
+                                                        alignItems="center"
+                                                        gap={0.75}
+                                                        sx={{
+                                                            mb: '20px'
+                                                        }}
+                                                    >
+                                                        <ExploreOutlinedIcon
+                                                            className='teal-icon-text'
+                                                            sx={{
+                                                                fontSize: '18px',
+                                                            }}
+                                                        />
+                                                        <Typography
+                                                            className='teal-icon-text'
+                                                            sx={{
+                                                                fontSize: '14px',
+                                                                letterSpacing: '0.06em',
+                                                                fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
+                                                            }}
+                                                        >
+                                                            Insight
+                                                        </Typography>
+                                                    </Box>
+                                                    <Box
+                                                        sx={{
+                                                            px: '5px'
+                                                        }}
+                                                    >
+                                                        <Typography
+                                                            //className='teal-icon-text'
+                                                            sx={{
+                                                                fontSize: '15px',
+                                                                letterSpacing: '0.06em',
+                                                                fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
+                                                            }}
+                                                        >
+                                                            <span className='bold'>{activeToken.map.secondaryLabel}</span>
+                                                        </Typography>
+                                                    </Box>
+                                                    <MapTagFocusedDefText>
+                                                        {renderMapText(activeToken?.map?.secondaryDefinition)}
+                                                    </MapTagFocusedDefText>
+                                                </Box>
+
+                                                {/* <MapTagDefLabel className='code'
                                                     sx={{
                                                         borderBottom: '1px solid #666666'
                                                     }}
@@ -540,7 +683,7 @@ const TokenSidebarContent = ({
                                                     <MapTagDefText>
                                                         {renderMapText(activeToken?.map?.secondaryDefinition)}
                                                     </MapTagDefText>
-                                                </Stack>
+                                                </Stack> */}
                                             </Stack>
                                         )}
                                     </Stack>

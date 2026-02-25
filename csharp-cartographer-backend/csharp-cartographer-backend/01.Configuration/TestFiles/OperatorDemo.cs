@@ -475,6 +475,8 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
             object input = new Person("Alice", 30);
 
+            const string Operator = "operator";
+
             switch (input)
             {
                 // Type pattern + property pattern
@@ -487,14 +489,44 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                     Console.WriteLine($"Minor: {p.Name}");
                     break;
 
-                // Type pattern
-                case int:
+                // Constant pattern
+                case 5:
+                    Console.WriteLine($"rteststes");
+                    break;
+
+                // Constant pattern
+                case "test":
+                    Console.WriteLine($"rteststes");
+                    break;
+
+                // Constant pattern
+                case @"testtest":
+                    Console.WriteLine($"rteststes");
+                    break;
+
+                // Constant pattern
+                case true:
+                    Console.WriteLine($"rteststes");
+                    break;
+
+                // Constant pattern
+                case 't':
                     Console.WriteLine($"rteststes");
                     break;
 
                 // Constant pattern
                 case null:
                     Console.WriteLine("Input is null");
+                    break;
+
+                // Type pattern
+                case int:
+                    Console.WriteLine($"rteststes");
+                    break;
+
+                // Constant pattern
+                case Operator:
+                    Console.WriteLine($"rteststes");
                     break;
 
                 // Discard pattern

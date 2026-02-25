@@ -95,6 +95,9 @@
   "explicit": {
     "Definition": "The {c:color-blue keyword}explicit{/c} keyword defines a conversion that must be written by the programmer. It prevents accidental or unsafe type conversions."
   },
+  "extern": {
+    "Definition": "Indicates that a member is implemented outside of C# code, typically in native or runtime-provided code."
+  },
   "false": {
     "Definition": "The {c:color-blue keyword}false{/c} keyword represents a Boolean value that means something is not true. It is commonly used in conditions and logical expressions."
   },

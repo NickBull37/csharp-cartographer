@@ -35,11 +35,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             var primaryKind = GetPrimaryKind(token);
             var role = GetSemanticRole(token);
             var modifiers = GetSemanticModifiers(token);
+            var symRef = TryGetSymbolReference(token, role);
 
             return new SemanticMap(
                 primaryKind: primaryKind,
                 semanticRole: role,
-                modifiers: modifiers
+                modifiers: modifiers,
+                symbolReference: symRef
             );
         }
 
@@ -290,6 +292,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsRecordDelimiter())
                     return SemanticRole.RecordBoundary;
 
+                if (token.IsRecordStructDelimiter())
+                    return SemanticRole.RecordStructBoundary;
+
                 if (token.IsRemoveAccessorBlockDelimiter())
                     return SemanticRole.RemoveAccessorBlockBoundary;
 
@@ -367,6 +372,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsArrayInitializerElementSeparator())
                     return SemanticRole.ArrayInitializerElementSeparator;
+
+                if (token.IsArrayLengthSeparator())
+                    return SemanticRole.ArrayLengthSeparator;
+
+                if (token.IsArrayRankIndicator())
+                    return SemanticRole.ArrayRankIndicator;
 
                 if (token.IsAttributeArgumentSeparator())
                     return SemanticRole.AttributeArgumentSeparator;
@@ -549,7 +560,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return GetSpecialCaseKeywordRole(token);
 
             // --- Access modifiers ---
-            if (GlobalConstants.AccessModifiers.Contains(token.Text))
+            if (token.IsAccessModifierKeyword())
                 return SemanticRole.AccessModifier;
 
             // --- Accessor keywords ---
@@ -559,10 +570,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Argument modifier keywords ---
             if (token.IsArgumentModifierKeyword())
                 return SemanticRole.ArgumentModifier;
-
-            //// --- Cast target type keywords ---
-            //if (token.IsCastTargetType())
-            //    return SemanticRole.CastTargetType;
 
             // --- Concurrency keywords ---
             if (GlobalConstants.ConcurrencyKeywords.Contains(token.Text))
@@ -609,10 +616,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsImplicitParameterKeyword())
                 return SemanticRole.ImplicitParameter;
 
-            // --- Inheritance modifier keywords ---
-            if (GlobalConstants.InheritanceModifiers.Contains(token.Text))
-                return SemanticRole.InheritanceModifier;
-
             // --- Iterator keywords ---
             if (GlobalConstants.IteratorKeywords.Contains(token.Text))
                 return SemanticRole.Iterator;
@@ -626,7 +629,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.LoopStatement;
 
             // --- Member modifiers ---
-            if (GlobalConstants.MemberModifiers.Contains(token.Text))
+            if (token.IsMemberModifierKeyword())
                 return SemanticRole.MemberModifier;
 
             // --- Compilation scope keywords ---
@@ -634,7 +637,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.CompilationScope;
 
             // --- Object construction keywords ---
-            if (GlobalConstants.ObjectConstructionKeywords.Contains(token.Text))
+            if (token.IsObjectConstructionKeyword())
                 return SemanticRole.ObjectConstruction;
 
             if (token.IsObjectConstructionTypeKeyword())
@@ -645,15 +648,19 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.ParameterModifier;
 
             // --- Pattern matching keywords ---
-            if (GlobalConstants.PatternMatchingKeywords.Contains(token.Text))
+            if (token.IsPatternMatchingKeyword())
                 return SemanticRole.PatternMatching;
 
+            // --- Polymorphism modifier keywords ---
+            if (token.IsPolymorphismModifierKeyword())
+                return SemanticRole.PolymorphismModifier;
+
             // --- Query expressions ---
-            if (GlobalConstants.QueryExpressionKeywords.Contains(token.Text))
+            if (token.IsQueryExpressionKeyword())
                 return SemanticRole.QueryExpression;
 
             // --- Safety context keywords ---
-            if (GlobalConstants.SafetyContextKeywords.Contains(token.Text))
+            if (token.IsSafetyContextKeyword())
                 return SemanticRole.SafetyContext;
 
             // --- Default operator operand keywords ---
@@ -685,13 +692,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsTypeDeclarationKeyword())
                 return SemanticRole.TypeDeclaration;
 
+            // --- Type modifier keywords ---
+            if (token.IsTypeModifierKeyword())
+                return SemanticRole.TypeModifier;
+
             // --- Type pattern keywords ---
             if (token.IsTypePattern())
                 return SemanticRole.TypePattern;
 
             // --- Type reference keywords ---
-            if (GlobalConstants.PredefinedTypes.Contains(token.Text) && token.IsAccessStaticMember())
-                return SemanticRole.TypeReference;
+            //if (GlobalConstants.PredefinedTypes.Contains(token.Text) && token.IsAccessStaticMember())
+            //    return SemanticRole.TypeReference;
 
             // --- Type system keywords ---
             if (GlobalConstants.TypeSystemKeywords.Contains(token.Text))
@@ -783,7 +794,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     or "ImplicitArrayCreationExpression"
                     or "AnonymousObjectCreationExpression"
                         ? SemanticRole.ObjectConstruction
-                        : SemanticRole.InheritanceModifier,
+                        : SemanticRole.MemberModifier,
 
                 // query expressions, generic constraints
                 "where" => parentKind switch
@@ -1230,38 +1241,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsNullCoalescingAssignmentRecipient())
                 return SemanticRole.NullCoalescingAssignmentRecipient;
 
-            // --------------------------------------------------------- //
-
-            // Identifier references - likely to catch early (check last)
-            //if (token.RoslynClassification == "constant name")
-            //    return SemanticRole.ConstantReference;
-
-            //if (token.RoslynClassification == "enum name")
-            //    return SemanticRole.EnumReference;
-
-            //if (token.RoslynClassification == "enum member name")
-            //    return SemanticRole.EnumMemberReference;
-
-            //if (token.RoslynClassification == "event name")
-            //    return SemanticRole.EventReference;
-
-            //if (token.RoslynClassification == "field name")
-            //    return SemanticRole.FieldReference;
-
-            //if (token.RoslynClassification == "local name")
-            //    return SemanticRole.LocalVariableReference;
-
-            //if (token.RoslynClassification == "parameter name")
-            //    return SemanticRole.ParameterReference;
-
-            //if (token.RoslynClassification == "property name")
-            //    return SemanticRole.PropertyReference;
-
             return SemanticRole.Unknown;
         }
         #endregion
 
-        #region Semantic Modifiers
         private static List<SemanticModifiers> GetSemanticModifiers(NavToken token)
         {
             List<SemanticModifiers> modifiers = [];
@@ -1295,9 +1278,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Identifier modifiers
             if (token.IsIdentifier())
             {
-                //if (token.IsInterpolatedValue())
-                //    modifiers.Add(SemanticModifiers.InterpolatedValue);
-
                 if (token.IsGenericMethodDeclaration() || token.IsGenericMethodInvocation())
                     modifiers.Add(SemanticModifiers.GenericMethod);
 
@@ -1313,58 +1293,34 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 // TODO: Add modifier for un-implemented interface methods
             }
 
-            // --- Literal modifiers
-            if (token.IsLiteral())
-            {
-                //// Numeric literals
-                //if (token.IsNumericLiteral())
-                //    modifiers.Add(SemanticModifiers.NumericLiteral);
-
-                //// String literals
-                //if (token.IsStringLiteral())
-                //{
-                //    if (token.IsQuotedString())
-                //        modifiers.Add(SemanticModifiers.QuotedString);
-
-                //    if (token.IsVerbatimString())
-                //        modifiers.Add(SemanticModifiers.VerbatimString);
-                //}
-
-                //// Char literals
-                //if (token.IsCharacterLiteral())
-                //    modifiers.Add(SemanticModifiers.CharacterLiteral);
-
-                //// Boolean literals
-                //if (token.IsBooleanLiteral())
-                //    modifiers.Add(SemanticModifiers.BooleanLiteral);
-
-                //// Null literals
-                //if (token.IsNullLiteral())
-                //    modifiers.Add(SemanticModifiers.NullValue);
-
-                // --------------------------------------------------------- //
-
-                // Decimal values
-                //if (token.IsDecimalValue())
-                //    modifiers.Add(SemanticModifiers.DecimalValue);
-            }
-
-            // --- General modifiers
-            //if (token.IsArgument())
-            //    modifiers.Add(SemanticModifiers.Argument);
-
             if (token.IsGenericType())
                 modifiers.Add(SemanticModifiers.GenericType);
 
             if (token.IsNullableType() || token.IsNullableConstraintType())
                 modifiers.Add(SemanticModifiers.Nullable);
 
-            //if (token.IsReturnValue())
-            //    modifiers.Add(SemanticModifiers.ReturnValue);
-
             return modifiers;
         }
-        #endregion
+
+        private static SymbolReference? TryGetSymbolReference(NavToken token, SemanticRole role)
+        {
+            bool skipDeclaration = role
+                is SemanticRole.Parameter
+                or SemanticRole.FieldDeclaration
+                or SemanticRole.LocalVariableDeclaration
+                or SemanticRole.LoopIteratorDeclaration;
+
+            if (skipDeclaration)
+                return null;
+
+            return token.RoslynClassification switch
+            {
+                "local name" => (SymbolReference?)SymbolReference.LocalVariableReference,
+                "field name" => (SymbolReference?)SymbolReference.FieldReference,
+                "parameter name" => (SymbolReference?)SymbolReference.ParameterReference,
+                _ => null,
+            };
+        }
 
         #region Special Case Tokens
         private static void MapSpecialCaseSemanticRoles(List<NavToken> navTokens)

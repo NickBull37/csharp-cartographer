@@ -112,6 +112,10 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 if (token.HighlightColor is not null)
                     continue;
 
+                ColorByAncestors(token);
+                if (token.HighlightColor is not null)
+                    continue;
+
                 // No color found - color red
                 token.HighlightColor = Red;
             }
@@ -356,6 +360,16 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.TypeReference:
                     token.HighlightColor = GuessColor(token.Text);
                     break;
+            }
+        }
+
+        private static void ColorByAncestors(NavToken token)
+        {
+            // query expression variable refs
+            if (token.IsQueryExpressionVariable())
+            {
+                token.HighlightColor = White;
+                return;
             }
         }
 

@@ -5,7 +5,7 @@
     /// **************************************************
     public partial class GlobalConstants
     {
-        /// ------  All C# Keywords (reserved & contextual)  ------ ///
+        /// ------------  All C# Keywords (reserved & contextual)  ------------ ///
         public static readonly List<string> Keywords =
         [
             "abstract",
@@ -127,7 +127,7 @@
             "yield",
         ];
 
-        /// ------  Contextual Keywords  ------ ///
+        /// ------------  Contextual Keywords  ------------ ///
         public static readonly List<string> ContextualKeywords =
         [
             "add",
@@ -173,7 +173,7 @@
             "yield"
         ];
 
-        /// ------  Special Case Keywords  ------ ///
+        /// ------------  Special Case Keywords  ------------ ///
         public static readonly List<string> SpecialCaseKeywords =
         [
             // Keywords that fall into multiple semantic roles
@@ -184,6 +184,99 @@
             "new",          // object creation / member hiding
             "where",        // query expressions / generic constraints
         ];
+
+
+
+        /// ------  Modifier Keywords  ------ ///
+
+        /// Access Modifiers
+        public static readonly List<string> AccessModifiers =
+        [
+            "public",
+            "private",
+            "protected",
+            "internal",
+        ];
+
+        /// Argument / Parameter Modifiers
+        //public static readonly List<string> ArgParamModifiers =
+        //[
+        //    "in",
+        //    "out",
+        //    "params",
+        //    "ref",
+        //];
+
+        /// Argument modifiers
+        public static readonly List<string> ArgumentModifiers =
+        [
+            "in",
+            "out",
+            "ref",
+        ];
+
+        /// Parameter modifiers
+        public static readonly List<string> ParameterModifiers =
+        [
+            "in",
+            "out",
+            "params",
+            "ref",
+            "scoped",
+            "this",
+        ];
+
+        /// Inheritance modifiers
+        //public static readonly List<string> InheritanceModifiers =
+        //[
+        //    "abstract",
+        //    "new",         // for member hiding
+        //    "override",
+        //    "sealed",
+        //    "virtual",
+        //];
+
+        /// Polymorphism modifiers
+        public static readonly List<string> PolymorphismModifiers =
+        [
+            "abstract",
+            "override",
+            "sealed",
+            "virtual",
+        ];
+
+        /// Member Modifiers
+        public static readonly List<string> MemberModifiers =
+        [
+            // covered by Polymorphism modifiers
+            // "abstract",
+            // "sealed",
+
+            "async",
+            "const",
+            "extern",
+            "new",
+            "partial",
+            "readonly",
+            "required",
+            "static",
+            "volatile",
+            "unsafe",
+        ];
+
+        /// Type Modifiers
+        public static readonly List<string> TypeModifiers =
+        [
+            "abstract",
+            "file",
+            "partial",
+            "readonly",
+            "ref",
+            "sealed",
+            "static",
+            "unsafe",
+        ];
+
 
 
         /// Accessors
@@ -199,15 +292,6 @@
             // covered by EventHandling
             //"add",
             //"remove",
-        ];
-
-        /// Access Modifiers
-        public static readonly List<string> AccessModifiers =
-        [
-            "public",
-            "private",
-            "protected",
-            "internal",
         ];
 
         /// Concurrency
@@ -259,16 +343,6 @@
             "throw",
         ];
 
-        /// Inheritance Modifiers
-        public static readonly List<string> InheritanceModifiers =
-        [
-            "abstract",
-            "new", // for member hiding
-            "override",
-            "sealed",
-            "virtual",
-        ];
-
         /// Iterators
         public static readonly List<string> IteratorKeywords =
         [
@@ -293,17 +367,6 @@
             "while",
         ];
 
-        /// Member Modifiers
-        public static readonly List<string> MemberModifiers =
-        [
-            "const",
-            "partial",
-            "readonly",
-            "required",
-            "static",
-            "volatile",
-        ];
-
         /// Compilation Scope
         public static readonly List<string> CompilationScopeKeywords =
         [
@@ -320,15 +383,6 @@
             "base",
             "new",
             "this",
-        ];
-
-        /// Argument / Parameter Modifiers
-        public static readonly List<string> ArgParamModifiers =
-        [
-            "in",
-            "out",
-            "params",
-            "ref",
         ];
 
         /// Pattern Matching
@@ -392,7 +446,7 @@
             "unchecked",
             "unsafe",
 
-            // covered by individual operator roles
+            // covered by individual Operator roles
             //"sizeof",
             //"typeof",
         ];

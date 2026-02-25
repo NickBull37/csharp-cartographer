@@ -440,6 +440,10 @@ body {
     border-radius: 4px;
     padding: 16px 12px 8px 12px;
 }
+.sym-ref {
+    border-radius: 4px;
+    padding: 6px 12px 6px 12px;
+}
 .blue-box{
     background-color: rgba(0, 72, 128, 0.15);
     border: 1px solid rgba(107, 183, 225, 0.6);
@@ -448,6 +452,7 @@ body {
     background-color: rgba(51, 51, 51, 0.7);
     border: 1px solid rgba(204, 204, 204, 0.6);
 }
+
 .light-green-box{
     background-color: rgba(47, 71, 31, 0.2);
     border: 1px solid rgba(186, 216, 166, 0.6);
@@ -460,8 +465,23 @@ body {
     background-color: rgba(57, 44, 84, 0.2);
     border: 1px solid rgba(215, 158, 250, 0.6);
 }
+
+.light-blue-box{
+    background-color: rgba(0, 61, 153, 0.05);
+    border: 1px solid rgba(179, 209, 255, 0.6);
+}
+
+.teal-box{
+    background-color: rgba(0, 153, 138, 0.05);
+    border: 1px solid rgba(153, 255, 245, 0.4);
+}
+
+
 .blue-icon-text{
     color: #c0e0f2;
+}
+.light-blue-icon-text{
+    color: #cce0ff;
 }
 .gray-icon-text{
     color: #cccccc;
@@ -474,6 +494,9 @@ body {
 }
 .light-green-icon-text{
     color: #d6e8ca;
+}
+.teal-icon-text{
+    color: #ccfff9;
 }
 
 

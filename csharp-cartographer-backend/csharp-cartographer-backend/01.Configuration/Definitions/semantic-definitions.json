@@ -131,6 +131,9 @@
   "RecordBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}record{/c} definition."
   },
+  "RecordStructBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}record{/c} {c:color-blue keyword}struct{/c} definition."
+  },
   "RemoveAccessorBlockBoundary": {
     "Definition": "Marks the boundaries of an {c:color-blue keyword}event{/c} {c:color-blue keyword}remove{/c} accessor method."
   },
@@ -338,9 +341,6 @@
   "ImplicitParameter": {
     "Definition": "Similar to how methods can receive input parameters, accessors can receive input data whenever they are invoked. C# provides an implicit parameter named {c:color-blue keyword}value{/c} that represents the data being assigned, added, or removed by the accessor."
   },
-  "InheritanceModifier": {
-    "Definition": "Inheritance modifiers control how classes and members can be inherited or overridden. They affect how behavior is extended in derived types."
-  },
   "Iterator": {
     "Definition": "Iterator keywords enable a method to return values one at a time. They are commonly used to work with sequences."
   },
@@ -374,6 +374,9 @@
   "PatternMatching": {
     "Definition": "Pattern matching keywords check values against patterns. They allow code to react based on shape or type."
   },
+  "PolymorphismModifier": {
+    "Definition": "A modifier that controls how a member participates in inheritance and overriding, enabling or restricting polymorphic behavior in derived types."
+  },
   "QueryExpression": {
     "Definition": "Query expression keywords define queries over collections of data. They provide a readable way to filter and transform data."
   },
@@ -383,8 +386,8 @@
   "TypeDeclaration": {
     "Definition": "Type declaration keywords define new types such as classes, structs, or interfaces. They are preceded by an optional list of modifiers and followed by an identifier for the new type."
   },
-  "TypeReference": {
-    "Definition": "Type reference keywords refer to existing types in code. They are used when declaring variables, parameters, or return values."
+  "TypeModifier": {
+    "Definition": "A modifier that changes the capabilities, constraints, or usage rules of a type declaration, such as its inheritance behavior, storage characteristics, or visibility scope."
   },
   "TypeSystem": {
     "Definition": "Type system keywords describe how types behave and interact. They define rules for assigning and converting values."
@@ -730,7 +733,7 @@
     "Definition": "Introduces the expression body of a member, indicating that the member's implementation or returned value is provided by the expression that follows."
   },
   "PatternMatchArrow": {
-    "Definition": "Connects a {c:color-purple keyword}switch{/c} expression arm's pattern to the value returned when that pattern matches."
+    "Definition": "Connects the pattern of a {c:color-purple keyword}switch{/c} expression arm to the value returned when that pattern matches."
   },
   "ArithmeticOperand": {
     "Definition": "A numeric value participating in an arithmetic expression, combined with another operand using an arithmetic operator."
@@ -830,6 +833,15 @@
   },
   "SwitchArmValue": {
     "Definition": "The expression produced by a switch expression arm when its pattern matches."
+  },
+  "CaseLabelValue": {
+    "Definition": "A constant value used in a {c:color-purple keyword}switch{/c} {c:color-purple keyword}case{/c} label to match the switch expression."
+  },
+  "ArrayLengthSeparator": {
+    "Definition": "A comma in an array creation expression that separates the length values of multiple array dimensions."
+  },
+  "ArrayRankIndicator": {
+    "Definition": "A comma in an array type declaration that indicates an additional dimension of a multidimensional array."
   },
   "": {
     "Definition": ""

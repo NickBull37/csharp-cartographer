@@ -556,6 +556,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
+        public bool IsRecordStructDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.RecordStructDeclaration)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsRemoveAccessorBlockDelimiter()
         {
             return IsDelimiter()
@@ -1420,21 +1427,33 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 || IsVarAndKeyword();
         }
 
-        public bool IsPatternMatchingKeyword(SyntaxKind? kind)
+        public bool IsContextualKeyword()
         {
-            if (kind is null)
-                return false;
-
-            return kind
-                is SyntaxKind.AndKeyword
-                or SyntaxKind.AsKeyword
-                or SyntaxKind.IsKeyword
-                or SyntaxKind.NotKeyword
-                or SyntaxKind.OrKeyword
-                or SyntaxKind.WhenKeyword;
+            return SyntaxFacts.IsContextualKeyword(Kind);
         }
 
-        public bool IsContextualKeyword() => SyntaxFacts.IsContextualKeyword(Kind);
+        public bool IsAccessModifierKeyword()
+        {
+            return GlobalConstants.AccessModifiers.Contains(Text);
+        }
+
+        public bool IsArgumentModifierKeyword()
+        {
+            return GlobalConstants.ArgumentModifiers.Contains(Text)
+                && HasAncestorAt(0, SyntaxKind.Argument);
+        }
+
+        public bool IsDefaultOperatorKeyword()
+        {
+            return Kind == SyntaxKind.DefaultKeyword
+                && HasAncestorAt(0, SyntaxKind.DefaultExpression);
+        }
+
+        public bool IsDefaultValueKeyword()
+        {
+            return Kind == SyntaxKind.DefaultKeyword
+                && HasAncestorAt(0, SyntaxKind.DefaultLiteralExpression);
+        }
 
         public bool IsDiscardKeyword()
         {
@@ -1473,12 +1492,128 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Text == "value";
         }
 
+        public bool IsMemberModifierKeyword()
+        {
+            /*
+             * unsafe can be found in multiple different contexts
+             * filter tokens that don't specifically apply to members
+             */
+
+            // standalone unsafe blocks
+            if (HasAncestorAt(0, SyntaxKind.UnsafeStatement))
+                return false;
+
+            // type modifiers
+            if (HasAncestorAt(0, SyntaxKind.ClassDeclaration)
+                || HasAncestorAt(0, SyntaxKind.RecordDeclaration)
+                || HasAncestorAt(0, SyntaxKind.StructDeclaration)
+                || HasAncestorAt(0, SyntaxKind.RecordStructDeclaration))
+            {
+                return false;
+            }
+
+            return GlobalConstants.MemberModifiers.Contains(Text);
+        }
+
         public bool IsNameofAndKeyword()
         {
             // for some reason nameof isn't considered a keyword but sizeof & typeof are...
             return Kind == SyntaxKind.IdentifierToken
                 && HasAncestorAt(1, SyntaxKind.InvocationExpression)
                 && NextToken?.Text == "(";
+        }
+
+        public bool IsObjectConstructionKeyword()
+        {
+            // parameters can also have "this"
+            if (HasAncestorAt(0, SyntaxKind.Parameter))
+                return false;
+
+            return GlobalConstants.ObjectConstructionKeywords.Contains(Text);
+        }
+
+        public bool IsParameterModifierKeyword()
+        {
+            return GlobalConstants.ParameterModifiers.Contains(Text)
+                && HasAncestorAt(0, SyntaxKind.Parameter);
+        }
+
+        public bool IsPatternMatchingKeyword()
+        {
+            return GlobalConstants.PatternMatchingKeywords.Contains(Text);
+
+            //return Kind
+            //    is SyntaxKind.AndKeyword
+            //    or SyntaxKind.AsKeyword
+            //    or SyntaxKind.IsKeyword
+            //    or SyntaxKind.NotKeyword
+            //    or SyntaxKind.OrKeyword
+            //    or SyntaxKind.WhenKeyword;
+        }
+
+        public bool IsPatternMatchingKeyword(SyntaxKind? kind)
+        {
+            if (kind is null)
+                return false;
+
+            return kind
+                is SyntaxKind.AndKeyword
+                or SyntaxKind.AsKeyword
+                or SyntaxKind.IsKeyword
+                or SyntaxKind.NotKeyword
+                or SyntaxKind.OrKeyword
+                or SyntaxKind.WhenKeyword;
+        }
+
+        public bool IsPolymorphismModifierKeyword()
+        {
+            return GlobalConstants.PolymorphismModifiers.Contains(Text);
+        }
+
+        public bool IsQueryExpressionKeyword()
+        {
+            return GlobalConstants.QueryExpressionKeywords.Contains(Text);
+        }
+
+        public bool IsSafetyContextKeyword()
+        {
+            if (!GlobalConstants.SafetyContextKeywords.Contains(Text))
+                return false;
+
+            bool isStackalloc = Kind == SyntaxKind.StackAllocKeyword;
+            bool validParent = HasAncestorAt(0, SyntaxKind.CheckedStatement)
+                || HasAncestorAt(0, SyntaxKind.UncheckedStatement)
+                || HasAncestorAt(0, SyntaxKind.UnsafeStatement);
+
+            if (!validParent && !isStackalloc)
+                return false;
+
+            return true;
+        }
+
+        public bool IsTypeConstraintKeyword()
+        {
+            return Kind.ToString().Contains("Keyword")
+                && HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
+        }
+
+        public bool IsTypeDeclarationKeyword()
+        {
+            return GlobalConstants.TypeDeclarationKeywords.Contains(Text)
+                && !HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
+        }
+
+        public bool IsTypeModifierKeyword()
+        {
+            if (!HasAncestorAt(0, SyntaxKind.ClassDeclaration)
+                && !HasAncestorAt(0, SyntaxKind.RecordDeclaration)
+                && !HasAncestorAt(0, SyntaxKind.StructDeclaration)
+                && !HasAncestorAt(0, SyntaxKind.RecordStructDeclaration))
+            {
+                return false;
+            }
+
+            return GlobalConstants.TypeModifiers.Contains(Text);
         }
 
         public bool IsValueAndKeyword()
@@ -1542,42 +1677,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             }
 
             return false;
-        }
-
-        public bool IsDefaultOperatorKeyword()
-        {
-            return Kind == SyntaxKind.DefaultKeyword
-                && HasAncestorAt(0, SyntaxKind.DefaultExpression);
-        }
-
-        public bool IsDefaultValueKeyword()
-        {
-            return Kind == SyntaxKind.DefaultKeyword
-                && HasAncestorAt(0, SyntaxKind.DefaultLiteralExpression);
-        }
-
-        public bool IsArgumentModifierKeyword()
-        {
-            return GlobalConstants.ArgParamModifiers.Contains(Text)
-                && HasAncestorAt(0, SyntaxKind.Argument);
-        }
-
-        public bool IsParameterModifierKeyword()
-        {
-            return GlobalConstants.ArgParamModifiers.Contains(Text)
-                && HasAncestorAt(0, SyntaxKind.Parameter);
-        }
-
-        public bool IsTypeConstraintKeyword()
-        {
-            return Kind.ToString().Contains("Keyword")
-                && HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
-        }
-
-        public bool IsTypeDeclarationKeyword()
-        {
-            return GlobalConstants.TypeDeclarationKeywords.Contains(Text)
-                && !HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
         }
 
         public bool IsWithExpressionKeyword()
@@ -1830,6 +1929,22 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.ArrayInitializerExpression);
         }
 
+        public bool IsArrayLengthSeparator()
+        {
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.ArrayRankSpecifier)
+                && HasAncestorAt(1, SyntaxKind.ArrayType)
+                && HasAncestorAt(2, SyntaxKind.ArrayCreationExpression);
+        }
+
+        public bool IsArrayRankIndicator()
+        {
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.ArrayRankSpecifier)
+                && HasAncestorAt(1, SyntaxKind.ArrayType)
+                && HasAncestorAt(2, SyntaxKind.VariableDeclaration);
+        }
+
         public bool IsAttributeArgumentSeparator()
         {
             return Kind == SyntaxKind.CommaToken
@@ -1998,7 +2113,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsAssignmentValue()
         {
-            if (PrevToken is not null && !PrevToken.Text.Contains('='))
+            if (PrevToken is null || !PrevToken.Text.Contains('='))
                 return false;
 
             if (HasAncestorAt(1, SyntaxKind.EqualsValueClause)
@@ -2012,7 +2127,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 || HasAncestorAt(1, SyntaxKind.OrAssignmentExpression)
                 || HasAncestorAt(1, SyntaxKind.ExclusiveOrAssignmentExpression)
                 || HasAncestorAt(1, SyntaxKind.LeftShiftAssignmentExpression)
-                || HasAncestorAt(1, SyntaxKind.RightShiftAssignmentExpression))
+                || HasAncestorAt(1, SyntaxKind.RightShiftAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.AnonymousObjectMemberDeclarator))
             {
                 return true;
             }
@@ -2139,13 +2255,28 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsConstantPattern()
         {
-            // covers switch statement: case null:
-            if (Kind == SyntaxKind.NullKeyword
-                && HasAncestorAt(1, SyntaxKind.CaseSwitchLabel))
+            // covers single token switch case label values
+            if (HasAncestorAt(1, SyntaxKind.CaseSwitchLabel))
             {
-                return true;
+                if (Kind is SyntaxKind.NullKeyword
+                    or SyntaxKind.TrueKeyword
+                    or SyntaxKind.FalseKeyword
+                    or SyntaxKind.NumericLiteralToken
+                    or SyntaxKind.StringLiteralToken
+                    or SyntaxKind.CharacterLiteralToken)
+                {
+                    return true;
+                }
+
+                if (Kind is SyntaxKind.IdentifierToken
+                    && PrevToken?.Text == "case"
+                    && NextToken?.Text == ":")
+                {
+                    return true;
+                }
             }
 
+            // covers regular constant patterns
             return HasAncestorAt(1, SyntaxKind.ConstantPattern);
         }
 
@@ -2389,18 +2520,26 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsCollectionElement()
         {
-            // covers collection expression (new)
-            // int[] nums = [10, 20, 30, 40, 50];
-            if (HasAncestorAt(1, SyntaxKind.ExpressionElement)
-                && HasAncestorAt(2, SyntaxKind.CollectionExpression))
-            {
-                return true;
-            }
-
             // covers collection expression (old)
             // var list = new List<int> { 1, 2, 3 };
             if (HasAncestorAt(1, SyntaxKind.CollectionInitializerExpression)
                 && HasAncestorAt(2, SyntaxKind.ObjectCreationExpression))
+            {
+                return true;
+            }
+
+            // covers implicit collection expression (old)
+            // var list = new() { 1, 2, 3 };
+            if (HasAncestorAt(1, SyntaxKind.CollectionInitializerExpression)
+                && HasAncestorAt(2, SyntaxKind.ImplicitObjectCreationExpression))
+            {
+                return true;
+            }
+
+            // covers collection expression (new)
+            // int[] nums = [10, 20, 30, 40, 50];
+            if (HasAncestorAt(1, SyntaxKind.ExpressionElement)
+                && HasAncestorAt(2, SyntaxKind.CollectionExpression))
             {
                 return true;
             }

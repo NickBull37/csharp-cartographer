@@ -202,6 +202,11 @@
             },
             new ReservedTextColor
             {
+                Text = "extern",
+                HighlightColor = _blue,
+            },
+            new ReservedTextColor
+            {
                 Text = "false",
                 HighlightColor = _blue,
             },

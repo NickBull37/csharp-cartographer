@@ -57,15 +57,18 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (role is SemanticRole.Argument
                 or SemanticRole.AssignmentValue
-                or SemanticRole.ReturnValue
-                or SemanticRole.ConcatenationOperand
-                or SemanticRole.ComparisonOperand
                 or SemanticRole.BitwiseOperand
-                or SemanticRole.ShiftOperand
                 or SemanticRole.CollectionElement
                 or SemanticRole.CollectionLength
+                or SemanticRole.ComparisonOperand
+                or SemanticRole.ConcatenationOperand
+                or SemanticRole.ConstantPattern
                 or SemanticRole.IndexValue
-                or SemanticRole.InterpolatedValue)
+                or SemanticRole.InterpolatedValue
+                or SemanticRole.ReturnValue
+                or SemanticRole.ShiftOperand
+                or SemanticRole.TernaryTrueValue
+                or SemanticRole.TernaryFalseValue)
             {
                 if (token.IsQuotedString())
                 {
@@ -91,13 +94,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     key = "null";
                 }
             }
-            //else if (role is SemanticRole.QuotedString
-            //    or SemanticRole.VerbatimString
-            //    or SemanticRole.NumericLiteral
-            //    or SemanticRole.CharacterLiteral)
-            //{
-            //    key = role.ToString();
-            //}
             else if (token.IsInterpolatedString())
             {
                 key = "InterpolatedString";

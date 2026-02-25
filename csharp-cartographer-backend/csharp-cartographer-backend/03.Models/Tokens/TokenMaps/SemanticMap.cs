@@ -1,4 +1,6 @@
-﻿namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
+﻿using csharp_cartographer_backend._02.Utilities.Helpers;
+
+namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 {
     /// <summary>
     /// Describes the general syntax category the token falls under.
@@ -65,6 +67,7 @@
         ParenthesizedPatternBoundary,
         PropertyPatternBoundary,
         RecordBoundary,
+        RecordStructBoundary,
         RemoveAccessorBlockBoundary,
         SetAccessorBlockBoundary,
         SizeOfExpressionBoundary,
@@ -112,6 +115,8 @@
         AnonymousObjectMemberDeclarationSeparator,
         ArgumentSeparator,
         ArrayInitializerElementSeparator,
+        ArrayLengthSeparator,
+        ArrayRankIndicator,
         AttributeArgumentSeparator,
         BaseTypeSeparator,
         CollectionExpressionElementSeparator,
@@ -161,7 +166,6 @@
         EventHandling,
         ExceptionHandling,
         ImplicitParameter,
-        InheritanceModifier,
         Iterator,
         JumpStatement,
         LiteralValue,
@@ -174,10 +178,12 @@
         ObjectConstructionType,
         ParameterModifier,
         PatternMatching,
+        PolymorphismModifier,
         QueryExpression,
         SafetyContext,
         SizeOfOperator,
         TypeDeclaration,
+        TypeModifier,
         TypeOfOperator,
         TypeReference,
         TypeSystem,
@@ -385,6 +391,14 @@
         RangeVariable,
     }
 
+    public enum SymbolReference
+    {
+        LocalVariableReference,
+        FieldReference,
+        ParameterReference,
+        PropertyReference,
+    }
+
     public enum SemanticModifiers
     {
         None,
@@ -511,6 +525,8 @@
 
         public IEnumerable<SemanticModifiers> Modifiers { get; set; } = [];
 
+        public string? SymbolReference { get; set; }
+
         // UI elements to show to the user
         public string PrimaryLabel { get; set; } = string.Empty;
 
@@ -530,7 +546,8 @@
         public SemanticMap(
             PrimaryKind primaryKind,
             SemanticRole semanticRole,
-            List<SemanticModifiers> modifiers)
+            List<SemanticModifiers> modifiers,
+            SymbolReference? symbolReference)
         {
             List<string> modifierStrings = [];
             if (modifiers is not null)
@@ -544,6 +561,7 @@
             PrimaryKind = primaryKind;
             SemanticRole = semanticRole;
             ModifierStrings = modifierStrings;
+            SymbolReference = symbolReference?.ToSpacedString() ?? null;
         }
     }
 }
