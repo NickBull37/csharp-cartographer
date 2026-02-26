@@ -539,9 +539,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsPatternMatchArrow())
                 return SemanticRole.PatternMatchArrow;
 
-            // Pointer
+            // Pointers
             if (token.IsPointerOperator())
                 return SemanticRole.Pointer;
+
+            if (token.IsPointerTypeIndicator())
+                return SemanticRole.PointerTypeIndicator;
 
             // Ternary
             if (token.IsTernaryOperator())
@@ -849,12 +852,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     _ => SemanticRole.Unknown
                 },
 
-                "*" => parentKind switch
-                {
-                    "MultiplyExpression" => SemanticRole.Arithmetic,
-                    "PointerType" or "PointerIndirectionExpression" => SemanticRole.Pointer,
-                    _ => SemanticRole.Unknown
-                },
+                //"*" => parentKind switch
+                //{
+                //    "MultiplyExpression" => SemanticRole.Arithmetic,
+                //    "PointerType" => SemanticRole.PointerTypeIndicator,
+                //    "PointerIndirectionExpression" => SemanticRole.Pointer,
+                //    _ => SemanticRole.Unknown
+                //},
 
                 _ => SemanticRole.Unknown
             };
@@ -944,6 +948,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.InterpolatedValue;
 
             // Operands
+            if (token.IsAddressOfOperand())
+                return SemanticRole.AddressOfOperand;
+
             if (token.IsArithmeticOperand())
                 return SemanticRole.ArithmeticOperand;
 
@@ -958,6 +965,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsConditionalAccessTarget())
                 return SemanticRole.ConditionalAccessTarget;
+
+            if (token.IsDereferenceOperand())
+                return SemanticRole.DereferenceOperand;
 
             if (token.IsLogicalOperand())
                 return SemanticRole.LogicalOperand;
@@ -996,6 +1006,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsVarPattern())
                 return SemanticRole.VarPattern;
 
+            // Pointers
+            if (token.IsPointerBaseType())
+                return SemanticRole.PointerBaseType;
+
             // Return values
             if (token.IsReturnValue())
                 return SemanticRole.ReturnValue;
@@ -1013,6 +1027,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsTernaryTrueValue())
                 return SemanticRole.TernaryTrueValue;
+
+            // Type qualifiers
+            if (token.IsTypeQualifier())
+                return SemanticRole.TypeQualifier;
 
             return SemanticRole.Unknown;
         }
@@ -1202,10 +1220,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.TypeReference;
 
             // --------------------------------------------------------- //
-
-            // Identifier - type qualifiers
-            if (token.IsTypeQualifier())
-                return SemanticRole.TypeQualifier;
 
             // Identifier - query expressions
             if (token.IsRangeVariable())

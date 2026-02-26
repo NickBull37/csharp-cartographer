@@ -881,6 +881,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsTypeReference()
         {
+            // remove this role?
+            // covers generic type identifier inside another generic type
             return Kind == SyntaxKind.IdentifierToken
                 && HasAncestorAt(0, SyntaxKind.GenericName)
                 && HasAncestorAt(1, SyntaxKind.TypeArgumentList);
@@ -1084,7 +1086,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsLocalVariableDataType()
         {
+            // skip arrays since array types are made of multiple tokens
             if (NextToken?.Text == "[")
+                return false;
+
+            // skip pointers since pointer types are made of multiple tokens
+            if (NextToken?.Text == "*")
                 return false;
 
             return HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
@@ -1783,8 +1790,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Operator Checks
-        public bool IsArithmeticOperator() =>
-            Text is "+" or "-" or "*" or "/" or "%" or "++" or "--";
+        public bool IsArithmeticOperator()
+        {
+            // special case: pointers
+            if (IsPointerOperator() || IsPointerTypeIndicator())
+                return false;
+
+            if (GlobalConstants.ArithmeticOperators.Contains(Text))
+                return true;
+
+            return false;
+            // return Text is "+" or "-" or "*" or "/" or "%" or "++" or "--";
+        }
 
         public bool IsAssignmentOperator() =>
             Text is "=" or "+=" or "-=" or "*=" or "/=" or "%=" or "&=" or "|=" or "^=" or "<<=" or ">>=" or ">>>=";
@@ -1904,8 +1921,21 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.SwitchExpressionArm);
         }
 
-        public bool IsPointerOperator() =>
-            Text is "&" or "*" or "->";
+        public bool IsPointerOperator()
+        {
+            // covered by PointerTypeIndicator role
+            if (IsPointerTypeIndicator())
+                return false;
+
+            return HasAncestorAt(0, SyntaxKind.AddressOfExpression)
+                || HasAncestorAt(0, SyntaxKind.PointerIndirectionExpression);
+        }
+
+        public bool IsPointerTypeIndicator()
+        {
+            return Kind == SyntaxKind.AsteriskToken
+                && HasAncestorAt(0, SyntaxKind.PointerType);
+        }
         #endregion
 
         #region Punctuation Checks
@@ -2136,6 +2166,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return false;
         }
 
+        public bool IsAddressOfOperand()
+        {
+            if (HasAncestorAt(1, SyntaxKind.AddressOfExpression)
+                && PrevToken?.Text == "&")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public bool IsArithmeticOperand()
         {
             // covered by string concatenation
@@ -2207,6 +2248,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && NextToken?.Text == "?";
         }
 
+        public bool IsDereferenceOperand()
+        {
+            if (HasAncestorAt(1, SyntaxKind.PointerIndirectionExpression)
+                && PrevToken?.Text == "*")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public bool IsExpressionOperand()
         {
 
@@ -2251,6 +2303,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             return HasAncestorAt(1, SyntaxKind.IsExpression)
                 || HasAncestorAt(1, SyntaxKind.IsPatternExpression);
+        }
+
+        public bool IsPointerBaseType()
+        {
+            if (HasAncestorAt(1, SyntaxKind.PointerType)
+                && NextToken?.Text == "*")
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public bool IsConstantPattern()
@@ -2473,16 +2536,23 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             //           ⌄
             // System.Console.WriteLine(text);
             if (PrevToken?.Text == ".")
+            {
                 return HasAncestorAt(0, SyntaxKind.IdentifierName)
                     && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
                     && HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression)
                     && PrevToken?.PrevToken?.Map?.SemanticRole is SemanticRole.NamespaceQualifier or SemanticRole.AliasQualifier;
+            }
 
             //    ⌄                         ⌄
             // Console.WriteLine(text);    Guid.NewGuid();
             if (PrevToken?.Text != ".")
-                return HasAncestorAt(0, SyntaxKind.IdentifierName)
-                    && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
+            {
+                bool validParent = HasAncestorAt(0, SyntaxKind.IdentifierName)
+                    || HasAncestorAt(0, SyntaxKind.PredefinedType);
+                bool validGrandParent = HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
+
+                return validParent && validGrandParent;
+            }
 
             return false;
         }

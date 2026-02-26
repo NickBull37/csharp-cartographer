@@ -843,6 +843,18 @@
   "ArrayRankIndicator": {
     "Definition": "A comma in an array type declaration that indicates an additional dimension of a multidimensional array."
   },
+  "PointerBaseType": {
+    "Definition": "The underlying type in a pointer type declaration, indicating the type of value the pointer can reference."
+  },
+  "PointerTypeIndicator": {
+    "Definition": "The * token in a type declaration that indicates the type is a pointer."
+  },
+  "AddressOfOperand": {
+    "Definition": "The variable or location whose address is obtained by the address-of operator (&)."
+  },
+  "DereferenceOperand": {
+    "Definition": "The pointer expression whose referenced value is accessed by the dereference operator (*)."
+  },
   "": {
     "Definition": ""
   }

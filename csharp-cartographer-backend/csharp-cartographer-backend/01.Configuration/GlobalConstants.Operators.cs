@@ -113,7 +113,7 @@
                     // BooleanLogical : a ^ b          (when a and b are bool)
                     // IndexRange     : arr[^1]
 
-            "*",    // Arithmetic     : x * y
+            //"*",    // Arithmetic     : x * y
                     // Pointer        : int* p;   or   *p
         ];
 

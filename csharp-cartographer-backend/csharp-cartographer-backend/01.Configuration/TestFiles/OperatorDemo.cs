@@ -572,6 +572,14 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             int* pValue = &value;
             Console.WriteLine(*pValue);
 
+            int[] numbers = { 10, 20, 30 };
+            fixed (int* p = numbers)
+            {
+                Console.WriteLine(*p);        // 10
+                Console.WriteLine(*(p + 1));  // 20
+                Console.WriteLine(*(p + 2));  // 30
+            }
+
             // ------------------------------
             // |
             // ------------------------------
@@ -593,8 +601,8 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             Console.WriteLine(a ^ b);
 
             // IndexRange: index-from-end
-            int[] numbers = { 10, 20, 30, 40 };
-            Console.WriteLine(numbers[^1]); // 40
+            int[] numbersRange = { 10, 20, 30, 40 };
+            Console.WriteLine(numbersRange[^1]); // 40
 
             // ------------------------------
             // *

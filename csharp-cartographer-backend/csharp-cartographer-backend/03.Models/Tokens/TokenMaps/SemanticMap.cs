@@ -104,6 +104,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         NullForgiving,
         PatternMatchArrow,
         Pointer,
+        PointerTypeIndicator,
         Range,
         Shift,
         Ternary,
@@ -268,7 +269,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         ArrayDataType,
         BaseType,
-
         DeconstructionVariableDataType,
         DelegateReturnType,
         EventFieldType,
@@ -283,6 +283,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         MethodReturnType,
         OutVariableDataType,
         ParameterDataType,
+        PointerBaseType,
         PropertyDataType,
         TupleElementName,
         TupleElementType,
@@ -326,6 +327,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         // ------------ Misc ------------ //
 
+        AddressOfOperand,
         ArithmeticOperand,
         AssignmentValue,
         Argument,
@@ -338,6 +340,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         ConcatenationOperand,
         ConditionalAccessTarget,
         DefaultOperand,
+        DereferenceOperand,
         ExpressionOperand,
         IndexValue,
         InterpolatedValue,
