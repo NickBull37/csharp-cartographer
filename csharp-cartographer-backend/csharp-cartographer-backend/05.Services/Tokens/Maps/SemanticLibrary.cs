@@ -80,7 +80,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 }
                 if (token.IsNumericLiteral())
                 {
-                    key = "NumericLiteral";
+                    if (token.IsDecimalValue())
+                        key = "DecimalLiteral";
+                    else if (token.IsFloatingPointValue())
+                        key = "FloatingPointLiteral";
+                    else
+                        key = "NumericLiteral";
                 }
                 if (token.IsBooleanLiteral())
                 {

@@ -5,11 +5,8 @@
   "Concatenation": {
     "Definition": "Concatenation combines two or more values into a single value. It is most commonly used to join strings together."
   },
-  "Conditional": {
-    "Definition": "Member access that is only allowed when the preceding value is not {c:color-blue keyword}null{/c}. If it is, evaluation of the expression is stopped and returns {c:color-blue keyword}null{/c} immediately. {c:keyword}?.{/c} is also known as the {c:bold}conditional-member access operator{/c}."
-  },
-  "DecimalValue": {
-    "Definition": "The {c:color-light-green keyword}m{/c} suffix on a numeric literal specifies the {c:color-blue keyword}decimal{/c} type."
+  "ConditionalMemberAccess": {
+    "Definition": "The {c:bold}conditional-member access{/c} operator {c:keyword}(x?.y){/c} only proceeds if the conditional access target is not {c:color-blue keyword}null{/c}. Otherwise, evaluation of the expression is stopped and {c:color-blue keyword}null{/c} is returned immediately."
   },
   "GenericMethod": {
     "Definition": "A method designed to work with multiple types and must be passed a {c:bold}generic type argument{/c} when invoked. The generic type argument passed in will replace the {c:bold}generic type parameter{/c} defined in the method signature."

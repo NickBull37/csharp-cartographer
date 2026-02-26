@@ -29,6 +29,22 @@
 
 
                 // ------------------------------------------------------------
+                // Assignment: =, +=, -=, *=, /=, %=, &=, |=, ^=, <<=, >>=
+                // ------------------------------------------------------------
+                int value = 1;
+                value += 2;
+                value -= 1;
+                value *= 3;
+                value /= 2;
+                value %= 2;
+                value &= 0b_1111;
+                value |= 0b_0001;
+                value ^= 0b_0010;
+                value <<= 1;
+                value >>= 1;
+
+
+                // ------------------------------------------------------------
                 // Comparison: ==, !=, >, <, >=, <=
                 // ------------------------------------------------------------
                 bool eq = a == b;
@@ -40,15 +56,26 @@
 
 
                 // ------------------------------------------------------------
-                // Boolean Logical: &&, ||, & , |, ^
+                // Boolean Logical: &&, ||, !
                 // ------------------------------------------------------------
-                bool andAlso = (a > 0) && (b > 0);           // &&
-                bool orElse = (a > 0) || (b < 0);            // ||
-                bool andBool = (a > 0) & (b > 0);            // & (non-short-circuit boolean)
-                bool orBool = (a > 0) | (b < 0);             // | (non-short-circuit boolean)
-                bool xorBool = (a > 0) ^ (b > 0);            // ^
+                bool andAlso = (a > 0) && (b > 0);           // && (logical AND)
+                bool orElse = (a > 0) || (b < 0);            // || (logical OR)
                 bool boolVal = true;
-                bool logicalNot = !boolVal;                  // ! (logical not)
+                bool logicalNot = !boolVal;                  // !  (logical NOT)
+
+
+                // ------------------------------------------------------------
+                // Null: ??, ??=, ?. , ?[] , !
+                // ------------------------------------------------------------
+                string? nullableString = null;
+                string name = nullableString ?? "default-name";   // ??  (null-coalescing)
+                nullableString ??= "now-initialized";             // ??= (null-coalescing assignment)
+                int? length = nullableString?.Length;             // ?.  (null-conditional access)
+
+                int[]? maybeNumbers = null;
+                int? first = maybeNumbers?[0];                    // ?[] (null-conditional indexer)
+
+                string definitelyNotNull = nullableString!;       // !   (null-forgiving)
 
 
                 // ------------------------------------------------------------
@@ -69,51 +96,17 @@
 
 
                 // ------------------------------------------------------------
-                // Assignment: =, +=, -=, *=, /=, %=, &=, |=, ^=, <<=, >>=
+                // Keyword: nameof, sizeof, typeof, default(T)
                 // ------------------------------------------------------------
-                int value = 1;
-                value += 2;
-                value -= 1;
-                value *= 3;
-                value /= 2;
-                value %= 2;
-                value &= 0b_1111;
-                value |= 0b_0001;
-                value ^= 0b_0010;
-                value <<= 1;
-                value >>= 1;
-
-
-                // ------------------------------------------------------------
-                // Null: ??, ??=, ?. , ?[] , !
-                // ------------------------------------------------------------
-                string? nullableString = null;
-                string name = nullableString ?? "default-name";   // ??  (null-coalescing)
-                nullableString ??= "now-initialized";             // ??= (null-coalescing assignment)
-                int? length = nullableString?.Length;             // ?.  (null-conditional access)
-
-                int[]? maybeNumbers = null;
-                int? first = maybeNumbers?[0];                    // ?[] (null-conditional indexer)
-
-                string definitelyNotNull = nullableString!;       // !   (null-forgiving)
-
-
-                // ------------------------------------------------------------
-                // Type / Pattern: is, as, nameof, sizeof, typeof, default(T)
-                // ------------------------------------------------------------
-                object obj = "hello";
-
-                if (obj is string s) { }                     // is
-                string? casted = obj as string;              // as (safe-cast)
                 string className = nameof(OperatorDemo);     // nameof
                 int sizeOfInt = sizeof(int);                 // sizeof
-                Type t = typeof(OperatorDemo);               // typeof
+                Type type = typeof(OperatorDemo);               // typeof
                 string defaultString = default(string);      // default(T)
 
 
-                // ============================================================
+                // ------------------------------------------------------------
                 // Member Access: ., ?., [], ?[], ()
-                // ============================================================
+                // ------------------------------------------------------------
                 string text = "text";
 
                 int textLength = text.Length;                   // .
@@ -123,7 +116,6 @@
                 int firstNumber = numbers[0];                   // []
                 int[]? nullableNumbers = null;
                 int? nullableFirst = nullableNumbers?[0];       // ?[]
-                string methodCallResult = text.ToString();      // ()
 
 
                 // ------------------------------------------------------------
@@ -135,7 +127,6 @@
                 // ------------------------------------------------------------
                 // Index & range: ^, ..
                 // ------------------------------------------------------------
-                //int[] numbers = [10, 20, 30, 40, 50, 60, 70];
                 int index = 1;
                 int offset = 1;
                 int start = 1;
@@ -143,7 +134,7 @@
 
                 int[] numbersArray = { 10, 20, 30, 40, 50 };
 
-                int indexDemo = numbersArray[^1];               // ^  (Index)
+                int indexDemo = numbersArray[^1];                    // ^  (Index)
                 int[] rangeDemo = numbersArray[1..^1];               // .. (Range)
 
                 // ----- Index from end (^) -----
@@ -154,15 +145,15 @@
 
                 // ----- Direct index -----
 
-                int firstIndex = numbersArray[0];                        // literal index
+                int firstIndex = numbersArray[0];                   // literal index
                 int byVar = numbersArray[index];                    // variable index
                 int byExpr = numbersArray[index + 2];               // expression index
 
                 // ----- Range (..) -----
 
-                int[] middle = numbersArray[1..^1];                 // literal start and end-from-end
-                int[] middleVar = numbersArray[start..^end];        // variable start and end-from-end
-                int[] middleExpr = numbersArray[(start + 1)..^(end - 1)]; // expression bounds
+                int[] middle = numbersArray[1..^1];                        // literal start and end-from-end
+                int[] middleVar = numbersArray[start..^end];               // variable start and end-from-end
+                int[] middleExpr = numbersArray[(start + 1)..^(end - 1)];  // expression bounds
 
                 // ----- Open-ended ranges -----
 
@@ -215,6 +206,17 @@
                 // ------------------------------------------------------------
                 var item = new Item("Apples", 1.19m);
                 var saleItem = item with { Price = 0.79m };    // with
+
+
+                // ------------------------------------------------------------
+                // Indirection: *p / &x
+                // ------------------------------------------------------------
+                unsafe
+                {
+                    int val = 10;
+                    int* pValue = &val;             // & (AddressOf)
+                    Console.WriteLine(*pValue);     // * (Dereference)
+                }
             }
 
             public record Item(string Name, decimal Price);

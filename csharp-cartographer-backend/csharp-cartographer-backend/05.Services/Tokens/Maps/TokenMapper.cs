@@ -478,54 +478,54 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!token.IsOperator())
                 return SemanticRole.Unknown;
 
-            // Handle operators that can fall into multiple semantic roles first
-            if (GlobalConstants.SpecialCaseOperators.Contains(token.Text))
-                return GetSpecialCaseOperatorRole(token);
+            /*
+             * Currently not covered are non-short-circuit
+             * boolean logical operators (&, |, ^) which
+             * overlap with Bitwise operators if the operands
+             * are both type bool (no way to determine).
+             */
 
-            // Arithmetic
+            // Arithmetic: +, -, *, /, %, ++, --
             if (token.IsArithmeticOperator())
                 return SemanticRole.Arithmetic;
 
-            // Assignment
+            // Assignment: =, +=, -=, *=, /=, %=, &=, |=, ^=, <<=, >>=, >>>=
             if (token.IsAssignmentOperator())
                 return SemanticRole.Assignment;
 
-            // Bitwise
+            // Bitwise: &, |, ^, ~
             if (token.IsBitwiseOperator())
                 return SemanticRole.Bitwise;
 
-            // Shift
-            if (token.IsShiftOperator())
-                return SemanticRole.Shift;
-
-            // Boolean logical
+            // Boolean logical: &&, ||, !
             if (token.IsBooleanLogicalOperator())
                 return SemanticRole.BooleanLogical;
 
-            // Comparison
+            // Comparison: ==, !=, >, <, >=, <=
             if (token.IsComparisonOperator())
                 return SemanticRole.Comparison;
 
-            // Expression body arrows
+            // Expression body arrow: =>
             if (token.IsExpressionBodyArrow())
                 return SemanticRole.ExpressionBodyArrow;
 
-            // Index & Range
+            // Index: ^
             if (token.IsIndexFromEndOperator())
                 return SemanticRole.IndexFromEnd;
 
-            if (token.IsRangeOperator())
-                return SemanticRole.Range;
+            // Indirection: *p / &x
+            if (token.IsIndirectionOperator())
+                return SemanticRole.Indirection;
 
-            // Lambda
+            // Lambda: =>
             if (token.IsLambdaOperator())
                 return SemanticRole.Lambda;
 
-            // Member access
-            if (token.IsMemberAccessOperator() || token.IsConditionalMemberAccessOperator() || token.IsNamespaceAliasQualifier())
+            // Member access: ., ?., [], ?[],
+            if (token.IsMemberAccessOperator())
                 return SemanticRole.MemberAccess;
 
-            // Null-related
+            // Null-related: ??, ??=, !
             if (token.IsNullCoalescingOperator())
                 return SemanticRole.NullCoalescing;
 
@@ -535,18 +535,23 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsNullForgivingOperator())
                 return SemanticRole.NullForgiving;
 
-            // Pattern matching
+            // Pattern matching: =>, 
             if (token.IsPatternMatchArrow())
                 return SemanticRole.PatternMatchArrow;
 
-            // Pointers
-            if (token.IsPointerOperator())
-                return SemanticRole.Pointer;
-
+            // Pointer type indicator: int*
             if (token.IsPointerTypeIndicator())
                 return SemanticRole.PointerTypeIndicator;
 
-            // Ternary
+            // Range: ..
+            if (token.IsRangeOperator())
+                return SemanticRole.Range;
+
+            // Shift: <<, >>, >>>
+            if (token.IsShiftOperator())
+                return SemanticRole.Shift;
+
+            // Ternary: c ? t : f
             if (token.IsTernaryOperator())
                 return SemanticRole.Ternary;
 
@@ -759,6 +764,36 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
+        private static SemanticRole GetSemanticRoleForLiterals(NavToken token)
+        {
+            if (!token.IsInterpolatedString())
+                return SemanticRole.Unknown;
+
+            /*
+             * Most literals (numeric, char, bool, etc.) fall under specific
+             * roles for their context. Interpolated strings are the exception
+             * because they are the only literals that are split into
+             * multiple tokens and each get their own role.
+             */
+
+            if (token.IsInterpolatedStringStart())
+                return SemanticRole.InterpolatedStringStart;
+
+            if (token.IsInterpolatedStringText())
+                return SemanticRole.InterpolatedStringText;
+
+            if (token.IsInterpolatedStringEnd())
+                return SemanticRole.InterpolatedStringEnd;
+
+            if (token.IsInterpolatedVerbatimStringStart())
+                return SemanticRole.InterpolatedVerbatimStringStart;
+
+            if (token.IsNumericFormatSpecifier())
+                return SemanticRole.NumericFormatSpecifier;
+
+            return SemanticRole.Unknown;
+        }
+
         private static SemanticRole GetSpecialCaseKeywordRole(NavToken token)
         {
             string? parentKind = token.ParentNodeKind;
@@ -831,7 +866,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     "BitwiseAndExpression" => isBool
                         ? SemanticRole.BooleanLogical
                         : SemanticRole.Bitwise,
-                    "AddressOfExpression" => SemanticRole.Pointer,
+                    "AddressOfExpression" => SemanticRole.Indirection,
                     _ => SemanticRole.Unknown
                 },
 
@@ -852,68 +887,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     _ => SemanticRole.Unknown
                 },
 
-                //"*" => parentKind switch
-                //{
-                //    "MultiplyExpression" => SemanticRole.Arithmetic,
-                //    "PointerType" => SemanticRole.PointerTypeIndicator,
-                //    "PointerIndirectionExpression" => SemanticRole.Pointer,
-                //    _ => SemanticRole.Unknown
-                //},
+                "*" => parentKind switch
+                {
+                    "MultiplyExpression" => SemanticRole.Arithmetic,
+                    "PointerType" => SemanticRole.PointerTypeIndicator,
+                    "PointerIndirectionExpression" => SemanticRole.Indirection,
+                    _ => SemanticRole.Unknown
+                },
 
                 _ => SemanticRole.Unknown
             };
-        }
-
-        private static SemanticRole GetSemanticRoleForLiterals(NavToken token)
-        {
-            // Arguments - priority over literal roles
-            //if (token.IsArgument())
-            //    return SemanticRole.Argument;
-
-            // ---------- Argument takes priority, keep Literal roles as fallbacks ---------- //
-
-            // Numeric literals
-            //if (token.IsNumericLiteral())
-            //    return SemanticRole.NumericLiteral;
-
-            // String literals
-            if (token.IsStringLiteral())
-            {
-                //if (token.IsQuotedString())
-                //    return SemanticRole.QuotedString;
-
-                //if (token.IsVerbatimString())
-                //    return SemanticRole.VerbatimString;
-
-                if (token.IsInterpolatedStringStart())
-                    return SemanticRole.InterpolatedStringStart;
-
-                if (token.IsInterpolatedStringText())
-                    return SemanticRole.InterpolatedStringText;
-
-                if (token.IsInterpolatedStringEnd())
-                    return SemanticRole.InterpolatedStringEnd;
-
-                if (token.IsInterpolatedVerbatimStringStart())
-                    return SemanticRole.InterpolatedVerbatimStringStart;
-
-                if (token.IsNumericFormatSpecifier())
-                    return SemanticRole.NumericFormatSpecifier;
-            }
-
-            //// Char literals
-            //if (token.IsCharacterLiteral())
-            //    return SemanticRole.CharacterLiteral;
-
-            //// Boolean literals
-            //if (token.IsBooleanLiteral())
-            //    return SemanticRole.BooleanLiteral;
-
-            //// Null literals
-            //if (token.IsNullLiteral())
-            //    return SemanticRole.NullValue;
-
-            return SemanticRole.Unknown;
         }
 
         private static SemanticRole GetSemanticRoleForMisc(NavToken token)
@@ -1280,7 +1263,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (GlobalConstants.Operators.Contains(token.Text))
             {
                 if (token.IsConditionalMemberAccessOperator())
-                    modifiers.Add(SemanticModifiers.Conditional);
+                    modifiers.Add(SemanticModifiers.ConditionalMemberAccess);
 
                 if (token.IsConcatenationAddOperator())
                     modifiers.Add(SemanticModifiers.Concatenation);

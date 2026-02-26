@@ -198,10 +198,10 @@
     "Definition": "Assignment operators store a value in a variable. They set or update the variable’s value."
   },
   "Bitwise": {
-    "Definition": "Bitwise operators perform operations directly on the individual bits of a numeric value. They combine or invert bits using the operators {c:color-orange bold}&{/c}, {c:color-orange bold}|{/c}, {c:color-orange bold}^{/c}, and {c:color-orange bold}~{/c}."
+    "Definition": "Bitwise operators perform operations directly on the individual bits of a numeric value. They combine or invert bits using the operators {c:color-teal keyword}&{/c}, {c:color-teal keyword}|{/c}, {c:color-teal keyword}^{/c}, and {c:color-teal keyword}~{/c}."
   },
   "Shift": {
-    "Definition": "Shift operators move the bits of a numeric value left or right by a specified number of positions. They use the operators {c:color-orange bold}<<{/c}, {c:color-orange bold}>>{/c}, and {c:color-orange bold}>>>{/c}."
+    "Definition": "Shift operators move the bits of a numeric value left or right by a specified number of positions. They use the operators {c:color-teal keyword}<<{/c}, {c:color-teal keyword}>>{/c}, and {c:color-teal keyword}>>>{/c}."
   },
   "BooleanLogical": {
     "Definition": "Boolean logical operators combine or invert true and false values. They are commonly used in conditional expressions."
@@ -223,9 +223,6 @@
   },
   "NullForgiving": {
     "Definition": "The null-forgiving operator tells the compiler that a value should be treated as non-null. It does not change runtime behavior."
-  },
-  "Pointer": {
-    "Definition": "Pointer operators work with memory addresses in unsafe code. They allow direct access to memory locations."
   },
   "AnonymousObjectMemberDeclarationSeparator": {
     "Definition": "Separates anonymous object member declarations."
@@ -552,6 +549,12 @@
   "NumericLiteral": {
     "Definition": "{c:bold}Numeric literals{/c} represents an integer written directly in the code."
   },
+  "DecimalLiteral": {
+    "Definition": "The {c:color-light-green keyword}m{/c} suffix on a numeric literal specifies the {c:color-blue keyword}decimal{/c} type."
+  },
+  "FloatingPointLiteral": {
+    "Definition": "The {c:color-light-green keyword}f{/c} suffix on a numeric literal specifies the {c:color-blue keyword}float{/c} type."
+  },
   "QuotedString": {
     "Definition": "{c:bold}Quoted{/c} strings represent a sequence of characters enclosed in double quotes {c:color-orange bold}\" \"{/c} on a single line."
   },
@@ -854,6 +857,9 @@
   },
   "DereferenceOperand": {
     "Definition": "The pointer expression whose referenced value is accessed by the dereference operator (*)."
+  },
+  "Indirection": {
+    "Definition": "An operator that accesses or produces a value indirectly through a memory address, such as obtaining an address or dereferencing a pointer."
   },
   "": {
     "Definition": ""

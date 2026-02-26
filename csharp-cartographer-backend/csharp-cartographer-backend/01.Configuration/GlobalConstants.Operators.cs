@@ -37,20 +37,10 @@
             "^",
             "~",
 
-            // bitwise-shift
-            "<<",
-            ">>",
-            ">>>",
-
             // boolean logical
-            "!",
-            "&",
-            "|",
-            "^",
-
-            // boolean logical - conditional
             "&&",
             "||",
+            "!",
 
             // comparison (relational)
             "<",
@@ -63,6 +53,11 @@
             // index & range
             "^",
             "..",
+
+            // indirection
+            "&",
+            "*",
+            "->",
 
             // lambda
             "=>",
@@ -80,14 +75,14 @@
             "!",
             "?[",
 
+            // shift
+            "<<",
+            ">>",
+            ">>>",
+
             // ternary (split)
             "?",
             ":",
-
-            // pointer
-            "&",
-            "*",
-            "->",
 
             // keyword - operators
             //"sizeof",
@@ -95,27 +90,27 @@
         ];
 
         /// ------  Special Case Operators  ------ ///
-        public static readonly List<string> SpecialCaseOperators =
-        [
-            // Operators that fall into multiple semantic roles
+        //public static readonly List<string> SpecialCaseOperators =
+        //[
+        //    // Operators that fall into multiple semantic roles
 
-            "!",    // BooleanLogical : !flag
-                    // Null            : obj!.Member   (null-forgiving)
+        //    "!",    // BooleanLogical : !flag
+        //            // Null            : obj!.Member   (null-forgiving)
 
-            "&",    // BitwiseShift   : x & y
-                    // BooleanLogical : a & b          (when a and b are bool)
-                    // Pointer        : int* p = &x;
+        //    "&",    // BitwiseShift   : x & y
+        //            // BooleanLogical : a & b          (when a and b are bool)
+        //            // Pointer        : int* p = &x;
 
-            "|",    // BitwiseShift   : x | y
-                    // BooleanLogical : a | b          (when a and b are bool)
+        //    "|",    // BitwiseShift   : x | y
+        //            // BooleanLogical : a | b          (when a and b are bool)
 
-            "^",    // BitwiseShift   : x ^ y
-                    // BooleanLogical : a ^ b          (when a and b are bool)
-                    // IndexRange     : arr[^1]
+        //    "^",    // BitwiseShift   : x ^ y
+        //            // BooleanLogical : a ^ b          (when a and b are bool)
+        //            // IndexRange     : arr[^1]
 
-            //"*",    // Arithmetic     : x * y
-                    // Pointer        : int* p;   or   *p
-        ];
+        //    //"*",    // Arithmetic     : x * y
+        //            // Pointer        : int* p;   or   *p
+        //];
 
         /// Arithmetic
         public static readonly List<string> ArithmeticOperators =
@@ -146,83 +141,70 @@
             ">>>=",
         ];
 
-        /// Bitwise & Shift
-        public static readonly List<string> BitwiseShiftOperators =
+        /// Bitwise
+        public static readonly List<string> BitwiseOperators =
         [
-            // bitwise
             "&",
             "|",
             "^",
             "~",
-
-            // shift
-            "<<",
-            ">>",
-            ">>>",
         ];
 
         /// Boolean Logical
         public static readonly List<string> BooleanLogicalOperators =
         [
             // boolean logical
-            "!",
-            "&",
-            "|",
-            "^",
-
-            // boolean logical - conditional
             "&&",
             "||",
+            "!",
+
+            // only logical operators when operands are bools (can't distinguish)
+            //"&",
+            //"|",
+            //"^",
         ];
 
         /// Comparison
         public static readonly List<string> ComparisonOperators =
         [
-            // comparison (relational)
+            "==",
+            "!=",
             "<",
             ">",
             "<=",
             ">=",
-            "==",
-            "!=",
         ];
 
-        /// Index & Range
-        public static readonly List<string> IndexRangeOperators =
-        [
-            "^", // index from end
-            "..",
-        ];
-
-        /// Lambda
-        public static readonly List<string> LambdaOperators =
-        [
-            "=>",
-        ];
-
-        /// Member Access
-        public static readonly List<string> MemberAccessOperators =
-        [
-            ".",
-            "?.",
-            "::",
-        ];
-
-        /// Null
-        public static readonly List<string> NullOperators =
-        [
-            "!",
-            "??",
-            "??=",
-            "?[",
-        ];
-
-        /// Pointers
-        public static readonly List<string> PointerOperators =
+        /// Indirection
+        public static readonly List<string> IndirectionOperators =
         [
             "&",
             "*",
             "->",
         ];
+
+        /// Shift
+        public static readonly List<string> ShiftOperators =
+        [
+            "<<",
+            ">>",
+            ">>>",
+        ];
+
+        /// Member Access
+        //public static readonly List<string> MemberAccessOperators =
+        //[
+        //    ".",
+        //    "?.",
+        //    "::",
+        //];
+
+        ///// Pointers
+        //public static readonly List<string> PointerOperators =
+        //[
+        //    "&",
+        //    "*",
+        //    "->",
+        //];
     }
 }

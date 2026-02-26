@@ -97,13 +97,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         Comparison,
         ExpressionBodyArrow,
         IndexFromEnd,
+        Indirection,
         Lambda,
         MemberAccess,
         NullCoalescing,
         NullCoalescingAssignment,
         NullForgiving,
         PatternMatchArrow,
-        Pointer,
+        //Pointer,
         PointerTypeIndicator,
         Range,
         Shift,
@@ -408,7 +409,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         // Operator modifiers
         Concatenation,
-        Conditional,
+        ConditionalMemberAccess,
 
         // Keyword modifiers
         ImplicitCreation,
@@ -444,8 +445,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         // Literal modifiers
         BooleanLiteral,
         CharacterLiteral,
-        DecimalLiteral,
-        FloatingPointLiteral,
+        //DecimalLiteral,
+        //FloatingPointLiteral,
         NullValue,
         NumericLiteral,
         QuotedString,

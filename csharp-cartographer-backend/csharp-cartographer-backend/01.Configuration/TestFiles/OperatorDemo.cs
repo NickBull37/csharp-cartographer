@@ -133,6 +133,10 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             Span<int> span = stackalloc int[5];
             span[0] = 42;
 
+
+            decimal decimaling = 10m;
+            float floating = 10f;
+
             int[] data = [1, 2, 3];  // 1,2,3 → CollectionElement
             int x = data[5];         // 5 → IndexValue
             int y = data[10];
