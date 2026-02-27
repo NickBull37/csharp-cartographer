@@ -826,7 +826,7 @@
     "Definition": "The variable will only be assigned a value if it is null."
   },
   "TernaryTrueValue": {
-    "Definition": "The value returned by a ternary expression when the condition evaluates to true."
+    "Definition": "The value returned when the value or condition preceding the {c:keyword}?{/c} evaluates to {c:color-blue keyword}true{/c}."
   },
   "TernaryFalseValue": {
     "Definition": "The value returned by a ternary expression when the condition evaluates to false."
@@ -860,6 +860,12 @@
   },
   "Indirection": {
     "Definition": "An operator that accesses or produces a value indirectly through a memory address, such as obtaining an address or dereferencing a pointer."
+  },
+  "TernaryColon": {
+    "Definition": "The ternary operator consists of three parts: a condition to evaluate, a value to use when the condition is {c:bold}true{/c}, and a value to use when it the condition is {c:bold}false{/c}."
+  },
+  "TernaryQuestion": {
+    "Definition": "The ternary operator consists of three parts: a condition to evaluate, a value to use when the condition is {c:bold}true{/c}, and a value to use when it the condition is {c:bold}false{/c}."
   },
   "": {
     "Definition": ""

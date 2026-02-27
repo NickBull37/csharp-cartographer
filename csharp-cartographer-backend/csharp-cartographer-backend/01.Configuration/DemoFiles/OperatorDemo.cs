@@ -29,7 +29,7 @@
 
 
                 // ------------------------------------------------------------
-                // Assignment: =, +=, -=, *=, /=, %=, &=, |=, ^=, <<=, >>=
+                // Assignment: =, +=, -=, *=, /=, %=, &=, |=, ^=, <<=, >>=, >>>=
                 // ------------------------------------------------------------
                 int value = 1;
                 value += 2;
@@ -42,6 +42,7 @@
                 value ^= 0b_0010;
                 value <<= 1;
                 value >>= 1;
+                value >>>= 1;
 
 
                 // ------------------------------------------------------------
@@ -65,7 +66,7 @@
 
 
                 // ------------------------------------------------------------
-                // Null: ??, ??=, ?. , ?[] , !
+                // Null: ??, ??=, ?. , ?[] , !, x?.y
                 // ------------------------------------------------------------
                 string? nullableString = null;
                 string name = nullableString ?? "default-name";   // ??  (null-coalescing)
@@ -76,6 +77,8 @@
                 int? first = maybeNumbers?[0];                    // ?[] (null-conditional indexer)
 
                 string definitelyNotNull = nullableString!;       // !   (null-forgiving)
+
+                var ternary = nullableString is null ? "default" : nullableString;
 
 
                 // ------------------------------------------------------------

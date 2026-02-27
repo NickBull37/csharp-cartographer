@@ -11,8 +11,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             for (int i = 0; i < navTokens.Count; i++)
             {
                 var token = navTokens[i];
+                var role = token.Map.SemanticRole;
 
-                token.Map.PrimaryLabel = token.Map.SemanticRole.ToSpacedString();
+                token.Map.PrimaryLabel = role.GetLabel() ?? role.ToSpacedString();
                 token.Map.PrimaryDefinition = GetPrimaryDefinition(token);
                 token.Map.PrimaryFocusedDefinition = GetPrimaryFocusedDefinition(token);
                 token.Map.SecondaryLabel = GetSecondaryLabel(token);
@@ -33,19 +34,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         private static MapText? GetPrimaryDefinition(NavToken token)
         {
             var role = token.Map.SemanticRole;
-
-            //if (role is SemanticRole.QuotedString
-            //    or SemanticRole.VerbatimString
-            //    or SemanticRole.NumericLiteral)
-            //{
-            //    return DefinitionProvider.GetMapText("StringLiteral");
-            //    //return null;
-            //}
-            //if (role is SemanticRole.NumericLiteral)
-            //{
-            //    return DefinitionProvider.GetMapText("NumericLiteralShort");
-            //    //return null;
-            //}
 
             return DefinitionProvider.GetMapText(role.ToString());
         }

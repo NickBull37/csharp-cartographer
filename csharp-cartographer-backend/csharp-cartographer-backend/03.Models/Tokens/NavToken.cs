@@ -1904,7 +1904,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsTernaryOperator()
         {
-            if (Kind != SyntaxKind.QuestionToken && Kind != SyntaxKind.ColonToken)
+            return IsTernaryOperatorColon() || IsTernaryOperatorQuestion();
+        }
+
+        public bool IsTernaryOperatorColon()
+        {
+            if (Kind != SyntaxKind.ColonToken)
+                return false;
+
+            return HasAncestorAt(0, SyntaxKind.ConditionalExpression);
+        }
+
+        public bool IsTernaryOperatorQuestion()
+        {
+            if (Kind != SyntaxKind.QuestionToken)
                 return false;
 
             return HasAncestorAt(0, SyntaxKind.ConditionalExpression);

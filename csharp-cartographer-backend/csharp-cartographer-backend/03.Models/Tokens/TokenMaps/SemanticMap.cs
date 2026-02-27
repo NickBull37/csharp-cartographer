@@ -109,6 +109,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         Range,
         Shift,
         Ternary,
+        [Label("Ternary (2/2)")]
+        TernaryColon,
+        [Label("Ternary (1/2)")]
+        TernaryQuestion,
 
 
         // ------------ PUNCTUATION ------------ //
@@ -161,6 +165,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         ConditionalBranching,
         Constraint,
         ControlFlow,
+        [Label("default Operator")]
         DefaultOperator,
         DefaultValue,
         DiscardValue,
@@ -174,6 +179,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         LoopStatement,
         MemberDeclaration,
         MemberModifier,
+        [Label("nameof Operator")]
         NameOfOperator,
         NamespaceImport,
         ObjectConstruction,
@@ -183,9 +189,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         PolymorphismModifier,
         QueryExpression,
         SafetyContext,
+        [Label("sizeof Operator")]
         SizeOfOperator,
         TypeDeclaration,
         TypeModifier,
+        [Label("typeof Operator")]
         TypeOfOperator,
         TypeReference,
         TypeSystem,
@@ -279,6 +287,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         GenericTypeArgument,
         GenericTypeParameter,
         TypeParameterConstraint,
+        [Label("Local Variable Type")]
         LocalVariableDataType,
         LoopIteratorDataType,
         MethodReturnType,
@@ -543,8 +552,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         public MapText? SecondaryDefinition { get; set; }
 
         // PK and SR only used for development
-        public string SemanticRoleString => SemanticRole.ToString();
+        //public string SemanticRoleString => SemanticRole.GetLabel();
+
         public string PrimaryKindString => PrimaryKind.ToString();
+
         public IEnumerable<string> ModifierStrings { get; set; } = [];
 
         public SemanticMap(

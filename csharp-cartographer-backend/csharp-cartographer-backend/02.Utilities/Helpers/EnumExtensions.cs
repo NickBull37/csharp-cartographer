@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
+using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace csharp_cartographer_backend._02.Utilities.Helpers
 {
@@ -9,5 +11,18 @@ namespace csharp_cartographer_backend._02.Utilities.Helpers
 
         public static string ToSpacedString(this Enum value)
             => CapitalLetterRegex().Replace(value.ToString(), " $1");
+
+        public static string? GetLabel(this Enum value)
+        {
+            var type = value.GetType();
+            var name = value.ToString();
+
+            var field = type.GetField(name);
+            if (field == null)
+                return name;
+
+            var attr = field.GetCustomAttribute<LabelAttribute>();
+            return attr?.Label;
+        }
     }
 }

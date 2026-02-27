@@ -552,8 +552,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.Shift;
 
             // Ternary: c ? t : f
-            if (token.IsTernaryOperator())
-                return SemanticRole.Ternary;
+            //if (token.IsTernaryOperator())
+            //    return SemanticRole.Ternary;
+
+            if (token.IsTernaryOperatorColon())
+                return SemanticRole.TernaryColon;
+
+            if (token.IsTernaryOperatorQuestion())
+                return SemanticRole.TernaryQuestion;
 
             return SemanticRole.Unknown;
         }

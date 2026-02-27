@@ -552,12 +552,13 @@ const TokenSidebarContent = ({
                                                                         : ''
                                                                 }
                                                                 sx={{
-                                                                    fontSize: '14px',
+                                                                    fontSize: '15px',
                                                                     letterSpacing: '0.06em',
                                                                     fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
                                                                 }}
                                                             >
-                                                                Definition
+                                                                {/* Definition */}
+                                                                {activeToken.map.primaryKindString}
                                                             </Typography>
                                                         </Box>
                                                         <MapTagFocusedDefText>
@@ -646,7 +647,7 @@ const TokenSidebarContent = ({
                                                                 fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
                                                             }}
                                                         >
-                                                            Insight
+                                                            Look Ahead
                                                         </Typography>
                                                     </Box>
                                                     <Box
