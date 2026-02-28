@@ -303,10 +303,10 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.AliasQualifier:
                     token.HighlightColor = Gray;
                     break;
-                case SemanticRole.AttributeDeclaration:
+                case SemanticRole.Attribute:
                 case SemanticRole.ClassDeclaration:
                 case SemanticRole.ClassReference:
-                case SemanticRole.ExceptionType:
+                case SemanticRole.CatchExceptionType:
                 case SemanticRole.RecordDeclaration:
                 case SemanticRole.RecordReference:
                 case SemanticRole.TypeAliasDeclaration:

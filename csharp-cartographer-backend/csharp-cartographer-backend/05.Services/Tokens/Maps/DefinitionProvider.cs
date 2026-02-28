@@ -8,6 +8,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
     public static partial class DefinitionProvider
     {
+        const string JumpToDefinitionExtension = "In Visual Studio, put your cursor inside the identifier name and hit {c:keyword}F12{/c} to see the identifier's definition.";
+        const string ReferenceExtension = "In Visual Studio, look for references at the top left of the declaration {c:tt}signature*{/c} to see where its currently being used.";
+
         public static MapText? GetMapText(string key)
             => Definitions.Value.TryGetValue(key, out var mapText)
                 ? mapText
@@ -68,7 +71,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             int lastIndex = 0;
 
-            // {c:class1 class2}TEXT{/c}
+            // {c:class1 class2}text{/c}
             foreach (Match m in StyledSpanRegex().Matches(markup))
             {
                 // add text before styled span
@@ -76,7 +79,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 {
                     segments.Add(new TextSegment
                     {
-                        Text = markup.Substring(lastIndex, m.Index - lastIndex),
+                        Text = markup[lastIndex..m.Index],
                         Classes = []
                     });
                 }
@@ -87,11 +90,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 var classes = classString
                     .Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-                segments.Add(new TextSegment
+                var segment = new TextSegment
                 {
                     Text = innerText,
-                    Classes = classes
-                });
+                    Classes = classes,
+                    ToolTip = classes.Contains("tt")
+                        ? GetToolTip(innerText)
+                        : null
+                };
+
+                segments.Add(segment);
 
                 lastIndex = m.Index + m.Length;
             }
@@ -99,11 +107,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // trailing text
             if (lastIndex < markup.Length)
             {
-                segments.Add(new TextSegment
-                {
-                    Text = markup.Substring(lastIndex),
-                    Classes = []
-                });
+                segments.Add(
+                    new TextSegment
+                    {
+                        Text = markup[lastIndex..],
+                        Classes = []
+                    }
+                );
             }
 
             return new MapText
@@ -111,6 +121,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 ID = Guid.NewGuid(),
                 Segments = segments
             };
+        }
+
+        private static string GetToolTip(string text)
+        {
+            switch (text)
+            {
+                case "signature":
+                    return "The top line of the declaration definition from the access modifier to the end of the argument list.";
+                default:
+                    return null;
+            }
         }
 
         [GeneratedRegex(@"\{c:(?<classes>[^}]+)\}(?<text>.*?)\{\/c\}", RegexOptions.Singleline)]

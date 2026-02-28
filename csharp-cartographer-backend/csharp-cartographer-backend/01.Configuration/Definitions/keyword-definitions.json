@@ -18,10 +18,10 @@
     "Definition": "The {c:color-blue keyword}ascending{/c} keyword sorts query results from lowest to highest. It is commonly used in LINQ order-by expressions."
   },
   "async": {
-    "Definition": "{c:color-blue keyword}async{/c} marks a method as asynchronous which allows the method to run without blocking while waiting for work to finish."
+    "Definition": "The {c:color-blue keyword}async{/c} keyword specifies that the following method or lambda expression is asynchronous. The method will run synchronously until it reaches the first {c:color-purple keyword}await{/c} expression, at which point the method is suspended until the awaited task is complete."
   },
   "await": {
-    "Definition": "The {c:color-purple keyword}await{/c} keyword pauses execution until an asynchronous operation completes. It allows the program to continue doing other work while waiting."
+    "Definition": "The {c:color-purple keyword}await{/c} keyword pauses execution of the enclosing asynchronous method or lambda expression until the awaited expression completes."
   },
   "base": {
     "Definition": "{c:color-blue keyword}base{/c} refers to a base class from which the current class inherits and is used to access the base class members."

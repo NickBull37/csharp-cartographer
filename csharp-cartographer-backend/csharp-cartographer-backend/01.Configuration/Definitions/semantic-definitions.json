@@ -320,6 +320,9 @@
   "Concurrency": {
     "Definition": "Concurrency keywords control how code runs across multiple threads or tasks. They help manage work that happens at the same time."
   },
+  "ConcurrencyModifier": {
+    "Definition": "Enables non-blocking execution patterns such as asynchronous methods, awaited operations, and parallel or overlapping workflows leading to improved responsiveness and scalability."
+  },
   "ConditionalBranching": {
     "Definition": "Conditional branching keywords evaluate a condition to determine whether a block of code should be executed or not. The condition can be a single boolean-type identifier or an expression that evaluates to a boolean value."
   },
@@ -390,7 +393,7 @@
     "Definition": "Type system keywords describe how types behave and interact. They define rules for assigning and converting values."
   },
   "Argument": {
-    "Definition": "A value passed to a method, constructor, or function when its called. Arguments get assigned to the corresponding parameters so they can be used wherever they are passed."
+    "Definition": "A value passed to a method or constructor when its invoked. Arguments are passed into the corresponding parameters in the method or constructor definition so they can be used in that context."
   },
   "AttributeArgument": {
     "Definition": "Attribute arguments provide values to an attribute. They configure how the attribute behaves or supplies additional information."
@@ -401,8 +404,8 @@
   "ParameterLabel": {
     "Definition": "A parameter label names an argument when calling a method. It improves readability by making it clear which parameter a value is assigned to."
   },
-  "AttributeDeclaration": {
-    "Definition": "An attribute declaration adds extra information (metadata) to code elements like classes, methods, or properties. Attributes are often used to control behavior or provide instructions to tools and frameworks."
+  "Attribute": {
+    "Definition": "Attributes add extra information (metadata) to code elements like classes, methods, or properties. Attributes are often used to control behavior or provide instructions to tools and frameworks."
   },
   "ClassDeclaration": {
     "Definition": "A class declaration defines a blueprint for creating objects that contain data and behavior. It groups related variables and methods into a single reusable unit."
@@ -597,8 +600,11 @@
   "EventFieldType": {
     "Definition": "An event field type defines the delegate type used by an event. It determines the shape of the methods that can handle the event."
   },
-  "ExceptionType": {
+  "CatchExceptionType": {
     "Definition": "An exception type represents the kind of error that can be thrown or caught. It identifies what went wrong during program execution."
+  },
+  "CatchExceptionVariable": {
+    "Definition": "This local variable is created to hold the exception caught by a {c:color-purple keyword}catch{/c} block. It's scope is limited to the boundaries of the {c:color-purple keyword}catch{/c} block."
   },
   "FieldDataType": {
     "Definition": "A field data type defines what kind of data a field can store. It determines the values that can be assigned to the field."

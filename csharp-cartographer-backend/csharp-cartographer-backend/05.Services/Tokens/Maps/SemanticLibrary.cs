@@ -6,19 +6,34 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 {
     public class SemanticLibrary : ISemanticLibrary
     {
+        const string JumpToDefinitionExtension = "Put your cursor inside the constructor name and hit {c:keyword}F12{/c} to see the constructor's definition.";
+        const string ReferenceExtension = "Look for references at the top left of the constructor declaration {c:tt}signature*{/c} in VS to see where its currently being used.";
+
         public void AddSemanticInfo(List<NavToken> navTokens)
         {
             for (int i = 0; i < navTokens.Count; i++)
             {
                 var token = navTokens[i];
                 var role = token.Map.SemanticRole;
+                var category = token.Map.SyntaxCategory;
 
-                token.Map.PrimaryLabel = role.GetLabel() ?? role.ToSpacedString();
-                token.Map.PrimaryDefinition = GetPrimaryDefinition(token);
-                token.Map.PrimaryFocusedDefinition = GetPrimaryFocusedDefinition(token);
-                token.Map.SecondaryLabel = GetSecondaryLabel(token);
-                token.Map.SecondaryDefinition = GetSecondaryDefinition(token);
+                token.Map.RoleLabel = role.GetLabel() ?? role.ToSpacedString();
+
+                token.Map.RoleDefinition = GetRoleDefinition(token);
+
+                token.Map.CategoryLabel = category.GetLabel() ?? category.ToString();
+
+                token.Map.FocusedDefinition = GetFocusedDefinition(token);
+
+                //token.Map.SecondaryLabel = GetSecondaryLabel(token);
+                //token.Map.SecondaryDefinition = GetSecondaryDefinition(token);
             }
+        }
+
+        private static MapText? GetRoleDefinition(NavToken token)
+        {
+            var role = token.Map.SemanticRole;
+            return DefinitionProvider.GetMapText(role.ToString());
         }
 
         private static string? GetSecondaryLabel(NavToken token)
@@ -31,19 +46,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return StringHelpers.AddSpaces(label);
         }
 
-        private static MapText? GetPrimaryDefinition(NavToken token)
-        {
-            var role = token.Map.SemanticRole;
-
-            return DefinitionProvider.GetMapText(role.ToString());
-        }
-
-        private static MapText? GetPrimaryFocusedDefinition(NavToken token)
+        private static MapText? GetFocusedDefinition(NavToken token)
         {
             string? key = null;
             var role = token.Map.SemanticRole;
 
-            if (role is SemanticRole.Argument
+            if (token.IsIdentifier())
+            {
+                key = GetIdentifierKey(token);
+            }
+            else if (role is SemanticRole.Argument
                 or SemanticRole.AssignmentValue
                 or SemanticRole.BitwiseOperand
                 or SemanticRole.CollectionElement
@@ -99,6 +111,43 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return key is not null
                 ? DefinitionProvider.GetMapText(key)
                 : null;
+        }
+
+        private static string? GetIdentifierKey(NavToken token)
+        {
+            if (token.Map.SemanticRole.ToString().Contains("DataType"))
+            {
+                return "Identifier:datatype";
+            }
+
+            if (token.Map.SemanticRole.ToString().Contains("Declaration"))
+            {
+                return token.IsMethodDeclaration()
+                    ? "Identifier:method:declaration"
+                    : token.IsConstructorDeclaration()
+                        ? "Identifier:constructor:declaration"
+                        : "Identifier:type:declaration";
+            }
+
+            if (token.Map.SemanticRole.ToString().Contains("Invocation"))
+            {
+                return token.IsConstructorInvocation()
+                    ? "Identifier:constructor:invocation"
+                    : "Identifier:method:invocation";
+            }
+
+            if (token.Map.SemanticRole == SemanticRole.TypeQualifier)
+            {
+                return "Identifier:typequalifier";
+            }
+
+            if (token.RoslynClassification == "local name")
+                return "Identifier:local";
+
+            if (token.RoslynClassification == "parameter name")
+                return "Identifier:parameter";
+
+            return null;
         }
 
         private static MapText? GetSecondaryDefinition(NavToken token)

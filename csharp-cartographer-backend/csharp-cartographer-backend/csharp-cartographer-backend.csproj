@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="01.Configuration\Definitions\identifier-definitions.json" />
     <Content Remove="01.Configuration\Definitions\keyword-definitions.json" />
     <Content Remove="01.Configuration\Definitions\modifier-definitions.json" />
     <Content Remove="01.Configuration\Definitions\operator-definitions.json" />
@@ -20,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="01.Configuration\Definitions\identifier-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\keyword-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\modifier-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\operator-definitions.json" />

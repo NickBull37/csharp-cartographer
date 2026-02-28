@@ -45,7 +45,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             );
         }
 
-        private static PrimaryKind GetPrimaryKind(NavToken token)
+        private static SyntaxCategory GetPrimaryKind(NavToken token)
         {
             /*
              *   Roslyn does a lot of the heavy lifting with their classification. But their
@@ -56,38 +56,38 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Special cases - update manually
             if (token.Text == "." && token.IsQualifiedNameSeparator())
             {
-                return PrimaryKind.Punctuation;
+                return SyntaxCategory.Punctuation;
             }
             if (token.Text == "?" && token.IsNullableTypeMarker())
             {
-                return PrimaryKind.Punctuation;
+                return SyntaxCategory.Punctuation;
             }
             if (token.Text == ".." && token.RoslynClassification == "punctuation")
             {
-                return PrimaryKind.Operator;
+                return SyntaxCategory.Operator;
             }
             if (GlobalConstants.Delimiters.Contains(token.Text) && token.RoslynClassification == "punctuation")
             {
-                return PrimaryKind.Delimiter;
+                return SyntaxCategory.Delimiter;
             }
             if (token.Text == "args" && token.RoslynClassification == "keyword")
             {
-                return PrimaryKind.Identifier;
+                return SyntaxCategory.Identifier;
             }
 
             switch (token.RoslynClassification)
             {
                 case "keyword":
                 case "keyword - control":
-                    return PrimaryKind.Keyword;
+                    return SyntaxCategory.Keyword;
                 case "operator":
-                    return PrimaryKind.Operator;
+                    return SyntaxCategory.Operator;
                 case "punctuation":
-                    return PrimaryKind.Punctuation;
+                    return SyntaxCategory.Punctuation;
                 case "string":
                 case "string - verbatim":
                 case "number":
-                    return PrimaryKind.Literal;
+                    return SyntaxCategory.Literal;
                 case "class name":
                 case "constant name":
                 case "delegate name":
@@ -107,9 +107,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 case "type parameter name":
                 case "identifier":
                 case "static symbol":
-                    return PrimaryKind.Identifier;
+                    return SyntaxCategory.Identifier;
                 default:
-                    return PrimaryKind.Unknown;
+                    return SyntaxCategory.Unknown;
             }
         }
 
@@ -586,8 +586,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.ArgumentModifier;
 
             // --- Concurrency keywords ---
-            if (GlobalConstants.ConcurrencyKeywords.Contains(token.Text))
+            if (token.IsConcurrencyKeyword())
                 return SemanticRole.Concurrency;
+
+            if (token.IsConcurrencyModifierKeyword())
+                return SemanticRole.ConcurrencyModifier;
 
             // --- Conditional branching keywords ---
             if (GlobalConstants.ConditionalBranchingKeywords.Contains(token.Text))
@@ -1030,8 +1033,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.Unknown;
 
             // --- Identifiers: Declarations ---
-            if (token.IsAttributeDeclaration())
-                return SemanticRole.AttributeDeclaration;
+            if (token.IsAttribute())
+                return SemanticRole.Attribute;
 
             if (token.IsClassDeclaration())
                 return SemanticRole.ClassDeclaration;
@@ -1148,8 +1151,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsBaseType())
                 return SemanticRole.BaseType;
 
-            if (token.IsExceptionType())
-                return SemanticRole.ExceptionType;
+            if (token.IsCatchExceptionType())
+                return SemanticRole.CatchExceptionType;
+
+            if (token.IsCatchExceptionVariable())
+                return SemanticRole.CatchExceptionVariable;
 
             if (token.IsGenericTypeArgument())
                 return SemanticRole.GenericTypeArgument;

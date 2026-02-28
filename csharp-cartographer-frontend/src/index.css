@@ -390,7 +390,7 @@ body {
 }
 .faded-blue {
     /* color: #6fabdc; */
-    color: rgba(111, 171, 220, 0.8);
+    color: rgba(111, 171, 220, 0.85);
 }
 .faded-light-blue {
     /* color: #b3d1ff; */
@@ -410,11 +410,11 @@ body {
 }
 .faded-purple {
     /* color: #d8a0df; */
-    color: rgba(216, 160, 223, 0.8);
+    color: rgba(216, 160, 223, 0.85);
 }
 .faded-orange {
     /* color: #d69d85; */
-    color: rgba(214, 157, 133, 0.8);
+    color: rgba(214, 157, 133, 0.85);
 }
 .faded-yellow {
     /* color: #dcdcaa; */
@@ -432,13 +432,25 @@ body {
 .bold {
     font-weight: 600!important;
 }
+.tt {
+    font-style: italic!important;
+}
 .italic {
     font-style: italic!important;
 }
 
+.sr-badge {
+    background: linear-gradient(135deg, #a0a6ac 0%, #e3e5e8 50%, #9aa0a6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 16px!important;
+    font-family: Gravedigger!important;
+    letter-spacing: 1.5px!important;
+}
+
 .keyword-definition {
     border-radius: 4px;
-    padding: 16px 12px 8px 12px;
+    padding: 18px 16px 10px 16px;
 }
 .sym-ref {
     border-radius: 4px;
@@ -465,15 +477,21 @@ body {
     background-color: rgba(57, 44, 84, 0.2);
     border: 1px solid rgba(215, 158, 250, 0.6);
 }
-
 .light-blue-box{
     background-color: rgba(0, 61, 153, 0.05);
     border: 1px solid rgba(179, 209, 255, 0.6);
 }
-
 .teal-box{
     background-color: rgba(0, 153, 138, 0.05);
     border: 1px solid rgba(153, 255, 245, 0.4);
+}
+.green-box{
+    background-color: rgba(30, 98, 84, 0.1);
+    border: 1px solid rgba(157, 225, 212, 0.4);
+}
+.yellow-box{
+    background-color: rgba(91, 91, 37, 0.1);
+    border: 1px solid rgba(218, 218, 164, 0.4);
 }
 
 
@@ -486,6 +504,9 @@ body {
 .gray-icon-text{
     color: #cccccc;
 }
+.green-icon-text{
+    color: #c4ede5;
+}
 .purple-icon-text{
     color: #ebcffc;
 }
@@ -497,6 +518,9 @@ body {
 }
 .teal-icon-text{
     color: #ccfff9;
+}
+.yellow-icon-text{
+    color: #e9e9c9;
 }
 
 

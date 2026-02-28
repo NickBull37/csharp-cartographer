@@ -24,7 +24,6 @@ const ContentContainer = styled(Box)(() => ({
 
 const OrangeBox = styled(Box)(() => ({
     padding: '12px 12px',
-    //border: '1px solid rgba(255, 136, 77, 0.7)',
     borderRadius: '4px',
     backgroundColor: 'rgba(204, 82, 0, 0.175)',
     marginBottom: '4px',
@@ -69,9 +68,9 @@ const NextTokenButton = styled(IconButton)(() => ({
         backgroundColor: '#333333',
     },
 }));
-const MapTagDefLabel = styled(Typography)(() => ({
+const SemanticRoleLabel = styled(Typography)(() => ({
     fontSize: '17px',
-    color: colors.gray95,
+    // color: colors.gray95,
 }));
 const MapTagDefFadedLabel = styled(Typography)(() => ({
     fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
@@ -96,6 +95,22 @@ const MapTagFocusedDefText = styled(Typography)(() => ({
     //backgroundColor: '#333333',
     //boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.45), 0 2px 6px 0 rgba(0, 0, 0, 0.45)',
 }));
+
+const fadedClassMap = {
+    'color-white': 'faded-white',
+    'color-gray': 'faded-gray',
+    'color-blue': 'faded-blue',
+    'color-light-blue': 'faded-light-blue',
+    'color-dark-blue': 'faded-dark-blue',
+    'color-green': 'faded-green',
+    'color-jade': 'faded-jade',
+    'color-light-green': 'faded-light-green',
+    'color-dark-green': 'faded-dark-green',
+    'color-purple': 'faded-purple',
+    'color-orange': 'faded-orange',
+    'color-yellow': 'faded-yellow',
+    'color-teal': 'faded-teal',
+};
 
 const TokenSidebarContent = ({
     navTokens,
@@ -124,6 +139,8 @@ const TokenSidebarContent = ({
     const [activeTag, setActiveTag] = useState(null);
     const [activeChart, setActiveChart] = useState(null);
     const [tokenChartExpanded, setTokenChartExpanded] = useState(true);
+
+    const srLabelClass = `code ${fadedClassMap[highlightColor] || 'faded-white'}`;
 
     // Event Handlers
     const handleNextTokenClick = () => {
@@ -387,717 +404,142 @@ const TokenSidebarContent = ({
                                         gap={0.75}
                                     >
                                         <Stack
-                                            gap={1}
+                                            gap={2.5}
                                             sx={{
-                                                mt: '1.25rem'
+                                                mt: '1rem'
                                             }}
                                         >
-                                            <Box
-                                                display="flex"
-                                                justifyContent="space-between"
-                                                alignItems="flex-end"
-                                                sx={{
-                                                    borderBottom: '1px solid #666666',
-                                                }}
-                                            >
-                                                <MapTagDefLabel className='code'>
-                                                    {activeToken.map.primaryLabel}
-                                                </MapTagDefLabel>
-                                                <MapTagDefFadedLabel
-                                                    className={
-                                                        highlightColor === 'color-white'
-                                                                ? 'faded-white'
-                                                            : highlightColor === 'color-gray'
-                                                                ? 'faded-gray'
-                                                            : highlightColor === 'color-blue'
-                                                                ? 'faded-blue'
-                                                            : highlightColor === 'color-light-blue'
-                                                                ? 'faded-light-blue'
-                                                            : highlightColor === 'color-dark-blue'
-                                                                ? 'faded-dark-blue'
-                                                            : highlightColor === 'color-green'
-                                                                ? 'faded-green'
-                                                            : highlightColor === 'color-jade'
-                                                                ? 'faded-jade'
-                                                            : highlightColor === 'color-light-green'
-                                                                ? 'faded-light-green'
-                                                            : highlightColor === 'color-dark-green'
-                                                                ? 'faded-dark-green'
-                                                            : highlightColor === 'color-purple'
-                                                                ? 'faded-purple'
-                                                            : highlightColor === 'color-orange'
-                                                                ? 'faded-orange'
-                                                            : highlightColor === 'color-yellow'
-                                                                ? 'faded-yellow'
-                                                            : highlightColor === 'color-teal'
-                                                                ? 'faded-teal'
-                                                            : 'faded-white'
-                                                    }
-                                                >
-                                                    {activeToken.map.primaryKindString}
-                                                </MapTagDefFadedLabel>
-                                                
-                                            </Box>
-
-                                            {/* {!!activeToken?.map?.symbolReference?.length && (
-                                                <Box className={
-                                                    highlightColor === 'color-light-blue'
-                                                            ? 'sym-ref light-blue-box'
-                                                        : highlightColor === 'color-light-green'
-                                                            ? 'sym-ref light-green-box'
-                                                        : highlightColor === 'color-gray' || highlightColor === 'color-white'
-                                                            ? 'sym-ref gray-box'
-                                                        : ''
-                                                    }
-                                                >
-                                                    <Box
-                                                        display="flex"
-                                                        alignItems="center"
-                                                        gap={1.5}
-                                                    >
-                                                        <CodeIcon
-                                                            className={
-                                                                highlightColor === 'color-light-blue'
-                                                                        ? 'light-blue-icon-text'
-                                                                    : highlightColor === 'color-light-green'
-                                                                        ? 'light-green-icon-text'
-                                                                    : ''
-                                                            }
-                                                            sx={{
-                                                                fontSize: '18px',
-                                                            }}
-                                                        />
-                                                        <Typography
-                                                            className={
-                                                                highlightColor === 'color-light-blue'
-                                                                        ? 'light-blue-icon-text code'
-                                                                    : highlightColor === 'color-light-green'
-                                                                        ? 'light-green-icon-text code'
-                                                                    : ''
-                                                            }
-                                                            sx={{
-                                                                fontSize: '14px',
-                                                                letterSpacing: '0.06em',
-                                                            }}
-                                                        >
-                                                            {activeToken?.map?.symbolReference}
-                                                        </Typography>
-                                                    </Box>
-                                                </Box>
-                                            )} */}
-
-                                            <Stack
-                                                gap={hasPrimaryDefinition ? 2 : 1.25}
-                                                sx={{
-                                                    px: '1px'
-                                                }}
-                                            >
-                                                <MapTagDefText>
-                                                    {renderMapText(activeToken?.map?.primaryDefinition)}
-                                                </MapTagDefText>
-
-                                                {!!activeToken?.map?.primaryFocusedDefinition?.segments?.length && (
-                                                    <Box className={
-                                                        highlightColor === 'color-blue'
-                                                                ? 'keyword-definition blue-box'
-                                                            : highlightColor === 'color-purple'
-                                                                ? 'keyword-definition purple-box'
-                                                            : highlightColor === 'color-light-green'
-                                                                ? 'keyword-definition light-green-box'
-                                                            : highlightColor === 'color-gray' || highlightColor === 'color-white'
-                                                                ? 'keyword-definition gray-box'
-                                                            : highlightColor === 'color-orange'
-                                                                ? 'keyword-definition orange-box'
-                                                            : ''
-                                                        }
-                                                    >
-                                                        <Box
-                                                            display="flex"
-                                                            alignItems="center"
-                                                            gap={0.75}
-                                                            sx={{
-                                                                mb: '14px'
-                                                            }}
-                                                        >
-                                                            <InfoOutlineIcon
-                                                                className={
-                                                                    highlightColor === 'color-blue'
-                                                                            ? 'blue-icon-text'
-                                                                        : highlightColor === 'color-purple'
-                                                                            ? 'purple-icon-text'
-                                                                        : highlightColor === 'color-gray'
-                                                                            ? 'gray-icon-text'
-                                                                        : highlightColor === 'color-orange'
-                                                                            ? 'orange-icon-text'
-                                                                        : highlightColor === 'color-light-green'
-                                                                            ? 'light-green-icon-text'
-                                                                        : ''
-                                                                }
-                                                                sx={{
-                                                                    fontSize: '18px',
-                                                                }}
-                                                            />
-                                                            <Typography
-                                                                className={
-                                                                    highlightColor === 'color-blue'
-                                                                            ? 'blue-icon-text'
-                                                                        : highlightColor === 'color-purple'
-                                                                            ? 'purple-icon-text'
-                                                                        : highlightColor === 'color-gray'
-                                                                            ? 'gray-icon-text'
-                                                                        : highlightColor === 'color-orange'
-                                                                            ? 'orange-icon-text'
-                                                                        : highlightColor === 'color-light-green'
-                                                                            ? 'light-green-icon-text'
-                                                                        : ''
-                                                                }
-                                                                sx={{
-                                                                    fontSize: '15px',
-                                                                    letterSpacing: '0.06em',
-                                                                    fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
-                                                                }}
-                                                            >
-                                                                {/* Definition */}
-                                                                {activeToken.map.primaryKindString}
-                                                            </Typography>
-                                                        </Box>
-                                                        <MapTagFocusedDefText>
-                                                            {renderMapText(activeToken?.map?.primaryFocusedDefinition)}
-                                                        </MapTagFocusedDefText>
-                                                    </Box>
-                                                )}
-                                            </Stack>
-
-                                            {!!activeToken?.map?.symbolReference?.length && (
-                                                <Box className={
-                                                    highlightColor === 'color-light-blue'
-                                                            ? 'sym-ref light-blue-box'
-                                                        : highlightColor === 'color-white'
-                                                            ? 'sym-ref gray-box'
-                                                        : ''
-                                                    }
+                                            <Box>
+                                                <Box
+                                                    display="flex"
+                                                    justifyContent="space-between"
+                                                    alignItems="flex-end"
                                                     sx={{
-                                                        mt: '8px'
+                                                        background: 'rgba(38, 38, 38, 0.65)',
+                                                        borderBottom: '1px solid #666666',
+                                                        borderRadius: '5px 5px 0 0',
+                                                        px: '14px',
+                                                        pt: '6px',
+                                                        pb: '2px'
                                                     }}
                                                 >
-                                                    <Box
-                                                        display="flex"
-                                                        alignItems="center"
-                                                        gap={1.5}
-                                                    >
-                                                        <CodeIcon
-                                                            className={
-                                                                highlightColor === 'color-light-blue'
-                                                                        ? 'light-blue-icon-text'
-                                                                    : highlightColor === 'color-white'
-                                                                        ? 'white-icon-text'
-                                                                    : ''
-                                                            }
-                                                            sx={{
-                                                                fontSize: '18px',
-                                                            }}
-                                                        />
-                                                        <Typography
-                                                            className={
-                                                                highlightColor === 'color-light-blue'
-                                                                        ? 'light-blue-icon-text code'
-                                                                    : highlightColor === 'color-white'
-                                                                        ? 'white-icon-text code'
-                                                                    : ''
-                                                            }
-                                                            sx={{
-                                                                fontSize: '13px',
-                                                                letterSpacing: '0.06em',
-                                                            }}
-                                                        >
-                                                            {activeToken?.map?.symbolReference}
-                                                        </Typography>
-                                                    </Box>
+                                                    <SemanticRoleLabel className={srLabelClass}>
+                                                        {activeToken.map.roleLabel}
+                                                    </SemanticRoleLabel>
+                                                    <Typography className='sr-badge'>
+                                                        SR
+                                                    </Typography>
                                                 </Box>
-                                            )}
-                                        </Stack>
+                                                <Box
+                                                    sx={{
+                                                        background: 'rgba(38, 38, 38, 0.375)',
+                                                        px: '16px',
+                                                        py: '12px',
+                                                        borderRadius: '0 0 5px 5px'
+                                                    }}
+                                                >
+                                                    <MapTagDefText>
+                                                        {renderMapText(activeToken?.map?.roleDefinition)}
+                                                    </MapTagDefText>
+                                                </Box>
+                                            </Box>
 
-                                        {!!activeToken?.map?.secondaryLabel && (
-                                            <Stack
-                                                gap={1}
-                                                sx={{
-                                                    mt: '1rem'
-                                                }}
-                                            >
-                                                <Box className='keyword-definition teal-box'>
+                                            {!!activeToken?.map?.focusedDefinition?.segments?.length && (
+                                                <Box className={
+                                                    highlightColor === 'color-blue'
+                                                            ? 'keyword-definition blue-box'
+                                                        : highlightColor === 'color-purple'
+                                                            ? 'keyword-definition purple-box'
+                                                        : highlightColor === 'color-light-green'
+                                                            ? 'keyword-definition light-green-box'
+                                                        : highlightColor === 'color-gray' || highlightColor === 'color-white'
+                                                            ? 'keyword-definition gray-box'
+                                                        : highlightColor === 'color-orange'
+                                                            ? 'keyword-definition orange-box'
+                                                        : highlightColor === 'color-light-blue'
+                                                            ? 'keyword-definition light-blue-box'
+                                                        : highlightColor === 'color-green'
+                                                            ? 'keyword-definition green-box'
+                                                        : highlightColor === 'color-yellow'
+                                                            ? 'keyword-definition yellow-box'
+                                                        : ''
+                                                    }
+                                                >
                                                     <Box
                                                         display="flex"
                                                         alignItems="center"
                                                         gap={0.75}
                                                         sx={{
-                                                            mb: '20px'
+                                                            mb: '14px'
                                                         }}
                                                     >
-                                                        <ExploreOutlinedIcon
-                                                            className='teal-icon-text'
+                                                        <InfoOutlineIcon
+                                                            className={
+                                                                highlightColor === 'color-blue'
+                                                                        ? 'blue-icon-text'
+                                                                    : highlightColor === 'color-purple'
+                                                                        ? 'purple-icon-text'
+                                                                    : highlightColor === 'color-gray'
+                                                                        ? 'gray-icon-text'
+                                                                    : highlightColor === 'color-orange'
+                                                                        ? 'orange-icon-text'
+                                                                    : highlightColor === 'color-light-green'
+                                                                        ? 'light-green-icon-text'
+                                                                    : highlightColor === 'color-light-blue'
+                                                                        ? 'light-blue-icon-text'
+                                                                    : highlightColor === 'color-green'
+                                                                        ? 'green-icon-text'
+                                                                    : highlightColor === 'color-yellow'
+                                                                        ? 'yellow-icon-text'
+                                                                    : ''
+                                                            }
                                                             sx={{
                                                                 fontSize: '18px',
                                                             }}
                                                         />
                                                         <Typography
-                                                            className='teal-icon-text'
-                                                            sx={{
-                                                                fontSize: '14px',
-                                                                letterSpacing: '0.06em',
-                                                                fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
-                                                            }}
-                                                        >
-                                                            Look Ahead
-                                                        </Typography>
-                                                    </Box>
-                                                    <Box
-                                                        sx={{
-                                                            px: '5px'
-                                                        }}
-                                                    >
-                                                        <Typography
-                                                            //className='teal-icon-text'
+                                                            className={
+                                                                highlightColor === 'color-blue'
+                                                                        ? 'blue-icon-text'
+                                                                    : highlightColor === 'color-purple'
+                                                                        ? 'purple-icon-text'
+                                                                    : highlightColor === 'color-gray'
+                                                                        ? 'gray-icon-text'
+                                                                    : highlightColor === 'color-orange'
+                                                                        ? 'orange-icon-text'
+                                                                    : highlightColor === 'color-light-green'
+                                                                        ? 'light-green-icon-text'
+                                                                    : highlightColor === 'color-light-blue'
+                                                                        ? 'light-blue-icon-text'
+                                                                    : highlightColor === 'color-green'
+                                                                        ? 'green-icon-text'
+                                                                    : highlightColor === 'color-yellow'
+                                                                        ? 'yellow-icon-text'
+                                                                    : ''
+                                                            }
                                                             sx={{
                                                                 fontSize: '15px',
                                                                 letterSpacing: '0.06em',
                                                                 fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
                                                             }}
                                                         >
-                                                            <span className='bold'>{activeToken.map.secondaryLabel}</span>
+                                                            {/* Definition */}
+                                                            {activeToken.map.categoryLabel}
                                                         </Typography>
                                                     </Box>
                                                     <MapTagFocusedDefText>
-                                                        {renderMapText(activeToken?.map?.secondaryDefinition)}
+                                                        {renderMapText(activeToken?.map?.focusedDefinition)}
                                                     </MapTagFocusedDefText>
                                                 </Box>
+                                            )}
+                                            
+                                        </Stack>
 
-                                                {/* <MapTagDefLabel className='code'
-                                                    sx={{
-                                                        borderBottom: '1px solid #666666'
-                                                    }}
-                                                >
-                                                    {activeToken.map.secondaryLabel}
-                                                </MapTagDefLabel>
-                                                <Stack
-                                                    gap={2}
-                                                >
-                                                    <MapTagDefText>
-                                                        {renderMapText(activeToken?.map?.secondaryDefinition)}
-                                                    </MapTagDefText>
-                                                </Stack> */}
-                                            </Stack>
-                                        )}
                                     </Stack>
                                 </Stack>
                             :
                                 <></>
                         }
-
-                        {/* {tokenChartExpanded
-                            ?
-                                <Stack
-                                    gap={2.5}
-                                    sx={{
-                                        mt: 0.75,
-                                        px: '1rem',
-                                        pt: '8px',
-                                        pb: '12px',
-                                    }}
-                                >
-                                    {tokenTags.map((tag, index) => (
-                                        <Stack
-                                            sx={{
-                                                // backgroundColor: 'rgba(51, 51, 51, 0.575)',
-                                                backgroundColor: colors.tokenTagBg,
-                                                borderRadius: '4px',
-                                                boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.20), 0 2px 6px 0 rgba(0, 0, 0, 0.20)',
-                                            }}
-                                        >
-
-                                            <Box
-                                                className={`${tag.bgColorClass}`}
-                                                sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'space-between',
-                                                    alignItems: 'center',
-                                                    borderRadius: '4px 4px 0 0',
-                                                    mb: '5px',
-                                                    pl: '8px',
-                                                    pr: '8px',
-                                                    py: '5px',
-                                                }}
-                                            >
-                                                <Typography
-                                                    key={index}
-                                                    //onClick={() => handleTagClick(tag)}
-                                                    sx={{
-                                                        fontSize: '15px',
-                                                        fontWeight: 'bold',
-                                                        letterSpacing: '0.9px',
-                                                        color: '#fff',
-                                                        
-                                                    }}
-                                                >
-                                                    {tag.label}
-                                                </Typography>
-
-                                                <IconButton
-                                                    sx={{
-                                                        p: 0,
-                                                        m: 0
-                                                    }}
-                                                >
-                                                    <ExpandMoreIcon
-                                                        fontSize='small'
-                                                        sx={{
-                                                            color: colors.gray70
-                                                        }}
-                                                    />
-                                                </IconButton>
-                                            </Box>
-
-                                            <Box
-                                                sx={{
-                                                    mt: '6px'
-                                                }}
-                                            >
-                                                <Typography
-                                                    sx={{
-                                                        fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
-                                                        fontSize: '12px',
-                                                        letterSpacing: '0.04em',
-                                                        color: colors.gray60,
-                                                        pl: '9px',
-                                                        borderBottom: '1px solid #808080'
-                                                    }}
-                                                >
-                                                    The basics
-                                                </Typography>
-                                            </Box>
-
-                                            <Stack
-                                                gap={1.5}
-                                                sx={{
-                                                    p: '8px 10px 8px 10px',
-                                                }}
-                                            >
-                                                {tag.theBasicsEntries.map((entry) => (
-                                                    <Box
-                                                        key={entry.id}
-                                                        display="flex"
-                                                    >
-                                                        <BoxText
-                                                            className={[
-                                                                entry.isExample && 'tag-entry-example',
-                                                                entry.isInsight && 'tag-entry-insight',
-                                                            ]
-                                                                .filter(Boolean)
-                                                                .join(' ')
-                                                            }
-                                                        >
-                                                            {entry.isInsight
-                                                                ?
-                                                                    <Box
-                                                                        display="flex"
-                                                                        alignItems="center"
-                                                                        gap={0.75}
-                                                                        sx={{
-                                                                            mb: '14px'
-                                                                        }}
-                                                                    >
-                                                                        <InfoOutlineIcon
-                                                                            sx={{
-                                                                                fontSize: '18px',
-                                                                                color: '#c0e0f2'
-                                                                            }}
-                                                                        />
-                                                                        <Typography
-                                                                            sx={{
-                                                                                fontSize: '14px',
-                                                                                letterSpacing: '0.06em',
-                                                                                fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
-                                                                                color: '#c0e0f2'
-                                                                            }}
-                                                                        >
-                                                                            Insight
-                                                                        </Typography>
-                                                                    </Box>
-                                                                :
-                                                                    <></>
-                                                            }
-                                                            {entry.segments.map((segment) =>
-                                                                segment.text === '\r\n'
-                                                                    ?
-                                                                        (
-                                                                            <Box sx={{ minHeight: '6px' }}></Box>
-                                                                        )
-                                                                    :
-                                                                        ((
-                                                                            <Box
-                                                                                key={segment.id}
-                                                                                component={segment.ref?.url ? 'a' : 'span'}
-                                                                                href={segment.ref?.url}
-                                                                                target="_blank"
-                                                                                rel="noopener noreferrer"
-                                                                                className={segment.isKeyword ? `${segment.highlightColor}` : ''}
-                                                                                sx={{
-                                                                                    fontWeight: segment.isBold ? 700 : 'inherit',
-                                                                                    fontStyle: segment.isItalic ? 'italic' : 'inherit',
-                                                                                    fontFamily: segment.isCode
-                                                                                        ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace"
-                                                                                        : 'inherit',
-                                                                                    display: 'inline'
-                                                                                }}
-                                                                            >
-                                                                                {segment.text}
-                                                                            </Box>
-                                                                        ))
-                                                            )}
-                                                        </BoxText>
-                                                    </Box>
-                                                ))}
-                                            </Stack>
-
-                                            {tag.keyPointsEntries.length > 0 && (
-                                                <Box
-                                                    sx={{
-                                                        mt: '1rem'
-                                                    }}
-                                                >
-                                                    <Typography
-                                                        sx={{
-                                                            fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
-                                                            fontSize: '12px',
-                                                            letterSpacing: '0.04em',
-                                                            color: colors.gray60,
-                                                            pl: '9px',
-                                                            borderBottom: '1px solid #808080'
-                                                        }}
-                                                    >
-                                                        Key points
-                                                    </Typography>
-
-                                                    <Stack
-                                                        gap={1.5}
-                                                        sx={{
-                                                            p: '8px 10px 12px 10px',
-                                                        }}
-                                                    >
-                                                        {tag.keyPointsEntries.map((entry) => (
-                                                            <Box
-                                                                key={entry.id}
-                                                                display="flex"
-                                                                gap={1.5}
-                                                            >
-                                                                <KeyIcon
-                                                                    fontSize='small'
-                                                                    sx={{
-                                                                        color: '#ac7339'
-                                                                    }}
-                                                                />
-                                                                <BoxText
-                                                                    className={[
-                                                                        entry.isExample && 'tag-entry-example',
-                                                                        entry.isInsight && 'tag-entry-insight',
-                                                                    ]
-                                                                        .filter(Boolean)
-                                                                        .join(' ')
-                                                                    }
-                                                                >
-                                                                    {entry.segments.map((segment) => (
-                                                                        <Box
-                                                                            key={segment.id}
-                                                                            component={segment.ref?.url ? 'a' : 'span'}
-                                                                            href={segment.ref?.url}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                            className={[
-                                                                                segment.isKeyword && segment.highlightColor,
-                                                                                segment.isCode && 'tag-code-segment',
-                                                                                segment.ref && 'tag-link-segment',
-                                                                            ]
-                                                                                .filter(Boolean)
-                                                                                .join(' ')
-                                                                            }
-                                                                            sx={{
-                                                                                fontWeight: segment.isBold ? 700 : 'inherit',
-                                                                                fontStyle: segment.isItalic ? 'italic' : 'inherit',
-                                                                                fontFamily: segment.isCode ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace" : 'inherit',
-                                                                                display: 'inline',
-                                                                            }}
-                                                                        >
-                                                                            {segment.text}
-                                                                        </Box>
-                                                                    ))}
-                                                                </BoxText>
-                                                            </Box>
-                                                        ))}
-                                                    </Stack>
-                                                </Box>
-                                            )}
-
-                                            {tag.useForEntries.length > 0 && (
-                                                <Box
-                                                    sx={{
-                                                        mt: '1rem'
-                                                    }}
-                                                >
-                                                    <Typography
-                                                        sx={{
-                                                            fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
-                                                            fontSize: '12px',
-                                                            letterSpacing: '0.04em',
-                                                            color: colors.gray60,
-                                                            pl: '9px',
-                                                            borderBottom: '1px solid #808080'
-                                                        }}
-                                                    >
-                                                        Use for
-                                                    </Typography>
-
-                                                    <Stack
-                                                        gap={1.5}
-                                                        sx={{
-                                                            p: '8px 10px 12px 10px',
-                                                        }}
-                                                    >
-                                                        {tag.useForEntries.map((entry) => (
-                                                            <Box
-                                                                key={entry.id}
-                                                                display="flex"
-                                                                gap={1.5}
-                                                            >
-                                                                <CodeIcon
-                                                                    fontSize='small'
-                                                                    sx={{
-                                                                        color: '#00FF41',
-                                                                    }}
-                                                                />
-                                                                <BoxText
-                                                                    className={[
-                                                                        entry.isExample && 'tag-entry-example',
-                                                                        entry.isInsight && 'tag-entry-insight',
-                                                                    ]
-                                                                        .filter(Boolean)
-                                                                        .join(' ')
-                                                                    }
-                                                                >
-                                                                    {entry.segments.map((segment) => (
-                                                                        <Box
-                                                                            key={segment.id}
-                                                                            component={segment.ref?.url ? 'a' : 'span'}
-                                                                            href={segment.ref?.url}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                            className={[
-                                                                                segment.isKeyword && segment.highlightColor,
-                                                                                segment.isCode && 'tag-code-segment',
-                                                                                segment.ref && 'tag-link-segment',
-                                                                            ]
-                                                                                .filter(Boolean)
-                                                                                .join(' ')
-                                                                            }
-                                                                            sx={{
-                                                                                fontWeight: segment.isBold ? 700 : 'inherit',
-                                                                                fontStyle: segment.isItalic ? 'italic' : 'inherit',
-                                                                                fontFamily: segment.isCode ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace" : 'inherit',
-                                                                                display: 'inline',
-                                                                            }}
-                                                                        >
-                                                                            {segment.text}
-                                                                        </Box>
-                                                                    ))}
-                                                                </BoxText>
-                                                            </Box>
-                                                        ))}
-                                                    </Stack>
-                                                </Box>
-                                            )}
-
-                                            {tag.exploreEntries.length > 0 && (
-                                                <Box
-                                                    sx={{
-                                                        mt: '1rem',
-                                                        mb: '0.25rem'
-                                                    }}
-                                                >
-                                                    <Typography
-                                                        sx={{
-                                                            fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
-                                                            fontSize: '12px',
-                                                            letterSpacing: '0.04em',
-                                                            color: colors.gray60,
-                                                            pl: '9px',
-                                                            borderBottom: '1px solid #808080'
-                                                        }}
-                                                    >
-                                                        Explore
-                                                    </Typography>
-
-                                                    <Stack
-                                                        gap={1.5}
-                                                        sx={{
-                                                            py: '8px',
-                                                            px: '10px'
-                                                        }}
-                                                    >
-                                                        {tag.exploreEntries.map((entry) => (
-                                                            <Box
-                                                                key={entry.id}
-                                                                display="flex"
-                                                                gap={1.5}
-                                                            >
-                                                                <LinkIcon
-                                                                    fontSize='small'
-                                                                    sx={{
-                                                                        color: '#00e6cf',
-                                                                    }}
-                                                                />
-                                                                <BoxText>
-                                                                    {entry.segments.map((segment) => (
-                                                                        <Box
-                                                                            gap={1}
-                                                                            key={segment.id}
-                                                                            component={segment.ref?.url ? 'a' : 'span'}
-                                                                            href={segment.ref?.url}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                            className={[
-                                                                                segment.isKeyword && segment.highlightColor,
-                                                                                segment.isCode && 'tag-code-segment',
-                                                                                segment.ref && 'tag-link-segment',
-                                                                            ]
-                                                                                .filter(Boolean)
-                                                                                .join(' ')
-                                                                            }
-                                                                            sx={{
-                                                                                display: 'inline',
-                                                                                fontWeight: segment.isBold ? 700 : 'inherit',
-                                                                                fontStyle: segment.isItalic ? 'italic' : 'inherit',
-                                                                                fontFamily: segment.isCode
-                                                                                    ? "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace"
-                                                                                    : 'inherit',
-                                                                                backgroundColor: segment.highlightColor ?? 'transparent',
-                                                                                display: 'inline'
-                                                                            }}
-                                                                        >
-                                                                            {segment.text}
-                                                                        </Box>
-                                                                    ))}
-                                                                </BoxText>
-                                                            </Box>
-                                                        ))}
-                                                    </Stack>
-                                                </Box>
-                                            )}
-                                            
-                                        </Stack>
-                                    ))}
-                                </Stack>
-                            :
-                                <></>
-                        } */}
-
                     </Stack>
 
                     <Stack>

@@ -297,9 +297,11 @@
         /// Concurrency
         public static readonly List<string> ConcurrencyKeywords =
         [
-            "async",
             "await",
             "lock",
+
+            // covered by ConcurrencyModifier
+            // "async",
         ];
 
         /// Conditional Branching

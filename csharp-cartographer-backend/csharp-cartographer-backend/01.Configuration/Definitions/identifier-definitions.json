@@ -1,0 +1,32 @@
+{
+  "Identifier:constructor:declaration": {
+    "Definition": "The name of a non-static type's constructor. Look for references at the top left of the constructor declaration {c:tt}signature*{/c} in VS to see where its currently being used."
+  },
+  "Identifier:constructor:invocation": {
+    "Definition": "The name of a non-static type's constructor. Put your cursor inside the constructor name and hit {c:keyword}F12{/c} to see the constructor's definition."
+  },
+  "Identifier:datatype": {
+    "Definition": "The name of the data type for an instance identifier. Put your cursor inside the type name and hit {c:keyword}F12{/c} to see the type's definition."
+  },
+  "Identifier:field": {
+    "Definition": "The name of a {c:color-white bold}field{/c} declared within the containing type."
+  },
+  "Identifier:local": {
+    "Definition": "The name of a {c:color-light-blue bold}local variable{/c} declared above within the containing scope."
+  },
+  "Identifier:method:declaration": {
+    "Definition": "The name of a {c:color-yellow bold}method{/c} name that can be invoked. Look for references at the top left of the method {c:tt}signature*{/c} in VS to see where the method is being called from."
+  },
+  "Identifier:method:invocation": {
+    "Definition": "The name of a {c:color-yellow bold}method{/c} being invoked. Put your cursor inside the method name and hit {c:keyword}F12{/c} to see the method's definition."
+  },
+  "Identifier:parameter": {
+    "Definition": "The name of a {c:color-light-blue bold}parameter{/c} defined in the current method or constructor's {c:tt}signature*{/c}."
+  },
+  "Identifier:type:declaration": {
+    "Definition": "The name of a {c:color-green bold}type{/c} declaration. Look for references at the top left of the type declaration {c:tt}signature*{/c} in VS to see where its currently being used."
+  },
+  "Identifier:typequalifier": {
+    "Definition": "The name of a {c:color-green bold}type{/c}. Put your cursor inside the type name and hit {c:keyword}F12{/c} to see the type's definition."
+  }
+}

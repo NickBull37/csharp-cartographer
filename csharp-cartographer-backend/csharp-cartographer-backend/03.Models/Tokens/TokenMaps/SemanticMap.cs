@@ -5,7 +5,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
     /// <summary>
     /// Describes the general syntax category the token falls under.
     /// </summary>
-    public enum PrimaryKind
+    public enum SyntaxCategory
     {
         Unknown,
         Keyword,
@@ -162,6 +162,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         ArgumentModifier,
         CompilationScope,
         Concurrency,
+        ConcurrencyModifier,
         ConditionalBranching,
         Constraint,
         ControlFlow,
@@ -207,7 +208,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         ParameterLabel,
 
         // Declarations
-        AttributeDeclaration,
+        Attribute,
         ClassDeclaration,
         ConstructorDeclaration,
         DeconstructionVariable,
@@ -278,11 +279,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         ArrayDataType,
         BaseType,
+        CatchExceptionType,
+        CatchExceptionVariable,
         DeconstructionVariableDataType,
         DelegateReturnType,
         EventFieldType,
         EventPropertyDataType,
-        ExceptionType,
         FieldDataType,
         GenericTypeArgument,
         GenericTypeParameter,
@@ -454,8 +456,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         // Literal modifiers
         BooleanLiteral,
         CharacterLiteral,
-        //DecimalLiteral,
-        //FloatingPointLiteral,
         NullValue,
         NumericLiteral,
         QuotedString,
@@ -532,7 +532,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
     public sealed record SemanticMap
     {
         // Used for classifying a token
-        public PrimaryKind PrimaryKind { get; set; } = PrimaryKind.Unknown;
+        public SyntaxCategory SyntaxCategory { get; set; } = SyntaxCategory.Unknown;
 
         public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
 
@@ -541,25 +541,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         public string? SymbolReference { get; set; }
 
         // UI elements to show to the user
-        public string PrimaryLabel { get; set; } = string.Empty;
+        public string RoleLabel { get; set; } = string.Empty;
 
-        public MapText PrimaryDefinition { get; set; }
+        public MapText RoleDefinition { get; set; }
 
-        public MapText? PrimaryFocusedDefinition { get; set; }
+        public string CategoryLabel { get; set; } = string.Empty;
 
-        public string? SecondaryLabel { get; set; } = string.Empty;
-
-        public MapText? SecondaryDefinition { get; set; }
-
-        // PK and SR only used for development
-        //public string SemanticRoleString => SemanticRole.GetLabel();
-
-        public string PrimaryKindString => PrimaryKind.ToString();
+        public MapText FocusedDefinition { get; set; }
 
         public IEnumerable<string> ModifierStrings { get; set; } = [];
 
         public SemanticMap(
-            PrimaryKind primaryKind,
+            SyntaxCategory primaryKind,
             SemanticRole semanticRole,
             List<SemanticModifiers> modifiers,
             SymbolReference? symbolReference)
@@ -573,7 +566,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
                 }
             }
 
-            PrimaryKind = primaryKind;
+            SyntaxCategory = primaryKind;
             SemanticRole = semanticRole;
             ModifierStrings = modifierStrings;
             SymbolReference = symbolReference?.ToSpacedString() ?? null;

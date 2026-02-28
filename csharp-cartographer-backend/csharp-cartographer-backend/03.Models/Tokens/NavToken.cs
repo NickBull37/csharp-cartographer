@@ -660,10 +660,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Text == "_";
         }
 
-        public bool IsExceptionType()
+        public bool IsCatchExceptionType()
         {
             return Kind == SyntaxKind.IdentifierToken &&
                 HasAncestorAt(1, SyntaxKind.CatchDeclaration);
+        }
+
+        public bool IsCatchExceptionVariable()
+        {
+            return Kind == SyntaxKind.IdentifierToken &&
+                HasAncestorAt(0, SyntaxKind.CatchDeclaration);
         }
 
         public bool IsForEachLoopCollectionIdentifier()
@@ -734,8 +740,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && NextToken?.Text == "??=";
         }
 
+        public bool IsMethodIdentifier()
+        {
+            return IsMethodDeclaration() || IsMethodInvocation();
+        }
+
         public bool IsMethodInvocation()
         {
+            // covers regular and generic invocations
             var nextTokenText = NextToken?.Text;
             var hasPermittedNextToken = nextTokenText == "(" || nextTokenText == "<";
             var hasInvocationAncestor =
@@ -811,8 +823,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
          *  -----------------------------------------------------------------------
          */
 
-        public bool IsAttributeDeclaration() =>
-            HasAncestorAt(1, SyntaxKind.Attribute);
+        public bool IsAttribute()
+        {
+            return HasAncestorAt(1, SyntaxKind.Attribute);
+        }
 
         public bool IsClassDeclaration() =>
             HasAncestorAt(0, SyntaxKind.ClassDeclaration);
@@ -1341,6 +1355,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return GlobalConstants.ArgumentModifiers.Contains(Text)
                 && HasAncestorAt(0, SyntaxKind.Argument);
+        }
+
+        public bool IsConcurrencyKeyword()
+        {
+            return GlobalConstants.ConcurrencyKeywords.Contains(Text);
+        }
+
+        public bool IsConcurrencyModifierKeyword()
+        {
+            return Kind == SyntaxKind.AsyncKeyword;
         }
 
         public bool IsDefaultOperatorKeyword()
