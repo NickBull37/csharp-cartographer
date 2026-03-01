@@ -6,8 +6,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 {
     public class SemanticLibrary : ISemanticLibrary
     {
-        const string JumpToDefinitionExtension = "Put your cursor inside the constructor name and hit {c:keyword}F12{/c} to see the constructor's definition.";
-        const string ReferenceExtension = "Look for references at the top left of the constructor declaration {c:tt}signature*{/c} in VS to see where its currently being used.";
+
 
         public void AddSemanticInfo(List<NavToken> navTokens)
         {
@@ -18,11 +17,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 var category = token.Map.SyntaxCategory;
 
                 token.Map.RoleLabel = role.GetLabel() ?? role.ToSpacedString();
-
                 token.Map.RoleDefinition = GetRoleDefinition(token);
-
-                token.Map.CategoryLabel = category.GetLabel() ?? category.ToString();
-
+                token.Map.CategoryLabel = category.ToString();
                 token.Map.FocusedDefinition = GetFocusedDefinition(token);
 
                 //token.Map.SecondaryLabel = GetSecondaryLabel(token);
@@ -55,53 +51,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             {
                 key = GetIdentifierKey(token);
             }
-            else if (role is SemanticRole.Argument
-                or SemanticRole.AssignmentValue
-                or SemanticRole.BitwiseOperand
-                or SemanticRole.CollectionElement
-                or SemanticRole.CollectionLength
-                or SemanticRole.ComparisonOperand
-                or SemanticRole.ConcatenationOperand
-                or SemanticRole.ConstantPattern
-                or SemanticRole.IndexValue
-                or SemanticRole.InterpolatedValue
-                or SemanticRole.ReturnValue
-                or SemanticRole.ShiftOperand
-                or SemanticRole.TernaryTrueValue
-                or SemanticRole.TernaryFalseValue)
+            else if (token.IsLiteral())
             {
-                if (token.IsQuotedString())
-                {
-                    key = "QuotedString";
-                }
-                if (token.IsVerbatimString())
-                {
-                    key = "VerbatimString";
-                }
-                if (token.IsNumericLiteral())
-                {
-                    if (token.IsDecimalValue())
-                        key = "DecimalLiteral";
-                    else if (token.IsFloatingPointValue())
-                        key = "FloatingPointLiteral";
-                    else
-                        key = "NumericLiteral";
-                }
-                if (token.IsBooleanLiteral())
-                {
-                    if (token.Text == "true")
-                        key = "true";
-                    else
-                        key = "false";
-                }
-                if (token.Text == "null")
-                {
-                    key = "null";
-                }
-            }
-            else if (token.IsInterpolatedString())
-            {
-                key = "InterpolatedString";
+                key = GetLiteralKey(token);
             }
             else if (token.IsKeyword() || token.IsOperator())
             {
@@ -115,37 +67,55 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static string? GetIdentifierKey(NavToken token)
         {
-            if (token.Map.SemanticRole.ToString().Contains("DataType"))
+            // locally defined non-declaration identifiers
+            if (!token.Map.SemanticRole.ToString().Contains("Declaration")
+                && token.Map.SemanticRole is not SemanticRole.Parameter)
             {
-                return "Identifier:datatype";
+                if (token.RoslynClassification == "parameter name")
+                    return "Identifier:ParameterReference";
+
+                if (token.RoslynClassification == "local name")
+                    return "Identifier:LocalVariableReference";
             }
 
-            if (token.Map.SemanticRole.ToString().Contains("Declaration"))
+            // default case
+            var category = token.Map.SyntaxCategory.ToString();
+            var role = token.Map.SemanticRole.ToString();
+
+            return category + ":" + role;
+        }
+
+        private static string GetLiteralKey(NavToken token)
+        {
+            // Boolean literals covered by Keywords
+
+            var key = "Literal:";
+
+            if (token.IsCharacterLiteral())
+                return key + "CharacterLiteral";
+
+            if (token.IsQuotedString())
+                return key + "QuotedString";
+
+            if (token.IsVerbatimString())
+                return key + "VerbatimString";
+
+            if (token.IsInterpolatedString() && !token.IsInterpolatedVerbatimString())
+                return key + "InterpolatedString";
+
+            if (token.IsInterpolatedVerbatimString())
+                return key + "InterpolatedVerbatimString";
+
+            if (token.IsNumericLiteral())
             {
-                return token.IsMethodDeclaration()
-                    ? "Identifier:method:declaration"
-                    : token.IsConstructorDeclaration()
-                        ? "Identifier:constructor:declaration"
-                        : "Identifier:type:declaration";
+                if (token.IsDecimalValue())
+                    return key + "DecimalLiteral";
+
+                if (token.IsFloatingPointValue())
+                    return key + "FloatingPointLiteral";
+
+                return key + "NumericLiteral";
             }
-
-            if (token.Map.SemanticRole.ToString().Contains("Invocation"))
-            {
-                return token.IsConstructorInvocation()
-                    ? "Identifier:constructor:invocation"
-                    : "Identifier:method:invocation";
-            }
-
-            if (token.Map.SemanticRole == SemanticRole.TypeQualifier)
-            {
-                return "Identifier:typequalifier";
-            }
-
-            if (token.RoslynClassification == "local name")
-                return "Identifier:local";
-
-            if (token.RoslynClassification == "parameter name")
-                return "Identifier:parameter";
 
             return null;
         }

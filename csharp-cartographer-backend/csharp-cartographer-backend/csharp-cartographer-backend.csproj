@@ -15,6 +15,7 @@
   <ItemGroup>
     <Content Remove="01.Configuration\Definitions\identifier-definitions.json" />
     <Content Remove="01.Configuration\Definitions\keyword-definitions.json" />
+    <Content Remove="01.Configuration\Definitions\literal-definitions.json" />
     <Content Remove="01.Configuration\Definitions\modifier-definitions.json" />
     <Content Remove="01.Configuration\Definitions\operator-definitions.json" />
     <Content Remove="01.Configuration\Definitions\semantic-definitions.json" />
@@ -23,6 +24,7 @@
   <ItemGroup>
     <EmbeddedResource Include="01.Configuration\Definitions\identifier-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\keyword-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\Definitions\literal-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\modifier-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\operator-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\semantic-definitions.json" />

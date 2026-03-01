@@ -438,12 +438,28 @@ body {
 .italic {
     font-style: italic!important;
 }
+.underline {
+    text-decoration: underline;
+}
+.line-break {
+    line-height: 0.1!important;
+    font-size: 1px!important;
+}
+.uppercase {
+    text-transform: uppercase;
+}
+.sr-label {
+    text-transform: uppercase;
+    letter-spacing: 0.035em!important;
+    font-family: Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif!important;
+    font-weight: 600!important;
+}
 
 .sr-badge {
     background: linear-gradient(135deg, #a0a6ac 0%, #e3e5e8 50%, #9aa0a6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 16px!important;
+    font-size: 15px!important;
     font-family: Gravedigger!important;
     letter-spacing: 1.5px!important;
 }

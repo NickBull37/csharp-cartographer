@@ -69,7 +69,7 @@ const NextTokenButton = styled(IconButton)(() => ({
     },
 }));
 const SemanticRoleLabel = styled(Typography)(() => ({
-    fontSize: '17px',
+    fontSize: '16px',
     // color: colors.gray95,
 }));
 const MapTagDefFadedLabel = styled(Typography)(() => ({
@@ -99,10 +99,10 @@ const MapTagFocusedDefText = styled(Typography)(() => ({
 const fadedClassMap = {
     'color-white': 'faded-white',
     'color-gray': 'faded-gray',
-    'color-blue': 'faded-blue',
+    'color-blue': 'active-blue',
     'color-light-blue': 'faded-light-blue',
     'color-dark-blue': 'faded-dark-blue',
-    'color-green': 'faded-green',
+    'color-green': 'active-green',
     'color-jade': 'faded-jade',
     'color-light-green': 'faded-light-green',
     'color-dark-green': 'faded-dark-green',
@@ -140,7 +140,8 @@ const TokenSidebarContent = ({
     const [activeChart, setActiveChart] = useState(null);
     const [tokenChartExpanded, setTokenChartExpanded] = useState(true);
 
-    const srLabelClass = `code ${fadedClassMap[highlightColor] || 'faded-white'}`;
+    const srLabelClass = `sr-label ${fadedClassMap[highlightColor] || 'faded-white'}`;
+    // const srLabelClass = `sr-label`;
 
     // Event Handlers
     const handleNextTokenClick = () => {
@@ -231,8 +232,9 @@ const TokenSidebarContent = ({
 
     const renderMapText = (mapText) => {
         if (!mapText?.segments?.length) return null;
+
         return (
-            <>
+            <span style={{ whiteSpace: 'pre-line' }}>
                 {mapText.segments.map(seg => (
                     <span
                         key={seg.id}
@@ -242,7 +244,7 @@ const TokenSidebarContent = ({
                         {seg.text}
                     </span>
                 ))}
-            </>
+            </span>
         );
     };
 
@@ -413,7 +415,7 @@ const TokenSidebarContent = ({
                                                 <Box
                                                     display="flex"
                                                     justifyContent="space-between"
-                                                    alignItems="flex-end"
+                                                    alignItems="center"
                                                     sx={{
                                                         background: 'rgba(38, 38, 38, 0.65)',
                                                         borderBottom: '1px solid #666666',
@@ -434,7 +436,8 @@ const TokenSidebarContent = ({
                                                     sx={{
                                                         background: 'rgba(38, 38, 38, 0.375)',
                                                         px: '16px',
-                                                        py: '12px',
+                                                        pt: '12px',
+                                                        pb: '14px',
                                                         borderRadius: '0 0 5px 5px'
                                                     }}
                                                 >

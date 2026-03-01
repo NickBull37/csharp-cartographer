@@ -539,33 +539,11 @@
   "BooleanLiteral": {
     "Definition": "A boolean literal represents a true or false value. It is used in conditions and logical expressions."
   },
-  "CharacterLiteral": {
-    "Definition": "A character literal represents a single character enclosed in single quotes. It is commonly used to work with individual characters."
-  },
-
   "DefaultValue": {
     "Definition": "A default value represents the default value of a type. It is often used to initialize variables or reset values."
   },
   "NullValue": {
     "Definition": "A null value represents the absence of a value or object reference. It indicates that something does not point to any data."
-  },
-  "NumericLiteral": {
-    "Definition": "{c:bold}Numeric literals{/c} represents an integer written directly in the code."
-  },
-  "DecimalLiteral": {
-    "Definition": "The {c:color-light-green keyword}m{/c} suffix on a numeric literal specifies the {c:color-blue keyword}decimal{/c} type."
-  },
-  "FloatingPointLiteral": {
-    "Definition": "The {c:color-light-green keyword}f{/c} suffix on a numeric literal specifies the {c:color-blue keyword}float{/c} type."
-  },
-  "QuotedString": {
-    "Definition": "{c:bold}Quoted{/c} strings represent a sequence of characters enclosed in double quotes {c:color-orange bold}\" \"{/c} on a single line."
-  },
-  "VerbatimString": {
-    "Definition": "{c:bold}Verbatim{/c} strings represent text exactly as written, without processing escape sequences. It allows multi-line text and uses the {c:color-orange bold}@{/c} prefix before the opening quote."
-  },
-  "InterpolatedString": {
-    "Definition": "{c:bold}Interpolated{/c} strings allow expressions to be embedded directly within text using placeholders enclosed in braces {c:keyword}{ }{/c}. They use the {c:color-orange keyword}${/c} prefix before the opening quote and automatically convert embedded values to strings."
   },
   "InterpolatedStringStart": {
     "Definition": "Marks the beginning of an interpolated string."
@@ -577,7 +555,7 @@
     "Definition": "Marks the end of an interpolated string."
   },
   "InterpolatedVerbatimStringStart": {
-    "Definition": "Marks the beginning of a string that supports interpolation and multi-line text. It uses the {c:bold}$@{/c} or {c:bold}@${/c} prefix before the opening quote."
+    "Definition": "Marks the beginning of an interpolated verbatim string."
   },
   "InterpolationFormatSeparator": {
     "Definition": "Separates the interpolated value on the left from the specified format on the right."

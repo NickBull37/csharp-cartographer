@@ -8,8 +8,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
     public static partial class DefinitionProvider
     {
-        const string JumpToDefinitionExtension = "In Visual Studio, put your cursor inside the identifier name and hit {c:keyword}F12{/c} to see the identifier's definition.";
-        const string ReferenceExtension = "In Visual Studio, look for references at the top left of the declaration {c:tt}signature*{/c} to see where its currently being used.";
+        private const string LineBreakPlaceholder = "<break/>";
+        private const string JumpExtPlaceholder = "{JumpExt}";
+        private const string RefExtPlaceholder = "{RefExt}";
+
+        private const string JumpToDefinitionExtension = "<break/>Put your cursor inside the identifier name in your IDE and hit {c:keyword}F12{/c} to jump to the identifier's definition.";
+        private const string ReferenceExtension = "<break/>Look for a {c:underline}references{/c} link above the declaration in your IDE to see everywhere it's currently being used.";
 
         public static MapText? GetMapText(string key)
             => Definitions.Value.TryGetValue(key, out var mapText)
@@ -65,72 +69,105 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static MapText ParseMarkupToMapText(string markup)
         {
-            var segments = new List<TextSegment>();
             if (string.IsNullOrEmpty(markup))
-                return new MapText { ID = Guid.NewGuid(), Segments = segments };
+                return new();
 
-            int lastIndex = 0;
+            markup = ReplaceExtPlaceholders(markup);
+            List<TextSegment> segments = [];
 
-            // {c:class1 class2}text{/c}
-            foreach (Match m in StyledSpanRegex().Matches(markup))
+            int index = 0;
+            foreach (Match match in StyledSpanRegex().Matches(markup))
             {
-                // add text before styled span
-                if (m.Index > lastIndex)
+                // try adding plain text segment
+                if (match.Index > index)
                 {
-                    segments.Add(new TextSegment
-                    {
-                        Text = markup[lastIndex..m.Index],
-                        Classes = []
-                    });
+                    AddSegment(
+                        segments,
+                        markup[index..match.Index],
+                        [] // no classes for plain text
+                    );
                 }
 
-                var classString = m.Groups["classes"].Value;
-                var innerText = m.Groups["text"].Value;
+                // add styled segment
+                var cssString = match.Groups["classes"].Value;
+                var innerText = match.Groups["text"].Value;
 
-                var classes = classString
+                var classes = cssString
                     .Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-                var segment = new TextSegment
-                {
-                    Text = innerText,
-                    Classes = classes,
-                    ToolTip = classes.Contains("tt")
-                        ? GetToolTip(innerText)
-                        : null
-                };
+                AddSegment(
+                    segments,
+                    innerText,
+                    classes
+                );
 
-                segments.Add(segment);
-
-                lastIndex = m.Index + m.Length;
+                // skip to first char after match
+                index = match.Index + match.Length;
             }
 
-            // trailing text
-            if (lastIndex < markup.Length)
+            // check for any remaining plain text after last match
+            if (index < markup.Length)
             {
-                segments.Add(
-                    new TextSegment
-                    {
-                        Text = markup[lastIndex..],
-                        Classes = []
-                    }
+                AddSegment(
+                    segments,
+                    markup[index..],
+                    []
                 );
             }
 
             return new MapText
             {
-                ID = Guid.NewGuid(),
                 Segments = segments
             };
         }
 
-        private static string GetToolTip(string text)
+        private static string ReplaceExtPlaceholders(string markup)
         {
-            switch (text)
+            if (string.IsNullOrEmpty(markup))
+                return markup;
+
+            markup = markup.Replace(
+                RefExtPlaceholder,
+                ReferenceExtension,
+                StringComparison.OrdinalIgnoreCase
+            );
+
+            markup = markup.Replace(
+                JumpExtPlaceholder,
+                JumpToDefinitionExtension,
+                StringComparison.OrdinalIgnoreCase
+            );
+
+            return markup;
+        }
+
+        private static void AddSegment(List<TextSegment> segments, string text, string[] classes)
+        {
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            var parts = text.Split(LineBreakPlaceholder, StringSplitOptions.None);
+
+            for (int i = 0; i < parts.Length; i++)
             {
-                case "signature":
-                    return "The top line of the declaration definition from the access modifier to the end of the argument list.";
-                default:
-                    return null;
+                if (parts[i].Length > 0)
+                {
+                    segments.Add(new TextSegment
+                    {
+                        Text = parts[i],
+                        Classes = classes
+                    });
+                }
+
+                // insert break between parts
+                if (i < parts.Length - 1)
+                {
+                    segments.Add(new TextSegment
+                    {
+                        Text = "\r\n\r\n",
+                        Classes = ["line-break"]
+                    });
+                }
             }
         }
 

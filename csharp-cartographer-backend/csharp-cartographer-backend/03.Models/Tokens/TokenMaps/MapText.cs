@@ -2,7 +2,7 @@
 {
     public class MapText
     {
-        public Guid ID { get; set; }
+        public Guid ID { get; init; } = Guid.NewGuid();
 
         public List<TextSegment> Segments { get; set; } = [];
     }

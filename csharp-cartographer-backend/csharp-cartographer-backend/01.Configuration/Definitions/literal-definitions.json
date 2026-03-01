@@ -1,0 +1,26 @@
+{
+  "Literal:CharacterLiteral": {
+    "Definition": "A {c:bold}character{/c} literal represents a single character enclosed in single quotes {c:color-orange keyword}' '{/c}. It is commonly used to work with individual characters."
+  },
+  "Literal:QuotedString": {
+    "Definition": "{c:bold}Quoted{/c} strings represent a sequence of characters enclosed in double quotes {c:color-orange keyword}\" \"{/c} on a single line."
+  },
+  "Literal:VerbatimString": {
+    "Definition": "{c:bold}Verbatim{/c} strings represent text exactly as written, without processing escape sequences. It allows multi-line text and uses the {c:color-orange keyword}@{/c} prefix before the opening quote."
+  },
+  "Literal:InterpolatedString": {
+    "Definition": "{c:bold}Interpolated{/c} strings allow expressions to be embedded directly within text using placeholders enclosed in braces {c:keyword}{ }{/c}. They use the {c:color-orange keyword}${/c} prefix before the opening quote and automatically convert embedded values to strings."
+  },
+  "Literal:InterpolatedVerbatimString": {
+    "Definition": "{c:bold}Interpolated{/c} {c:bold}verbatim{/c} strings support interpolation and multi-line text. They use either the {c:color-orange keyword}$@{/c} or {c:color-orange keyword}@${/c} prefix before the opening quote and automatically convert embedded values to strings."
+  },
+  "Literal:DecimalLiteral": {
+    "Definition": "The {c:color-light-green keyword}m{/c} suffix on a numeric literal specifies the {c:color-blue keyword}decimal{/c} type."
+  },
+  "Literal:FloatingPointLiteral": {
+    "Definition": "The {c:color-light-green keyword}f{/c} suffix on a numeric literal specifies the {c:color-blue keyword}float{/c} type."
+  },
+  "Literal:NumericLiteral": {
+    "Definition": "{c:bold}Numeric literals{/c} represents an integer written directly in the code."
+  }
+}
