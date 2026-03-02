@@ -473,51 +473,6 @@
   "ConstructorInvocation": {
     "Definition": "This identifier refers to a constructor being invoked in an object creation expression. It shares a name with the type whose constructor is being called to create the new object instance."
   },
-  "ClassReference": {
-    "Definition": "A class reference is a usage of a class type in code. It points to a class that has already been defined."
-  },
-  "ConstantReference": {
-    "Definition": "This identifier references a constant defined in the uploaded file."
-  },
-  "DelegateReference": {
-    "Definition": "A delegate reference refers to a delegate type or instance used in code. It allows methods to be treated like values that can be passed or stored."
-  },
-  "EnumReference": {
-    "Definition": "An enum reference refers to an enum type used in code. It represents a predefined set of named values."
-  },
-  "EnumMemberReference": {
-    "Definition": "An enum member reference refers to a specific named value within an enum. It selects one option from the enum’s set of values."
-  },
-  "EventReference": {
-    "Definition": "An event reference refers to an event that is being accessed or used in code. It allows code to subscribe to or interact with notifications."
-  },
-  "FieldReference": {
-    "Definition": "A field reference refers to a field being accessed on a class or struct. It reads or modifies stored data on an object."
-  },
-  "InterfaceReference": {
-    "Definition": "An interface reference refers to an interface type used in code. It represents a contract that a class or struct implements."
-  },
-  "LocalVariableReference": {
-    "Definition": "A local variable reference refers to a variable declared inside a method or block. It accesses the variable’s value within its scope."
-  },
-  "ParameterReference": {
-    "Definition": "A parameter reference refers to a parameter being used inside a method or constructor. It accesses the value passed into the code."
-  },
-  "PropertyReference": {
-    "Definition": "A property reference refers to a property being accessed on an object or type. It gets or sets a value through the property’s logic."
-  },
-  "PropertyOrEnumMemberReference": {
-    "Definition": "A property or enum member reference refers to a name that could represent either a property or an enum value. The exact meaning depends on the surrounding context."
-  },
-  "RecordReference": {
-    "Definition": "A record reference refers to a record type or instance used in code. It represents a data-focused type with value-based equality."
-  },
-  "RecordStructReference": {
-    "Definition": "A record struct reference refers to a record struct type or value used in code. It combines value-type behavior with record-style features."
-  },
-  "StructReference": {
-    "Definition": "A struct reference refers to a struct type or value used in code. It accesses a lightweight value type that groups related data."
-  },
   "MethodInvocation": {
     "Definition": "A method invocation is the act of calling a method to run its code. It may pass arguments and can return a value."
   },
@@ -569,7 +524,7 @@
   "BaseType": {
     "Definition": "A base type specifies a type that another type inherits from or implements. It defines a parent relationship in the type hierarchy."
   },
-  "DeconstructionVariableDataType": {
+  "DeconstructionVariableType": {
     "Definition": "The data type a variable will have after it has been deconstructed."
   },
   "DelegateReturnType": {
@@ -584,13 +539,13 @@
   "CatchExceptionVariable": {
     "Definition": "This local variable is created to hold the exception caught by a {c:color-purple keyword}catch{/c} block. It's scope is limited to the boundaries of the {c:color-purple keyword}catch{/c} block."
   },
-  "FieldDataType": {
+  "FieldType": {
     "Definition": "A field data type defines what kind of data a field can store. It determines the values that can be assigned to the field."
   },
-  "ForLoopIteratorDataType": {
+  "ForLoopIteratorType": {
     "Definition": "The data type of the iterator variable declared in a {c:color-purple keyword}for{/c} loop. It determines what kind of values the loop counter can store and how it can be used."
   },
-  "ForEachLoopIteratorDataType": {
+  "ForEachLoopIteratorType": {
     "Definition": "The data type of the iterator variable declared in a {c:color-purple keyword}foreach{/c} loop. It specifies the type of each element that will be read from the collection during iteration."
   },
   "ForEachLoopCollection": {
@@ -602,22 +557,22 @@
   "GenericTypeParameter": {
     "Definition": "This identifier is a placeholder that will be replaced by a generic type argument. This allows a generic class or method to have one implementation that works for multiple data types."
   },
-  "LocalVariableDataType": {
+  "LocalVariableType": {
     "Definition": "A local variable data type defines what kind of value a local variable can hold. It determines how the variable can be used within its scope."
   },
-  "LoopIteratorDataType": {
+  "LoopIteratorType": {
     "Definition": "The data type of the iterator variable declared in a {c:color-purple keyword}for{/c} or {c:color-purple keyword}foreach{/c} loop."
   },
   "MethodReturnType": {
     "Definition": "This part of the method signature defines what data will be returned when the method is finished executing."
   },
-  "OutVariableDataType": {
+  "OutVariableType": {
     "Definition": "The data type of the output variable."
   },
-  "ParameterDataType": {
+  "ParameterType": {
     "Definition": "A parameter data type defines what kind of value can be passed into a method or constructor. It ensures the argument matches the expected type."
   },
-  "PropertyDataType": {
+  "PropertyType": {
     "Definition": "A property data type defines what kind of value a property can get or set. It controls the type of data exposed by the property."
   },
   "SizeOfOperator": {

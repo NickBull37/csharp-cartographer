@@ -937,16 +937,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         /*
          *  -----------------------------------------------------------------------
-         *      Reference Identifiers
-         *  -----------------------------------------------------------------------
-         */
-
-        public bool IsFieldReference() => SemanticData?.SymbolKind == SymbolKind.Field
-            && SemanticData.OperationKind == OperationKind.FieldReference;
-
-        /*
-         *  -----------------------------------------------------------------------
-         *      DataType Identifiers
+         *      Type Identifiers
          *  -----------------------------------------------------------------------
          */
 
@@ -955,7 +946,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return HasAncestorAt(1, SyntaxKind.ArrayType);
         }
 
-        public bool IsDeconstructionVariableDataType()
+        public bool IsDeconstructionVariableType()
         {
             //  ⌄
             // var (id, name) = GetUser();
@@ -981,17 +972,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 || HasAncestorAt(3, SyntaxKind.EventFieldDeclaration);
         }
 
-        public bool IsEventPropertyDataType()
+        public bool IsEventPropertyType()
         {
             return HasAncestorAt(0, SyntaxKind.IdentifierName)
                 && HasAncestorAt(1, SyntaxKind.EventDeclaration);
         }
 
-        public bool IsFieldDataType() =>
+        public bool IsFieldType() =>
             HasAncestorAt(2, SyntaxKind.FieldDeclaration) ||
             HasAncestorAt(3, SyntaxKind.FieldDeclaration);
 
-        public bool IsLocalVariableDataType()
+        public bool IsLocalVariableType()
         {
             // skip arrays since array types are made of multiple tokens
             if (NextToken?.Text == "[")
@@ -1007,13 +998,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 || HasAncestorAt(3, SyntaxKind.UsingStatement);
         }
 
-        public bool IsForEachLoopLocalVariableDataType()
+        public bool IsForEachLoopLocalVariableType()
         {
             return HasAncestorAt(1, SyntaxKind.ForEachStatement)
                 && NextToken?.Text != ")";
         }
 
-        public bool IsForLoopIteratorDataType()
+        public bool IsForLoopIteratorType()
         {
             // covers pre-defined types: for (int i = 0; ...)
             if (HasAncestorAt(0, SyntaxKind.PredefinedType)
@@ -1046,15 +1037,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return false;
         }
 
-        public bool IsForEachLoopIteratorDataType()
+        public bool IsForEachLoopIteratorType()
         {
             return HasAncestorAt(1, SyntaxKind.ForEachStatement)
                 && NextToken?.Text != ")";
         }
 
-        public bool IsLoopIteratorDataType()
+        public bool IsLoopIteratorType()
         {
-            return IsForLoopIteratorDataType() || IsForEachLoopIteratorDataType();
+            return IsForLoopIteratorType() || IsForEachLoopIteratorType();
         }
 
         public bool IsTupleElementName()
@@ -1094,18 +1085,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 || HasAncestorAt(2, SyntaxKind.DelegateDeclaration);
         }
 
-        public bool IsOutVariableDataType()
+        public bool IsOutVariableType()
         {
             return HasAncestorAt(0, SyntaxKind.IdentifierName)
                 && HasAncestorAt(1, SyntaxKind.DeclarationExpression)
                 && PrevToken?.Text == "out";
         }
 
-        public bool IsParameterDataType() =>
+        public bool IsParameterType() =>
             HasAncestorAt(1, SyntaxKind.Parameter) ||
             HasAncestorAt(2, SyntaxKind.Parameter);
 
-        public bool IsPropertyDataType() =>
+        public bool IsPropertyType() =>
             HasAncestorAt(1, SyntaxKind.PropertyDeclaration) ||
             HasAncestorAt(2, SyntaxKind.PropertyDeclaration);
 

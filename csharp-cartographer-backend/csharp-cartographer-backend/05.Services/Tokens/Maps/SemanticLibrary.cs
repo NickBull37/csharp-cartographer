@@ -67,22 +67,25 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static string? GetIdentifierKey(NavToken token)
         {
+            var key = "Identifier:";
+
             // locally defined non-declaration identifiers
             if (!token.Map.SemanticRole.ToString().Contains("Declaration")
                 && token.Map.SemanticRole is not SemanticRole.Parameter)
             {
                 if (token.RoslynClassification == "parameter name")
-                    return "Identifier:ParameterReference";
+                    return key + "ParameterReference";
 
                 if (token.RoslynClassification == "local name")
-                    return "Identifier:LocalVariableReference";
+                    return key + "LocalVariableReference";
+
+                if (token.RoslynClassification == "field name")
+                    return key + "FieldReference";
             }
 
             // default case
-            var category = token.Map.SyntaxCategory.ToString();
             var role = token.Map.SemanticRole.ToString();
-
-            return category + ":" + role;
+            return key + role;
         }
 
         private static string GetLiteralKey(NavToken token)

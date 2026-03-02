@@ -344,15 +344,15 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.CastTarget:
                 case SemanticRole.TypeConstraint:
                 case SemanticRole.ConstructorInvocation:
-                case SemanticRole.DeconstructionVariableDataType:
+                case SemanticRole.DeconstructionVariableType:
                 case SemanticRole.EventFieldType:
-                case SemanticRole.FieldDataType:
+                case SemanticRole.FieldType:
                 case SemanticRole.GenericTypeArgument:
-                case SemanticRole.LocalVariableDataType:
-                case SemanticRole.LoopIteratorDataType:
+                case SemanticRole.LocalVariableType:
+                case SemanticRole.LoopIteratorType:
                 case SemanticRole.MethodReturnType:
-                case SemanticRole.ParameterDataType:
-                case SemanticRole.PropertyDataType:
+                case SemanticRole.ParameterType:
+                case SemanticRole.PropertyType:
                 case SemanticRole.BaseType:
                 case SemanticRole.TypeQualifier:
                 case SemanticRole.TupleElementType:

@@ -733,17 +733,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsArrayDataType())
                 return SemanticRole.ArrayDataType;
 
-            if (token.IsDeconstructionVariableDataType())
-                return SemanticRole.DeconstructionVariableDataType;
+            if (token.IsDeconstructionVariableType())
+                return SemanticRole.DeconstructionVariableType;
 
-            if (token.IsFieldDataType())
-                return SemanticRole.FieldDataType;
+            if (token.IsFieldType())
+                return SemanticRole.FieldType;
 
-            if (token.IsLocalVariableDataType())
-                return SemanticRole.LocalVariableDataType;
+            if (token.IsLocalVariableType())
+                return SemanticRole.LocalVariableType;
 
-            if (token.IsLoopIteratorDataType())
-                return SemanticRole.LoopIteratorDataType;
+            if (token.IsLoopIteratorType())
+                return SemanticRole.LoopIteratorType;
 
             if (token.IsMethodReturnType())
                 return SemanticRole.MethodReturnType;
@@ -751,14 +751,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsDelegateReturnType())
                 return SemanticRole.DelegateReturnType;
 
-            if (token.IsOutVariableDataType())
-                return SemanticRole.OutVariableDataType;
+            if (token.IsOutVariableType())
+                return SemanticRole.OutVariableType;
 
-            if (token.IsParameterDataType())
-                return SemanticRole.ParameterDataType;
+            if (token.IsParameterType())
+                return SemanticRole.ParameterType;
 
-            if (token.IsPropertyDataType())
-                return SemanticRole.PropertyDataType;
+            if (token.IsPropertyType())
+                return SemanticRole.PropertyType;
 
             if (token.IsTupleElementType())
                 return SemanticRole.TupleElementType;
@@ -1097,35 +1097,35 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsEventFieldType())
                 return SemanticRole.EventFieldType;
 
-            if (token.IsEventPropertyDataType())
-                return SemanticRole.EventPropertyDataType;
+            if (token.IsEventPropertyType())
+                return SemanticRole.EventPropertyType;
 
-            if (token.IsFieldDataType())
-                return SemanticRole.FieldDataType;
+            if (token.IsFieldType())
+                return SemanticRole.FieldType;
 
-            if (token.IsLocalVariableDataType())
-                return SemanticRole.LocalVariableDataType;
+            if (token.IsLocalVariableType())
+                return SemanticRole.LocalVariableType;
 
             if (token.IsMethodReturnType())
                 return SemanticRole.MethodReturnType;
 
-            if (token.IsDeconstructionVariableDataType())
-                return SemanticRole.DeconstructionVariableDataType;
+            if (token.IsDeconstructionVariableType())
+                return SemanticRole.DeconstructionVariableType;
 
             if (token.IsDelegateReturnType())
                 return SemanticRole.DelegateReturnType;
 
-            if (token.IsParameterDataType())
-                return SemanticRole.ParameterDataType;
+            if (token.IsParameterType())
+                return SemanticRole.ParameterType;
 
-            if (token.IsPropertyDataType())
-                return SemanticRole.PropertyDataType;
+            if (token.IsPropertyType())
+                return SemanticRole.PropertyType;
 
             if (token.IsForEachLoopCollectionIdentifier())
                 return SemanticRole.ForEachLoopCollection;
 
-            if (token.IsLoopIteratorDataType())
-                return SemanticRole.LoopIteratorDataType;
+            if (token.IsLoopIteratorType())
+                return SemanticRole.LoopIteratorType;
 
             // --- Identifiers: invocations ---
             if (token.IsMethodInvocation())

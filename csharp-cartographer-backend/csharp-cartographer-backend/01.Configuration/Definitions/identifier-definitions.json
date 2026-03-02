@@ -8,11 +8,20 @@
   "Identifier:ConstructorInvocation": {
     "Definition": "The name of a type {c:color-green bold}constructor{/c}.{JumpExt}"
   },
+  "Identifier:EnumDeclaration": {
+    "Definition": "The name of an {c:color-light-green bold}enum{/c}.{RefExt}"
+  },
   "Identifier:FieldDeclaration": {
     "Definition": "The name of a {c:color-white bold}field{/c} declared within the containing type."
   },
+  "Identifier:FieldReference": {
+    "Definition": "The name of a {c:color-white bold}field{/c} declared within the containing type."
+  },
   "Identifier:LocalVariableDeclaration": {
-    "Definition": "The name of a {c:color-light-blue bold}local variable{/c} declared above within the containing scope."
+    "Definition": "The name of a {c:color-light-blue bold}local variable{/c} that is accessible from below the declaration statement to the end of the containing scope."
+  },
+  "Identifier:LocalVariableReference": {
+    "Definition": "The name of a {c:color-light-blue bold}local varaible{/c} declared above within the containing scope."
   },
   "Identifier:MethodDeclaration": {
     "Definition": "The name of a {c:color-yellow bold}method{/c} name that can be invoked.{RefExt}"
@@ -26,7 +35,16 @@
   "Identifier:ParameterReference": {
     "Definition": "The name of a {c:color-light-blue bold}parameter{/c} defined in the containing method or constructor {c:tt color-light-blue}signature{/c}."
   },
-  "Identifier:property": {
+  "Identifier:PropertyDeclaration": {
     "Definition": "The name of a {c:color-white bold}property{/c} declared within the containing type."
+  },
+  "Identifier:RecordDeclaration": {
+    "Definition": "The name of a {c:color-green bold}record{/c}.{RefExt}"
+  },
+  "Identifier:RecordStructDeclaration": {
+    "Definition": "The name of a {c:color-green bold}record struct{/c}.{RefExt}"
+  },
+  "Identifier:StructDeclaration": {
+    "Definition": "The name of a {c:color-jade bold}struct{/c}.{RefExt}"
   }
 }
