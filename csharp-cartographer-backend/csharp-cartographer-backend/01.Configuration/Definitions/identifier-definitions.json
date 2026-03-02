@@ -1,15 +1,15 @@
 {
   "Identifier:ClassDeclaration": {
-    "Definition": "The name of a {c:color-green bold}class{/c}.{RefExt}"
+    "Definition": "The name of a {c:color-green bold}class{/c} declaration.{RefExt}"
   },
   "Identifier:ConstructorDeclaration": {
-    "Definition": "The name of a type {c:color-green bold}constructor{/c}.{RefExt}"
+    "Definition": "The name of a type {c:color-green bold}constructor{/c} declaration.{RefExt}"
   },
   "Identifier:ConstructorInvocation": {
     "Definition": "The name of a type {c:color-green bold}constructor{/c}.{JumpExt}"
   },
   "Identifier:EnumDeclaration": {
-    "Definition": "The name of an {c:color-light-green bold}enum{/c}.{RefExt}"
+    "Definition": "The name of an {c:color-light-green bold}enum{/c} declaration.{RefExt}"
   },
   "Identifier:FieldDeclaration": {
     "Definition": "The name of a {c:color-white bold}field{/c} declared within the containing type."
@@ -39,12 +39,12 @@
     "Definition": "The name of a {c:color-white bold}property{/c} declared within the containing type."
   },
   "Identifier:RecordDeclaration": {
-    "Definition": "The name of a {c:color-green bold}record{/c}.{RefExt}"
+    "Definition": "The name of a {c:color-green bold}record{/c} declaration.{RefExt}"
   },
   "Identifier:RecordStructDeclaration": {
-    "Definition": "The name of a {c:color-green bold}record struct{/c}.{RefExt}"
+    "Definition": "The name of a {c:color-green bold}record struct{/c} declaration.{RefExt}"
   },
   "Identifier:StructDeclaration": {
-    "Definition": "The name of a {c:color-jade bold}struct{/c}.{RefExt}"
+    "Definition": "The name of a {c:color-jade bold}struct{/c} declaration.{RefExt}"
   }
 }

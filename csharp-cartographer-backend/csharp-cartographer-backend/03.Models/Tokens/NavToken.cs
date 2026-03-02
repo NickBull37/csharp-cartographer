@@ -1762,6 +1762,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return GlobalConstants.BitwiseOperators.Contains(Text);
         }
 
+        public bool IsBitwiseAndOperator()
+        {
+            return Kind == SyntaxKind.AmpersandToken
+                && HasAncestorAt(0, SyntaxKind.BitwiseAndExpression);
+        }
+
+        public bool IsBitwiseXorOperator()
+        {
+            return Kind == SyntaxKind.CaretToken
+                && HasAncestorAt(0, SyntaxKind.ExclusiveOrExpression);
+        }
+
         public bool IsBooleanLogicalOperator()
         {
             // skip overlapping operators
@@ -1842,6 +1854,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return true;
 
             return HasAncestorAt(0, SyntaxKind.SimpleMemberAccessExpression);
+        }
+
+        public bool IsMultiplicationOperator()
+        {
+            if (Kind != SyntaxKind.AsteriskToken)
+                return false;
+
+            return HasAncestorAt(0, SyntaxKind.MultiplyExpression);
         }
 
         public bool IsNameOfOperator()
@@ -2171,31 +2191,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsAnonymousObjectCreation()
         {
             return HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression);
-        }
-
-        public bool IsAssignmentValue()
-        {
-            if (PrevToken is null || !PrevToken.Text.Contains('='))
-                return false;
-
-            if (HasAncestorAt(1, SyntaxKind.EqualsValueClause)
-                || HasAncestorAt(1, SyntaxKind.SimpleAssignmentExpression)
-                || HasAncestorAt(1, SyntaxKind.AddAssignmentExpression)
-                || HasAncestorAt(1, SyntaxKind.SubtractAssignmentExpression)
-                || HasAncestorAt(1, SyntaxKind.MultiplyAssignmentExpression)
-                || HasAncestorAt(1, SyntaxKind.DivideAssignmentExpression)
-                || HasAncestorAt(1, SyntaxKind.ModuloAssignmentExpression)
-                || HasAncestorAt(1, SyntaxKind.AndAssignmentExpression)
-                || HasAncestorAt(1, SyntaxKind.OrAssignmentExpression)
-                || HasAncestorAt(1, SyntaxKind.ExclusiveOrAssignmentExpression)
-                || HasAncestorAt(1, SyntaxKind.LeftShiftAssignmentExpression)
-                || HasAncestorAt(1, SyntaxKind.RightShiftAssignmentExpression)
-                || HasAncestorAt(1, SyntaxKind.AnonymousObjectMemberDeclarator))
-            {
-                return true;
-            }
-
-            return false;
         }
 
         public bool IsAddressOfOperand()
@@ -2616,6 +2611,32 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             // out variable declarations
             if (IsOutVariableDeclaration())
                 return true;
+
+            return false;
+        }
+
+        public bool IsAssignmentValue()
+        {
+            if (PrevToken is null || !PrevToken.Text.Contains('='))
+                return false;
+
+            if (HasAncestorAt(1, SyntaxKind.EqualsValueClause)
+                || HasAncestorAt(1, SyntaxKind.SimpleAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.AddAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.SubtractAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.MultiplyAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.DivideAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.ModuloAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.AndAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.OrAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.ExclusiveOrAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.LeftShiftAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.RightShiftAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.UnsignedRightShiftAssignmentExpression)
+                || HasAncestorAt(1, SyntaxKind.AnonymousObjectMemberDeclarator))
+            {
+                return true;
+            }
 
             return false;
         }
