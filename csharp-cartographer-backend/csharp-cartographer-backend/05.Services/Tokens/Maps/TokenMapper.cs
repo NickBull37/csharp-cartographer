@@ -178,6 +178,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsCatchFilterDelimiter())
                     return SemanticRole.CatchFilterBoundary;
 
+                //if (token.IsConditionBoundary())
+                //    return SemanticRole.ConditionBoundary;
+
                 if (token.IsDeconstructionDelimiter())
                     return SemanticRole.DeconstructionBoundary;
 
@@ -192,6 +195,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsIfConditionDelimiter())
                     return SemanticRole.IfConditionBoundary;
+
+                //if (token.IsLoopControlBoundary())
+                //    return SemanticRole.LoopControlBoundary;
 
                 if (token.IsParameterListDelimiter())
                     return SemanticRole.ParameterListBoundary;
@@ -253,11 +259,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsConstructorDelimiter())
                     return SemanticRole.ConstructorBoundary;
 
+                //if (token.IsContextBlockBoundary())
+                //    return SemanticRole.ContextBlockBoundary;
+
+                //if (token.IsDefinitionBoundary())
+                //    return SemanticRole.DefinitionBoundary;
+
                 if (token.IsElseBlockDelimiter())
                     return SemanticRole.ElseBlockBoundary;
 
                 if (token.IsEnumDelimiter())
                     return SemanticRole.EnumBoundary;
+
+                if (token.IsFixedBlockDelimiter())
+                    return SemanticRole.FixedStatementBlockBoundary;
 
                 if (token.IsForEachBlockDelimiter())
                     return SemanticRole.ForEachBlockBoundary;
@@ -276,6 +291,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsLambdaExpressionBlockDelimiter())
                     return SemanticRole.LambdaExpressionBlockBoundary;
+
+                if (token.IsLockBlockDelimiter())
+                    return SemanticRole.LockStatementBlockBoundary;
 
                 if (token.IsMethodDelimiter())
                     return SemanticRole.MethodBoundary;
@@ -315,6 +333,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsUncheckedStatementBlockDelimiter())
                     return SemanticRole.UncheckedStatementBlockBoundary;
+
+                if (token.IsUnsafeBlockDelimiter())
+                    return SemanticRole.UnsafeStatementBlockBoundary;
 
                 if (token.IsUsingStatementBlockDelimiter())
                     return SemanticRole.UsingStatementBlockBoundary;
@@ -779,10 +800,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.Unknown;
 
             /*
-             * Most literals (numeric, char, bool, etc.) fall under specific
-             * roles for their context. Interpolated strings are the exception
-             * because they are the only literals that are split into
-             * multiple tokens and each get their own role.
+             *  Most literals (numeric, char, bool, etc.) fall under specific
+             *  roles for their context. Interpolated strings are the exception
+             *  because they are the only literals that are always split into
+             *  multiple tokens and each get their own role.
              */
 
             if (token.IsInterpolatedStringStart())

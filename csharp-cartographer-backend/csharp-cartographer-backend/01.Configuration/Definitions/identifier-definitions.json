@@ -1,4 +1,7 @@
 {
+  "Identifier:Attribute": {
+    "Definition": "The name of a {c:bold}class{/c} that inherits from {c:color-white keyword}System.{/c}{c:color-green keyword}Attribute{/c}.{JumpExt}"
+  },
   "Identifier:ClassDeclaration": {
     "Definition": "The name of a {c:color-green bold}class{/c} declaration.{RefExt}"
   },

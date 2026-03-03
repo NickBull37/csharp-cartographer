@@ -26,6 +26,71 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         // ------------ DELIMITERS ------------ //
 
+        //AccessorBoundary,
+        //AccessorListBoundary,
+        //ArgumentListBoundary,
+        //BlockBoundary,
+        //ConditionBoundary,
+        //ContextBlockBoundary,
+        //DefinitionBoundary,
+        //InterpolationBoundary,
+        //InitializationBoundary,
+        //LoopControlBoundary,
+        //ParameterListBoundary,
+        //ParenthesizedExpressionBoundary,
+        //SwitchExpressionBoundary,
+        //SwitchStatementBoundary,
+        //TupleExpressionBoundary,
+        //TupleTypeBoundary,
+        //TypeArgumentListBoundary,
+        //TypeParameterListBoundary,
+
+        // Definitions
+        [Label("DefinitionBoundary")]
+        ClassBoundary,
+        [Label("DefinitionBoundary")]
+        ConstructorBoundary,
+        [Label("DefinitionBoundary")]
+        EnumBoundary,
+        [Label("DefinitionBoundary")]
+        InterfaceBoundary,
+        [Label("DefinitionBoundary")]
+        MethodBoundary,
+        [Label("DefinitionBoundary")]
+        RecordBoundary,
+        [Label("DefinitionBoundary")]
+        RecordStructBoundary,
+        [Label("DefinitionBoundary")]
+        StructBoundary,
+
+        // Condition
+        [Label("ConditionBoundary")]
+        IfConditionBoundary,
+        [Label("ConditionBoundary")]
+        SwitchStatementConditionBoundary,
+        [Label("ConditionBoundary")]
+        WhileLoopConditionBoundary,
+
+        // Context
+        [Label("ContextBlockBoundary")]
+        CheckedStatementBlockBoundary,
+        [Label("ContextBlockBoundary")]
+        FixedStatementBlockBoundary,
+        [Label("ContextBlockBoundary")]
+        LockStatementBlockBoundary,
+        [Label("ContextBlockBoundary")]
+        UncheckedStatementBlockBoundary,
+        [Label("ContextBlockBoundary")]
+        UnsafeStatementBlockBoundary,
+        [Label("ContextBlockBoundary")]
+        UsingStatementBlockBoundary,
+
+        // Control
+        [Label("LoopControlBoundary")]
+        ForEachControlBoundary,
+        [Label("LoopControlBoundary")]
+        ForLoopControlBoundary,
+
         AccessorListBoundary,
         AddAccessorBlockBoundary,
         AnonymousObjectCreationExpressionBoundary,
@@ -40,51 +105,35 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         CatchArgumentBoundary,
         CatchBlockBoundary,
         CatchFilterBoundary,
-        CheckedStatementBlockBoundary,
-        ClassBoundary,
         CollectionInitializerExpressionBoundary,
-        ConstructorBoundary,
         CollectionExpressionBoundary,
         DeconstructionBoundary,
         DefaultExpressionBoundary,
         ElseBlockBoundary,
-        EnumBoundary,
         ForEachBlockBoundary,
-        ForEachControlBoundary,
         ForLoopBlockBoundary,
-        ForLoopControlBoundary,
         IfBlockBoundary,
-        IfConditionBoundary,
         ImplicitArrayCreation,
-        InterfaceBoundary,
         InterpolatedValueBoundary,
         LambdaExpressionBlockBoundary,
-        MethodBoundary,
         NamespaceBoundary,
         ObjectInitializerBoundary,
         ParameterListBoundary,
         ParenthesizedExpressionBoundary,
         ParenthesizedPatternBoundary,
         PropertyPatternBoundary,
-        RecordBoundary,
-        RecordStructBoundary,
         RemoveAccessorBlockBoundary,
         SetAccessorBlockBoundary,
         SizeOfExpressionBoundary,
-        StructBoundary,
         SwitchExpressionBoundary,
         SwitchStatementBoundary,
-        SwitchStatementConditionBoundary,
         TryBlockBoundary,
         TupleExpressionBoundary,
         TupleTypeBoundary,
         TypeArgumentListBoundary,
         TypeOfExpressionBoundary,
         TypeParameterListBoundary,
-        UncheckedStatementBlockBoundary,
         UsingResourceDeclarationBoundary,
-        UsingStatementBlockBoundary,
-        WhileLoopConditionBoundary,
         WhileLoopBlockBoundary,
         WithInitializerExpressionBoundary,
 

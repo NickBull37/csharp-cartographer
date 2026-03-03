@@ -1,6 +1,5 @@
 ﻿using csharp_cartographer_backend._01.Configuration;
 using csharp_cartographer_backend._01.Configuration.Configs;
-using csharp_cartographer_backend._01.Configuration.ReservedText;
 using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 using Microsoft.CodeAnalysis;
@@ -32,29 +31,45 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         }
 
         /*
-        *  Order for adding syntax highlighting
+        *  Syntax Highlighting Steps
         *  
-        *  1. There is often not enough data to distinguish classes, enums, & structs when highlighting.
-        *     Use hardcoded lists of common structs and enums to improve highlighting accuracy.
+        *  1. Color Manually (highly reliable)
         *  
-        *  1a. Highlight Keywords manually (most reliable), use Classification to identify them
+        *     There is no way to distinguish classes, enums, & structs when they are defined
+        *     outside of the uploaded file. Use hardcoded lists of common structs and enums
+        *     to handle the most common scenarios. Skip any roles that could also share a name
+        *     but should never be colored as a type.
         *  
-        *  1b. Use Classification directly to highlight delimiters, operators, punctuation, literals,
-        *      and any identifiers defined in the uploaded file (highly reliable).
+        *  2. Color by Roslyn Classification (highly reliable)
         *  
-        *  2. Use Roslyn semantic data to highlight tokens defined in referenced assembiles (works rarely).
+        *     The roslyn classification property is generated specifically for syntax highlighting.
+        *     Use it whenever its available (only tokens defined in the uploaded file).
+        *     
+        *  3. Color by Roslyn SemanticData (unreliable)
         *  
-        *  3. Use SemanticRole to highlight remaining tokens (not fully reliable until unit tests are in place). 
+        *     Additional semantic data is gathered for identifier tokens. But which tokens actually
+        *     receive data and what that data says is inconsistent. Mostly it just helps to highlight
+        *     a small handful of externally defined identifiers from referenced assembiles.
+        *     
+        *     The roslyn semantic data is also subject to change and could break in the future. This
+        *     highlighting step can be toggled by the appsetting SemanticDataHighlightingEnabled.
         *  
-        *  3. Color unidentified tokens red.
+        *  4. Color by SemanticRole (not fully reliable until unit tests are in place)
+        *  
+        *     A semantic role should be generated for every token by this point. Use this role to 
+        *     highlight remaining tokens. This method will not be able to distinguish externally
+        *     defined classes, enums, structs, etc. In those cases, a best guess is used.
+        *  
+        *  5. Color unidentified tokens red.
         *  
         */
+
         public void AddSyntaxHighlightingToNavTokens(List<NavToken> navTokens)
         {
             foreach (var token in navTokens)
             {
                 // color manually
-                if (GlobalConstants.CommonIdentifiers.Contains(token.Text))
+                if (token.IsCommonIdentifier())
                 {
                     ColorManually(token);
 
@@ -100,7 +115,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     continue;
                 }
 
-                // Is subject to change and could break in the future
+                // color by semantic data (subject to change & could break in the future)
                 if (_config.SemanticDataHighlightingEnabled)
                 {
                     ColorBySemanticData(token);
@@ -108,10 +123,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                         continue;
                 }
 
+                // color by semantic role
                 ColorBySemanticRole(token);
                 if (token.HighlightColor is not null)
                     continue;
 
+                // color by ancestors
                 ColorByAncestors(token);
                 if (token.HighlightColor is not null)
                     continue;
@@ -129,33 +146,15 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static void ColorManually(NavToken token)
         {
-            // Used for coloring tokens when type (class, struct, enum) can't be
-            // determined. But some types (System.Index) can share a name with other
-            // identifiers such as properties or local vars.
-            //
-            // Skip manual highlighting for identifiers with the following roles
-            // 
-            //  - 
-            //  - 
-            //  - 
-            //  - 
-            //  - 
-            //  - 
-
-
-            // avoids accidentally coloring a member identifier as a type
             if (token.Map.SemanticRole == SemanticRole.MemberAccess)
                 return;
 
-            // avoids accidentally coloring a declaration identifier as a type
             if (token.Map.SemanticRole.ToString().Contains("Declaration"))
                 return;
 
-            // avoids accidentally coloring a reference identifier as a type
             if (token.Map.SemanticRole.ToString().Contains("Reference"))
                 return;
 
-            // avoids accidentally coloring a property identifier as a type
             if (token.Map.SemanticRole == SemanticRole.AssignmentRecipient)
                 return;
 
@@ -168,25 +167,51 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static void ColorByKeyword(NavToken token)
         {
-            foreach (var keyword in ReservedTextColors.Keywords)
+            // "default" can be blue or purple
+            if (token.Text == "default")
             {
-                // "default" can be blue or purple
-                if (token.Text == "default")
-                {
-                    token.HighlightColor = GetDefaultKeywordColor(token);
-                    continue;
-                }
-
-                // "in" can be blue or purple
-                if (token.Text == "in")
-                {
-                    token.HighlightColor = GetInKeywordColor(token);
-                    continue;
-                }
-
-                if (token.Text.Equals(keyword.Text))
-                    token.HighlightColor = keyword.HighlightColor;
+                token.HighlightColor = GetDefaultKeywordColor(token);
+                return;
             }
+
+            // "in" can be blue or purple
+            if (token.Text == "in")
+            {
+                token.HighlightColor = GetInKeywordColor(token);
+                return;
+            }
+
+            if (token.RoslynClassification == "keyword")
+            {
+                token.HighlightColor = Blue;
+                return;
+            }
+
+            if (token.RoslynClassification == "keyword - control")
+            {
+                token.HighlightColor = Purple;
+                return;
+            }
+
+            //foreach (var keyword in ReservedTextColors.Keywords)
+            //{
+            //    // "default" can be blue or purple
+            //    if (token.Text == "default")
+            //    {
+            //        token.HighlightColor = GetDefaultKeywordColor(token);
+            //        continue;
+            //    }
+
+            //    // "in" can be blue or purple
+            //    if (token.Text == "in")
+            //    {
+            //        token.HighlightColor = GetInKeywordColor(token);
+            //        continue;
+            //    }
+
+            //    if (token.Text.Equals(keyword.Text))
+            //        token.HighlightColor = keyword.HighlightColor;
+            //}
         }
 
         private static void ColorByRoslynClassification(NavToken token)

@@ -1,0 +1,50 @@
+{
+  "ClassBoundary:Open": {
+    "Definition": "The beginning of a {c:color-blue keyword}class{/c} definition."
+  },
+  "ClassBoundary:Close": {
+    "Definition": "The end of a {c:color-blue keyword}class{/c} definition."
+  },
+  "ConstructorBoundary:Open": {
+    "Definition": "The beginning of a {c:bold}constructor{/c} definition."
+  },
+  "ConstructorBoundary:Close": {
+    "Definition": "The end of a {c:bold}constructor{/c} definition."
+  },
+  "EnumBoundary:Open": {
+    "Definition": "The beginning of an {c:color-blue keyword}enum{/c} definition."
+  },
+  "EnumBoundary:Close": {
+    "Definition": "The end of an {c:color-blue keyword}enum{/c} definition."
+  },
+  "InterfaceBoundary:Open": {
+    "Definition": "The beginning of an {c:color-blue keyword}interface{/c} definition."
+  },
+  "InterfaceBoundary:Close": {
+    "Definition": "The end of an {c:color-blue keyword}interface{/c} definition."
+  },
+  "MethodBoundary:Open": {
+    "Definition": "The beginning of the {c:bold}method{/c} definition."
+  },
+  "MethodBoundary:Close": {
+    "Definition": "The end of the {c:bold}method{/c} definition."
+  },
+  "RecordBoundary:Open": {
+    "Definition": "The beginning of a {c:color-blue keyword}record{/c} definition."
+  },
+  "RecordBoundary:Close": {
+    "Definition": "The end of a {c:color-blue keyword}record{/c} definition."
+  },
+  "RecordStructBoundary:Open": {
+    "Definition": "The beginning of a {c:color-blue keyword}record{/c} {c:color-blue keyword}struct{/c} definition."
+  },
+  "RecordStructBoundary:Close": {
+    "Definition": "The end of a {c:color-blue keyword}record{/c} {c:color-blue keyword}struct{/c} definition."
+  },
+  "StructBoundary:Open": {
+    "Definition": "The beginning of a {c:color-blue keyword}struct{/c} definition."
+  },
+  "StructBoundary:Close": {
+    "Definition": "The end of a {c:color-blue keyword}struct{/c} definition."
+  }
+}

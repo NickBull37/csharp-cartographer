@@ -125,6 +125,27 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                 max2++; // overflow ignored
             }
 
+            unsafe
+            {
+                int max2 = int.MaxValue;
+                max2++; // overflow ignored
+
+                object _sync = new object();
+
+                fixed (int* p = numbers)
+                {
+                    Console.WriteLine(*p); // prints 10
+                }
+
+                lock (_sync)
+                {
+                    _counter++;
+                    Console.WriteLine(_counter);
+                }
+            }
+
+
+
             int defaultInt = default;               // default literal
             string defaultString = default(string); // default(T) form
             string className = nameof(OperatorDemo);

@@ -14,7 +14,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 var role = token.Map.SemanticRole;
                 var category = token.Map.SyntaxCategory;
 
-                token.Map.RoleLabel = role.GetLabel() ?? role.ToSpacedString();
+                token.Map.RoleLabel = role.GetSpacedLabel() ?? role.ToSpacedString();
                 token.Map.RoleDefinition = GetRoleDefinition(role);
                 token.Map.CategoryLabel = category.ToString();
                 token.Map.FocusedDefinition = GetFocusedDefinition(token);
@@ -26,7 +26,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static MapText? GetRoleDefinition(SemanticRole role)
         {
-            var definition = DefinitionProvider.GetMapText(role.ToString());
+            /*
+             * The SemanticRole is used as the definition key by default. 
+             * Delimiters are the exception since they have much more overlap
+             * than keywords, operators, etc. Use the label on the SemanticRole
+             * as the key for Delimiters.
+             */
+
+            var label = role.GetLabel();
+
+            string key = label is not null
+                ? label
+                : role.ToString();
+
+            var definition = DefinitionProvider.GetMapText(key);
 
             if (definition is null)
             {
@@ -40,7 +53,15 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             string? key = null;
 
-            if (token.IsIdentifier())
+            if (token.Index == 2502)
+            {
+
+            }
+
+            if (token.IsDelimiter())
+                key = GetDelimiterKey(token);
+
+            else if (token.IsIdentifier())
                 key = GetIdentifierKey(token);
 
             else if (token.IsOperator())
@@ -55,6 +76,26 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return key is not null
                 ? DefinitionProvider.GetMapText(key)
                 : null;
+        }
+
+        private static string? GetDelimiterKey(NavToken token)
+        {
+            /*
+             *  Delimiter default key = SemanticRole:Open/Close
+             */
+
+            var key = $"{token.Map.SemanticRole}:";
+
+            List<string> openTokens = ["(", "{", "[", "<"];
+            List<string> closeTokens = [")", "}", "]", ">"];
+
+            if (openTokens.Contains(token.Text))
+                key += "Open";
+
+            else if (closeTokens.Contains(token.Text))
+                key += "Close";
+
+            return key;
         }
 
         private static string? GetOperatorKey(NavToken token)

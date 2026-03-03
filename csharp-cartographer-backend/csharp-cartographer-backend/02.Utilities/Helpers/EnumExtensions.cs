@@ -24,5 +24,14 @@ namespace csharp_cartographer_backend._02.Utilities.Helpers
             var attr = field.GetCustomAttribute<LabelAttribute>();
             return attr?.Label;
         }
+
+        public static string? GetSpacedLabel(this Enum value)
+        {
+            var label = value.GetLabel();
+            if (label is null)
+                return null;
+
+            return CapitalLetterRegex().Replace(label, " $1");
+        }
     }
 }

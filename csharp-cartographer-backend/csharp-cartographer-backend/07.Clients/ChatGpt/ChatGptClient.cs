@@ -28,7 +28,7 @@ namespace csharp_cartographer_backend._07.Clients.ChatGpt
                 var dto = CreateRequestDto(code);
                 var requestJson = JsonSerializer.Serialize(dto);
 
-                HttpContent requestContent = new StringContent(
+                using HttpContent requestContent = new StringContent(
                     requestJson,
                     Encoding.UTF8,
                     "application/json");

@@ -44,8 +44,11 @@
   "CheckedStatementBlockBoundary": {
     "Definition": "Marks the boundaries of a checked statement block."
   },
-  "ClassBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-blue keyword}class{/c} definition."
+  "ConditionBoundary": {
+    "Definition": "Marks the boundaries of a value or expression to be evaluated."
+  },
+  "ContextBlockBoundary": {
+    "Definition": "Marks the boundaries of a code block that the compiler/runtime will treat differently because of the context."
   },
   "DiscardPattern": {
     "Definition": "The discard pattern {c:color-blue keyword bold}_{/c} matches any input value and is used as a {c:bold}catch-all{/c} option in pattern matching."
@@ -62,20 +65,17 @@
   "CollectionInitializerExpressionBoundary": {
     "Definition": "Marks the boundaries of a collection initializer expression."
   },
-  "ConstructorBoundary": {
-    "Definition": "Marks the boundaries of a constructor’s definition."
-  },
   "DeconstructionBoundary": {
     "Definition": "Marks the boundaries of a deconstruction variable list."
   },
   "DefaultExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}default{/c} expression."
   },
+  "DefinitionBoundary": {
+    "Definition": "Marks the boundaries of a type or member definition."
+  },
   "ElseBlockBoundary": {
     "Definition": "Marks the boundaries of the code that runs when an {c:color-purple keyword}if{/c} statement condition is false."
-  },
-  "EnumBoundary": {
-    "Definition": "Marks a boundary of an {c:color-blue keyword}enum{/c} definition."
   },
   "ForEachBlockBoundary": {
     "Definition": "Marks the boundaries of the code that runs for each item in a collection."
@@ -98,17 +98,14 @@
   "ImplicitArrayCreation": {
     "Definition": "Marks the boundaries of an array being created without explicitly specifying its type. The compilier can infer the type in the array creation syntax because it's specified elsewhere in the declaration."
   },
-  "InterfaceBoundary": {
-    "Definition": "Marks the boundaries of an {c:color-blue keyword}interface{/c} definition."
-  },
   "InterpolatedValueBoundary": {
     "Definition": "Marks the boundaries of a value or expression embedded inside an interpolated string."
   },
   "LambdaExpressionBlockBoundary": {
     "Definition": "Marks the boundaries of a lambda expression block."
   },
-  "MethodBoundary": {
-    "Definition": "Marks the boundaries of the method definition."
+  "LoopControlBoundary": {
+    "Definition": "Marks the boundaries of the logic that determines how many times a loop will execute."
   },
   "NamespaceBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}namespace{/c} declaration."
@@ -128,12 +125,6 @@
   "PropertyPatternBoundary": {
     "Definition": "Marks the boundaries of a property pattern clause."
   },
-  "RecordBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-blue keyword}record{/c} definition."
-  },
-  "RecordStructBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-blue keyword}record{/c} {c:color-blue keyword}struct{/c} definition."
-  },
   "RemoveAccessorBlockBoundary": {
     "Definition": "Marks the boundaries of an {c:color-blue keyword}event{/c} {c:color-blue keyword}remove{/c} accessor method."
   },
@@ -142,9 +133,6 @@
   },
   "SizeOfExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}sizeof{/c} expression."
-  },
-  "StructBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-blue keyword}struct{/c} definition."
   },
   "SwitchExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} expression."

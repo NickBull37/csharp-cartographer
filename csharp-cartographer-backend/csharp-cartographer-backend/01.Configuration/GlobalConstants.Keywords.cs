@@ -198,14 +198,20 @@
             "internal",
         ];
 
-        /// Argument / Parameter Modifiers
-        //public static readonly List<string> ArgParamModifiers =
-        //[
-        //    "in",
-        //    "out",
-        //    "params",
-        //    "ref",
-        //];
+        /// Accessors
+        public static readonly List<string> AccessorKeywords =
+        [
+            "get",
+            "set",
+            "init",
+
+            /*
+             *  Covered by EventHandling
+             *  
+             *  - add
+             *  - remove
+             */
+        ];
 
         /// Argument modifiers
         public static readonly List<string> ArgumentModifiers =
@@ -215,83 +221,14 @@
             "ref",
         ];
 
-        /// Parameter modifiers
-        public static readonly List<string> ParameterModifiers =
+        /// Compilation Scope
+        public static readonly List<string> CompilationScopeKeywords =
         [
-            "in",
-            "out",
-            "params",
-            "ref",
-            "scoped",
-            "this",
-        ];
-
-        /// Inheritance modifiers
-        //public static readonly List<string> InheritanceModifiers =
-        //[
-        //    "abstract",
-        //    "new",         // for member hiding
-        //    "override",
-        //    "sealed",
-        //    "virtual",
-        //];
-
-        /// Polymorphism modifiers
-        public static readonly List<string> PolymorphismModifiers =
-        [
-            "abstract",
-            "override",
-            "sealed",
-            "virtual",
-        ];
-
-        /// Member Modifiers
-        public static readonly List<string> MemberModifiers =
-        [
-            // covered by Polymorphism modifiers
-            // "abstract",
-            // "sealed",
-
-            "async",
-            "const",
-            "extern",
-            "new",
-            "partial",
-            "readonly",
-            "required",
-            "static",
-            "volatile",
-            "unsafe",
-        ];
-
-        /// Type Modifiers
-        public static readonly List<string> TypeModifiers =
-        [
-            "abstract",
+            "alias",
             "file",
-            "partial",
-            "readonly",
-            "ref",
-            "sealed",
-            "static",
-            "unsafe",
-        ];
-
-
-
-        /// Accessors
-        public static readonly List<string> AccessorKeywords =
-        [
-            "get",
-            "set",
-            "init",
-
-            // covered by ImplicitParameter
-            //"value",
-
-            // covered by EventHandling
-            //"add",
-            //"remove",
+            "global",
+            "namespace",
+            "using",
         ];
 
         /// Concurrency
@@ -300,8 +237,11 @@
             "await",
             "lock",
 
-            // covered by ConcurrencyModifier
-            // "async",
+            /*
+             *  Covered by ConcurrencyModifier
+             *  
+             *  - async
+             */
         ];
 
         /// Conditional Branching
@@ -369,14 +309,26 @@
             "while",
         ];
 
-        /// Compilation Scope
-        public static readonly List<string> CompilationScopeKeywords =
+        /// Member Modifiers
+        public static readonly List<string> MemberModifiers =
         [
-            "alias",
-            "file",
-            "global",
-            "namespace",
-            "using",
+            "async",
+            "const",
+            "extern",
+            "new",
+            "partial",
+            "readonly",
+            "required",
+            "static",
+            "volatile",
+            "unsafe",
+
+            /*
+             *  Covered by PolymorphismModifier
+             *  
+             *  - abstract
+             *  - sealed
+             */
         ];
 
         /// Object Construction
@@ -384,6 +336,17 @@
         [
             "base",
             "new",
+            "this",
+        ];
+
+        /// Parameter modifiers
+        public static readonly List<string> ParameterModifiers =
+        [
+            "in",
+            "out",
+            "params",
+            "ref",
+            "scoped",
             "this",
         ];
 
@@ -396,6 +359,15 @@
             "not",
             "or",
             "when",
+        ];
+
+        /// Polymorphism modifiers
+        public static readonly List<string> PolymorphismModifiers =
+        [
+            "abstract",
+            "override",
+            "sealed",
+            "virtual",
         ];
 
         /// Pre-defined Types
@@ -448,9 +420,12 @@
             "unchecked",
             "unsafe",
 
-            // covered by individual Operator roles
-            //"sizeof",
-            //"typeof",
+            /*
+             *  Covered by individual Operator roles
+             *  
+             *  - sizeof
+             *  - typeof
+             */
         ];
 
         /// Type Declarations
@@ -465,12 +440,30 @@
             "struct",
         ];
 
+        /// Type Modifiers
+        public static readonly List<string> TypeModifiers =
+        [
+            "abstract",
+            "file",
+            "partial",
+            "readonly",
+            "ref",
+            "sealed",
+            "static",
+            "unsafe",
+        ];
+
         /// Type System
         public static readonly List<string> TypeSystemKeywords =
         [
             "dynamic",
             "nameof",
-            //"var", covered by 
+
+            /*
+             *  Covered by IdentifierType roles
+             *  
+             *  - var
+             */
         ];
     }
 }
