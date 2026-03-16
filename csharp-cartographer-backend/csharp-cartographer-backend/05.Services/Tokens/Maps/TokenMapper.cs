@@ -1084,6 +1084,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsFieldDeclaration())
                 return SemanticRole.FieldDeclaration;
 
+            if (token.IsLambdaParameterDeclaration())
+                return SemanticRole.LambdaParameter;
+
             if (token.IsLocalVariableDeclaration())
                 return SemanticRole.LocalVariableDeclaration;
 

@@ -146,7 +146,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static void ColorManually(NavToken token)
         {
-            if (token.Map.SemanticRole == SemanticRole.MemberAccess)
+            // early-outs for local var, parameter, or property
+            // identifier that will never be colored as a type
+            if (token.Map.SemanticRole is SemanticRole.MemberAccess or SemanticRole.TargetMember)
                 return;
 
             if (token.Map.SemanticRole.ToString().Contains("Declaration"))
@@ -158,6 +160,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             if (token.Map.SemanticRole == SemanticRole.AssignmentRecipient)
                 return;
 
+            // if it looks like a common type name, color it accordingly
             if (GlobalConstants.CommonEnums.Contains(token.Text))
                 token.HighlightColor = LightGreen;
 
@@ -192,26 +195,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 token.HighlightColor = Purple;
                 return;
             }
-
-            //foreach (var keyword in ReservedTextColors.Keywords)
-            //{
-            //    // "default" can be blue or purple
-            //    if (token.Text == "default")
-            //    {
-            //        token.HighlightColor = GetDefaultKeywordColor(token);
-            //        continue;
-            //    }
-
-            //    // "in" can be blue or purple
-            //    if (token.Text == "in")
-            //    {
-            //        token.HighlightColor = GetInKeywordColor(token);
-            //        continue;
-            //    }
-
-            //    if (token.Text.Equals(keyword.Text))
-            //        token.HighlightColor = keyword.HighlightColor;
-            //}
         }
 
         private static void ColorByRoslynClassification(NavToken token)
@@ -410,21 +393,20 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 : Blue;
         private static string GetNamespaceQualifierColor(NavToken token)
         {
-            if (token.IsUsingDirectiveQualifier() || token.IsNamespaceDeclarationQualifier())
-                return White;
-
-            return Gray;
+            return token.IsUsingDirectiveQualifier() || token.IsNamespaceDeclarationQualifier()
+                ? White
+                : Gray;
         }
 
         private static string GuessColor(string text)
         {
-            if (text.Length >= 2
+            bool looksLikeInterface = text.Length >= 2
                 && text[0] == 'I'
                 && char.IsUpper(text[0])
-                && char.IsUpper(text[1]))
-            {
+                && char.IsUpper(text[1]);
+
+            if (looksLikeInterface)
                 return LightGreen;
-            }
 
             return Green;
         }

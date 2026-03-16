@@ -20,6 +20,12 @@
   "Identifier:FieldReference": {
     "Definition": "The name of a {c:color-white bold}field{/c} declared within the containing type."
   },
+  "Identifier:LambdaParameter": {
+    "Definition": "The name of a {c:color-light-blue bold}lambda parameter{/c} that can be used inside the lambda expression it's declared in.<break/>Its value is supplied each time the lambda expression runs, typically from the current item in a collection or from an argument passed into the expression."
+  },
+  "Identifier:LambdaParameterReference": {
+    "Definition": "The name of the {c:color-light-blue bold}lambda parameter{/c} declared before the lambda operator ({c:code}=>{/c}) in the current lambda expression."
+  },
   "Identifier:LocalVariableDeclaration": {
     "Definition": "The name of a {c:color-light-blue bold}local variable{/c} that is accessible from below the declaration statement to the end of the containing scope."
   },

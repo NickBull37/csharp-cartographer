@@ -942,6 +942,40 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsGenericMethodDeclaration() =>
             IsMethodDeclaration() && NextToken?.Text == "<";
 
+        public bool IsLambdaParameterDeclaration()
+        {
+            return HasAncestorAt(0, SyntaxKind.Parameter)
+                && HasAncestorAt(1, SyntaxKind.SimpleLambdaExpression);
+        }
+
+        public bool IsLambdaParameterReference()
+        {
+            // must have lambda ancestor
+            if (!HasAncestor(SyntaxKind.SimpleLambdaExpression))
+                return false;
+
+            var prevToken = PrevToken;
+            bool isLambdaParamRef = false;
+
+            while (prevToken is not null)
+            {
+                bool isLambdaParamDecl = prevToken.Map.SemanticRole == SemanticRole.LambdaParameter;
+                bool textMatches = prevToken.Text == Text;
+
+                if (isLambdaParamDecl && textMatches)
+                    return true;
+
+                // Semicolons signals the end of the prev statement which is outside the scope
+                // of the current lambda expression. End search here.
+                if (prevToken.Text == ";")
+                    return false;
+
+                prevToken = prevToken.PrevToken;
+            }
+
+            return isLambdaParamRef;
+        }
+
         public bool IsLocalVariableDeclaration()
         {
             // covers local vars
@@ -980,8 +1014,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(2, SyntaxKind.Argument);
         }
 
-        public bool IsParameterDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.Parameter);
+        public bool IsParameterDeclaration()
+        {
+            // skip lambda params
+            if (HasAncestorAt(1, SyntaxKind.SimpleLambdaExpression))
+                return false;
+
+            return HasAncestorAt(0, SyntaxKind.Parameter);
+        }
 
         public bool IsPropertyDeclaration() =>
             HasAncestorAt(0, SyntaxKind.PropertyDeclaration);

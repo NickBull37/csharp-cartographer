@@ -443,6 +443,9 @@
   "OutVariableDeclaration": {
     "Definition": "A new variable introduced by the {c:color-blue keyword}out{/c} argument modifier. The variable receives the value assigned by the called method and becomes available after the invocation."
   },
+  "LambdaParameter": {
+    "Definition": "A variable declared in a lambda expression. It represents the value passed in each time the inline function runs."
+  },
   "Parameter": {
     "Definition": "A variable defined in the {c:bold}signature{/c} of a method or constructor that receives a value from wherever it's called. The value passed in from the caller is referred to as an {c:bold}argument{/c}."
   },
@@ -672,7 +675,7 @@
     "Definition": "The value assigned to a variable, field, or property by an assignment or initializer expression."
   },
   "ComparisonOperand": {
-    "Definition": "A value participating in a comparison expression, evaluated against another operand using a relational or equality operator."
+    "Definition": "A value in a comparison expression, evaluated against another operand using a relational or equality operator."
   },
   "ConcatenationOperand": {
     "Definition": "A value combined with another operand using the string concatenation operator to produce a single composed string."

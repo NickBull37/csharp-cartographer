@@ -268,6 +268,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         EventPropertyDeclaration,
         FieldDeclaration,
         InterfaceDeclaration,
+        LambdaParameter,
         LocalVariableDeclaration,
         LoopIteratorDeclaration,
         MethodDeclaration,

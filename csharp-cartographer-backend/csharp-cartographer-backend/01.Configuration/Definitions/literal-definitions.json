@@ -21,6 +21,6 @@
     "Definition": "The {c:color-light-green keyword}f{/c} suffix on a numeric literal specifies the {c:color-blue keyword}float{/c} type."
   },
   "Literal:NumericLiteral": {
-    "Definition": "{c:bold}Numeric literals{/c} represents an integer written directly in the code."
+    "Definition": "{c:bold}Numeric literals{/c} represent integers written directly in the code."
   }
 }

@@ -53,11 +53,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             string? key = null;
 
-            if (token.Index == 2502)
-            {
-
-            }
-
             if (token.IsDelimiter())
                 key = GetDelimiterKey(token);
 
@@ -155,23 +150,32 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
              *  a little more information when possible.
              */
 
+            var role = token.Map.SemanticRole.ToString();
             var key = "Identifier:";
 
-            // locally defined non-declaration identifiers
-            if (!token.Map.SemanticRole.ToString().Contains("Declaration")
-                && token.Map.SemanticRole is not SemanticRole.Parameter)
+            // identifier declarations can be defined by semantic role
+            bool isDeclaration = token.Map.SemanticRole.ToString().Contains("Declaration")
+                || token.Map.SemanticRole == SemanticRole.Parameter
+                || token.Map.SemanticRole == SemanticRole.LambdaParameter;
+            if (isDeclaration)
+                return key + role;
+
+            // identifier references get "special keys"
+            if (token.RoslynClassification == "parameter name")
             {
-                if (token.RoslynClassification == "parameter name")
-                    return key + "ParameterReference";
+                if (token.IsLambdaParameterReference())
+                    return key + "LambdaParameterReference";
 
-                if (token.RoslynClassification == "local name")
-                    return key + "LocalVariableReference";
-
-                if (token.RoslynClassification == "field name")
-                    return key + "FieldReference";
+                return key + "ParameterReference";
             }
 
-            var role = token.Map.SemanticRole.ToString();
+            if (token.RoslynClassification == "local name")
+                return key + "LocalVariableReference";
+
+            if (token.RoslynClassification == "field name")
+                return key + "FieldReference";
+
+            // default
             return key + role;
         }
 
