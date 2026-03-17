@@ -38,8 +38,11 @@
   "break": {
     "Definition": "{c:color-purple keyword}break{/c} immediately exits a loop or switch statement. Execution continues with the next statement after the block."
   },
-  "case": {
-    "Definition": "The {c:color-purple keyword}case{/c} keyword defines a branch in a switch statement. It specifies what code runs when a value matches."
+  "case:ControlFlow": {
+    "Definition": "The {c:color-purple keyword}case{/c} keyword defines a branch in a {c:color-purple keyword}switch{/c} statement. It specifies what code runs when a value matches."
+  },
+  "case:PatternMatching": {
+    "Definition": "The {c:color-purple keyword}case{/c} keyword defines a pattern in a {c:color-purple keyword}switch{/c} statement. It specifies what code runs when a pattern matches."
   },
   "catch": {
     "Definition": "The {c:color-purple keyword}catch{/c} keyword handles errors that occur in a try block. It allows a program to respond to exceptions safely."
@@ -62,8 +65,14 @@
   "decimal": {
     "Definition": "The {c:color-blue keyword}decimal{/c} keyword defines a high-precision numeric type. It is commonly used for financial and monetary calculations."
   },
-  "default": {
-    "Definition": "The {c:color-blue keyword}default{/c} keyword provides a fallback value or action when no other option matches. It is commonly used in switch statements and default expressions."
+  "default:ControlFlow": {
+    "Definition": "The {c:color-purple keyword}default{/c} label provides a fallback value or action when no other option matches."
+  },
+  "default:DefaultOperator": {
+    "Definition": "The {c:color-blue keyword}default{/c} keyword-operator returns the default value for the provided type."
+  },
+  "default:DefaultValue": {
+    "Definition": "The {c:color-blue keyword}default{/c} literal keyword represents the literal default value for a type."
   },
   "delegate": {
     "Definition": "The {c:color-blue keyword}delegate{/c} keyword defines a type that represents a method reference. It allows methods to be passed and invoked indirectly."
@@ -140,8 +149,14 @@
   "implicit": {
     "Definition": "The {c:color-blue keyword}implicit{/c} keyword defines a conversion that happens automatically. It allows safe type conversions without extra syntax."
   },
-  "in": {
-    "Definition": "The {c:color-purple keyword}in{/c} keyword is used to iterate over collections or specify input-only parameters. It indicates that values are read but not modified."
+  "in:LoopStatement": {
+    "Definition": "The {c:color-purple keyword}in{/c} keyword is used to iterate over collections in a loop."
+  },
+  "in:ParameterModifier": {
+    "Definition": "The {c:color-blue keyword}in{/c} parameter modifier keyword is used to specify input-only parameters. It indicates that values are read but not modified."
+  },
+  "in:QueryExpression": {
+    "Definition": "The {c:color-blue keyword}in{/c} keyword is used in query expressions to..."
   },
   "init": {
     "Definition": "The {c:color-blue keyword}init{/c} keyword allows a property to be set only during object creation. It helps create immutable objects."
@@ -182,8 +197,11 @@
   "namespace": {
     "Definition": "The {c:color-blue keyword}namespace{/c} keyword groups related types into a named scope, helping organize code and prevent naming conflicts across large projects."
   },
-  "new": {
+  "new:ObjectConstruction": {
     "Definition": "The {c:color-blue keyword}new{/c} keyword creates a new instance of a type. It allocates memory and initializes the object."
+  },
+  "new:MemberModifier": {
+    "Definition": "The {c:color-blue keyword}new{/c} member modifier keyword is used for member-hiding which overwrites the implementation defined in a base class."
   },
   "nint": {
     "Definition": "The {c:color-blue keyword}nint{/c} keyword defines an integer whose size depends on the platform. It is commonly used in low-level or interop code."
@@ -335,8 +353,11 @@
   "when": {
     "Definition": "The {c:color-purple keyword}when{/c} keyword adds a condition to a catch block or pattern match. It controls when the code should run."
   },
-  "where": {
-    "Definition": "The {c:color-blue keyword}where{/c} keyword filters data in a query or applies constraints to generic types. It limits which values or types are allowed."
+  "where:Constraint": {
+    "Definition": "The {c:color-blue keyword}where{/c} constraint keyword is used to apply constraints to generic types. It limits which values or types are allowed."
+  },
+  "where:QueryExpression": {
+    "Definition": "The {c:color-blue keyword}where{/c} keyword in a query expression filters data based on the provided condition."
   },
   "while": {
     "Definition": "The {c:color-purple keyword}while{/c} keyword starts a loop that runs as long as a condition is true. The condition is checked before each iteration."

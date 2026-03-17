@@ -144,8 +144,6 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                 }
             }
 
-
-
             int defaultInt = default;               // default literal
             string defaultString = default(string); // default(T) form
             string className = nameof(OperatorDemo);
@@ -153,7 +151,6 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             // stackalloc with Span<T> (safe context)
             Span<int> span = stackalloc int[5];
             span[0] = 42;
-
 
             decimal decimaling = 10m;
             float floating = 10f;

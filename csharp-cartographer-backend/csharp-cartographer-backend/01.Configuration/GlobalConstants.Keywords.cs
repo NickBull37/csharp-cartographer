@@ -181,7 +181,9 @@
             "yield"
         ];
 
-        /// Access Modifiers
+        /// <summary>
+        /// public / private / protected / internal
+        /// </summary>
         public static readonly List<string> AccessModifiers =
         [
             "public",
@@ -190,15 +192,9 @@
             "internal",
         ];
 
-        public static readonly List<Keyword> AccessModifiersTest =
-        [
-            new Keyword ("public", true),
-            new Keyword ("private", true),
-            new Keyword ("protected", true),
-            new Keyword ("internal", true),
-        ];
-
-        /// Accessors
+        /// <summary>
+        /// get / set / init
+        /// </summary>
         public static readonly List<string> AccessorKeywords =
         [
             "get",
@@ -213,7 +209,9 @@
              */
         ];
 
-        /// Argument modifiers
+        /// <summary>
+        /// in / out / ref
+        /// </summary>
         public static readonly List<string> ArgumentModifiers =
         [
             "in",
@@ -221,7 +219,9 @@
             "ref",
         ];
 
-        /// Compilation Scope
+        /// <summary>
+        /// alias / file / global / namespace / using
+        /// </summary>
         public static readonly List<string> CompilationScopeKeywords =
         [
             "alias",
@@ -231,7 +231,13 @@
             "using",
         ];
 
-        /// Concurrency
+        /// <summary>
+        /// Covers:<br/>
+        /// await / lock
+        /// <br/><br/>
+        /// Does NOT cover:<br/>
+        /// async
+        /// </summary>
         public static readonly List<string> ConcurrencyKeywords =
         [
             "await",
@@ -244,14 +250,22 @@
              */
         ];
 
-        /// Conditional Branching
+        /// <summary>
+        /// if / else
+        /// </summary>
         public static readonly List<string> ConditionalBranchingKeywords =
         [
             "if",
             "else",
         ];
 
-        /// Constraints
+        /// <summary>
+        /// Covers:<br/>
+        /// managed / notnull / unmanaged
+        /// <br/><br/>
+        /// Does NOT cover:<br/>
+        /// where
+        /// </summary>
         public static readonly List<string> ConstraintKeywords =
         [
             "managed",
@@ -266,7 +280,9 @@
              */
         ];
 
-        /// Control Flow
+        /// <summary>
+        /// switch
+        /// </summary>
         public static readonly List<string> ControlFlowKeywords =
         [
             "switch",
@@ -290,7 +306,9 @@
             new Keyword ("default", false),
         ];
 
-        /// Events
+        /// <summary>
+        /// event / add / remove
+        /// </summary>
         public static readonly List<string> EventKeywords =
         [
             "event",
@@ -298,7 +316,9 @@
             "remove",
         ];
 
-        /// Exception Handling
+        /// <summary>
+        /// try / catch / finally / throw
+        /// </summary>
         public static readonly List<string> ExceptionHandlingKeywords =
         [
             "try",
@@ -307,13 +327,17 @@
             "throw",
         ];
 
-        /// Iterators
+        /// <summary>
+        /// yield
+        /// </summary>
         public static readonly List<string> IteratorKeywords =
         [
             "yield",
         ];
 
-        /// Jump Statements
+        /// <summary>
+        /// break / continue / goto / return
+        /// </summary>
         public static readonly List<string> JumpStatementKeywords =
         [
             "break",
@@ -322,7 +346,9 @@
             "return",
         ];
 
-        /// Loop Statements
+        /// <summary>
+        /// do / for / foreach / while
+        /// </summary>
         public static readonly List<string> LoopStatementKeywords =
         [
             "do",
@@ -331,7 +357,9 @@
             "while",
         ];
 
-        /// Member Modifiers
+        /// <summary>
+        /// async / const / extern / partial / readonly / required / static / volatile / unsafe
+        /// </summary>
         public static readonly List<string> MemberModifiers =
         [
             "async",
@@ -359,7 +387,9 @@
              */
         ];
 
-        /// Object Construction
+        /// <summary>
+        /// base
+        /// </summary>
         public static readonly List<string> ObjectConstructionKeywords =
         [
             "base",
@@ -373,7 +403,9 @@
              */
         ];
 
-        /// Parameter modifiers
+        /// <summary>
+        /// in / out / params / ref / scoped / this
+        /// </summary>
         public static readonly List<string> ParameterModifiers =
         [
             "in",
@@ -384,7 +416,9 @@
             "this",
         ];
 
-        /// Pattern Matching
+        /// <summary>
+        /// and / as / is / not / or / when
+        /// </summary>
         public static readonly List<string> PatternMatchingKeywords =
         [
             "and",
@@ -402,7 +436,9 @@
              */
         ];
 
-        /// Polymorphism modifiers
+        /// <summary>
+        /// abstract / override / sealed / virtual
+        /// </summary>
         public static readonly List<string> PolymorphismModifiers =
         [
             "abstract",
@@ -411,7 +447,11 @@
             "virtual",
         ];
 
-        /// Pre-defined Types
+        /// <summary>
+        /// bool / byte / sbyte / short / ushort / int / uint / long /
+        /// ulong / char / float / double / decimal / string / object /
+        /// nint / nuint
+        /// </summary>
         public static readonly List<string> PredefinedTypes =
         [
             "bool",
@@ -433,7 +473,10 @@
             "nuint",
         ];
 
-        /// Query Expression
+        /// <summary>
+        /// ascending / by / descending / equals / from / group /
+        /// into / join / let / on / orderby / select / where
+        /// </summary>
         public static readonly List<string> QueryExpressionKeywords =
         [
             "ascending",
@@ -458,7 +501,9 @@
              */
         ];
 
-        /// Safety Context
+        /// <summary>
+        /// checked / fixed / stackalloc / unchecked / unsafe
+        /// </summary>
         public static readonly List<string> SafetyContextKeywords =
         [
             "checked",
@@ -475,7 +520,9 @@
              */
         ];
 
-        /// Type Declarations
+        /// <summary>
+        /// class / delegate / enum / interface / operator / record / struct
+        /// </summary>
         public static readonly List<string> TypeDeclarationKeywords =
         [
             "class",
@@ -487,7 +534,9 @@
             "struct",
         ];
 
-        /// Type Modifiers
+        /// <summary>
+        /// abstract / file / partial / readonly / ref / sealed / static / unsafe
+        /// </summary>
         public static readonly List<string> TypeModifiers =
         [
             "abstract",
@@ -500,7 +549,9 @@
             "unsafe",
         ];
 
-        /// Type System
+        /// <summary>
+        /// dynamic / nameof
+        /// </summary>
         public static readonly List<string> TypeSystemKeywords =
         [
             "dynamic",

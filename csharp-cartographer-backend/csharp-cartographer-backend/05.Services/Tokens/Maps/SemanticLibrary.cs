@@ -66,7 +66,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 key = GetLiteralKey(token);
 
             else if (token.IsKeyword())
-                key = token.Text;
+                key = GetKeywordKey(token);
 
             return key is not null
                 ? DefinitionProvider.GetMapText(key)
@@ -219,6 +219,24 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             }
 
             return null;
+        }
+
+        private static string GetKeywordKey(NavToken token)
+        {
+            /*
+             *  Keyword default key = token.Text
+             * 
+             *  There are a handful of special case keywords that can fall
+             *  into multiple roles depending on the context. For these cases,
+             *  append the role to the key to get the context-specific definition.
+             */
+
+            var role = token.Map.SemanticRole.ToString();
+
+            if (token.Text is "case" or "default" or "in" or "new" or "where")
+                return $"{token.Text}:{role}";
+
+            return $"{token.Text}";
         }
 
         private static string? GetSecondaryLabel(NavToken token)

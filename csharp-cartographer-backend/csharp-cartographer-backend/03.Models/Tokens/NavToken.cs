@@ -1432,9 +1432,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 || IsVarAndKeyword();
         }
 
+        public bool IsAccessModifierKeyword()
+        {
+            return GlobalConstants.AccessModifiers.Contains(Text);
+        }
+
         public bool IsAccessorKeyword()
         {
             return GlobalConstants.AccessorKeywords.Contains(Text);
+        }
+
+        public bool IsArgumentModifierKeyword()
+        {
+            return GlobalConstants.ArgumentModifiers.Contains(Text)
+                && HasAncestorAt(0, SyntaxKind.Argument);
         }
 
         public bool IsCasePatternSwitchLabel()
@@ -1456,6 +1467,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsCompilationScopeKeyword()
         {
             return GlobalConstants.CompilationScopeKeywords.Contains(Text);
+        }
+
+        public bool IsConcurrencyKeyword()
+        {
+            return GlobalConstants.ConcurrencyKeywords.Contains(Text);
         }
 
         public bool IsConditionalBranchingKeyword()
@@ -1494,22 +1510,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return true;
 
             return GlobalConstants.ControlFlowKeywords.Contains(Text);
-        }
-
-        public bool IsAccessModifierKeyword()
-        {
-            return GlobalConstants.AccessModifiers.Contains(Text);
-        }
-
-        public bool IsArgumentModifierKeyword()
-        {
-            return GlobalConstants.ArgumentModifiers.Contains(Text)
-                && HasAncestorAt(0, SyntaxKind.Argument);
-        }
-
-        public bool IsConcurrencyKeyword()
-        {
-            return GlobalConstants.ConcurrencyKeywords.Contains(Text);
         }
 
         public bool IsConcurrencyModifierKeyword()
