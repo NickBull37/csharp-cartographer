@@ -3,6 +3,14 @@
     /// **************************************************
     /// |                    KEYWORDS                    |
     /// **************************************************
+
+    public class Keyword(string keywordText, bool isRoleExclusive)
+    {
+        public string Text { get; init; } = keywordText;
+
+        public bool IsRoleExclusive { get; init; } = isRoleExclusive;
+    }
+
     public partial class GlobalConstants
     {
         /// ------------  All C# Keywords (reserved & contextual)  ------------ ///
@@ -173,22 +181,6 @@
             "yield"
         ];
 
-        /// ------------  Special Case Keywords  ------------ ///
-        public static readonly List<string> SpecialCaseKeywords =
-        [
-            // Keywords that fall into multiple semantic roles
-
-            "case",         // switch section / pattern case
-            "default",      // switch label / default literal
-            "in",           // foreach loops / query expressions / param modifiers
-            "new",          // object creation / member hiding
-            "where",        // query expressions / generic constraints
-        ];
-
-
-
-        /// ------  Modifier Keywords  ------ ///
-
         /// Access Modifiers
         public static readonly List<string> AccessModifiers =
         [
@@ -196,6 +188,14 @@
             "private",
             "protected",
             "internal",
+        ];
+
+        public static readonly List<Keyword> AccessModifiersTest =
+        [
+            new Keyword ("public", true),
+            new Keyword ("private", true),
+            new Keyword ("protected", true),
+            new Keyword ("internal", true),
         ];
 
         /// Accessors
@@ -257,15 +257,37 @@
             "managed",
             "notnull",
             "unmanaged",
-            "where",
+
+            /*
+             *  Covered by manual check since "where"
+             *  can fall under multiple roles
+             *  
+             *  - where
+             */
         ];
 
         /// Control Flow
         public static readonly List<string> ControlFlowKeywords =
         [
             "switch",
-            "case",
-            "default",
+
+            /*
+             *  Covered by manual check since "case" & "default
+             *  can fall under multiple roles
+             *  
+             *  - case
+             *  - default
+             */
+        ];
+
+        /// <summary>
+        /// case / default / switch
+        /// </summary>
+        public static readonly List<Keyword> ControlFlowKeywordsTest =
+        [
+            new Keyword ("switch", true),
+            new Keyword ("case", false),
+            new Keyword ("default", false),
         ];
 
         /// Events
@@ -315,7 +337,6 @@
             "async",
             "const",
             "extern",
-            "new",
             "partial",
             "readonly",
             "required",
@@ -329,14 +350,27 @@
              *  - abstract
              *  - sealed
              */
+
+            /*
+             *  Covered by manual check since "new" can
+             *  also fall under other semantic roles
+             *  
+             *  - new
+             */
         ];
 
         /// Object Construction
         public static readonly List<string> ObjectConstructionKeywords =
         [
             "base",
-            "new",
-            "this",
+
+            /*
+             *  Covered by manual check since "new" and "this" can
+             *  also fall under other semantic roles
+             *  
+             *  - new
+             *  - this
+             */
         ];
 
         /// Parameter modifiers
@@ -359,6 +393,13 @@
             "not",
             "or",
             "when",
+
+            /*
+             *  Covered by manual check since "case" can
+             *  also fall under control flow
+             *  
+             *  - case
+             */
         ];
 
         /// Polymorphism modifiers
@@ -401,7 +442,6 @@
             "equals",
             "from",
             "group",
-            "in",
             "into",
             "join",
             "let",
@@ -409,6 +449,13 @@
             "orderby",
             "select",
             "where",
+
+            /*
+             *  Covered by manual check since "in" can also fall
+             *  under loop statements and parameter modifiers
+             *  
+             *  - in
+             */
         ];
 
         /// Safety Context

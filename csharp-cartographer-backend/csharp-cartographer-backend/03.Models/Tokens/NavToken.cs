@@ -1432,9 +1432,68 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 || IsVarAndKeyword();
         }
 
+        public bool IsAccessorKeyword()
+        {
+            return GlobalConstants.AccessorKeywords.Contains(Text);
+        }
+
+        public bool IsCasePatternSwitchLabel()
+        {
+            if (Text != "case")
+                return false;
+
+            return HasAncestorAt(0, SyntaxKind.CasePatternSwitchLabel);
+        }
+
+        public bool IsCaseSwitchLabel()
+        {
+            if (Text != "case")
+                return false;
+
+            return HasAncestorAt(0, SyntaxKind.CaseSwitchLabel);
+        }
+
+        public bool IsCompilationScopeKeyword()
+        {
+            return GlobalConstants.CompilationScopeKeywords.Contains(Text);
+        }
+
+        public bool IsConditionalBranchingKeyword()
+        {
+            return GlobalConstants.ConditionalBranchingKeywords.Contains(Text);
+        }
+
         public bool IsContextualKeyword()
         {
             return SyntaxFacts.IsContextualKeyword(Kind);
+        }
+
+        public bool IsConstraintKeyword()
+        {
+            if (Text == "where" && HasAncestorAt(0, SyntaxKind.TypeParameterConstraintClause))
+                return true;
+
+            return GlobalConstants.ConstraintKeywords.Contains(Text);
+        }
+
+        public bool IsControlFlowKeyword()
+        {
+            if (!GlobalConstants.ControlFlowKeywordsTest.Any(kw => kw.Text == Text))
+                return false;
+
+            // "case" - case switch label
+            if (HasAncestorAt(0, SyntaxKind.CaseSwitchLabel))
+                return true;
+
+            // "default" - default switch label
+            if (HasAncestorAt(0, SyntaxKind.DefaultSwitchLabel))
+                return true;
+
+            // "switch" - switch keyword
+            if (HasAncestorAt(0, SyntaxKind.SwitchStatement) || HasAncestorAt(0, SyntaxKind.SwitchExpression))
+                return true;
+
+            return GlobalConstants.ControlFlowKeywords.Contains(Text);
         }
 
         public bool IsAccessModifierKeyword()
@@ -1458,16 +1517,22 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Kind == SyntaxKind.AsyncKeyword;
         }
 
+        public bool IsDefaultLiteralKeyword()
+        {
+            return Kind == SyntaxKind.DefaultKeyword
+                && HasAncestorAt(0, SyntaxKind.DefaultLiteralExpression);
+        }
+
         public bool IsDefaultOperatorKeyword()
         {
             return Kind == SyntaxKind.DefaultKeyword
                 && HasAncestorAt(0, SyntaxKind.DefaultExpression);
         }
 
-        public bool IsDefaultValueKeyword()
+        public bool IsDefaultSwitchLabelKeyword()
         {
             return Kind == SyntaxKind.DefaultKeyword
-                && HasAncestorAt(0, SyntaxKind.DefaultLiteralExpression);
+                && HasAncestorAt(0, SyntaxKind.DefaultSwitchLabel);
         }
 
         public bool IsDiscardKeyword()
@@ -1488,6 +1553,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return false;
         }
 
+        public bool IsEventHandlingKeyword()
+        {
+            return GlobalConstants.EventKeywords.Contains(Text);
+        }
+
+        public bool IsExceptionHandlingKeyword()
+        {
+            return GlobalConstants.ExceptionHandlingKeywords.Contains(Text);
+        }
+
         public bool IsImplicitCreationKeyword()
         {
             return Kind == SyntaxKind.NewKeyword
@@ -1505,6 +1580,37 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && hasKeywordClassification
                 && Kind == SyntaxKind.IdentifierToken
                 && Text == "value";
+        }
+
+        public bool IsIteratorKeyword()
+        {
+            return GlobalConstants.IteratorKeywords.Contains(Text);
+        }
+
+        public bool IsJumpStatementKeyword()
+        {
+            return GlobalConstants.JumpStatementKeywords.Contains(Text);
+        }
+
+        public bool IsLoopStatementKeyword()
+        {
+            // "in" not included in loop statement keywords because
+            // it doesn't always fall into the loop statement role
+            // and must be checked manually.
+
+            if (IsLoopStatementInKeyword())
+                return true;
+
+            return GlobalConstants.LoopStatementKeywords.Contains(Text);
+        }
+
+        public bool IsLoopStatementInKeyword()
+        {
+            if (Text != "in")
+                return false;
+
+            return HasAncestorAt(0, SyntaxKind.ForEachStatement)
+                || HasAncestorAt(0, SyntaxKind.ForEachVariableStatement);
         }
 
         public bool IsMemberModifierKeyword()
@@ -1527,7 +1633,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return false;
             }
 
+            if (IsMemberModifierNewKeyword())
+                return true;
+
             return GlobalConstants.MemberModifiers.Contains(Text);
+        }
+
+        public bool IsMemberModifierNewKeyword()
+        {
+            if (Text != "new")
+                return false;
+
+            return !IsObjectConstructionNewKeyword();
         }
 
         public bool IsNameofAndKeyword()
@@ -1544,7 +1661,25 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (HasAncestorAt(0, SyntaxKind.Parameter))
                 return false;
 
+            if (IsObjectConstructionNewKeyword())
+                return true;
+
             return GlobalConstants.ObjectConstructionKeywords.Contains(Text);
+        }
+
+        public bool IsObjectConstructionNewKeyword()
+        {
+            if (Text != "new")
+                return false;
+
+            var parentKind = AncestorKinds.Ancestors.FirstOrDefault();
+
+            return parentKind
+                is SyntaxKind.ObjectCreationExpression
+                or SyntaxKind.ArrayCreationExpression
+                or SyntaxKind.ImplicitObjectCreationExpression
+                or SyntaxKind.ImplicitArrayCreationExpression
+                or SyntaxKind.AnonymousObjectCreationExpression;
         }
 
         public bool IsObjectConstructionTypeKeyword()
@@ -1561,15 +1696,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsPatternMatchingKeyword()
         {
-            return GlobalConstants.PatternMatchingKeywords.Contains(Text);
+            // "case" not included in pattern matching keywords because it
+            // doesn't always fall into the pattern matching role
+            if (IsCasePatternSwitchLabel())
+                return true;
 
-            //return Kind
-            //    is SyntaxKind.AndKeyword
-            //    or SyntaxKind.AsKeyword
-            //    or SyntaxKind.IsKeyword
-            //    or SyntaxKind.NotKeyword
-            //    or SyntaxKind.OrKeyword
-            //    or SyntaxKind.WhenKeyword;
+            return GlobalConstants.PatternMatchingKeywords.Contains(Text);
         }
 
         public bool IsPatternMatchingKeyword(SyntaxKind? kind)
@@ -1593,6 +1725,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsQueryExpressionKeyword()
         {
+            // "in" and "where" not included in query expression keywords
+            // because they don't always fall into the query expression role
+            // and must be checked manually.
+
+            var parentKind = AncestorKinds.Ancestors.FirstOrDefault();
+            if (Text == "in" && parentKind.ToString().Contains("Clause"))
+                return true;
+
+            if (Text == "where" && parentKind == SyntaxKind.WhereClause)
+                return true;
+
             return GlobalConstants.QueryExpressionKeywords.Contains(Text);
         }
 
@@ -1612,8 +1755,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsTypeConstraintKeyword()
         {
-            return Kind.ToString().Contains("Keyword")
-                && HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
+            if (!Kind.ToString().Contains("Keyword"))
+                return false;
+
+            return HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause);
         }
 
         public bool IsTypeDeclarationKeyword()
@@ -1633,6 +1778,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             }
 
             return GlobalConstants.TypeModifiers.Contains(Text);
+        }
+
+        public bool IsTypeSystemKeyword()
+        {
+            return GlobalConstants.TypeSystemKeywords.Contains(Text);
         }
 
         public bool IsValueAndKeyword()

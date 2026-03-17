@@ -590,16 +590,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!token.IsKeyword())
                 return SemanticRole.Unknown;
 
-            // Handle keywords that can fall into multiple semantic roles first
-            if (GlobalConstants.SpecialCaseKeywords.Contains(token.Text))
-                return GetSpecialCaseKeywordRole(token);
-
             // --- Access modifiers ---
             if (token.IsAccessModifierKeyword())
                 return SemanticRole.AccessModifier;
 
             // --- Accessor keywords ---
-            if (GlobalConstants.AccessorKeywords.Contains(token.Text))
+            if (token.IsAccessorKeyword())
                 return SemanticRole.Accessor;
 
             // --- Argument modifier keywords ---
@@ -614,22 +610,22 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.ConcurrencyModifier;
 
             // --- Conditional branching keywords ---
-            if (GlobalConstants.ConditionalBranchingKeywords.Contains(token.Text))
+            if (token.IsConditionalBranchingKeyword())
                 return SemanticRole.ConditionalBranching;
 
             // --- Constraint keywords ---
-            if (GlobalConstants.ConstraintKeywords.Contains(token.Text))
+            if (token.IsConstraintKeyword())
                 return SemanticRole.Constraint;
 
             // --- Control flow keywords ---
-            if (GlobalConstants.ControlFlowKeywords.Contains(token.Text))
+            if (token.IsControlFlowKeyword())
                 return SemanticRole.ControlFlow;
 
             // --- Default keyword ---
             if (token.IsDefaultOperatorKeyword())
                 return SemanticRole.DefaultOperator;
 
-            if (token.IsDefaultValueKeyword())
+            if (token.IsDefaultLiteralKeyword())
                 return SemanticRole.DefaultValue;
 
             // --- Discard keywords ---
@@ -643,11 +639,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (GlobalConstants.EventKeywords.Contains(token.Text) && token.Kind == SyntaxKind.EventKeyword)
                 return SemanticRole.MemberDeclaration;
 
-            if (GlobalConstants.EventKeywords.Contains(token.Text))
+            if (token.IsEventHandlingKeyword())
                 return SemanticRole.EventHandling;
 
             // --- Exception handling ---
-            if (GlobalConstants.ExceptionHandlingKeywords.Contains(token.Text))
+            if (token.IsExceptionHandlingKeyword())
                 return SemanticRole.ExceptionHandling;
 
             // --- Implicit parameters ---
@@ -655,15 +651,15 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.ImplicitParameter;
 
             // --- Iterator keywords ---
-            if (GlobalConstants.IteratorKeywords.Contains(token.Text))
+            if (token.IsIteratorKeyword())
                 return SemanticRole.Iterator;
 
             // --- Jump statement keywords ---
-            if (GlobalConstants.JumpStatementKeywords.Contains(token.Text))
+            if (token.IsJumpStatementKeyword())
                 return SemanticRole.JumpStatement;
 
             // --- Loop statement keywords ---
-            if (GlobalConstants.LoopStatementKeywords.Contains(token.Text))
+            if (token.IsLoopStatementKeyword())
                 return SemanticRole.LoopStatement;
 
             // --- Member modifiers ---
@@ -671,7 +667,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.MemberModifier;
 
             // --- Compilation scope keywords ---
-            if (GlobalConstants.CompilationScopeKeywords.Contains(token.Text))
+            if (token.IsCompilationScopeKeyword())
                 return SemanticRole.CompilationScope;
 
             // --- Object construction keywords ---
@@ -738,12 +734,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsTypePattern())
                 return SemanticRole.TypePattern;
 
-            // --- Type reference keywords ---
-            //if (GlobalConstants.PredefinedTypes.Contains(token.Text) && token.IsAccessStaticMember())
-            //    return SemanticRole.TypeReference;
-
             // --- Type system keywords ---
-            if (GlobalConstants.TypeSystemKeywords.Contains(token.Text))
+            if (token.IsTypeSystemKeyword())
                 return SemanticRole.TypeSystem;
 
             // --- With expression keyword ---
@@ -822,111 +814,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.NumericFormatSpecifier;
 
             return SemanticRole.Unknown;
-        }
-
-        private static SemanticRole GetSpecialCaseKeywordRole(NavToken token)
-        {
-            string? parentKind = token.ParentNodeKind;
-
-            return token.Text switch
-            {
-                // switch case label, pattern case label
-                "case" => parentKind switch
-                {
-                    "CaseSwitchLabel" => SemanticRole.ControlFlow,
-                    "CasePatternSwitchLabel" => SemanticRole.PatternMatching,
-                    _ => SemanticRole.Unknown
-                },
-
-                // switch label, default literal
-                "default" => parentKind switch
-                {
-                    "DefaultLiteralExpression" => SemanticRole.DefaultValue,
-                    "DefaultExpression" => SemanticRole.DefaultOperator,
-                    "DefaultSwitchLabel" => SemanticRole.ControlFlow,
-                    _ => SemanticRole.Unknown
-                },
-
-                // foreach loops, query expressions, param modifiers
-                "in" => parentKind switch
-                {
-                    "ForEachStatement" or "ForEachVariableStatement" => SemanticRole.LoopStatement,
-                    "Parameter" => SemanticRole.ParameterModifier,
-                    _ when !string.IsNullOrEmpty(parentKind) && parentKind.Contains("Clause") => SemanticRole.QueryExpression,
-                    _ => SemanticRole.Unknown
-                },
-
-                // object creation, member hiding
-                "new" => parentKind is "ObjectCreationExpression"
-                    or "ImplicitObjectCreationExpression"
-                    or "ImplicitArrayCreationExpression"
-                    or "AnonymousObjectCreationExpression"
-                        ? SemanticRole.ObjectConstruction
-                        : SemanticRole.MemberModifier,
-
-                // query expressions, generic constraints
-                "where" => parentKind switch
-                {
-                    "WhereClause" => SemanticRole.QueryExpression,
-                    "TypeParameterConstraintClause" => SemanticRole.TypeConstraint,
-                    _ => SemanticRole.Unknown
-                },
-
-                _ => SemanticRole.Unknown
-            };
-        }
-
-        private static SemanticRole GetSpecialCaseOperatorRole(NavToken token)
-        {
-            string? parentKind = token.ParentNodeKind;
-            var containingType = token.SemanticData?.ContainingType;
-            bool isBool = containingType == "bool";
-
-            return token.Text switch
-            {
-                "!" => parentKind switch
-                {
-                    "LogicalNotExpression" => SemanticRole.BooleanLogical,
-                    "SuppressNullableWarningExpression" => SemanticRole.NullForgiving,
-                    _ => SemanticRole.Unknown
-                },
-
-                "&" => parentKind switch
-                {
-                    "BitwiseAndExpression" => isBool
-                        ? SemanticRole.BooleanLogical
-                        : SemanticRole.Bitwise,
-                    "AddressOfExpression" => SemanticRole.Indirection,
-                    _ => SemanticRole.Unknown
-                },
-
-                "|" => parentKind switch
-                {
-                    "BitwiseOrExpression" => isBool
-                        ? SemanticRole.BooleanLogical
-                        : SemanticRole.Bitwise,
-                    _ => SemanticRole.Unknown
-                },
-
-                "^" => parentKind switch
-                {
-                    "ExclusiveOrExpression" => isBool
-                        ? SemanticRole.BooleanLogical
-                        : SemanticRole.Bitwise,
-                    "IndexExpression" => SemanticRole.IndexFromEnd,
-                    _ => SemanticRole.Unknown
-                },
-
-                "*" => parentKind switch
-                {
-                    "MultiplyExpression" => SemanticRole.Arithmetic,
-                    "PointerType" => SemanticRole.PointerTypeIndicator,
-                    "PointerIndirectionExpression" => SemanticRole.Indirection,
-                    _ => SemanticRole.Unknown
-                },
-
-                _ => SemanticRole.Unknown
-            };
         }
 
         private static SemanticRole GetSemanticRoleForMisc(NavToken token)
@@ -1275,6 +1162,111 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.NullCoalescingAssignmentRecipient;
 
             return SemanticRole.Unknown;
+        }
+
+        private static SemanticRole GetSpecialCaseKeywordRole(NavToken token)
+        {
+            string? parentKind = token.ParentNodeKind;
+
+            return token.Text switch
+            {
+                // switch case label, pattern case label
+                "case" => parentKind switch
+                {
+                    "CaseSwitchLabel" => SemanticRole.ControlFlow,
+                    "CasePatternSwitchLabel" => SemanticRole.PatternMatching,
+                    _ => SemanticRole.Unknown
+                },
+
+                // switch label, default literal
+                "default" => parentKind switch
+                {
+                    "DefaultLiteralExpression" => SemanticRole.DefaultValue,
+                    "DefaultExpression" => SemanticRole.DefaultOperator,
+                    "DefaultSwitchLabel" => SemanticRole.ControlFlow,
+                    _ => SemanticRole.Unknown
+                },
+
+                // foreach loops, query expressions, param modifiers
+                "in" => parentKind switch
+                {
+                    "ForEachStatement" or "ForEachVariableStatement" => SemanticRole.LoopStatement,
+                    "Parameter" => SemanticRole.ParameterModifier,
+                    _ when !string.IsNullOrEmpty(parentKind) && parentKind.Contains("Clause") => SemanticRole.QueryExpression,
+                    _ => SemanticRole.Unknown
+                },
+
+                // object creation, member hiding
+                "new" => parentKind is "ObjectCreationExpression"
+                    or "ImplicitObjectCreationExpression"
+                    or "ImplicitArrayCreationExpression"
+                    or "AnonymousObjectCreationExpression"
+                        ? SemanticRole.ObjectConstruction
+                        : SemanticRole.MemberModifier,
+
+                // query expressions, generic constraints
+                "where" => parentKind switch
+                {
+                    "WhereClause" => SemanticRole.QueryExpression,
+                    "TypeParameterConstraintClause" => SemanticRole.TypeConstraint,
+                    _ => SemanticRole.Unknown
+                },
+
+                _ => SemanticRole.Unknown
+            };
+        }
+
+        private static SemanticRole GetSpecialCaseOperatorRole(NavToken token)
+        {
+            string? parentKind = token.ParentNodeKind;
+            var containingType = token.SemanticData?.ContainingType;
+            bool isBool = containingType == "bool";
+
+            return token.Text switch
+            {
+                "!" => parentKind switch
+                {
+                    "LogicalNotExpression" => SemanticRole.BooleanLogical,
+                    "SuppressNullableWarningExpression" => SemanticRole.NullForgiving,
+                    _ => SemanticRole.Unknown
+                },
+
+                "&" => parentKind switch
+                {
+                    "BitwiseAndExpression" => isBool
+                        ? SemanticRole.BooleanLogical
+                        : SemanticRole.Bitwise,
+                    "AddressOfExpression" => SemanticRole.Indirection,
+                    _ => SemanticRole.Unknown
+                },
+
+                "|" => parentKind switch
+                {
+                    "BitwiseOrExpression" => isBool
+                        ? SemanticRole.BooleanLogical
+                        : SemanticRole.Bitwise,
+                    _ => SemanticRole.Unknown
+                },
+
+                "^" => parentKind switch
+                {
+                    "ExclusiveOrExpression" => isBool
+                        ? SemanticRole.BooleanLogical
+                        : SemanticRole.Bitwise,
+                    "IndexExpression" => SemanticRole.IndexFromEnd,
+                    _ => SemanticRole.Unknown
+                },
+
+                "*" => parentKind switch
+                {
+                    "MultiplyExpression" => SemanticRole.Arithmetic,
+                    "PointerType" => SemanticRole.PointerTypeIndicator,
+                    "PointerIndirectionExpression" => SemanticRole.Indirection,
+                    _ => SemanticRole.Unknown
+                },
+
+                _ => SemanticRole.Unknown
+            };
         }
         #endregion
 

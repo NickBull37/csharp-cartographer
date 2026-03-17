@@ -14,7 +14,6 @@ namespace Testing_Multiple_Namespaces_In_One_File
 {
     public class TestClass
     {
-
     }
 }
 
