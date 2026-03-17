@@ -425,11 +425,17 @@ const TokenSidebarContent = ({
                                                         pb: '2px'
                                                     }}
                                                 >
-                                                    <SemanticRoleLabel className={srLabelClass}>
+                                                    {/* <SemanticRoleLabel className={srLabelClass}>
                                                         {activeToken.map.roleLabel}
                                                     </SemanticRoleLabel>
                                                     <Typography className='sr-badge'>
                                                         SR
+                                                    </Typography> */}
+                                                    <SemanticRoleLabel className='pk-label'>
+                                                        {activeToken.map.roleLabel}
+                                                    </SemanticRoleLabel>
+                                                    <Typography className={srLabelClass}>
+                                                        {activeToken.map.categoryLabel}
                                                     </Typography>
                                                 </Box>
                                                 <Box

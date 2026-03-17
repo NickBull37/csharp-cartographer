@@ -123,7 +123,7 @@
     "Definition": "The lambda operator {c:keyword}\"=>\"{/c} separates parameters from the body of a lambda expression. It defines an inline function."
   },
   "Operator:.": {
-    "Definition": "The member access operator {c:keyword}\".\"{/c} is used to access members such as methods, properties, or fields of the preceeding type or object."
+    "Definition": "The member access operator {c:keyword}\".\"{/c} is used to access members such as methods, properties, or fields of the preceeding type."
   },
   "Operator:?.": {
     "Definition": "The null-conditional operator {c:keyword}\"?.\"{/c} safely accesses a member only if the value is not null. It prevents null reference errors."

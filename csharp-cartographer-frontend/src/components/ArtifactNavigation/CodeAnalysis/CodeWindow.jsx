@@ -196,7 +196,7 @@ const CodeWindow = ({
                         const isTagHighlight = isInActiveHighlightRange(token.index);
 
                         // Combine classes, but only add "token-hover", "selected", and "dev-insight" if applicable
-                        const highlightColor = `pad-token code ${colorClass} ${isSelected ? 'token-active' : 'token-hover'} ${isTagHighlight ? 'tag-highlight' : ''} ${isAiHighlight ? 'dev-highlight' : ''}`;
+                        const highlightColor = `pad-token token-text ${colorClass} ${isSelected ? 'token-active' : 'token-hover'} ${isTagHighlight ? 'tag-highlight' : ''} ${isAiHighlight ? 'dev-highlight' : ''}`;
 
                         // Helper function to render trivia
                         const renderTrivia = (trivia, index) => {

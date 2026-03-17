@@ -31,7 +31,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public string RoslynKind { get; set; }
 
         /// <summary>The token classification.</summary>
-        public string? RoslynClassification { get; set; }
+        public string RoslynClassification { get; set; }
 
         /// <summary>The updated token classification.</summary>
         [JsonIgnore]
@@ -1975,7 +1975,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Operator Checks
-        public bool IsOperator() => GlobalConstants.Operators.Contains(Text);
+        public bool IsOperator()
+        {
+            if (RoslynClassification != "operator")
+                return false;
+
+            return GlobalConstants.Operators.Contains(Text);
+        }
 
         public bool IsAddressOfOperator()
         {
