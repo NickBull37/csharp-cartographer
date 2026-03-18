@@ -232,22 +232,12 @@
         ];
 
         /// <summary>
-        /// Covers:<br/>
         /// await / lock
-        /// <br/><br/>
-        /// Does NOT cover:<br/>
-        /// async
         /// </summary>
         public static readonly List<string> ConcurrencyKeywords =
         [
             "await",
             "lock",
-
-            /*
-             *  Covered by ConcurrencyModifier
-             *  
-             *  - async
-             */
         ];
 
         /// <summary>
@@ -358,47 +348,39 @@
         ];
 
         /// <summary>
-        /// async / const / extern / partial / readonly / required / static / volatile / unsafe
+        /// abstract / async / const / extern / new / override / partial /
+        /// readonly / required / sealed / static / virtual / volatile / unsafe
         /// </summary>
         public static readonly List<string> MemberModifiers =
         [
+            "abstract",
             "async",
             "const",
             "extern",
+            "new",
+            "override",
             "partial",
             "readonly",
             "required",
+            "sealed",
             "static",
+            "virtual",
             "volatile",
             "unsafe",
-
-            /*
-             *  Covered by PolymorphismModifier
-             *  
-             *  - abstract
-             *  - sealed
-             */
-
-            /*
-             *  Covered by manual check since "new" can
-             *  also fall under other semantic roles
-             *  
-             *  - new
-             */
         ];
 
         /// <summary>
-        /// base
+        /// base / new
         /// </summary>
         public static readonly List<string> ObjectConstructionKeywords =
         [
             "base",
+            "new",
 
             /*
              *  Covered by manual check since "new" and "this" can
              *  also fall under other semantic roles
              *  
-             *  - new
              *  - this
              */
         ];
@@ -434,17 +416,6 @@
              *  
              *  - case
              */
-        ];
-
-        /// <summary>
-        /// abstract / override / sealed / virtual
-        /// </summary>
-        public static readonly List<string> PolymorphismModifiers =
-        [
-            "abstract",
-            "override",
-            "sealed",
-            "virtual",
         ];
 
         /// <summary>

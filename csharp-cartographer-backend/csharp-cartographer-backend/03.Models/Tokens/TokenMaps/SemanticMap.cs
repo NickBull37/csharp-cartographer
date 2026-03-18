@@ -1,6 +1,4 @@
-﻿using csharp_cartographer_backend._02.Utilities.Helpers;
-
-namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
+﻿namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 {
     /// <summary>
     /// Describes the general syntax category the token falls under.
@@ -211,7 +209,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         ArgumentModifier,
         CompilationScope,
         Concurrency,
-        ConcurrencyModifier,
+        //ConcurrencyModifier,
         ConditionalBranching,
         Constraint,
         ControlFlow,
@@ -236,7 +234,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         ObjectConstructionType,
         ParameterModifier,
         PatternMatching,
-        PolymorphismModifier,
+        //PolymorphismModifier,
         QueryExpression,
         SafetyContext,
         [Label("sizeof Operator")]
@@ -253,6 +251,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         // ------------ IDENTIFIERS ------------ //
 
         AttributeArgument,
+        ConditionValue,
         ForEachLoopCollection,
         ParameterLabel,
 
@@ -389,6 +388,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         // ------------ Misc ------------ //
 
         AddressOfOperand,
+        AnonymousObjectElement,
         ArithmeticOperand,
         AssignmentValue,
         Argument,
@@ -411,6 +411,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         NullCoalescingFallback,
         NullCoalescingTarget,
         NullForgivingOperand,
+        QueryReturnValue,
         ShiftOperand,
         SizeOfOperand,
         SwitchArmValue,
@@ -463,53 +464,53 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         PropertyReference,
     }
 
-    public enum SemanticModifiers
-    {
-        None,
+    //public enum SemanticModifiers
+    //{
+    //    None,
 
-        // Operator modifiers
-        Concatenation,
-        ConditionalMemberAccess,
+    //    // Operator modifiers
+    //    Concatenation,
+    //    ConditionalMemberAccess,
 
-        // Keyword modifiers
-        ImplicitCreation,
-        ShortCircuit,
+    //    // Keyword modifiers
+    //    ImplicitCreation,
+    //    ShortCircuit,
 
-        // Identifier modifiers
-        ImportedNamespace,
-        UsingStatementResource,
+    //    // Identifier modifiers
+    //    ImportedNamespace,
+    //    UsingStatementResource,
 
-        // Type form modifiers
-        Anonymous,
-        Argument,
-        Array,
-        For,
-        ForEach,
-        GenericMethod,
-        GenericType,
-        TypeParameter,
-        Nullable,
-        Pointer,
-        ReturnValue,
+    //    // Type form modifiers
+    //    Anonymous,
+    //    Argument,
+    //    Array,
+    //    For,
+    //    ForEach,
+    //    GenericMethod,
+    //    GenericType,
+    //    TypeParameter,
+    //    Nullable,
+    //    Pointer,
+    //    ReturnValue,
 
-        // Variable behavior
-        ImplicitlyTyped,
-        Ref,
-        Out,
-        In,
+    //    // Variable behavior
+    //    ImplicitlyTyped,
+    //    Ref,
+    //    Out,
+    //    In,
 
-        // Control-flow modifiers
-        FallThrough,
-        ConditionalExecution,
+    //    // Control-flow modifiers
+    //    FallThrough,
+    //    ConditionalExecution,
 
-        // Literal modifiers
-        BooleanLiteral,
-        CharacterLiteral,
-        NullValue,
-        NumericLiteral,
-        QuotedString,
-        VerbatimString,
-    }
+    //    // Literal modifiers
+    //    BooleanLiteral,
+    //    CharacterLiteral,
+    //    NullValue,
+    //    NumericLiteral,
+    //    QuotedString,
+    //    VerbatimString,
+    //}
 
     public enum Color
     {
@@ -585,9 +586,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
 
-        public IEnumerable<SemanticModifiers> Modifiers { get; set; } = [];
-
-        public string? SymbolReference { get; set; }
+        //public IEnumerable<SemanticModifiers> Modifiers { get; set; } = [];
 
         // UI elements to show to the user
         public string RoleLabel { get; set; } = string.Empty;
@@ -602,23 +601,22 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         public SemanticMap(
             SyntaxCategory primaryKind,
-            SemanticRole semanticRole,
-            List<SemanticModifiers> modifiers,
-            SymbolReference? symbolReference)
+            SemanticRole semanticRole
+        //List<SemanticModifiers> modifiers
+        )
         {
-            List<string> modifierStrings = [];
-            if (modifiers is not null)
-            {
-                foreach (var modifier in modifiers)
-                {
-                    modifierStrings.Add(modifier.ToString());
-                }
-            }
+            //List<string> modifierStrings = [];
+            //if (modifiers is not null)
+            //{
+            //    foreach (var modifier in modifiers)
+            //    {
+            //        modifierStrings.Add(modifier.ToString());
+            //    }
+            //}
 
             SyntaxCategory = primaryKind;
             SemanticRole = semanticRole;
-            ModifierStrings = modifierStrings;
-            SymbolReference = symbolReference?.ToSpacedString() ?? null;
+            //ModifierStrings = modifierStrings;
         }
     }
 }

@@ -115,7 +115,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     continue;
                 }
 
-                // color by semantic data (subject to change & could break in the future)
+                // color by semantic data
                 if (_config.SemanticDataHighlightingEnabled)
                 {
                     ColorBySemanticData(token);
@@ -128,7 +128,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 if (token.HighlightColor is not null)
                     continue;
 
-                // color by ancestors
+                // color by ancestors (only used for query expression var refs)
                 ColorByAncestors(token);
                 if (token.HighlightColor is not null)
                     continue;
@@ -299,13 +299,13 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.JoinSource:
                 case SemanticRole.LetVariable:
                 case SemanticRole.QuerySource:
-                case SemanticRole.QueryVariableReference:
                 case SemanticRole.RangeVariable:
-                case SemanticRole.GroupContinuationRangeVariableReference:
-                case SemanticRole.JoinIntoRangeVariableReference:
-                case SemanticRole.JoinRangeVariableReference:
-                case SemanticRole.LetVariableReference:
-                case SemanticRole.RangeVariableReference:
+                    //case SemanticRole.GroupContinuationRangeVariableReference:
+                    //case SemanticRole.JoinIntoRangeVariableReference:
+                    //case SemanticRole.JoinRangeVariableReference:
+                    //case SemanticRole.LetVariableReference:
+                    //case SemanticRole.QueryVariableReference:
+                    //case SemanticRole.RangeVariableReference:
                     token.HighlightColor = White;
                     break;
                 case SemanticRole.AliasQualifier:

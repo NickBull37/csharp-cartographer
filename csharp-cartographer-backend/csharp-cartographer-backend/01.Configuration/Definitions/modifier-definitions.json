@@ -30,7 +30,7 @@
     "Definition": "Nullable indicates that a value can also be {c:color-blue keyword}null{/c}. It is used to represent the absence of a value safely."
   },
   "ReturnValue": {
-    "Definition": "A return value is the result produced by a method or function. It is sent back to the caller when execution finishes."
+    "Definition": "The result produced by a method or function that is sent back to the caller when execution finishes."
   },
   "ShortCircuit": {
     "Definition": "When the left-hand expression is enough to determine the result, skip evaluation of the right-hand expression."

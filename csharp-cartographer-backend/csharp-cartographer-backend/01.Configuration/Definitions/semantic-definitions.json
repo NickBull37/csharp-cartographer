@@ -291,7 +291,7 @@
     "Definition": "Punctuation that indicates that a value type can also represent null."
   },
   "NullConditionalGuard": {
-    "Definition": "Punctuation that prevents member access when the target value {c:color-gray italic}(prev token){/c} is null."
+    "Definition": "One of two pieces that make up the null-conditional operator."
   },
   "AccessModifier": {
     "Definition": "Access modifiers control where code elements like classes, methods, and fields can be accessed from, helping enforce encapsulation and safe boundaries between parts of a program."
@@ -796,6 +796,15 @@
   },
   "TernaryQuestion": {
     "Definition": "The ternary operator consists of three parts: a condition to evaluate, a value to use when the condition is {c:bold}true{/c}, and a value to use when it the condition is {c:bold}false{/c}."
+  },
+  "ConditionValue": {
+    "Definition": "A boolean value that will determine if the following code should be executed or skipped."
+  },
+  "AnonymousObjectElement": {
+    "Definition": "An element supplied to an anonymous object creation expression."
+  },
+  "QueryReturnValue": {
+    "Definition": "A value returned by a query expression."
   },
   "": {
     "Definition": ""

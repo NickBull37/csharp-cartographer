@@ -702,6 +702,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return false;
         }
 
+        public bool IsConditionValue()
+        {
+            bool hasValidAncestors = HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.IfStatement);
+
+            bool hasValidNeighbors = PrevToken?.Text == "(" && NextToken?.Text == ")";
+
+            return hasValidAncestors && hasValidNeighbors;
+        }
+
         public bool IsConstructorInvocation()
         {
             if (HasAncestorAt(1, SyntaxKind.ObjectCreationExpression))
@@ -1512,11 +1522,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return GlobalConstants.ControlFlowKeywords.Contains(Text);
         }
 
-        public bool IsConcurrencyModifierKeyword()
-        {
-            return Kind == SyntaxKind.AsyncKeyword;
-        }
-
         public bool IsDefaultLiteralKeyword()
         {
             return Kind == SyntaxKind.DefaultKeyword
@@ -1561,12 +1566,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsExceptionHandlingKeyword()
         {
             return GlobalConstants.ExceptionHandlingKeywords.Contains(Text);
-        }
-
-        public bool IsImplicitCreationKeyword()
-        {
-            return Kind == SyntaxKind.NewKeyword
-                && HasAncestorAt(0, SyntaxKind.ImplicitObjectCreationExpression);
         }
 
         public bool IsImplicitParameterKeyword()
@@ -1615,36 +1614,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsMemberModifierKeyword()
         {
-            /*
-             * unsafe can be found in multiple different contexts
-             * filter tokens that don't specifically apply to members
-             */
+            bool validParent = HasAncestorAt(0, SyntaxKind.FieldDeclaration)
+                || HasAncestorAt(0, SyntaxKind.MethodDeclaration)
+                || HasAncestorAt(0, SyntaxKind.PropertyDeclaration);
 
-            // standalone unsafe blocks
-            if (HasAncestorAt(0, SyntaxKind.UnsafeStatement))
+            if (!validParent)
                 return false;
-
-            // type modifiers
-            if (HasAncestorAt(0, SyntaxKind.ClassDeclaration)
-                || HasAncestorAt(0, SyntaxKind.RecordDeclaration)
-                || HasAncestorAt(0, SyntaxKind.StructDeclaration)
-                || HasAncestorAt(0, SyntaxKind.RecordStructDeclaration))
-            {
-                return false;
-            }
-
-            if (IsMemberModifierNewKeyword())
-                return true;
 
             return GlobalConstants.MemberModifiers.Contains(Text);
-        }
-
-        public bool IsMemberModifierNewKeyword()
-        {
-            if (Text != "new")
-                return false;
-
-            return !IsObjectConstructionNewKeyword();
         }
 
         public bool IsNameofAndKeyword()
@@ -1657,29 +1634,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsObjectConstructionKeyword()
         {
-            // parameters can also have "this"
-            if (HasAncestorAt(0, SyntaxKind.Parameter))
-                return false;
-
-            if (IsObjectConstructionNewKeyword())
-                return true;
-
-            return GlobalConstants.ObjectConstructionKeywords.Contains(Text);
-        }
-
-        public bool IsObjectConstructionNewKeyword()
-        {
-            if (Text != "new")
-                return false;
-
             var parentKind = AncestorKinds.Ancestors.FirstOrDefault();
-
-            return parentKind
+            bool validParent = parentKind
                 is SyntaxKind.ObjectCreationExpression
                 or SyntaxKind.ArrayCreationExpression
                 or SyntaxKind.ImplicitObjectCreationExpression
                 or SyntaxKind.ImplicitArrayCreationExpression
                 or SyntaxKind.AnonymousObjectCreationExpression;
+
+            if (!validParent)
+                return false;
+
+            return GlobalConstants.ObjectConstructionKeywords.Contains(Text);
         }
 
         public bool IsObjectConstructionTypeKeyword()
@@ -1716,11 +1682,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.NotKeyword
                 or SyntaxKind.OrKeyword
                 or SyntaxKind.WhenKeyword;
-        }
-
-        public bool IsPolymorphismModifierKeyword()
-        {
-            return GlobalConstants.PolymorphismModifiers.Contains(Text);
         }
 
         public bool IsQueryExpressionKeyword()
@@ -1769,13 +1730,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsTypeModifierKeyword()
         {
-            if (!HasAncestorAt(0, SyntaxKind.ClassDeclaration)
-                && !HasAncestorAt(0, SyntaxKind.RecordDeclaration)
-                && !HasAncestorAt(0, SyntaxKind.StructDeclaration)
-                && !HasAncestorAt(0, SyntaxKind.RecordStructDeclaration))
-            {
+            bool validParent = HasAncestorAt(0, SyntaxKind.ClassDeclaration)
+                || HasAncestorAt(0, SyntaxKind.RecordDeclaration)
+                || HasAncestorAt(0, SyntaxKind.StructDeclaration)
+                || HasAncestorAt(0, SyntaxKind.RecordStructDeclaration);
+
+            if (!validParent)
                 return false;
-            }
 
             return GlobalConstants.TypeModifiers.Contains(Text);
         }
@@ -2444,11 +2405,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Type Checks
-        public bool IsAnonymousObjectCreation()
-        {
-            return HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression);
-        }
-
         public bool IsAddressOfOperand()
         {
             if (HasAncestorAt(1, SyntaxKind.AddressOfExpression)
@@ -2538,13 +2494,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             {
                 return true;
             }
-
-            return false;
-        }
-
-        public bool IsExpressionOperand()
-        {
-
 
             return false;
         }
@@ -2842,6 +2791,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Misc Checks
+        public bool IsAnonymousObjectElement()
+        {
+            bool validPrev = PrevToken?.Text is "{" or ",";
+            bool validNext = NextToken?.Text is "," or "}";
+            bool validAncestors = HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.AnonymousObjectMemberDeclarator)
+                && HasAncestorAt(2, SyntaxKind.AnonymousObjectCreationExpression);
+
+            return validPrev && validNext && validAncestors;
+        }
+
         public bool IsArgument()
         {
             // covered by index value role
@@ -3005,6 +2965,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return HasAncestorAt(1, SyntaxKind.Argument)
                 && PrevToken?.PrevToken?.Text == "nameof";
+        }
+
+        public bool IsQueryReturnValue()
+        {
+            bool validPrev = PrevToken?.Text == "select";
+            bool validNext = NextToken?.Text is ";" or ")";
+            bool validGrandParent = HasAncestorAt(1, SyntaxKind.SelectClause);
+
+            return validPrev && validNext && validGrandParent;
         }
 
         public bool IsReturnValue()

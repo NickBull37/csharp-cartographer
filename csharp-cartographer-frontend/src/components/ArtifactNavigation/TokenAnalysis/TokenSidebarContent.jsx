@@ -421,8 +421,7 @@ const TokenSidebarContent = ({
                                                         borderBottom: '1px solid #666666',
                                                         borderRadius: '5px 5px 0 0',
                                                         px: '14px',
-                                                        pt: '6px',
-                                                        pb: '2px'
+                                                        py: '5px',
                                                     }}
                                                 >
                                                     {/* <SemanticRoleLabel className={srLabelClass}>

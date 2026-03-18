@@ -100,6 +100,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
              * 
              *  Add specific operator name for operators
              *  that fall into multiple categories.
+             *  
+             *  Use full operator for scenarios where roslyn
+             *  splits an operator into multiple tokens.
              */
 
             var key = $"Operator:{token.Text}";
@@ -135,6 +138,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return key + ":AddressOf";
             if (token.IsBitwiseAndOperator())
                 return key + ":BitwiseAnd";
+
+            // (?) conditional-member access: ? -> ?.
+            if (token.IsNullConditionalGuard())
+                return key + ".";
 
             return key;
         }

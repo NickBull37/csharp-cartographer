@@ -315,6 +315,13 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             Console.WriteLine($"In value = {value}");
             // value = 99; // compile error: cannot modify in parameter
 
+            var steve = "Steve";
+            var students = new[]
+            {
+                new { Id = 1, Name = "Roger" },
+                new { Id = 2, Name = steve },
+            };
+
             var numbers = new[]
             {
                 new { Id = 1, Value = 10 },
@@ -642,6 +649,11 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
     public class QueryExpressionDemo
     {
+        private IEnumerable<int> _evenstest =
+            from n in new[] { 1, 2, 3, 4, 102 }
+            where n % 2 == 0
+            select 1000;
+
         private IEnumerable<int> _evens =
             from n in new[] { 1, 2, 3, 4, 102 }
             where n % 2 == 0
@@ -671,7 +683,7 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
         public static void Main()
         {
-            var numbers = new List<Item>
+            var items = new List<Item>
             {
                 new Item { Id = 1, Value = 5, Category = "A" },
                 new Item { Id = 2, Value = 20, Category = "A" },
@@ -689,31 +701,31 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
             // 1) Basic from / in / where / select
             var evens =
-                from n in numbers
+                from n in items
                 where n.Value % 2 == 0
                 select n.Value;
 
             // 2) let
             var squares =
-                from n in numbers
+                from n in items
                 let doubled = n.Value * 2
                 where doubled > 20
                 select doubled;
 
             // 3) join / on / equals
             var joined =
-                from n in numbers
-                join l in labels on n.Id equals l.Id
-                select new { n.Value, l.Name };
+                from i in items
+                join l in labels on i.Id equals l.Id
+                select new { i.Value, l.Name };
 
             // 4) group ... by
             var grouped =
-                from n in numbers
+                from n in items
                 group n by n.Category;
 
             // 5) group ... by ... into
             var groupedFiltered =
-                from n in numbers
+                from n in items
                 group n by n.Category into g
                 where g.Count() > 1
                 select new
@@ -724,7 +736,7 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
             // 6) join ... into (group join)
             var groupJoin =
-                from n in numbers
+                from n in items
                 join l in labels on n.Id equals l.Id into matches
                 select new
                 {
@@ -734,13 +746,13 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
             // 7) orderby ascending / descending
             var ordered =
-                from n in numbers
+                from n in items
                 orderby n.Category ascending, n.Value descending
                 select n;
 
             // 8) Full example (uses almost every keyword)
             var full =
-                from p in numbers
+                from p in items
                 join n in labels on p.Id equals n.Id
                 let doubled = p.Value * 2
                 where doubled > 10

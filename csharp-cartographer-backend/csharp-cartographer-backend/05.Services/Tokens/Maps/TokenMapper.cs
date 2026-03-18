@@ -24,7 +24,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 token.Map = MapToken(token);
             }
 
-            MapSpecialCaseSemanticRoles(navTokens);
+            //MapSpecialCaseSemanticRoles(navTokens);
 
             // add role definitions
             _semanticLibrary.AddSemanticInfo(navTokens);
@@ -34,14 +34,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             var primaryKind = GetPrimaryKind(token);
             var role = GetSemanticRole(token);
-            var modifiers = GetSemanticModifiers(token);
-            var symRef = TryGetSymbolReference(token, role);
 
             return new SemanticMap(
                 primaryKind: primaryKind,
-                semanticRole: role,
-                modifiers: modifiers,
-                symbolReference: symRef
+                semanticRole: role
             );
         }
 
@@ -606,8 +602,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsConcurrencyKeyword())
                 return SemanticRole.Concurrency;
 
-            if (token.IsConcurrencyModifierKeyword())
-                return SemanticRole.ConcurrencyModifier;
+            //if (token.IsConcurrencyModifierKeyword())
+            //    return SemanticRole.ConcurrencyModifier;
 
             // --- Conditional branching keywords ---
             if (token.IsConditionalBranchingKeyword())
@@ -686,8 +682,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.PatternMatching;
 
             // --- Polymorphism modifier keywords ---
-            if (token.IsPolymorphismModifierKeyword())
-                return SemanticRole.PolymorphismModifier;
+            //if (token.IsPolymorphismModifierKeyword())
+            //    return SemanticRole.PolymorphismModifier;
 
             // --- Query expressions ---
             if (token.IsQueryExpressionKeyword())
@@ -818,6 +814,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole GetSemanticRoleForMisc(NavToken token)
         {
+            // Anonymous object elements
+            if (token.IsAnonymousObjectElement())
+                return SemanticRole.AnonymousObjectElement;
+
             // Arguments
             if (token.IsArgument())
                 return SemanticRole.Argument;
@@ -911,6 +911,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.PointerBaseType;
 
             // Return values
+            if (token.IsQueryReturnValue())
+                return SemanticRole.QueryReturnValue;
+
             if (token.IsReturnValue())
                 return SemanticRole.ReturnValue;
 
@@ -1125,6 +1128,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsTypeReference())
                 return SemanticRole.TypeReference;
 
+            // Identifier - condition values
+            if (token.IsConditionValue())
+                return SemanticRole.ConditionValue;
+
             // --------------------------------------------------------- //
 
             // Identifier - query expressions
@@ -1269,83 +1276,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             };
         }
         #endregion
-
-        private static List<SemanticModifiers> GetSemanticModifiers(NavToken token)
-        {
-            List<SemanticModifiers> modifiers = [];
-
-            // --- Keyword modifiers ---
-            if (token.IsKeyword() || token.IsContextualKeyword())
-            {
-                if (token.Text == "var")
-                    modifiers.Add(SemanticModifiers.ImplicitlyTyped);
-
-                if (token.IsImplicitCreationKeyword())
-                    modifiers.Add(SemanticModifiers.ImplicitCreation);
-
-                if (token.IsAnonymousObjectCreation())
-                    modifiers.Add(SemanticModifiers.Anonymous);
-            }
-
-            // --- Operator modifiers ---
-            if (GlobalConstants.Operators.Contains(token.Text))
-            {
-                if (token.IsConditionalMemberAccessOperator())
-                    modifiers.Add(SemanticModifiers.ConditionalMemberAccess);
-
-                if (token.IsConcatenationAddOperator())
-                    modifiers.Add(SemanticModifiers.Concatenation);
-
-                if (token.IsShortCircuitOperator())
-                    modifiers.Add(SemanticModifiers.ShortCircuit);
-            }
-
-            // --- Identifier modifiers
-            if (token.IsIdentifier())
-            {
-                if (token.IsGenericMethodDeclaration() || token.IsGenericMethodInvocation())
-                    modifiers.Add(SemanticModifiers.GenericMethod);
-
-                if (token.IsTypeParameter())
-                    modifiers.Add(SemanticModifiers.TypeParameter);
-
-                if (token.IsUsingDirectiveQualifier())
-                    modifiers.Add(SemanticModifiers.ImportedNamespace);
-
-                if (token.IsUsingStatementResource())
-                    modifiers.Add(SemanticModifiers.UsingStatementResource);
-
-                // TODO: Add modifier for un-implemented interface methods
-            }
-
-            if (token.IsGenericType())
-                modifiers.Add(SemanticModifiers.GenericType);
-
-            if (token.IsNullableType() || token.IsNullableConstraintType())
-                modifiers.Add(SemanticModifiers.Nullable);
-
-            return modifiers;
-        }
-
-        private static SymbolReference? TryGetSymbolReference(NavToken token, SemanticRole role)
-        {
-            bool skipDeclaration = role
-                is SemanticRole.Parameter
-                or SemanticRole.FieldDeclaration
-                or SemanticRole.LocalVariableDeclaration
-                or SemanticRole.LoopIteratorDeclaration;
-
-            if (skipDeclaration)
-                return null;
-
-            return token.RoslynClassification switch
-            {
-                "local name" => (SymbolReference?)SymbolReference.LocalVariableReference,
-                "field name" => (SymbolReference?)SymbolReference.FieldReference,
-                "parameter name" => (SymbolReference?)SymbolReference.ParameterReference,
-                _ => null,
-            };
-        }
 
         #region Special Case Tokens
         private static void MapSpecialCaseSemanticRoles(List<NavToken> navTokens)

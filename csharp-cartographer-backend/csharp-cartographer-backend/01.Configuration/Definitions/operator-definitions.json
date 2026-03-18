@@ -126,7 +126,7 @@
     "Definition": "The member access operator {c:keyword}\".\"{/c} is used to access members such as methods, properties, or fields of the preceeding type."
   },
   "Operator:?.": {
-    "Definition": "The null-conditional operator {c:keyword}\"?.\"{/c} safely accesses a member only if the value is not null. It prevents null reference errors."
+    "Definition": "The null-conditional operator {c:keyword}\"?.\"{/c} skips member access and returns null immediately if the preceding operand is null."
   },
   "Operator:::": {
     "Definition": "The namespace alias qualifier {c:keyword}\"::\"{/c} accesses a member through a specific alias. It is commonly used with global or using aliases."
