@@ -33,11 +33,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
              * as the key for Delimiters.
              */
 
-            var label = role.GetLabel();
+            var key = role.GetLabel() ?? role.ToString();
 
-            string key = label is not null
-                ? label
-                : role.ToString();
+            if (key is null)
+                return null;
 
             var definition = DefinitionProvider.GetMapText(key);
 
@@ -53,24 +52,38 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             string? key = null;
 
-            if (token.IsDelimiter())
-                key = GetDelimiterKey(token);
+            switch (token.Map.SyntaxCategory)
+            {
+                case SyntaxCategory.Delimiter:
+                    key = GetDelimiterKey(token);
+                    break;
+                case SyntaxCategory.Identifier:
+                    key = GetIdentifierKey(token);
+                    break;
+                case SyntaxCategory.Operator:
+                    key = GetOperatorKey(token);
+                    break;
+                case SyntaxCategory.Literal:
+                    key = GetLiteralKey(token);
+                    break;
+                case SyntaxCategory.Keyword:
+                    key = GetKeywordKey(token);
+                    break;
+                default:
+                    break;
+            }
 
-            else if (token.IsIdentifier())
-                key = GetIdentifierKey(token);
+            if (key is null)
+                return null;
 
-            else if (token.IsOperator())
-                key = GetOperatorKey(token);
+            var definition = DefinitionProvider.GetMapText(key);
 
-            else if (token.IsLiteral())
-                key = GetLiteralKey(token);
+            if (definition is null)
+            {
+                // log error
+            }
 
-            else if (token.IsKeyword())
-                key = GetKeywordKey(token);
-
-            return key is not null
-                ? DefinitionProvider.GetMapText(key)
-                : null;
+            return definition;
         }
 
         private static string? GetDelimiterKey(NavToken token)
@@ -81,14 +94,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             var key = $"{token.Map.SemanticRole}:";
 
-            List<string> openTokens = ["(", "{", "[", "<"];
-            List<string> closeTokens = [")", "}", "]", ">"];
-
-            if (openTokens.Contains(token.Text))
-                key += "Open";
-
-            else if (closeTokens.Contains(token.Text))
-                key += "Close";
+            key += token.Text switch
+            {
+                "(" or "{" or "[" or "<" => "Open",
+                ")" or "}" or "]" or ">" => "Close",
+                _ => throw new InvalidOperationException(),
+            };
 
             return key;
         }
