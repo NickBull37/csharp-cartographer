@@ -88,6 +88,7 @@
         ForEachControlBoundary,
         [Label("LoopControlBoundary")]
         ForLoopControlBoundary,
+        StatementControlBoundary,
 
         AccessorListBoundary,
         AddAccessorBlockBoundary,
@@ -253,6 +254,7 @@
         AttributeArgument,
         ConditionValue,
         ForEachLoopCollection,
+        LockTarget,
         ParameterLabel,
 
         // Declarations
@@ -266,6 +268,7 @@
         EventFieldDeclaration,
         EventPropertyDeclaration,
         FieldDeclaration,
+        FixedPointerDeclaration,
         InterfaceDeclaration,
         LambdaParameter,
         LocalVariableDeclaration,
@@ -372,6 +375,7 @@
         // ------------ QUERY EXPRESSIONS ------------ //
 
         GroupContinuationRangeVariable,
+        GroupElement,
         JoinIntoRangeVariable,
         JoinRangeVariable,
         JoinSource,

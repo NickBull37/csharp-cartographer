@@ -134,6 +134,9 @@
   "SizeOfExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}sizeof{/c} expression."
   },
+  "StatementControlBoundary": {
+    "Definition": "Marks the boundaries of the control that determines how the statement behaves."
+  },
   "SwitchExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} expression."
   },
@@ -422,6 +425,9 @@
   "FieldDeclaration": {
     "Definition": "A field declaration defines a variable that belongs to a class or struct. Fields store data that represents the state of an object."
   },
+  "FixedPointerDeclaration": {
+    "Definition": "The name of the pointer variable declared by a {c:color-blue keyword}fixed{/c} statement. This variable points to the pinned data for the duration of the fixed block."
+  },
   "ForLoopIteratorDeclaration": {
     "Definition": "The loop iterator variable declared in a {c:color-purple keyword}for{/c} loop. It is typically used as a counter that changes each iteration to control how many times the loop runs."
   },
@@ -650,6 +656,9 @@
   "GroupContinuationRangeVariableReference": {
     "Definition": "A group continuation range variable reference refers to a previously defined group continuation variable. It accesses grouped results later in the query."
   },
+  "GroupElement": {
+    "Definition": "The value or that a {c:color-blue keyword}group{/c} clause places into each resulting group. Each item in the final group comes from this element expression."
+  },
   "JoinIntoRangeVariableReference": {
     "Definition": "A join-into range variable reference refers to the variable created by a join-into clause. It is used to access grouped join results."
   },
@@ -805,6 +814,9 @@
   },
   "QueryReturnValue": {
     "Definition": "A value returned by a query expression."
+  },
+  "LockTarget": {
+    "Definition": "The variable that a {c:color-blue keyword}lock{/c} statement uses to control access to the protected code block. Only one execution thread can hold the lock on this target at a time."
   },
   "": {
     "Definition": ""

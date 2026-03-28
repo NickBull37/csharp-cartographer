@@ -207,6 +207,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsSizeOfExpressionDelimiter())
                     return SemanticRole.SizeOfExpressionBoundary;
 
+                if (token.IsStatementControlDelimiter())
+                    return SemanticRole.StatementControlBoundary;
+
                 if (token.IsSwitchStatementConditionDelimiter())
                     return SemanticRole.SwitchStatementConditionBoundary;
 
@@ -974,6 +977,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsFieldDeclaration())
                 return SemanticRole.FieldDeclaration;
 
+            if (token.IsFixedPointerDeclaration())
+                return SemanticRole.FixedPointerDeclaration;
+
             if (token.IsLambdaParameterDeclaration())
                 return SemanticRole.LambdaParameter;
 
@@ -1132,6 +1138,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsConditionValue())
                 return SemanticRole.ConditionValue;
 
+            // Identifier - lock target
+            if (token.IsLockTarget())
+                return SemanticRole.LockTarget;
+
             // --------------------------------------------------------- //
 
             // Identifier - query expressions
@@ -1152,6 +1162,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsGroupContinuationRangeVariable())
                 return SemanticRole.GroupContinuationRangeVariable;
+
+            if (token.IsGroupElement())
+                return SemanticRole.GroupElement;
 
             if (token.IsJoinIntoRangeVariable())
                 return SemanticRole.JoinIntoRangeVariable;

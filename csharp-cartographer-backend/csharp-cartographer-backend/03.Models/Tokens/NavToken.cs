@@ -519,6 +519,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
         }
 
+        public bool IsStatementControlDelimiter()
+        {
+            bool isFixedControl = HasAncestorAt(0, SyntaxKind.FixedStatement)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+
+            bool isLockControl = HasAncestorAt(0, SyntaxKind.LockStatement)
+                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+
+            return isFixedControl || isLockControl;
+        }
+
         public bool IsStructDelimiter()
         {
             return IsDelimiter()
@@ -926,14 +937,25 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.EventDeclaration);
         }
 
-        public bool IsEventFieldDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.VariableDeclarator) &&
-            HasAncestorAt(1, SyntaxKind.VariableDeclaration) &&
-            HasAncestorAt(2, SyntaxKind.EventFieldDeclaration);
+        public bool IsEventFieldDeclaration()
+        {
+            return HasAncestorAt(0, SyntaxKind.VariableDeclarator)
+                && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
+                && HasAncestorAt(2, SyntaxKind.EventFieldDeclaration);
+        }
 
-        public bool IsFieldDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.VariableDeclarator) &&
-            HasAncestorAt(2, SyntaxKind.FieldDeclaration);
+        public bool IsFieldDeclaration()
+        {
+            return HasAncestorAt(0, SyntaxKind.VariableDeclarator)
+                && HasAncestorAt(2, SyntaxKind.FieldDeclaration);
+        }
+
+        public bool IsFixedPointerDeclaration()
+        {
+            return Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(0, SyntaxKind.VariableDeclarator)
+                && HasAncestorAt(2, SyntaxKind.FixedStatement);
+        }
 
         public bool IsForLoopIteratorDeclaration()
         {
@@ -1001,6 +1023,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return true;
 
             return false;
+        }
+
+        public bool IsLockTarget()
+        {
+            bool hasValidNeighbors = PrevToken?.Text == "("
+                && NextToken?.Text == ")";
+
+            bool hasValidAncestors =
+                HasAncestorAt(0, SyntaxKind.IdentifierName)
+                && HasAncestorAt(1, SyntaxKind.LockStatement);
+
+            return Kind == SyntaxKind.IdentifierToken
+                && hasValidNeighbors
+                && hasValidAncestors;
         }
 
         public bool IsLoopIteratorDeclaration()
@@ -1421,6 +1457,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return HasAncestorAt(0, SyntaxKind.QueryContinuation)
                 && HasAncestorAt(1, SyntaxKind.QueryBody)
                 && PrevToken?.Text == "into";
+        }
+
+        public bool IsGroupElement()
+        {
+            //       ⌄
+            // group n by n.Category;
+            return Kind == SyntaxKind.IdentifierToken
+                && HasAncestorAt(1, SyntaxKind.GroupClause)
+                && PrevToken?.Text == "group";
         }
 
         public bool IsJoinIntoRangeVariable()
