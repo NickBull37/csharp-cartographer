@@ -1,7 +1,6 @@
 ﻿using csharp_cartographer_backend._01.Configuration;
 using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace csharp_cartographer_backend._05.Services.Tokens.Maps
@@ -1186,7 +1185,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole GetSpecialCaseKeywordRole(NavToken token)
         {
-            string? parentKind = token.ParentNodeKind;
+            /*
+             *  Keeping for testing only
+             */
+
+            string? parentKind = "token.ParentNodeKind";
 
             return token.Text switch
             {
@@ -1238,7 +1241,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole GetSpecialCaseOperatorRole(NavToken token)
         {
-            string? parentKind = token.ParentNodeKind;
+            /*
+             *  Keeping for testing only
+             */
+
+            string? parentKind = "token.ParentNodeKind";
             var containingType = token.SemanticData?.ContainingType;
             bool isBool = containingType == "bool";
 
@@ -1303,8 +1310,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             for (int i = 0; i < navTokens.Count; i++)
             {
                 var token = navTokens[i];
+                var parentKind = token.AncestorKinds.Ancestors[0];
 
-                if (token.Text is not "from" || !token.Parent.IsKind(SyntaxKind.FromClause))
+                if (token.Text is not "from" || parentKind != SyntaxKind.FromClause)
                     continue;
 
                 MapQueryExpression(navTokens, i);

@@ -60,8 +60,8 @@ namespace csharp_cartographer_backend._05.Services.Charts
         {
             List<int> highlightIndices = [];
 
-            // loop through syntax tokens in chart and create list of strings
-            var tokenStrings = GetSyntaxTokenStrings(chart);
+            // loop through tokens in chart and create list of strings
+            var tokenStrings = GetTokenStrings(chart);
 
             if (tokenStrings.Count == 0)
                 return;
@@ -106,7 +106,7 @@ namespace csharp_cartographer_backend._05.Services.Charts
             chart.HighlightRange = range;
         }
 
-        private static List<string> GetSyntaxTokenStrings(TokenChart chart)
+        private static List<string> GetTokenStrings(TokenChart chart)
         {
             List<string> elementStrings = [];
 
