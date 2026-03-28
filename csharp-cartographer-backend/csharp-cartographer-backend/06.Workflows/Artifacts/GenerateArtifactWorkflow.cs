@@ -5,7 +5,6 @@ using csharp_cartographer_backend._03.Models.Files;
 using csharp_cartographer_backend._05.Services.Charts;
 using csharp_cartographer_backend._05.Services.Files;
 using csharp_cartographer_backend._05.Services.SyntaxHighlighting;
-using csharp_cartographer_backend._05.Services.Tags;
 using csharp_cartographer_backend._05.Services.Tokens;
 using csharp_cartographer_backend._05.Services.Tokens.Maps;
 using csharp_cartographer_backend._08.Controllers.Artifacts.Dtos;
@@ -22,7 +21,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         private readonly ISyntaxHighlighter _syntaxHighlighter;
         private readonly ITokenChartGenerator _tokenChartGenerator;
         private readonly ITokenChartWizard _tokenChartWizard;
-        private readonly ITokenTagGenerator _tokenTagGenerator;
         private readonly ITokenMapper _tokenMapper;
         private readonly CartographerConfig _config;
 
@@ -32,7 +30,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             ISyntaxHighlighter syntaxHighlighter,
             ITokenChartGenerator tokenChartGenerator,
             ITokenChartWizard tokenChartWizard,
-            ITokenTagGenerator tokenTagGenerator,
             ITokenMapper tokenMapper,
             IOptions<CartographerConfig> config)
         {
@@ -41,7 +38,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _syntaxHighlighter = syntaxHighlighter;
             _tokenChartGenerator = tokenChartGenerator;
             _tokenChartWizard = tokenChartWizard;
-            _tokenTagGenerator = tokenTagGenerator;
             _tokenMapper = tokenMapper;
             _config = config.Value;
         }
@@ -70,13 +66,12 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
              *   4. Turn the Roslyn data into a list of NavTokens.
              *   5. Generate ancestor charts for each token.
              *   6. Map NavTokens
-             *   7. Generate TokenTags.
-             *   8. Add highlight indices to token charts for highlighting ancestors.
-             *   9. Add TokenTags definitions & insights.
-             *   10. Add syntax highlighting for all NavTokens (should be last step in workflow).
-             *   11. Build artifact.
-             *   12. Stop stopwatch.
-             *   13. Return artifact.
+             *   7. Add highlight indices to token charts for highlighting ancestors.
+             *   8. Add TokenTags definitions & insights.
+             *   9. Add syntax highlighting for all NavTokens (should be last step in workflow).
+             *   10. Build artifact.
+             *   11. Stop stopwatch.
+             *   12. Return artifact.
              *   
              */
 
@@ -92,28 +87,25 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             // Step 6. Map NavTokens
             _tokenMapper.MapNavTokens(navTokens);
 
-            // Step 7. Generate TokenTags.
-            //_tokenTagGenerator.GenerateTokenTags(navTokens);
-
-            // Step 8. Add highlight indices to token charts for highlighting ancestors.
+            // Step 7. Add highlight indices to token charts for highlighting ancestors.
             _tokenChartWizard.AddHighlightRangeToNavTokenCharts(navTokens);
 
-            // Step 9. Add token chart definitions & insights.
+            // Step 8. Add token chart definitions & insights.
             //_tokenChartWizard.AddFactsAndInsightsToNavTokenCharts(navTokens);
 
-            // Step 10. Add syntax highlighting for all NavTokens (should be last step in workflow).
+            // Step 9. Add syntax highlighting for all NavTokens (should be last step in workflow).
             _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
 
-            // Step 11. Build & return artifact.
+            // Step 10. Build & return artifact.
             var artifact = new Artifact(fileData.FileName, stopwatch.Elapsed, navTokens);
 
-            // Step 12. Stop stopwatch.
+            // Step 11. Stop stopwatch.
             stopwatch.Stop();
 
             // Bonus: Log artifact data (optional)
             LogArtifactData(artifact);
 
-            // Step 13. Return artifact.
+            // Step 12. Return artifact.
             return artifact;
         }
 

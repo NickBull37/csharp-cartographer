@@ -50,10 +50,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 // add semantic data
                 _roslynAnalyzer.AddTokenSemanticData(newToken, semanticModel, syntaxTree, cancellationToken);
 
-                // add classification
-                var classification = GetTokenClassification(token, classificationLookup);
-                newToken.RoslynClassification = _roslynCorrector.GetCorrectedClassification(newToken, classification)
-                    ?? classification;
+                // add classification & color-as
+                var classification = GetTokenClassification(token, classificationLookup) ?? string.Empty;
+                newToken.Classification = _roslynCorrector.GetCorrectedClassification(newToken, classification) ?? classification;
+                newToken.ColorAs = _roslynCorrector.GetCorrectedColorAs(newToken, classification) ?? classification;
 
                 index++;
             }
@@ -73,7 +73,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 .ToDictionary(g => g.Key, g => g.ToList());
         }
 
-        private static string? GetTokenClassification(SyntaxToken token, IReadOnlyDictionary<int, List<ClassifiedSpan>> classificationLookup)
+        private static string? GetTokenClassification(
+            SyntaxToken token,
+            IReadOnlyDictionary<int, List<ClassifiedSpan>> classificationLookup)
         {
             if (!classificationLookup.TryGetValue(token.Span.Start, out var candidates) || candidates is null)
             {

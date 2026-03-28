@@ -9,8 +9,13 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
         /// relies on it for other things as well. So a handful of edge cases are corrected before
         /// moving onto individual token mapping.
         /// </summary>
-        string? GetCorrectedClassification(
-            NavToken token,
-            string? roslynClassification);
+        string? GetCorrectedClassification(NavToken token, string? classification);
+
+        /// <summary>
+        /// Roslyn's classification value is primarily for syntax highlighting. But some contextual
+        /// keywords can be classified as identifiers even when used in keyword-context. These edge
+        /// cases are corrected so tokens get highlighted accurately.
+        /// </summary>
+        string? GetCorrectedColorAs(NavToken token, string? classification);
     }
 }

@@ -81,13 +81,13 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     continue;
 
                 // color by classification
-                if (token.RoslynClassification is "keyword" or "keyword - control")
+                if (token.ColorAs is "keyword" or "keyword - control")
                 {
                     ColorByKeyword(token);
                     continue;
                 }
 
-                if (token.RoslynClassification
+                if (token.ColorAs
                     is "class name"
                     or "constant name"
                     or "delegate name"
@@ -147,9 +147,13 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         private static void ColorManually(NavToken token)
         {
             // early-outs for local var, parameter, or property
-            // identifier that will never be colored as a type
-            if (token.Map.SemanticRole is SemanticRole.MemberAccess or SemanticRole.TargetMember)
+            // identifiers that will never be colored as a type
+            if (token.Map.SemanticRole
+                is SemanticRole.MemberAccess
+                or SemanticRole.TargetMember)
+            {
                 return;
+            }
 
             if (token.Map.SemanticRole.ToString().Contains("Declaration"))
                 return;
@@ -159,6 +163,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
             if (token.Map.SemanticRole == SemanticRole.AssignmentRecipient)
                 return;
+
+            if ((token.Text is "nint" or "nuint")
+                && token.Classification == "keyword")
+            {
+                return;
+            }
 
             // if it looks like a common type name, color it accordingly
             if (GlobalConstants.CommonEnums.Contains(token.Text))
@@ -184,13 +194,13 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 return;
             }
 
-            if (token.RoslynClassification == "keyword")
+            if (token.ColorAs == "keyword")
             {
                 token.HighlightColor = Blue;
                 return;
             }
 
-            if (token.RoslynClassification == "keyword - control")
+            if (token.ColorAs == "keyword - control")
             {
                 token.HighlightColor = Purple;
                 return;
@@ -199,7 +209,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static void ColorByRoslynClassification(NavToken token)
         {
-            switch (token.RoslynClassification)
+            switch (token.ColorAs)
             {
                 case "operator":
                     token.HighlightColor = Gray;

@@ -58,20 +58,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             {
                 return SyntaxCategory.Punctuation;
             }
-            if (token.Text == ".." && token.RoslynClassification == "punctuation")
+            if (token.Text == ".." && token.Classification == "punctuation")
             {
                 return SyntaxCategory.Operator;
             }
-            if (GlobalConstants.Delimiters.Contains(token.Text) && token.RoslynClassification == "punctuation")
+            if (GlobalConstants.Delimiters.Contains(token.Text) && token.Classification == "punctuation")
             {
                 return SyntaxCategory.Delimiter;
             }
-            if (token.Text == "args" && token.RoslynClassification == "keyword")
+            if (token.Text == "args" && token.Classification == "keyword")
             {
                 return SyntaxCategory.Identifier;
             }
 
-            switch (token.RoslynClassification)
+            switch (token.Classification)
             {
                 case "keyword":
                 case "keyword - control":

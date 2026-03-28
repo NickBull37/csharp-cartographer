@@ -33,7 +33,6 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
             LogMessage($"ArtifactType: {artifact.ArtifactType}", _artifactLogPath);
             LogMessage($"NumTokensAnalyzed: {artifact.NumTokensAnalyzed}", _artifactLogPath);
             //LogMessage("------------------------- Token data -------------------------");
-            LogMessage($"NumLanguageElementTags: {artifact.NumLanguageElementTags}", _artifactLogPath);
             LogMessage($"NumAncestorsMapped: {artifact.NumAncestorsMapped}", _artifactLogPath);
         }
 
@@ -97,7 +96,7 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
             LogMessage(" ", _tokenLogPath);
             LogMessage("---------------------- Misc data ----------------------", _tokenLogPath);
             LogMessage($"Index: {token.Index}", _tokenLogPath);
-            LogMessage($"Classification: {token.RoslynClassification ?? "..."}", _tokenLogPath);
+            LogMessage($"Classification: {token.ColorAs ?? "..."}", _tokenLogPath);
             LogMessage($"HighlightColor: {token.HighlightColor ?? "..."}", _tokenLogPath);
             LogMessage("---------------------- Token data ----------------------", _tokenLogPath);
             LogMessage($"Text: {token.Text ?? "..."}", _tokenLogPath);

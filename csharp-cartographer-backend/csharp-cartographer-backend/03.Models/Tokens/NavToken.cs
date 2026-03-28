@@ -31,11 +31,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public string RoslynKind { get; set; }
 
         /// <summary>The token classification.</summary>
-        public string RoslynClassification { get; set; }
+        public string Classification { get; set; }
 
-        /// <summary>The updated token classification.</summary>
+        /// <summary>The classification the token should be colored as.</summary>
         [JsonIgnore]
-        public string? UpdatedClassification { get; set; }
+        public string ColorAs { get; set; }
+
+        /// <summary>The color the token will be highlighted in the UI.</summary>
+        public string? HighlightColor { get; set; }
 
         /// <summary> </summary>
         public SemanticMap Map { get; set; }
@@ -89,12 +92,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <summary>The token's semantic data.</summary>
         [JsonIgnore]
         public TokenSemanticData? SemanticData { get; set; }
-
-        /// <summary>The color the token will be highlighted in the UI.</summary>
-        public string? HighlightColor { get; set; }
-
-        /// <summary>A list of token tags attached to the token.</summary>
-        public List<TokenTag> Tags { get; set; } = [];
 
         /// <summary>A list of ancestor nodes & data attached to the token.</summary>
         public List<TokenChart> Charts { get; set; } = [];
@@ -838,14 +835,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return hasPermittedNextToken && hasInvocationAncestor;
         }
 
-        public bool IsObjCreationPropertyAssignment()
-        {
-            return RoslynClassification is not null
-                && RoslynClassification == "identifier"
-                && HasAncestorAt(1, SyntaxKind.SimpleAssignmentExpression)
-                && HasAncestorAt(2, SyntaxKind.ObjectInitializerExpression);
-        }
-
         public bool IsParameterLabel()
         {
             if (IsPropertyPattern())
@@ -1255,7 +1244,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsUsingDirectiveQualifier()
         {
             // skips using keyword, DotToken and SemiColonToken in using directives
-            if (RoslynClassification is not ("namespace name" or "identifier"))
+            if (Classification is not ("namespace name" or "identifier"))
                 return false;
 
             // skips alias declarations
@@ -1272,8 +1261,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return false;
 
             // for single segment namespace declarations
-            if (RoslynClassification is not null
-                && RoslynClassification == "namespace name"
+            if (Classification is not null
+                && Classification == "namespace name"
                 && AncestorKinds.GetLast() == SyntaxKind.NamespaceDeclaration
                 && PrevToken?.Text == "namespace")
             {
@@ -1281,16 +1270,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             }
 
             // for a namespace defined in a namespace
-            if (RoslynClassification is not null
-                && RoslynClassification == "namespace name"
+            if (Classification is not null
+                && Classification == "namespace name"
                 && AncestorKinds.GetLast() == SyntaxKind.NamespaceDeclaration
                 && AncestorKinds.GetSecondToLast() == SyntaxKind.NamespaceDeclaration)
             {
                 return true;
             }
 
-            return RoslynClassification is not null
-                && RoslynClassification == "namespace name"
+            return Classification is not null
+                && Classification == "namespace name"
                 && AncestorKinds.GetLast() == SyntaxKind.NamespaceDeclaration
                 && AncestorKinds.GetSecondToLast() == SyntaxKind.QualifiedName;
         }
@@ -1615,8 +1604,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsImplicitParameterKeyword()
         {
-            bool hasKeywordClassification = RoslynClassification is not null
-                && RoslynClassification == "keyword";
+            bool hasKeywordClassification = Classification is not null
+                && Classification == "keyword";
 
             bool hasAccessorAncestor = HasAncestor(SyntaxKind.AccessorList);
 
@@ -1793,8 +1782,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsValueAndKeyword()
         {
-            bool hasKeywordClassification = RoslynClassification is not null
-                && RoslynClassification == "keyword";
+            bool hasKeywordClassification = Classification is not null
+                && Classification == "keyword";
 
             // covers implicit accessor parameters
             return Kind == SyntaxKind.IdentifierToken
@@ -1983,7 +1972,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #region Operator Checks
         public bool IsOperator()
         {
-            if (RoslynClassification != "operator")
+            if (Classification != "operator")
                 return false;
 
             return GlobalConstants.Operators.Contains(Text);
@@ -2261,10 +2250,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsArgumentSeparator()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.ArgumentList)
-                && Text == ",";
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.ArgumentList);
         }
 
         public bool IsArrayInitializerElementSeparator()
@@ -2297,10 +2284,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsBaseTypeSeparator()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.BaseList)
-                && Text == ":";
+            return Kind == SyntaxKind.ColonToken
+                && HasAncestorAt(0, SyntaxKind.BaseList);
         }
 
         public bool IsCollectionExpressionElementSeparator()
@@ -2329,10 +2314,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsEnumMemberSeparator()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.EnumDeclaration)
-                && Text == ",";
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.EnumDeclaration);
         }
 
         public bool IsInterpolationFormatSeparator()
@@ -2373,10 +2356,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsParameterSeparator()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.ParameterList)
-                && Text == ",";
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.ParameterList);
         }
 
         public bool IsPropertyInitializationSeparator()
@@ -2405,25 +2386,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsTypeParameterConstraintClauseSeperator()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.TypeParameterConstraintClause)
-                && Text == ":";
+            return Kind == SyntaxKind.ColonToken
+                && HasAncestorAt(0, SyntaxKind.TypeParameterConstraintClause);
         }
 
         public bool IsVariableDeclaratorSeparator()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && HasAncestorAt(0, SyntaxKind.VariableDeclaration)
-                && Text == ",";
+            return Kind == SyntaxKind.CommaToken
+                && HasAncestorAt(0, SyntaxKind.VariableDeclaration);
         }
 
         public bool IsStatementTerminator()
         {
-            return RoslynClassification is not null
-                && RoslynClassification == "punctuation"
-                && Text == ";";
+            return Kind == SyntaxKind.SemicolonToken;
         }
 
         public bool IsSwitchCaseLabelTerminator() => Kind == SyntaxKind.ColonToken
@@ -2795,7 +2770,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return false;
 
             // avoids accidentally catching on instance vars that look like qualifiers
-            if (RoslynClassification
+            if (Classification
                 is "field name"
                 or "local name"
                 or "parameter name"
@@ -3027,7 +3002,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 || Kind == SyntaxKind.DefaultKeyword
                 || SyntaxFacts.IsLiteralExpression(Kind);
 
-            return isValidToken && HasAncestorAt(1, SyntaxKind.ReturnStatement);
+            bool hasValidAncestor = HasAncestorAt(1, SyntaxKind.ReturnStatement)
+                || HasAncestorAt(1, SyntaxKind.YieldReturnStatement);
+
+            return isValidToken && hasValidAncestor;
         }
 
         public bool IsSizeOfOperand()

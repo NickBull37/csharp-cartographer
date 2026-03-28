@@ -179,7 +179,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return key + role;
 
             // identifier references get "special keys"
-            if (token.RoslynClassification == "parameter name")
+            if (token.Classification == "parameter name")
             {
                 if (token.IsLambdaParameterReference())
                     return key + "LambdaParameterReference";
@@ -187,10 +187,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return key + "ParameterReference";
             }
 
-            if (token.RoslynClassification == "local name")
+            if (token.Classification == "local name")
                 return key + "LocalVariableReference";
 
-            if (token.RoslynClassification == "field name")
+            if (token.Classification == "field name")
                 return key + "FieldReference";
 
             // default

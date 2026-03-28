@@ -14,8 +14,6 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
 
         public int NumTokensAnalyzed { get; init; }
 
-        public int NumLanguageElementTags { get; init; }
-
         public int NumAncestorsMapped { get; init; }
 
         public string TimeToGenerate { get; set; } = string.Empty;
@@ -31,7 +29,6 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
             CreatedDate = DateTime.Now;
             ArtifactType = GetArtifactType(fileName);
             NumTokensAnalyzed = navTokens.Count;
-            NumLanguageElementTags = CountArtifactTags(navTokens);
             NumAncestorsMapped = CountAncestorsMapped(navTokens);
             TimeToGenerate = FormatTimeSpan(timeToGenerate);
             Title = fileName;
@@ -52,19 +49,6 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
                 "GenerateArtifactDto.cs" => "Data Transfer Object (DTO)",
                 _ => "User uploaded file",
             };
-        }
-
-        private static int CountArtifactTags(List<NavToken> navTokens)
-        {
-            var tagCount = 0;
-            foreach (var token in navTokens)
-            {
-                foreach (var tag in token.Tags)
-                {
-                    tagCount++;
-                }
-            }
-            return tagCount;
         }
 
         private static int CountAncestorsMapped(List<NavToken> navTokens)

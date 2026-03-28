@@ -129,14 +129,11 @@ const TokenSidebarContent = ({
     // State Variables
     const [tokenText, setTokenText] = useState('');
     const [tokenLabel, setTokenLabel] = useState('');
-    const [roslynClassification, setRoslynClassification] = useState('');
-    const [updatedClassification, setUpdatedClassification] = useState('');
+    const [classification, setClassification] = useState('');
     const [tokenDefinition, setTokenDefinition] = useState('');
     const [comprehensiveElement, setComprehensiveElement] = useState('');
     const [highlightColor, setHighlightColor] = useState('');
-    const [tokenTags, setTokenTags] = useState([]);
     const [charts, setCharts] = useState([]);
-    const [activeTag, setActiveTag] = useState(null);
     const [activeChart, setActiveChart] = useState(null);
     const [tokenChartExpanded, setTokenChartExpanded] = useState(true);
 
@@ -211,21 +208,18 @@ const TokenSidebarContent = ({
         if (activeToken) {
             setTokenText(activeToken.text || '');
             setTokenLabel(activeToken.label || '');
-            setUpdatedClassification(activeToken.updatedClassification || '');
-            setRoslynClassification(activeToken.roslynClassification || '');
+            setClassification(activeToken.classification || '');
             setTokenDefinition(activeToken.definition || '');
             setComprehensiveElement(activeToken.comprehensiveElement || '');
             setHighlightColor(activeToken.highlightColor || '');
-            setTokenTags(activeToken.tags || []);
             setCharts(activeToken.charts || []);
         } else {
             setTokenText('');
             setTokenLabel('');
-            setUpdatedClassification('');
+            setClassification('');
             setTokenDefinition('');
             setComprehensiveElement('');
             setHighlightColor('');
-            setTokenTags([]);
             setCharts([]);
         }
     }, [activeToken]);
@@ -312,7 +306,6 @@ const TokenSidebarContent = ({
                         }
                     >
                         {tokenText}
-                        {/* {tokenText} - {activeTokenIndex} */}
                     </TokenText>
                     <Tooltip title="Next Token">
                         <NextTokenButton
@@ -344,7 +337,7 @@ const TokenSidebarContent = ({
                                 py: '2px'
                             }}
                         >
-                            {roslynClassification} - {activeTokenIndex}
+                            {classification} - {activeTokenIndex}
                         </Typography>
 
                         <Divider sx={{ bgcolor: '#808080' }} />
