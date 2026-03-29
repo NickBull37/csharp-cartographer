@@ -262,9 +262,44 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsDeconstructionDelimiter()
         {
-            return IsDelimiter()
-                && HasAncestorAt(0, SyntaxKind.ParenthesizedVariableDesignation)
-                && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+            return IsNormalDeconstruction() || IsLoopDeconstruction();
+
+            // var (x, y) = (10, 20);
+            bool IsNormalDeconstruction()
+            {
+                bool isLeftHandSide = false;
+                while (NextToken is not null && NextToken.Text != ";")
+                {
+                    // means tokens are on left-hand side of statement -> deconstruction
+                    if (NextToken.Text == "=")
+                        isLeftHandSide = true;
+
+                    NextToken = NextToken.NextToken;
+                }
+
+                bool hasValidAncestors = HasAncestorAt(0, SyntaxKind.ParenthesizedVariableDesignation)
+                    || HasAncestorAt(0, SyntaxKind.TupleExpression);
+
+                return IsDelimiter()
+                    && isLeftHandSide
+                    && hasValidAncestors
+                    && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+            }
+
+            bool IsLoopDeconstruction()
+            {
+                // foreach ((string k, int v) in d)
+                bool hasValidAncestors1 = HasAncestorAt(0, SyntaxKind.TupleExpression)
+                    && HasAncestorAt(1, SyntaxKind.ForEachVariableStatement);
+
+                // foreach (var (key, valuetwo) in dict)
+                bool hasValidAncestors2 = HasAncestorAt(0, SyntaxKind.ParenthesizedVariableDesignation)
+                    && HasAncestorAt(1, SyntaxKind.DeclarationExpression);
+
+                return IsDelimiter()
+                    && (hasValidAncestors1 || hasValidAncestors2)
+                    && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
+            }
         }
 
         public bool IsDefaultExpressionDelimiter()
@@ -532,6 +567,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsTupleExpressionDelimiter()
         {
+            /*
+             *  Tuples and deconstruction have a lot of overlap.
+             */
+
+            while (NextToken is not null && NextToken.Text != ";")
+            {
+                // means tokens are on left-hand side of statement -> deconstruction
+                if (NextToken.Text == "=")
+                    return false;
+
+                NextToken = NextToken.NextToken;
+            }
+
             return IsDelimiter()
                 && HasAncestorAt(0, SyntaxKind.TupleExpression)
                 && (Kind == SyntaxKind.OpenParenToken || Kind == SyntaxKind.CloseParenToken);
@@ -854,6 +902,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return false;
         }
 
+        public bool IsWithExpressionSource()
+        {
+            return Kind == SyntaxKind.IdentifierToken
+                && NextToken?.Kind == SyntaxKind.WithKeyword
+                && HasAncestorAt(1, SyntaxKind.WithExpression);
+        }
+
         /*
          *  -----------------------------------------------------------------------
          *      Declaration Identifiers
@@ -875,7 +930,34 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsDeconstructionVariable()
         {
-            return HasAncestorAt(0, SyntaxKind.SingleVariableDesignation);
+            // covers: var (x, y) = (10, 20);
+            //         (left, right) = (100, 200);
+
+            bool prevValidText = PrevToken?.Text is "(" or ",";
+            bool prevValidRole = PrevToken?.Map.SemanticRole
+                is SemanticRole.DeconstructionBoundary
+                or SemanticRole.DeconstructionVariableSeparator;
+
+            bool nextValidText = NextToken?.Text is "," or ")";
+
+            bool prevValid = prevValidText && prevValidRole;
+            bool nextValid = nextValidText;
+            bool parentValid = HasAncestorAt(0, SyntaxKind.SingleVariableDesignation)
+                || HasAncestorAt(0, SyntaxKind.IdentifierName);
+
+            if (prevValid && nextValid && parentValid)
+                return true;
+
+            // covers: (int id2, string name2) = GetUser();
+            bool hasValidAncestors = HasAncestorAt(0, SyntaxKind.SingleVariableDesignation)
+                && HasAncestorAt(1, SyntaxKind.DeclarationExpression)
+                && HasAncestorAt(2, SyntaxKind.Argument)
+                && HasAncestorAt(3, SyntaxKind.TupleExpression);
+
+            if (Kind == SyntaxKind.IdentifierToken && hasValidAncestors)
+                return true;
+
+            return false;
         }
 
         public bool IsDelegateDeclaration() =>
@@ -1005,15 +1087,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return HasAncestorAt(0, SyntaxKind.InterfaceDeclaration);
         }
 
-        public bool IsMethodDeclaration() =>
-            HasAncestorAt(0, SyntaxKind.MethodDeclaration);
+        public bool IsMethodDeclaration()
+        {
+            return HasAncestorAt(0, SyntaxKind.MethodDeclaration)
+                || HasAncestorAt(0, SyntaxKind.LocalFunctionStatement);
+        }
 
         public bool IsOutVariableDeclaration()
         {
             return Kind == SyntaxKind.IdentifierToken
                 && HasAncestorAt(0, SyntaxKind.SingleVariableDesignation)
                 && HasAncestorAt(1, SyntaxKind.DeclarationExpression)
-                && HasAncestorAt(2, SyntaxKind.Argument);
+                && HasAncestorAt(2, SyntaxKind.Argument)
+                && !HasAncestorAt(3, SyntaxKind.TupleExpression);
         }
 
         public bool IsParameterDeclaration()
@@ -1086,6 +1172,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsLocalVariableType()
         {
+            // skip tuple types
+            if (HasAncestorAt(0, SyntaxKind.TupleElement))
+                return false;
+
             // skip arrays since array types are made of multiple tokens
             if (NextToken?.Text == "[")
                 return false;
@@ -2273,10 +2363,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && HasAncestorAt(0, SyntaxKind.TypeParameterConstraintClause);
         }
 
-        public bool IsDeconstructionValueSeparator()
+        public bool IsDeconstructionVariableSeparator()
         {
-            return Kind == SyntaxKind.CommaToken
-                && HasAncestorAt(0, SyntaxKind.ParenthesizedVariableDesignation);
+            if (Kind != SyntaxKind.CommaToken)
+                return false;
+
+            // overlaps with tuple element separator, check role of prev token
+            bool validPrev = PrevToken?.Map.SemanticRole == SemanticRole.DeconstructionVariable;
+            if (validPrev)
+                return true;
+
+            return HasAncestorAt(0, SyntaxKind.ParenthesizedVariableDesignation);
         }
 
         public bool IsEnumMemberSeparator()
@@ -2345,6 +2442,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsTupleElementSeperator()
         {
             if (Kind != SyntaxKind.CommaToken)
+                return false;
+
+            // overlaps with deconstruction variable separator, check role of prev token
+            bool invalidPrev = PrevToken?.Map.SemanticRole == SemanticRole.DeconstructionVariable;
+            if (invalidPrev)
                 return false;
 
             return HasAncestorAt(0, SyntaxKind.TupleType)
@@ -2808,11 +2910,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             bool grandParentIsValid = HasAncestorAt(1, SyntaxKind.Argument)
                 || HasAncestorAt(1, SyntaxKind.AttributeArgument);
 
-            if (parentIsValid && grandParentIsValid)
-                return true;
+            bool greatGrandParentIsValid = !HasAncestorAt(2, SyntaxKind.TupleExpression);
 
-            // out variable declarations
-            if (IsOutVariableDeclaration())
+            if (parentIsValid && grandParentIsValid && greatGrandParentIsValid)
                 return true;
 
             return false;
@@ -3005,6 +3105,23 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (hasValidNextToken && hasValidAncestor)
                 return true;
             return false;
+        }
+
+        public bool IsTupleElement()
+        {
+            bool prevValidText = PrevToken?.Text is "(" or ",";
+            bool prevValidRole = PrevToken?.Map.SemanticRole
+                is SemanticRole.TupleExpressionBoundary
+                or SemanticRole.TupleElementSeparator;
+
+            bool nextValidText = NextToken?.Text is "," or ")";
+
+            bool prevValid = prevValidText && prevValidRole;
+            bool nextValid = nextValidText;
+            bool ancestorsValid = HasAncestorAt(1, SyntaxKind.Argument)
+                && HasAncestorAt(2, SyntaxKind.TupleExpression);
+
+            return prevValid && nextValid && ancestorsValid;
         }
 
         public bool IsTypeOfOperand()

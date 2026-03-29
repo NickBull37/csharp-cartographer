@@ -310,12 +310,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.LetVariable:
                 case SemanticRole.QuerySource:
                 case SemanticRole.RangeVariable:
-                    //case SemanticRole.GroupContinuationRangeVariableReference:
-                    //case SemanticRole.JoinIntoRangeVariableReference:
-                    //case SemanticRole.JoinRangeVariableReference:
-                    //case SemanticRole.LetVariableReference:
-                    //case SemanticRole.QueryVariableReference:
-                    //case SemanticRole.RangeVariableReference:
                     token.HighlightColor = White;
                     break;
                 case SemanticRole.AliasQualifier:

@@ -236,7 +236,7 @@
   "CollectionInitializerElementSeparator": {
     "Definition": "Separates elements within a collection initializer expression."
   },
-  "DeconstructionValueSeparator": {
+  "DeconstructionVariableSeparator": {
     "Definition": "Separates variables within a deconstruction expression."
   },
   "EnumMemberSeparator": {
@@ -605,6 +605,9 @@
   "TypeParameterConstraint": {
     "Definition": "This identifier references the declared generic type parameter inside a constraint clause that sets rules for the arguments that are allowed to be passed in for the generic type parameter."
   },
+  "TupleElement": {
+    "Definition": "A single element inside a {c:bold}tuple{/c} expression. Each element holds one position in the tuple and can represent a value, a type, or a named entry depending on how the tuple is being used."
+  },
   "TupleElementName": {
     "Definition": "A tuple element name gives a readable name to a value inside a tuple. It makes tuple values easier to understand and access."
   },
@@ -817,6 +820,9 @@
   },
   "LockTarget": {
     "Definition": "The variable that a {c:color-blue keyword}lock{/c} statement uses to control access to the protected code block. Only one execution thread can hold the lock on this target at a time."
+  },
+  "WithExpressionSource": {
+    "Definition": "The existing value that a {c:color-blue keyword}with{/c} expression copies before applying the specified changes. It provides the starting state for the new value."
   },
   "": {
     "Definition": ""

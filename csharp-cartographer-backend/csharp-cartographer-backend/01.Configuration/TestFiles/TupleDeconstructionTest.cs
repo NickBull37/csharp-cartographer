@@ -13,6 +13,7 @@
             // Deconstruction example
             var point = (10, 20);
             var (x, y) = point;
+            var (_, z) = point;
         }
     }
 }

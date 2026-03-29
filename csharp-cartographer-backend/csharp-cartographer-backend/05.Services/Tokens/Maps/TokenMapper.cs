@@ -413,8 +413,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsConstraintSeparator())
                     return SemanticRole.ConstraintSeparator;
 
-                if (token.IsDeconstructionValueSeparator())
-                    return SemanticRole.DeconstructionValueSeparator;
+                if (token.IsDeconstructionVariableSeparator())
+                    return SemanticRole.DeconstructionVariableSeparator;
 
                 if (token.IsEnumMemberSeparator())
                     return SemanticRole.EnumMemberSeparator;
@@ -933,6 +933,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsTernaryTrueValue())
                 return SemanticRole.TernaryTrueValue;
 
+            // Tuple elements
+            if (token.IsTupleElement())
+                return SemanticRole.TupleElement;
+
             // Type qualifiers
             if (token.IsTypeQualifier())
                 return SemanticRole.TypeQualifier;
@@ -955,8 +959,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsConstructorDeclaration())
                 return SemanticRole.ConstructorDeclaration;
 
-            //if (token.IsDeconstructionVariable())
-            //    return SemanticRole.DeconstructionVariable;
+            if (token.IsDeconstructionVariable())
+                return SemanticRole.DeconstructionVariable;
 
             if (token.IsDelegateDeclaration())
                 return SemanticRole.DelegateDeclaration;
@@ -1140,6 +1144,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Identifier - lock target
             if (token.IsLockTarget())
                 return SemanticRole.LockTarget;
+
+            // With expression source
+            if (token.IsWithExpressionSource())
+                return SemanticRole.WithExpressionSource;
 
             // --------------------------------------------------------- //
 

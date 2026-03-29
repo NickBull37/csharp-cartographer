@@ -36,7 +36,7 @@
     "Definition": "The name of a {c:color-yellow bold}method{/c} name that can be invoked.{RefExt}"
   },
   "Identifier:MethodInvocation": {
-    "Definition": "The name of a {c:color-yellow bold}method{/c} being invoked.{JumpExt}"
+    "Definition": "The name of a {c:color-yellow bold}method{/c} being invoked.{HovExt}"
   },
   "Identifier:Parameter": {
     "Definition": "The name of a {c:color-light-blue bold}parameter{/c} that is accessible anywhere within the following method or constructor body."

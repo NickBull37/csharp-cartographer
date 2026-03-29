@@ -9,9 +9,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
     public static partial class DefinitionProvider
     {
         private const string LineBreakPlaceholder = "<break/>";
+        private const string HovExtPlaceholder = "{HovExt}";
         private const string JumpExtPlaceholder = "{JumpExt}";
         private const string RefExtPlaceholder = "{RefExt}";
 
+        private const string HoverExtension = "<break/>Hover your cusor over the {c:color-yellow bold}method{/c} name to see addition details like what the method will return or what types the provided arguments need to be.";
         private const string JumpToDefinitionExtension = "<break/>Put your cursor inside the identifier name in your IDE and hit {c:keyword}F12{/c} to jump to the identifier's definition.";
         private const string ReferenceExtension = "<break/>Look for a {c:underline}references{/c} link above the declaration in your IDE to see everywhere it's currently being used.";
 
@@ -127,14 +129,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return markup;
 
             markup = markup.Replace(
-                RefExtPlaceholder,
-                ReferenceExtension,
+                HovExtPlaceholder,
+                HoverExtension,
                 StringComparison.OrdinalIgnoreCase
             );
 
             markup = markup.Replace(
                 JumpExtPlaceholder,
                 JumpToDefinitionExtension,
+                StringComparison.OrdinalIgnoreCase
+            );
+
+            markup = markup.Replace(
+                RefExtPlaceholder,
+                ReferenceExtension,
                 StringComparison.OrdinalIgnoreCase
             );
 

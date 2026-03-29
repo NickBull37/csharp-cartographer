@@ -72,7 +72,8 @@ html {
 body {
     /* Set background color for entire site */
     /* 15% */
-    background: #262626;
+    /* background: #262626; */
+    background: #212121;
 
     /* Set default text color for entire site */
     color: #fff;
@@ -266,10 +267,12 @@ body {
     color: #808080;
 }
 .color-blue {
-    color: #6fabdc;
+    /* color: #6fabdc; */
+    color: #569cd6;
 }
 .color-light-blue {
-    color: #b3d1ff;
+    /* color: #b3d1ff; */
+    color: #9cdcfe;
 }
 .color-dark-blue {
     color: #008ae6;

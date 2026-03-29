@@ -209,6 +209,7 @@
                 // ------------------------------------------------------------
                 var item = new Item("Apples", 1.19m);
                 var saleItem = item with { Price = 0.79m };    // with
+                var testItem = GetItem() with { Price = 0.79m };
 
 
                 // ------------------------------------------------------------
@@ -220,9 +221,16 @@
                     int* pValue = &val;             // & (AddressOf)
                     Console.WriteLine(*pValue);     // * (Dereference)
                 }
+
+
             }
 
             public record Item(string Name, decimal Price);
+
+            public Item GetItem()
+            {
+                return new Item("", 0.0m);
+            }
         }
     }
 }

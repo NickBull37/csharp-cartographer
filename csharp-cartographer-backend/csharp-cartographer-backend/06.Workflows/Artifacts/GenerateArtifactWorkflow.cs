@@ -20,7 +20,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         private readonly INavTokenGenerator _navTokenGenerator;
         private readonly ISyntaxHighlighter _syntaxHighlighter;
         private readonly ITokenChartGenerator _tokenChartGenerator;
-        private readonly ITokenChartWizard _tokenChartWizard;
         private readonly ITokenMapper _tokenMapper;
         private readonly CartographerConfig _config;
 
@@ -29,7 +28,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             INavTokenGenerator navTokenGenerator,
             ISyntaxHighlighter syntaxHighlighter,
             ITokenChartGenerator tokenChartGenerator,
-            ITokenChartWizard tokenChartWizard,
             ITokenMapper tokenMapper,
             IOptions<CartographerConfig> config)
         {
@@ -37,7 +35,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _navTokenGenerator = navTokenGenerator;
             _syntaxHighlighter = syntaxHighlighter;
             _tokenChartGenerator = tokenChartGenerator;
-            _tokenChartWizard = tokenChartWizard;
             _tokenMapper = tokenMapper;
             _config = config.Value;
         }
@@ -61,51 +58,45 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
              * 
              *   0. Read in source code from user uploaded file & generate FileData.
              *   1. Start stopwatch.
-             *   2. Generate SyntaxTree with passed in FileData.
-             *   3. Generate SemanticModel with CompilationUnit & SyntaxTree.
-             *   4. Turn the Roslyn data into a list of NavTokens.
-             *   5. Generate ancestor charts for each token.
-             *   6. Map NavTokens
-             *   7. Add highlight indices to token charts for highlighting ancestors.
-             *   8. Add TokenTags definitions & insights.
-             *   9. Add syntax highlighting for all NavTokens (should be last step in workflow).
-             *   10. Build artifact.
-             *   11. Stop stopwatch.
-             *   12. Return artifact.
+             *   2. Generate a list of NavTokens from source file's SyntaxTree.
+             *   3. Generate ancestor charts for each NavToken.
+             *   4. Map NavTokens.
+             *   5. Add TokenTags definitions & insights.
+             *   6. Add syntax highlighting for NavTokens.
+             *   7. Build artifact.
+             *   8. Stop stopwatch.
+             *   9. Return artifact.
              *   
              */
 
             // Step 1. Start stopwatch.
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            // Step 4. Turn the Roslyn data into a list of NavTokens.
+            // Step 2. Turn the Roslyn data into a list of NavTokens.
             var navTokens = await _navTokenGenerator.GenerateNavTokens(fileData, cancellationToken);
 
-            // Step 5. Generate ancestor charts for each token.
+            // Step 3. Generate ancestor charts for each token.
             _tokenChartGenerator.GenerateTokenCharts(navTokens);
 
-            // Step 6. Map NavTokens
+            // Step 4. Map NavTokens
             _tokenMapper.MapNavTokens(navTokens);
 
-            // Step 7. Add highlight indices to token charts for highlighting ancestors.
-            //_tokenChartWizard.AddHighlightRangeToNavTokenCharts(navTokens);
-
-            // Step 8. Add token chart definitions & insights.
+            // Step 5. Add token chart definitions & insights.
             //_tokenChartWizard.AddFactsAndInsightsToNavTokenCharts(navTokens);
 
-            // Step 9. Add syntax highlighting for all NavTokens (should be last step in workflow).
+            // Step 6. Add syntax highlighting for NavTokens.
             _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
 
-            // Step 10. Build & return artifact.
+            // Step 7. Build & return artifact.
             var artifact = new Artifact(fileData.FileName, stopwatch.Elapsed, navTokens);
 
-            // Step 11. Stop stopwatch.
+            // Step 8. Stop stopwatch.
             stopwatch.Stop();
 
             // Bonus: Log artifact data (optional)
             LogArtifactData(artifact);
 
-            // Step 12. Return artifact.
+            // Step 9. Return artifact.
             return artifact;
         }
 

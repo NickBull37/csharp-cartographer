@@ -24,25 +24,6 @@
 
         // ------------ DELIMITERS ------------ //
 
-        //AccessorBoundary,
-        //AccessorListBoundary,
-        //ArgumentListBoundary,
-        //BlockBoundary,
-        //ConditionBoundary,
-        //ContextBlockBoundary,
-        //DefinitionBoundary,
-        //InterpolationBoundary,
-        //InitializationBoundary,
-        //LoopControlBoundary,
-        //ParameterListBoundary,
-        //ParenthesizedExpressionBoundary,
-        //SwitchExpressionBoundary,
-        //SwitchStatementBoundary,
-        //TupleExpressionBoundary,
-        //TupleTypeBoundary,
-        //TypeArgumentListBoundary,
-        //TypeParameterListBoundary,
-
         // Definitions
         [Label("DefinitionBoundary")]
         ClassBoundary,
@@ -176,7 +157,7 @@
         CollectionExpressionElementSeparator,
         CollectionInitializerElementSeparator,
         ConstraintSeparator,
-        DeconstructionValueSeparator,
+        DeconstructionVariableSeparator,
         EnumMemberSeparator,
         InterpolationFormatSeparator,
         MemberPatternSeparator,
@@ -348,6 +329,7 @@
         ParameterType,
         PointerBaseType,
         PropertyType,
+        TupleElement,
         TupleElementName,
         TupleElementType,
         TypeConstraint,
@@ -424,6 +406,7 @@
         TernaryTrueValue,
         TernaryFalseValue,
         TypeOfOperand,
+        WithExpressionSource,
     }
 
     public enum TypeSymbols
@@ -590,8 +573,6 @@
 
         public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
 
-        //public IEnumerable<SemanticModifiers> Modifiers { get; set; } = [];
-
         // UI elements to show to the user
         public string RoleLabel { get; set; } = string.Empty;
 
@@ -605,22 +586,10 @@
 
         public SemanticMap(
             SyntaxCategory primaryKind,
-            SemanticRole semanticRole
-        //List<SemanticModifiers> modifiers
-        )
+            SemanticRole semanticRole)
         {
-            //List<string> modifierStrings = [];
-            //if (modifiers is not null)
-            //{
-            //    foreach (var modifier in modifiers)
-            //    {
-            //        modifierStrings.Add(modifier.ToString());
-            //    }
-            //}
-
             SyntaxCategory = primaryKind;
             SemanticRole = semanticRole;
-            //ModifierStrings = modifierStrings;
         }
     }
 }
