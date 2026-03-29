@@ -1,63 +1,94 @@
 ﻿using csharp_cartographer_backend._03.Models.Tokens;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Text;
 
 namespace csharp_cartographer_backend._05.Services.Charts
 {
     public class TokenChartGenerator : ITokenChartGenerator
     {
-        private static readonly List<SyntaxKind> _KindsToSkip =
+        private static readonly HashSet<SyntaxKind> _KindsToSkip =
         [
             SyntaxKind.CompilationUnit,
             SyntaxKind.EndOfFileToken,
-            //SyntaxKind.QualifiedName,
             //SyntaxKind.Block,
-            //SyntaxKind.IdentifierToken,
-            //SyntaxKind.PredefinedType,
         ];
 
-        /// <summary>Iterates through NavTokens and adds a chart for itself and each parent node.</summary>
+        /// <summary>Iterates through NavTokens and adds a chart for itself and each ancestor node.</summary>
         /// <param name="navTokens">The list of NavTokens.</param>
         public void GenerateTokenCharts(List<NavToken> navTokens)
         {
+            var tokenIndexBySpan = navTokens.ToDictionary(
+                t => t.RoslynToken.FullSpan,
+                t => t.Index);
+
             foreach (var token in navTokens)
             {
-                // add chart for the token itself
-                CreateAndAddChart(token, token.Kind.ToString(), token.RoslynToken);
+                var tokenChart = CreateSingleTokenChart(token);
+                token.Charts.Add(tokenChart);
 
-                // add chart for each ancestor
                 foreach (var ancestor in GetAncestorNodes(token.RoslynToken))
                 {
                     if (_KindsToSkip.Contains(ancestor.Kind()))
                         continue;
 
-                    CreateAndAddChart(token, ancestor.Kind().ToString(), ancestor);
+                    var ancestorChart = CreateAncestorNodeChart(
+                        ancestor,
+                        tokenIndexBySpan);
+
+                    token.Charts.Add(ancestorChart);
                 }
             }
         }
 
-        private static void CreateAndAddChart(NavToken navToken, string label, SyntaxNodeOrToken nodeOrToken)
+        private static TokenChart CreateSingleTokenChart(NavToken token)
         {
-            List<SyntaxToken> tokens = [];
-
-            if (nodeOrToken.AsNode() != null && nodeOrToken.IsNode)
+            return new TokenChart
             {
-                // if it's a SyntaxNode, get its descendant tokens
-                tokens = nodeOrToken.AsNode()!.DescendantTokens().ToList();
-            }
-            else if (nodeOrToken.IsToken)
-            {
-                // if it's a singular SyntaxToken there's no need for descendants
-                tokens = [nodeOrToken.AsToken()];
-            }
-
-            var tokenChart = new TokenChart
-            {
-                Label = label,
-                Tokens = tokens
+                Label = token.Kind.ToString(),
+                HighlightRange = new HighlightRange
+                {
+                    StartIndex = token.Index,
+                    EndIndex = token.Index,
+                }
             };
+        }
 
-            navToken.Charts.Add(tokenChart);
+        private static TokenChart CreateAncestorNodeChart(SyntaxNode node, Dictionary<TextSpan, int> tokenIndexBySpan)
+        {
+            return new TokenChart
+            {
+                Label = node.Kind().ToString(),
+                HighlightRange = TryCreateNodeHighlightRange(node, tokenIndexBySpan),
+            };
+        }
+
+        private static HighlightRange? TryCreateNodeHighlightRange(SyntaxNode node, Dictionary<TextSpan, int> tokenIndexBySpan)
+        {
+            using var enumerator = node.DescendantTokens().GetEnumerator();
+
+            if (!enumerator.MoveNext())
+                return null;
+
+            var firstToken = enumerator.Current;
+            var lastToken = firstToken;
+
+            while (enumerator.MoveNext())
+            {
+                lastToken = enumerator.Current;
+            }
+
+            if (!tokenIndexBySpan.TryGetValue(firstToken.FullSpan, out var startIndex))
+                return null;
+
+            if (!tokenIndexBySpan.TryGetValue(lastToken.FullSpan, out var endIndex))
+                return null;
+
+            return new HighlightRange
+            {
+                StartIndex = startIndex,
+                EndIndex = endIndex,
+            };
         }
 
         private static IEnumerable<SyntaxNode> GetAncestorNodes(SyntaxToken token)

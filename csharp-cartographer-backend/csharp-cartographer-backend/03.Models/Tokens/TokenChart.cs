@@ -13,8 +13,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public List<string> Insights { get; set; } = [];
 
-        public HighlightRange HighlightRange { get; set; }
+        public HighlightRange? HighlightRange { get; set; }
 
+        // Obsolete
         [JsonIgnore]
         public List<SyntaxToken> Tokens { get; set; } = [];
     }
