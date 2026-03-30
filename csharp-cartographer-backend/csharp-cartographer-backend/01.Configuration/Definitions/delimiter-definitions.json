@@ -23,6 +23,12 @@
   "InterfaceBoundary:Close": {
     "Definition": "The end of an {c:color-blue keyword}interface{/c} definition."
   },
+  "LocalFunctionBoundary:Open": {
+    "Definition": "The beginning of the {c:bold}local function{/c} definition."
+  },
+  "LocalFunctionBoundary:Close": {
+    "Definition": "The end of the {c:bold}local function{/c} definition."
+  },
   "MethodBoundary:Open": {
     "Definition": "The beginning of the {c:bold}method{/c} definition."
   },

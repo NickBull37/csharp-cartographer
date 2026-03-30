@@ -5,8 +5,8 @@
     /// **************************************************
     public partial class GlobalConstants
     {
-        public static readonly List<string> Delimiters =
-        [
+        public static readonly HashSet<string> Delimiters = new(StringComparer.Ordinal)
+        {
             "(",
             ")",
             "[",
@@ -15,6 +15,6 @@
             "}",
             "<",
             ">"
-        ];
+        };
     }
 }

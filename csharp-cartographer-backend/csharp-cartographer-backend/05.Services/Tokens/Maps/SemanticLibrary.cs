@@ -154,6 +154,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsNullConditionalGuard())
                 return key + ".";
 
+            // (=>) lambda / expression body arrow
+            if (token.IsLambdaOperator())
+                return key + ":Lambda";
+
             return key;
         }
 

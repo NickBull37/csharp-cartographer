@@ -69,7 +69,11 @@ const NextTokenButton = styled(IconButton)(() => ({
     },
 }));
 const SemanticRoleLabel = styled(Typography)(() => ({
-    fontSize: '16px',
+    fontSize: '14px',
+    // color: colors.gray95,
+}));
+const ClassificationLabel = styled(Typography)(() => ({
+    fontSize: '14px',
     // color: colors.gray95,
 }));
 const MapTagDefFadedLabel = styled(Typography)(() => ({
@@ -426,9 +430,9 @@ const TokenSidebarContent = ({
                                                     <SemanticRoleLabel className='pk-label'>
                                                         {activeToken.map.roleLabel}
                                                     </SemanticRoleLabel>
-                                                    <Typography className={srLabelClass}>
+                                                    <ClassificationLabel className={srLabelClass}>
                                                         {activeToken.map.categoryLabel}
-                                                    </Typography>
+                                                    </ClassificationLabel>
                                                 </Box>
                                                 <Box
                                                     sx={{

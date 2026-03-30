@@ -437,6 +437,9 @@
   "InterfaceDeclaration": {
     "Definition": "The identifier of an {c:color-blue keyword}interface{/c} declaration. An implementation must be provided by any type that implements this interface. This allows different classes to share the same behavior without sharing implementation."
   },
+  "LocalFunctionDeclaration": {
+    "Definition": "The name of a {c:color-yellow bold}local function{/c}. A local function is declared inside another member or local scope and acts like a helper function that is only available within that containing scope."
+  },
   "LocalVariableDeclaration": {
     "Definition": "A local variable declaration defines a variable inside a method or block of code. Local variables are only accessible within the scope where they are declared."
   },
@@ -553,6 +556,9 @@
   },
   "GenericTypeParameter": {
     "Definition": "This identifier is a placeholder that will be replaced by a generic type argument. This allows a generic class or method to have one implementation that works for multiple data types."
+  },
+  "LocalFunctionReturnType": {
+    "Definition": "Defines the type of value returned by a {c:bold}local function{/c}."
   },
   "LocalVariableType": {
     "Definition": "A local variable data type defines what kind of value a local variable can hold. It determines how the variable can be used within its scope."

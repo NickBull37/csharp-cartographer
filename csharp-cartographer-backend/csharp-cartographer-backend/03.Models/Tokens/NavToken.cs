@@ -410,6 +410,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
         }
 
+        public bool IsLocalFunctionDelimiter()
+        {
+            return IsDelimiter()
+                && HasAncestorAt(0, SyntaxKind.Block)
+                && HasAncestorAt(1, SyntaxKind.LocalFunctionStatement)
+                && (Kind == SyntaxKind.OpenBraceToken || Kind == SyntaxKind.CloseBraceToken);
+        }
+
         public bool IsLambdaExpressionBlockDelimiter()
         {
             return IsDelimiter()
@@ -1046,6 +1054,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return isLambdaParamRef;
         }
 
+        public bool IsLocalFunctionDeclaration()
+        {
+            return HasAncestorAt(0, SyntaxKind.LocalFunctionStatement);
+        }
+
         public bool IsLocalVariableDeclaration()
         {
             // covers local vars
@@ -1089,8 +1102,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsMethodDeclaration()
         {
-            return HasAncestorAt(0, SyntaxKind.MethodDeclaration)
-                || HasAncestorAt(0, SyntaxKind.LocalFunctionStatement);
+            return HasAncestorAt(0, SyntaxKind.MethodDeclaration);
         }
 
         public bool IsOutVariableDeclaration()
@@ -1169,6 +1181,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsFieldType() =>
             HasAncestorAt(2, SyntaxKind.FieldDeclaration) ||
             HasAncestorAt(3, SyntaxKind.FieldDeclaration);
+
+        public bool IsLocalFunctionReturnType()
+        {
+            return HasAncestorAt(1, SyntaxKind.LocalFunctionStatement);
+        }
 
         public bool IsLocalVariableType()
         {

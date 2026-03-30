@@ -34,6 +34,8 @@
         [Label("DefinitionBoundary")]
         InterfaceBoundary,
         [Label("DefinitionBoundary")]
+        LocalFunctionBoundary,
+        [Label("DefinitionBoundary")]
         MethodBoundary,
         [Label("DefinitionBoundary")]
         RecordBoundary,
@@ -252,6 +254,7 @@
         FixedPointerDeclaration,
         InterfaceDeclaration,
         LambdaParameter,
+        LocalFunctionDeclaration,
         LocalVariableDeclaration,
         LoopIteratorDeclaration,
         MethodDeclaration,
@@ -322,6 +325,7 @@
         GenericTypeArgument,
         GenericTypeParameter,
         TypeParameterConstraint,
+        LocalFunctionReturnType,
         LocalVariableType,
         LoopIteratorType,
         MethodReturnType,

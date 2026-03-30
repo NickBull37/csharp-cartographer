@@ -119,7 +119,7 @@
   "Operator:..": {
     "Definition": "The range operator {c:keyword}\"..\"{/c} represents a range of values between two indices. It is commonly used with arrays and spans."
   },
-  "Operator:=>": {
+  "Operator:=>:Lambda": {
     "Definition": "The lambda operator {c:keyword}\"=>\"{/c} separates parameters from the body of a lambda expression. It defines an inline function."
   },
   "Operator:.": {

@@ -16,14 +16,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         public void MapNavTokens(List<NavToken> navTokens)
         {
-            // for tokens that have enough data to be classified on the first attempt
             for (int i = 0; i < navTokens.Count; i++)
             {
                 var token = navTokens[i];
                 token.Map = MapToken(token);
             }
-
-            //MapSpecialCaseSemanticRoles(navTokens);
 
             // add role definitions
             _semanticLibrary.AddSemanticInfo(navTokens);
@@ -114,44 +111,44 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             var semanticRole = SemanticRole.Unknown;
 
             // --- Delimiters ---
-            semanticRole = GetSemanticRoleForDelimiters(token);
+            semanticRole = TryGetDelimiterRole(token);
             if (semanticRole != SemanticRole.Unknown)
                 return semanticRole;
 
             // --- Punctuation ---
-            semanticRole = GetSemanticRoleForPunctuation(token);
+            semanticRole = TryGetPunctuationRole(token);
             if (semanticRole != SemanticRole.Unknown)
                 return semanticRole;
 
             // --- Operators ---
-            semanticRole = GetSemanticRoleForOperators(token);
+            semanticRole = TryGetOperatorRole(token);
             if (semanticRole != SemanticRole.Unknown)
                 return semanticRole;
 
             // --- Keywords ---
-            semanticRole = GetSemanticRoleForKeywords(token);
+            semanticRole = TryGetKeywordRole(token);
             if (semanticRole != SemanticRole.Unknown)
                 return semanticRole;
 
             // --- Literals ---
-            semanticRole = GetSemanticRoleForLiterals(token);
+            semanticRole = TryGetLiteralRole(token);
             if (semanticRole != SemanticRole.Unknown)
                 return semanticRole;
 
             // --- Misc ---
-            semanticRole = GetSemanticRoleForMisc(token);
+            semanticRole = TryGetMiscRole(token);
             if (semanticRole != SemanticRole.Unknown)
                 return semanticRole;
 
             // --- Identifiers ---
-            semanticRole = GetSemanticRoleForIdentifiers(token);
+            semanticRole = TryGetIdentifierRole(token);
             if (semanticRole != SemanticRole.Unknown)
                 return semanticRole;
 
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole GetSemanticRoleForDelimiters(NavToken token)
+        private static SemanticRole TryGetDelimiterRole(NavToken token)
         {
             if (!token.IsDelimiter())
                 return SemanticRole.Unknown;
@@ -173,9 +170,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsCatchFilterDelimiter())
                     return SemanticRole.CatchFilterBoundary;
 
-                //if (token.IsConditionBoundary())
-                //    return SemanticRole.ConditionBoundary;
-
                 if (token.IsDeconstructionDelimiter())
                     return SemanticRole.DeconstructionBoundary;
 
@@ -190,9 +184,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsIfConditionDelimiter())
                     return SemanticRole.IfConditionBoundary;
-
-                //if (token.IsLoopControlBoundary())
-                //    return SemanticRole.LoopControlBoundary;
 
                 if (token.IsParameterListDelimiter())
                     return SemanticRole.ParameterListBoundary;
@@ -257,12 +248,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsConstructorDelimiter())
                     return SemanticRole.ConstructorBoundary;
 
-                //if (token.IsContextBlockBoundary())
-                //    return SemanticRole.ContextBlockBoundary;
-
-                //if (token.IsDefinitionBoundary())
-                //    return SemanticRole.DefinitionBoundary;
-
                 if (token.IsElseBlockDelimiter())
                     return SemanticRole.ElseBlockBoundary;
 
@@ -289,6 +274,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsLambdaExpressionBlockDelimiter())
                     return SemanticRole.LambdaExpressionBlockBoundary;
+
+                if (token.IsLocalFunctionDelimiter())
+                    return SemanticRole.LocalFunctionBoundary;
 
                 if (token.IsLockBlockDelimiter())
                     return SemanticRole.LockStatementBlockBoundary;
@@ -375,7 +363,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole GetSemanticRoleForPunctuation(NavToken token)
+        private static SemanticRole TryGetPunctuationRole(NavToken token)
         {
             if (!token.IsPunctuation())
                 return SemanticRole.Unknown;
@@ -492,7 +480,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole GetSemanticRoleForOperators(NavToken token)
+        private static SemanticRole TryGetOperatorRole(NavToken token)
         {
             if (!token.IsOperator())
                 return SemanticRole.Unknown;
@@ -583,7 +571,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole GetSemanticRoleForKeywords(NavToken token)
+        private static SemanticRole TryGetKeywordRole(NavToken token)
         {
             if (!token.IsKeyword())
                 return SemanticRole.Unknown;
@@ -603,9 +591,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Concurrency keywords ---
             if (token.IsConcurrencyKeyword())
                 return SemanticRole.Concurrency;
-
-            //if (token.IsConcurrencyModifierKeyword())
-            //    return SemanticRole.ConcurrencyModifier;
 
             // --- Conditional branching keywords ---
             if (token.IsConditionalBranchingKeyword())
@@ -682,10 +667,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Pattern matching keywords ---
             if (token.IsPatternMatchingKeyword())
                 return SemanticRole.PatternMatching;
-
-            // --- Polymorphism modifier keywords ---
-            //if (token.IsPolymorphismModifierKeyword())
-            //    return SemanticRole.PolymorphismModifier;
 
             // --- Query expressions ---
             if (token.IsQueryExpressionKeyword())
@@ -784,7 +765,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole GetSemanticRoleForLiterals(NavToken token)
+        private static SemanticRole TryGetLiteralRole(NavToken token)
         {
             if (!token.IsInterpolatedString())
                 return SemanticRole.Unknown;
@@ -814,7 +795,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole GetSemanticRoleForMisc(NavToken token)
+        private static SemanticRole TryGetMiscRole(NavToken token)
         {
             // Anonymous object elements
             if (token.IsAnonymousObjectElement())
@@ -913,6 +894,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.PointerBaseType;
 
             // Return values
+            if (token.IsLocalFunctionReturnType())
+                return SemanticRole.LocalFunctionReturnType;
+
             if (token.IsQueryReturnValue())
                 return SemanticRole.QueryReturnValue;
 
@@ -944,7 +928,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole GetSemanticRoleForIdentifiers(NavToken token)
+        private static SemanticRole TryGetIdentifierRole(NavToken token)
         {
             if (!token.IsIdentifier())
                 return SemanticRole.Unknown;
@@ -985,6 +969,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsLambdaParameterDeclaration())
                 return SemanticRole.LambdaParameter;
+
+            if (token.IsLocalFunctionDeclaration())
+                return SemanticRole.LocalFunctionDeclaration;
 
             if (token.IsLocalVariableDeclaration())
                 return SemanticRole.LocalVariableDeclaration;
