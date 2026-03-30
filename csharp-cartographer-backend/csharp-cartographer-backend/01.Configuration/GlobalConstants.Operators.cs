@@ -6,7 +6,7 @@
     public partial class GlobalConstants
     {
         /// ------  All C# Operators  ------ ///
-        public static readonly List<string> Operators =
+        public static readonly HashSet<string> Operators =
         [
             // arithmetic
             "+",
@@ -89,31 +89,8 @@
             //"typeof",
         ];
 
-        /// ------  Special Case Operators  ------ ///
-        //public static readonly List<string> SpecialCaseOperators =
-        //[
-        //    // Operators that fall into multiple semantic roles
-
-        //    "!",    // BooleanLogical : !flag
-        //            // Null            : obj!.Member   (null-forgiving)
-
-        //    "&",    // BitwiseShift   : x & y
-        //            // BooleanLogical : a & b          (when a and b are bool)
-        //            // Pointer        : int* p = &x;
-
-        //    "|",    // BitwiseShift   : x | y
-        //            // BooleanLogical : a | b          (when a and b are bool)
-
-        //    "^",    // BitwiseShift   : x ^ y
-        //            // BooleanLogical : a ^ b          (when a and b are bool)
-        //            // IndexRange     : arr[^1]
-
-        //    //"*",    // Arithmetic     : x * y
-        //            // Pointer        : int* p;   or   *p
-        //];
-
         /// Arithmetic
-        public static readonly List<string> ArithmeticOperators =
+        public static readonly HashSet<string> ArithmeticOperators =
         [
             "+",
             "-",
@@ -125,7 +102,7 @@
         ];
 
         /// Assignment
-        public static readonly List<string> AssignmentOperators =
+        public static readonly HashSet<string> AssignmentOperators =
         [
             "=",
             "+=",
@@ -142,7 +119,7 @@
         ];
 
         /// Bitwise
-        public static readonly List<string> BitwiseOperators =
+        public static readonly HashSet<string> BitwiseOperators =
         [
             "&",
             "|",
@@ -151,7 +128,7 @@
         ];
 
         /// Boolean Logical
-        public static readonly List<string> BooleanLogicalOperators =
+        public static readonly HashSet<string> BooleanLogicalOperators =
         [
             // boolean logical
             "&&",
@@ -165,7 +142,7 @@
         ];
 
         /// Comparison
-        public static readonly List<string> ComparisonOperators =
+        public static readonly HashSet<string> ComparisonOperators =
         [
             "==",
             "!=",
@@ -176,7 +153,7 @@
         ];
 
         /// Indirection
-        public static readonly List<string> IndirectionOperators =
+        public static readonly HashSet<string> IndirectionOperators =
         [
             "&",
             "*",
@@ -184,7 +161,7 @@
         ];
 
         /// Shift
-        public static readonly List<string> ShiftOperators =
+        public static readonly HashSet<string> ShiftOperators =
         [
             "<<",
             ">>",

@@ -2,8 +2,20 @@
 {
     public class MapText
     {
-        public Guid ID { get; init; } = Guid.NewGuid();
-
         public List<TextSegment> Segments { get; set; } = [];
+
+        public static MapText Undefined()
+        {
+            return new MapText
+            {
+                Segments =
+                [
+                    new TextSegment()
+                    {
+                        Text = "Could not find definition."
+                    }
+                ]
+            };
+        }
     }
 }

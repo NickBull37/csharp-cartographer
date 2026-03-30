@@ -139,7 +139,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
             foreach (var token in navTokens)
             {
-                if (token.Map.SemanticRole == SemanticRole.Unknown)
+                if (token.SemanticRole == SemanticRole.Unknown)
                     token.HighlightColor = Red;
             }
         }
@@ -148,20 +148,20 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         {
             // early-outs for local var, parameter, or property
             // identifiers that will never be colored as a type
-            if (token.Map.SemanticRole
+            if (token.SemanticRole
                 is SemanticRole.MemberAccess
                 or SemanticRole.TargetMember)
             {
                 return;
             }
 
-            if (token.Map.SemanticRole.ToString().Contains("Declaration"))
+            if (token.SemanticRole.ToString().Contains("Declaration"))
                 return;
 
-            if (token.Map.SemanticRole.ToString().Contains("Reference"))
+            if (token.SemanticRole.ToString().Contains("Reference"))
                 return;
 
-            if (token.Map.SemanticRole == SemanticRole.AssignmentRecipient)
+            if (token.SemanticRole == SemanticRole.AssignmentRecipient)
                 return;
 
             if ((token.Text is "nint" or "nuint")
@@ -289,7 +289,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static void ColorBySemanticRole(NavToken token)
         {
-            switch (token.Map!.SemanticRole)
+            switch (token.SemanticRole)
             {
                 case SemanticRole.AttributeArgument:
                 case SemanticRole.EnumMemberDeclaration:
@@ -386,13 +386,13 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         }
 
         private static string GetDefaultKeywordColor(NavToken token) =>
-            token.Map?.SemanticRole == SemanticRole.DefaultOperator ||
-            token.Map?.SemanticRole == SemanticRole.DefaultValue
+            token.SemanticRole == SemanticRole.DefaultOperator ||
+            token.SemanticRole == SemanticRole.DefaultValue
                 ? Blue
                 : Purple;
 
         private static string GetInKeywordColor(NavToken token) =>
-            token.Map?.SemanticRole == SemanticRole.LoopStatement
+            token.SemanticRole == SemanticRole.LoopStatement
                 ? Purple
                 : Blue;
         private static string GetNamespaceQualifierColor(NavToken token)

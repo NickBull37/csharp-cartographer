@@ -18,68 +18,40 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             for (int i = 0; i < navTokens.Count; i++)
             {
-                var token = navTokens[i];
-                token.Map = MapToken(token);
+                MapToken(navTokens[i]);
             }
-
-            // add role definitions
-            _semanticLibrary.AddSemanticInfo(navTokens);
         }
 
-        private static SemanticMap MapToken(NavToken token)
+        private void MapToken(NavToken token)
         {
-            var primaryKind = GetPrimaryKind(token);
-            var role = GetSemanticRole(token);
-
-            return new SemanticMap(
-                primaryKind: primaryKind,
-                semanticRole: role
-            );
+            token.PrimaryKind = GetPrimaryKind(token);
+            token.SemanticRole = GetSemanticRole(token);
+            token.Map = _semanticLibrary.GetSemanticMap(token);
         }
 
-        private static SyntaxCategory GetPrimaryKind(NavToken token)
+        private static PrimaryKind GetPrimaryKind(NavToken token)
         {
             /*
-             *   Roslyn does a lot of the heavy lifting with their classification. But their
-             *   classification value may only be used for VS syntax highlighting and isn't
-             *   100% reliable for PrimaryKind mapping.
+             *   Classification is pulled from Roslyn's semantic model used
+             *   for syntax highlighting during NavToken generation and then
+             *   corrected for various edge cases.
              */
-
-            // Special cases - update manually
-            if (token.Text == "." && token.IsQualifiedNameSeparator())
-            {
-                return SyntaxCategory.Punctuation;
-            }
-            if (token.Text == "?" && token.IsNullableTypeMarker())
-            {
-                return SyntaxCategory.Punctuation;
-            }
-            if (token.Text == ".." && token.Classification == "punctuation")
-            {
-                return SyntaxCategory.Operator;
-            }
-            if (GlobalConstants.Delimiters.Contains(token.Text) && token.Classification == "punctuation")
-            {
-                return SyntaxCategory.Delimiter;
-            }
-            if (token.Text == "args" && token.Classification == "keyword")
-            {
-                return SyntaxCategory.Identifier;
-            }
 
             switch (token.Classification)
             {
+                case "delimiter":
+                    return PrimaryKind.Delimiter;
                 case "keyword":
                 case "keyword - control":
-                    return SyntaxCategory.Keyword;
+                    return PrimaryKind.Keyword;
                 case "operator":
-                    return SyntaxCategory.Operator;
+                    return PrimaryKind.Operator;
                 case "punctuation":
-                    return SyntaxCategory.Punctuation;
+                    return PrimaryKind.Punctuation;
                 case "string":
                 case "string - verbatim":
                 case "number":
-                    return SyntaxCategory.Literal;
+                    return PrimaryKind.Literal;
                 case "class name":
                 case "constant name":
                 case "delegate name":
@@ -99,13 +71,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 case "type parameter name":
                 case "identifier":
                 case "static symbol":
-                    return SyntaxCategory.Identifier;
+                    return PrimaryKind.Identifier;
                 default:
-                    return SyntaxCategory.Unknown;
+                    return PrimaryKind.Unknown;
             }
         }
 
-        #region Semantic Roles
         private static SemanticRole GetSemanticRole(NavToken token)
         {
             var semanticRole = SemanticRole.Unknown;
@@ -148,6 +119,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
+        #region Semantic Roles
         private static SemanticRole TryGetDelimiterRole(NavToken token)
         {
             if (!token.IsDelimiter())
@@ -1177,7 +1149,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             return SemanticRole.Unknown;
         }
+        #endregion
 
+        #region Special Case Tokens
         private static SemanticRole GetSpecialCaseKeywordRole(NavToken token)
         {
             /*
@@ -1290,9 +1264,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 _ => SemanticRole.Unknown
             };
         }
-        #endregion
 
-        #region Special Case Tokens
         private static void MapSpecialCaseSemanticRoles(List<NavToken> navTokens)
         {
             MapQueryExpressionVariableRefs(navTokens);
@@ -1337,11 +1309,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.Text == ";")
                     break;
 
-                var semanticRole = token.Map?.SemanticRole;
-                if (semanticRole is null)
-                    continue;
+                var semanticRole = token.SemanticRole;
 
-                if (decToRefDict.TryGetValue(semanticRole.Value, out var referenceRole))
+                if (decToRefDict.TryGetValue(semanticRole, out var referenceRole))
                     identifierToRefDict.TryAdd(token.Text, referenceRole);
             }
 
@@ -1357,12 +1327,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 // don't update declarations (if semantic role is already set)
                 if (!token.IsQueryExpressionVariable()
-                    || token.Map is null
-                    || token.Map.SemanticRole != SemanticRole.Unknown)
+                    || token.SemanticRole != SemanticRole.Unknown)
                     continue;
 
                 if (identifierToRefDict.TryGetValue(token.Text, out var referenceRole))
-                    token.Map.SemanticRole = referenceRole;
+                    token.SemanticRole = referenceRole;
             }
         }
         #endregion

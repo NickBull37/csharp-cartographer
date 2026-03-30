@@ -1,50 +1,58 @@
 ﻿using csharp_cartographer_backend._03.Models.Tokens;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace csharp_cartographer_backend._05.Services.Roslyn
 {
     public class RoslynCorrector : IRoslynCorrector
     {
-        public string? GetCorrectedClassification(NavToken token, string? classification)
+        public string? GetCorrectedClassification(NavToken token, string? roslynClassification)
         {
-            if (string.IsNullOrEmpty(classification))
-                return null;
-
-            if (classification == "identifier")
-                return GetIdentifierCorrection(token);
-
-            if (classification == "punctuation")
-                return GetPunctuationCorrection(token);
-
-            if (classification == "static symbol")
-                return GetStaticSymbolCorrection(token);
-
-            return null;
+            return roslynClassification switch
+            {
+                "keyword" => GetKeywordCorrection(token),
+                "identifier" => GetIdentifierCorrection(token),
+                "operator" => GetOperatorCorrection(token),
+                "punctuation" => GetPunctuationCorrection(token),
+                "static symbol" => GetStaticSymbolCorrection(token),
+                _ => null,
+            };
         }
 
-        public string? GetCorrectedColorAs(NavToken token, string? classification)
+        public string? GetCorrectedColorAs(NavToken token, string? roslynClassification)
         {
-            if (string.IsNullOrEmpty(classification))
+            if (string.IsNullOrEmpty(roslynClassification))
                 return null;
 
             bool isNintKeyword = token.Text is "nint" && token.SemanticData?.SymbolName == "IntPtr";
             bool isNuintKeyword = token.Text is "nuint" && token.SemanticData?.SymbolName == "UIntPtr";
-
             if (isNintKeyword || isNuintKeyword)
                 return "keyword";
 
             return null;
         }
 
-        // Currently only handles range operator (..)
+        private static string? GetOperatorCorrection(NavToken token)
+        {
+            if (token.IsQualifiedNameSeparator())
+                return "punctuation";
+
+            if (token.IsNullableTypeMarker())
+                return "punctuation";
+
+            return null;
+        }
+
         private static string? GetPunctuationCorrection(NavToken token)
         {
+            if (token.IsDelimiter())
+                return "delimiter";
+
             if (token.IsRangeOperator())
                 return "operator";
 
             return null;
         }
 
-        // Currently only handles nint & nuint keyword corrections
         private static string? GetIdentifierCorrection(NavToken token)
         {
             bool isNintKeyword = token.Text is "nint" && token.SemanticData?.SymbolName == "IntPtr";
@@ -56,7 +64,17 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             return null;
         }
 
-        // Currently only handles constant identifier declarations & field references
+        private static string? GetKeywordCorrection(NavToken token)
+        {
+            bool isArgsKeyword = token.Kind == SyntaxKind.IdentifierToken
+                && token.Text == "args";
+
+            if (isArgsKeyword)
+                return "identifier";
+
+            return null;
+        }
+
         private static string? GetStaticSymbolCorrection(NavToken token)
         {
             // constant identifiers

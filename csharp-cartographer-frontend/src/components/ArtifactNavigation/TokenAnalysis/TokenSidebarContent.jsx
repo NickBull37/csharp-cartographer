@@ -421,17 +421,11 @@ const TokenSidebarContent = ({
                                                         py: '5px',
                                                     }}
                                                 >
-                                                    {/* <SemanticRoleLabel className={srLabelClass}>
-                                                        {activeToken.map.roleLabel}
-                                                    </SemanticRoleLabel>
-                                                    <Typography className='sr-badge'>
-                                                        SR
-                                                    </Typography> */}
                                                     <SemanticRoleLabel className='pk-label'>
-                                                        {activeToken.map.roleLabel}
+                                                        {activeToken.map.srLabel}
                                                     </SemanticRoleLabel>
                                                     <ClassificationLabel className={srLabelClass}>
-                                                        {activeToken.map.categoryLabel}
+                                                        {activeToken.map.pkLabel}
                                                     </ClassificationLabel>
                                                 </Box>
                                                 <Box
@@ -529,7 +523,7 @@ const TokenSidebarContent = ({
                                                             }}
                                                         >
                                                             {/* Definition */}
-                                                            {activeToken.map.categoryLabel}
+                                                            {activeToken.map.pkLabel}
                                                         </Typography>
                                                     </Box>
                                                     <MapTagFocusedDefText>

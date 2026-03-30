@@ -6,25 +6,20 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 {
     public class SemanticLibrary : ISemanticLibrary
     {
-        public void AddSemanticInfo(List<NavToken> navTokens)
+        public SemanticMap GetSemanticMap(NavToken token)
         {
-            for (int i = 0; i < navTokens.Count; i++)
-            {
-                var token = navTokens[i];
-                var role = token.Map.SemanticRole;
-                var category = token.Map.SyntaxCategory;
+            var roleDefinition = GetRoleDefinition(token.SemanticRole);
+            var focusedDefinition = GetFocusedDefinition(token);
 
-                token.Map.RoleLabel = role.GetSpacedLabel() ?? role.ToSpacedString();
-                token.Map.RoleDefinition = GetRoleDefinition(role);
-                token.Map.CategoryLabel = category.ToString();
-                token.Map.FocusedDefinition = GetFocusedDefinition(token);
-
-                //token.Map.SecondaryLabel = GetSecondaryLabel(token);
-                //token.Map.SecondaryDefinition = GetSecondaryDefinition(token);
-            }
+            return new SemanticMap(
+                token.PrimaryKind,
+                token.SemanticRole,
+                roleDefinition,
+                focusedDefinition
+            );
         }
 
-        private static MapText? GetRoleDefinition(SemanticRole role)
+        private static MapText GetRoleDefinition(SemanticRole role)
         {
             /*
              * The SemanticRole is used as the definition key by default. 
@@ -34,39 +29,28 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
              */
 
             var key = role.GetLabel() ?? role.ToString();
-
-            if (key is null)
-                return null;
-
-            var definition = DefinitionProvider.GetMapText(key);
-
-            if (definition is null)
-            {
-                // log error
-            }
-
-            return definition;
+            return DefinitionProvider.GetMapText(key) ?? MapText.Undefined();
         }
 
         private static MapText? GetFocusedDefinition(NavToken token)
         {
             string? key = null;
 
-            switch (token.Map.SyntaxCategory)
+            switch (token.PrimaryKind)
             {
-                case SyntaxCategory.Delimiter:
+                case PrimaryKind.Delimiter:
                     key = GetDelimiterKey(token);
                     break;
-                case SyntaxCategory.Identifier:
-                    key = GetIdentifierKey(token);
-                    break;
-                case SyntaxCategory.Operator:
+                case PrimaryKind.Operator:
                     key = GetOperatorKey(token);
                     break;
-                case SyntaxCategory.Literal:
+                case PrimaryKind.Identifier:
+                    key = GetIdentifierKey(token);
+                    break;
+                case PrimaryKind.Literal:
                     key = GetLiteralKey(token);
                     break;
-                case SyntaxCategory.Keyword:
+                case PrimaryKind.Keyword:
                     key = GetKeywordKey(token);
                     break;
                 default:
@@ -76,23 +60,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (key is null)
                 return null;
 
-            var definition = DefinitionProvider.GetMapText(key);
-
-            if (definition is null)
-            {
-                // log error
-            }
-
-            return definition;
+            return DefinitionProvider.GetMapText(key) ?? null;
         }
 
-        private static string? GetDelimiterKey(NavToken token)
+        private static string GetDelimiterKey(NavToken token)
         {
             /*
              *  Delimiter default key = SemanticRole:Open/Close
              */
 
-            var key = $"{token.Map.SemanticRole}:";
+            var key = $"{token.SemanticRole}:";
 
             key += token.Text switch
             {
@@ -172,13 +149,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
              *  a little more information when possible.
              */
 
-            var role = token.Map.SemanticRole.ToString();
+            var role = token.SemanticRole.ToString();
             var key = "Identifier:";
 
             // identifier declarations can be defined by semantic role
-            bool isDeclaration = token.Map.SemanticRole.ToString().Contains("Declaration")
-                || token.Map.SemanticRole == SemanticRole.Parameter
-                || token.Map.SemanticRole == SemanticRole.LambdaParameter;
+            bool isDeclaration = token.SemanticRole.ToString().Contains("Declaration")
+                || token.SemanticRole == SemanticRole.Parameter
+                || token.SemanticRole == SemanticRole.LambdaParameter;
             if (isDeclaration)
                 return key + role;
 
@@ -201,7 +178,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return key + role;
         }
 
-        private static string GetLiteralKey(NavToken token)
+        private static string? GetLiteralKey(NavToken token)
         {
             /*
              *  Literal default key = Literal:
@@ -253,31 +230,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
              *  append the role to the key to get the context-specific definition.
              */
 
-            var role = token.Map.SemanticRole.ToString();
+            var role = token.SemanticRole.ToString();
 
             if (token.Text is "case" or "default" or "in" or "new" or "where")
                 return $"{token.Text}:{role}";
 
             return $"{token.Text}";
-        }
-
-        private static string? GetSecondaryLabel(NavToken token)
-        {
-            if (!token.Map.ModifierStrings.Any())
-                return null;
-
-            var label = token.Map.ModifierStrings.First();
-
-            return StringHelpers.AddSpaces(label);
-        }
-
-        private static MapText? GetSecondaryDefinition(NavToken token)
-        {
-            var key = token.Map.ModifierStrings.FirstOrDefault();
-
-            return key is not null
-                ? DefinitionProvider.GetMapText(key)
-                : null;
         }
     }
 }

@@ -43,6 +43,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <summary>A list of the tokens trailing trivia strings.</summary>
         public List<string> TrailingTrivia { get; set; } = [];
 
+        public PrimaryKind PrimaryKind { get; set; } = PrimaryKind.Unknown;
+
+        public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
+
         /// <summary>A collection of token semantic data to display in the UI.</summary>
         public SemanticMap Map { get; set; }
 
@@ -942,7 +946,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             //         (left, right) = (100, 200);
 
             bool prevValidText = PrevToken?.Text is "(" or ",";
-            bool prevValidRole = PrevToken?.Map.SemanticRole
+            bool prevValidRole = PrevToken?.SemanticRole
                 is SemanticRole.DeconstructionBoundary
                 or SemanticRole.DeconstructionVariableSeparator;
 
@@ -1037,7 +1041,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             while (prevToken is not null)
             {
-                bool isLambdaParamDecl = prevToken.Map.SemanticRole == SemanticRole.LambdaParameter;
+                bool isLambdaParamDecl = prevToken.SemanticRole == SemanticRole.LambdaParameter;
                 bool textMatches = prevToken.Text == Text;
 
                 if (isLambdaParamDecl && textMatches)
@@ -2386,7 +2390,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return false;
 
             // overlaps with tuple element separator, check role of prev token
-            bool validPrev = PrevToken?.Map.SemanticRole == SemanticRole.DeconstructionVariable;
+            bool validPrev = PrevToken?.SemanticRole == SemanticRole.DeconstructionVariable;
             if (validPrev)
                 return true;
 
@@ -2462,7 +2466,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return false;
 
             // overlaps with deconstruction variable separator, check role of prev token
-            bool invalidPrev = PrevToken?.Map.SemanticRole == SemanticRole.DeconstructionVariable;
+            bool invalidPrev = PrevToken?.SemanticRole == SemanticRole.DeconstructionVariable;
             if (invalidPrev)
                 return false;
 
@@ -2878,7 +2882,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return HasAncestorAt(0, SyntaxKind.IdentifierName)
                     && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
                     && HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression)
-                    && PrevToken?.PrevToken?.Map?.SemanticRole is SemanticRole.NamespaceQualifier or SemanticRole.AliasQualifier;
+                    && PrevToken?.PrevToken?.SemanticRole is SemanticRole.NamespaceQualifier or SemanticRole.AliasQualifier;
             }
 
             //    ⌄                         ⌄
@@ -3127,7 +3131,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsTupleElement()
         {
             bool prevValidText = PrevToken?.Text is "(" or ",";
-            bool prevValidRole = PrevToken?.Map.SemanticRole
+            bool prevValidRole = PrevToken?.SemanticRole
                 is SemanticRole.TupleExpressionBoundary
                 or SemanticRole.TupleElementSeparator;
 

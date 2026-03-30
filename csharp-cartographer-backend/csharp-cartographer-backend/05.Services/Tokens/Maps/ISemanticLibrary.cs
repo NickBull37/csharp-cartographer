@@ -1,4 +1,5 @@
 ﻿using csharp_cartographer_backend._03.Models.Tokens;
+using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 
 namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 {
@@ -10,6 +11,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
     /// </summary>
     public interface ISemanticLibrary
     {
-        void AddSemanticInfo(List<NavToken> navTokens);
+        SemanticMap GetSemanticMap(NavToken token);
+
+        //void AddSemanticInfo(List<NavToken> navTokens);
     }
 }

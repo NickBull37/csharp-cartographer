@@ -14,7 +14,7 @@
     public partial class GlobalConstants
     {
         /// ------------  All C# Keywords (reserved & contextual)  ------------ ///
-        public static readonly List<string> Keywords =
+        public static readonly HashSet<string> Keywords =
         [
             "abstract",
             "add",
@@ -136,7 +136,7 @@
         ];
 
         /// ------------  Contextual Keywords  ------------ ///
-        public static readonly List<string> ContextualKeywords =
+        public static readonly HashSet<string> ContextualKeywords =
         [
             "add",
             "alias",
@@ -184,7 +184,7 @@
         /// <summary>
         /// public / private / protected / internal
         /// </summary>
-        public static readonly List<string> AccessModifiers =
+        public static readonly HashSet<string> AccessModifiers =
         [
             "public",
             "private",
@@ -195,7 +195,7 @@
         /// <summary>
         /// get / set / init
         /// </summary>
-        public static readonly List<string> AccessorKeywords =
+        public static readonly HashSet<string> AccessorKeywords =
         [
             "get",
             "set",
@@ -212,7 +212,7 @@
         /// <summary>
         /// in / out / ref
         /// </summary>
-        public static readonly List<string> ArgumentModifiers =
+        public static readonly HashSet<string> ArgumentModifiers =
         [
             "in",
             "out",
@@ -222,7 +222,7 @@
         /// <summary>
         /// alias / file / global / namespace / using
         /// </summary>
-        public static readonly List<string> CompilationScopeKeywords =
+        public static readonly HashSet<string> CompilationScopeKeywords =
         [
             "alias",
             "file",
@@ -234,7 +234,7 @@
         /// <summary>
         /// await / lock
         /// </summary>
-        public static readonly List<string> ConcurrencyKeywords =
+        public static readonly HashSet<string> ConcurrencyKeywords =
         [
             "await",
             "lock",
@@ -243,7 +243,7 @@
         /// <summary>
         /// if / else
         /// </summary>
-        public static readonly List<string> ConditionalBranchingKeywords =
+        public static readonly HashSet<string> ConditionalBranchingKeywords =
         [
             "if",
             "else",
@@ -256,7 +256,7 @@
         /// Does NOT cover:<br/>
         /// where
         /// </summary>
-        public static readonly List<string> ConstraintKeywords =
+        public static readonly HashSet<string> ConstraintKeywords =
         [
             "managed",
             "notnull",
@@ -273,7 +273,7 @@
         /// <summary>
         /// switch
         /// </summary>
-        public static readonly List<string> ControlFlowKeywords =
+        public static readonly HashSet<string> ControlFlowKeywords =
         [
             "switch",
 
@@ -289,7 +289,7 @@
         /// <summary>
         /// case / default / switch
         /// </summary>
-        public static readonly List<Keyword> ControlFlowKeywordsTest =
+        public static readonly HashSet<Keyword> ControlFlowKeywordsTest =
         [
             new Keyword ("switch", true),
             new Keyword ("case", false),
@@ -299,7 +299,7 @@
         /// <summary>
         /// event / add / remove
         /// </summary>
-        public static readonly List<string> EventKeywords =
+        public static readonly HashSet<string> EventKeywords =
         [
             "event",
             "add",
@@ -309,7 +309,7 @@
         /// <summary>
         /// try / catch / finally / throw
         /// </summary>
-        public static readonly List<string> ExceptionHandlingKeywords =
+        public static readonly HashSet<string> ExceptionHandlingKeywords =
         [
             "try",
             "catch",
@@ -320,7 +320,7 @@
         /// <summary>
         /// yield
         /// </summary>
-        public static readonly List<string> IteratorKeywords =
+        public static readonly HashSet<string> IteratorKeywords =
         [
             "yield",
         ];
@@ -328,7 +328,7 @@
         /// <summary>
         /// break / continue / goto / return
         /// </summary>
-        public static readonly List<string> JumpStatementKeywords =
+        public static readonly HashSet<string> JumpStatementKeywords =
         [
             "break",
             "continue",
@@ -339,7 +339,7 @@
         /// <summary>
         /// do / for / foreach / while
         /// </summary>
-        public static readonly List<string> LoopStatementKeywords =
+        public static readonly HashSet<string> LoopStatementKeywords =
         [
             "do",
             "for",
@@ -351,7 +351,7 @@
         /// abstract / async / const / extern / new / override / partial /
         /// readonly / required / sealed / static / virtual / volatile / unsafe
         /// </summary>
-        public static readonly List<string> MemberModifiers =
+        public static readonly HashSet<string> MemberModifiers =
         [
             "abstract",
             "async",
@@ -372,7 +372,7 @@
         /// <summary>
         /// base / new
         /// </summary>
-        public static readonly List<string> ObjectConstructionKeywords =
+        public static readonly HashSet<string> ObjectConstructionKeywords =
         [
             "base",
             "new",
@@ -388,7 +388,7 @@
         /// <summary>
         /// in / out / params / ref / scoped / this
         /// </summary>
-        public static readonly List<string> ParameterModifiers =
+        public static readonly HashSet<string> ParameterModifiers =
         [
             "in",
             "out",
@@ -401,7 +401,7 @@
         /// <summary>
         /// and / as / is / not / or / when
         /// </summary>
-        public static readonly List<string> PatternMatchingKeywords =
+        public static readonly HashSet<string> PatternMatchingKeywords =
         [
             "and",
             "as",
@@ -423,7 +423,7 @@
         /// ulong / char / float / double / decimal / string / object /
         /// nint / nuint
         /// </summary>
-        public static readonly List<string> PredefinedTypes =
+        public static readonly HashSet<string> PredefinedTypes =
         [
             "bool",
             "byte",
@@ -448,7 +448,7 @@
         /// ascending / by / descending / equals / from / group /
         /// into / join / let / on / orderby / select / where
         /// </summary>
-        public static readonly List<string> QueryExpressionKeywords =
+        public static readonly HashSet<string> QueryExpressionKeywords =
         [
             "ascending",
             "by",
@@ -475,7 +475,7 @@
         /// <summary>
         /// checked / fixed / stackalloc / unchecked / unsafe
         /// </summary>
-        public static readonly List<string> SafetyContextKeywords =
+        public static readonly HashSet<string> SafetyContextKeywords =
         [
             "checked",
             "fixed",
@@ -494,7 +494,7 @@
         /// <summary>
         /// class / delegate / enum / interface / operator / record / struct
         /// </summary>
-        public static readonly List<string> TypeDeclarationKeywords =
+        public static readonly HashSet<string> TypeDeclarationKeywords =
         [
             "class",
             "delegate",
@@ -508,7 +508,7 @@
         /// <summary>
         /// abstract / file / partial / readonly / ref / sealed / static / unsafe
         /// </summary>
-        public static readonly List<string> TypeModifiers =
+        public static readonly HashSet<string> TypeModifiers =
         [
             "abstract",
             "file",
@@ -523,7 +523,7 @@
         /// <summary>
         /// dynamic / nameof
         /// </summary>
-        public static readonly List<string> TypeSystemKeywords =
+        public static readonly HashSet<string> TypeSystemKeywords =
         [
             "dynamic",
             "nameof",

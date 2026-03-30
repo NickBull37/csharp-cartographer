@@ -5,7 +5,7 @@
     /// **************************************************
     public partial class GlobalConstants
     {
-        public static readonly List<string> Punctuators =
+        public static readonly HashSet<string> Punctuators =
         [
             ".",
             ",",

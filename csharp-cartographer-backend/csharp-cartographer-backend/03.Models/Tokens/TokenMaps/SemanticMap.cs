@@ -1,9 +1,11 @@
-﻿namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
+﻿using csharp_cartographer_backend._02.Utilities.Helpers;
+
+namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 {
     /// <summary>
     /// Describes the general syntax category the token falls under.
     /// </summary>
-    public enum SyntaxCategory
+    public enum PrimaryKind
     {
         Unknown,
         Keyword,
@@ -503,97 +505,26 @@
     //    VerbatimString,
     //}
 
-    public enum Color
-    {
-        Blue,
-        Gray,
-        Green,
-        Jade,
-        LightBlue,
-        LightGreen,
-        Orange,
-        Purple,
-        Red,
-        White,
-        Yellow,
-    }
-
-    public enum ColorAsType
-    {
-        // white
-        Field,
-        Namespace,
-        Property,
-
-        // light blue
-        LocalVaraible,
-        Parameter,
-
-        // yellow
-        Method,
-
-        // green
-        Attribute,
-        BaseType,
-        Class,
-        Delegate,
-        Event,
-        GenericType,
-        Record,
-
-        // light green
-        Interface,
-        Enum,
-        GenericTypeParameter,
-        NumericLiteral,
-
-        // blue
-        Keyword,
-
-        // purple
-        KeywordControl,
-
-        // jade
-        Struct,
-        RecordStruct,
-
-        // orange
-        StringLiteral,
-
-        // red
-        Unknown,
-    }
-
-    public sealed record TokenTypeInfo(
-        bool IsPredefinedType = false,
-        bool IsNullable = false,
-        bool IsGeneric = false
-    );
-
     public sealed record SemanticMap
     {
-        // Used for classifying a token
-        public SyntaxCategory SyntaxCategory { get; set; } = SyntaxCategory.Unknown;
+        public string SRLabel { get; init; }
 
-        public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
-
-        // UI elements to show to the user
-        public string RoleLabel { get; set; } = string.Empty;
+        public string PKLabel { get; init; }
 
         public MapText RoleDefinition { get; set; }
 
-        public string CategoryLabel { get; set; } = string.Empty;
-
-        public MapText FocusedDefinition { get; set; }
-
-        public IEnumerable<string> ModifierStrings { get; set; } = [];
+        public MapText? FocusedDefinition { get; set; }
 
         public SemanticMap(
-            SyntaxCategory primaryKind,
-            SemanticRole semanticRole)
+            PrimaryKind kind,
+            SemanticRole role,
+            MapText roleDefinition,
+            MapText? focusedDefinition)
         {
-            SyntaxCategory = primaryKind;
-            SemanticRole = semanticRole;
+            PKLabel = kind.ToString();
+            SRLabel = role.GetSpacedLabel() ?? role.ToSpacedString();
+            RoleDefinition = roleDefinition;
+            FocusedDefinition = focusedDefinition;
         }
     }
 }
