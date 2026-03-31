@@ -29,7 +29,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             token.Map = _semanticLibrary.GetSemanticMap(token);
         }
 
-        private static PrimaryKind GetPrimaryKind(NavToken token)
+        private static PrimaryKind GetPrimaryKind(in NavToken token)
         {
             /*
              *   Classification is pulled from Roslyn's semantic model used
@@ -77,7 +77,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             }
         }
 
-        private static SemanticRole GetSemanticRole(NavToken token)
+        private static SemanticRole GetSemanticRole(in NavToken token)
         {
             var semanticRole = SemanticRole.Unknown;
 
@@ -120,7 +120,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         }
 
         #region Semantic Roles
-        private static SemanticRole TryGetDelimiterRole(NavToken token)
+        private static SemanticRole TryGetDelimiterRole(in NavToken token)
         {
             if (!token.IsDelimiter())
                 return SemanticRole.Unknown;
@@ -335,7 +335,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole TryGetPunctuationRole(NavToken token)
+        private static SemanticRole TryGetPunctuationRole(in NavToken token)
         {
             if (!token.IsPunctuation())
                 return SemanticRole.Unknown;
@@ -452,7 +452,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole TryGetOperatorRole(NavToken token)
+        private static SemanticRole TryGetOperatorRole(in NavToken token)
         {
             if (!token.IsOperator())
                 return SemanticRole.Unknown;
@@ -543,7 +543,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole TryGetKeywordRole(NavToken token)
+        private static SemanticRole TryGetKeywordRole(in NavToken token)
         {
             if (!token.IsKeyword())
                 return SemanticRole.Unknown;
@@ -737,7 +737,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole TryGetLiteralRole(NavToken token)
+        private static SemanticRole TryGetLiteralRole(in NavToken token)
         {
             if (!token.IsInterpolatedString())
                 return SemanticRole.Unknown;
@@ -767,7 +767,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole TryGetMiscRole(NavToken token)
+        private static SemanticRole TryGetMiscRole(in NavToken token)
         {
             // Anonymous object elements
             if (token.IsAnonymousObjectElement())
@@ -900,7 +900,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole TryGetIdentifierRole(NavToken token)
+        private static SemanticRole TryGetIdentifierRole(in NavToken token)
         {
             if (!token.IsIdentifier())
                 return SemanticRole.Unknown;

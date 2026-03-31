@@ -6,6 +6,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 {
     public class SemanticLibrary : ISemanticLibrary
     {
+        /*
+         *  DELIMITER KEY:    {SemanticRole}:Open/Close   ->  {SemanticRole}:Open/Close
+         *  OPERATOR KEY:     Operator:{Token.Text}       ->  {Token.Text}{operator name}
+         *  KEYWORD KEY:      {Token.Text}                ->  {Token.Text}
+         *  IDENTIFIER KEY:   Identifier:{SemanticRole}   ->  {SemanticRole}
+         *  LITERAL KEY:      Literal:{hardcoded string}  ->  {literal type}
+         *  PUNCTUATION KEY:  n/a
+         */
+
+
         public SemanticMap GetSemanticMap(NavToken token)
         {
             var roleDefinition = GetRoleDefinition(token.SemanticRole);
@@ -230,12 +240,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
              *  append the role to the key to get the context-specific definition.
              */
 
-            var role = token.SemanticRole.ToString();
+            var key = $"{token.Text}";
 
             if (token.Text is "case" or "default" or "in" or "new" or "where")
-                return $"{token.Text}:{role}";
+                return $"{key}:{token.SemanticRole}";
 
-            return $"{token.Text}";
+            return $"{key}";
         }
     }
 }

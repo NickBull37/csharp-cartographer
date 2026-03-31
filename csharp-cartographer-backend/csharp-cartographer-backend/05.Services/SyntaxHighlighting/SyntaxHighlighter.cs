@@ -81,35 +81,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     continue;
 
                 // color by classification
-                if (token.ColorAs is "keyword" or "keyword - control")
-                {
-                    ColorByKeyword(token);
-                    continue;
-                }
-
-                if (token.ColorAs
-                    is "class name"
-                    or "constant name"
-                    or "delegate name"
-                    or "enum name"
-                    or "enum member name"
-                    or "event name"
-                    or "field name"
-                    or "interface name"
-                    or "local name"
-                    or "method name"
-                    //or "namespace name"
-                    or "number"
-                    or "operator"
-                    or "parameter name"
-                    or "property name"
-                    or "punctuation"
-                    or "record class name"
-                    or "record struct name"
-                    or "string"
-                    or "string - verbatim"
-                    or "struct name"
-                    or "type parameter name")
+                if (HighlightColorAlreadyKnown(token))
                 {
                     ColorByRoslynClassification(token);
                     continue;
@@ -178,39 +150,13 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 token.HighlightColor = Jade;
         }
 
-        private static void ColorByKeyword(NavToken token)
-        {
-            // "default" can be blue or purple
-            if (token.Text == "default")
-            {
-                token.HighlightColor = GetDefaultKeywordColor(token);
-                return;
-            }
-
-            // "in" can be blue or purple
-            if (token.Text == "in")
-            {
-                token.HighlightColor = GetInKeywordColor(token);
-                return;
-            }
-
-            if (token.ColorAs == "keyword")
-            {
-                token.HighlightColor = Blue;
-                return;
-            }
-
-            if (token.ColorAs == "keyword - control")
-            {
-                token.HighlightColor = Purple;
-                return;
-            }
-        }
-
         private static void ColorByRoslynClassification(NavToken token)
         {
             switch (token.ColorAs)
             {
+                case "keyword":
+                    token.HighlightColor = Blue;
+                    break;
                 case "operator":
                     token.HighlightColor = Gray;
                     break;
@@ -236,6 +182,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case "string":
                 case "string - verbatim":
                     token.HighlightColor = Orange;
+                    break;
+                case "keyword - control":
+                    token.HighlightColor = Purple;
                     break;
                 case "enum member name":
                 case "event name":
@@ -385,16 +334,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        private static string GetDefaultKeywordColor(NavToken token) =>
-            token.SemanticRole == SemanticRole.DefaultOperator ||
-            token.SemanticRole == SemanticRole.DefaultValue
-                ? Blue
-                : Purple;
-
-        private static string GetInKeywordColor(NavToken token) =>
-            token.SemanticRole == SemanticRole.LoopStatement
-                ? Purple
-                : Blue;
         private static string GetNamespaceQualifierColor(NavToken token)
         {
             return token.IsUsingDirectiveQualifier() || token.IsNamespaceDeclarationQualifier()
@@ -413,6 +352,35 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 return LightGreen;
 
             return Green;
+        }
+
+        private static bool HighlightColorAlreadyKnown(NavToken token)
+        {
+            return token.ColorAs
+                is "class name"
+                or "constant name"
+                or "delegate name"
+                or "enum name"
+                or "enum member name"
+                or "event name"
+                or "field name"
+                or "interface name"
+                or "keyword"
+                or "keyword - control"
+                or "local name"
+                or "method name"
+                //or "namespace name"
+                or "number"
+                or "operator"
+                or "parameter name"
+                or "property name"
+                or "punctuation"
+                or "record class name"
+                or "record struct name"
+                or "string"
+                or "string - verbatim"
+                or "struct name"
+                or "type parameter name";
         }
     }
 }
