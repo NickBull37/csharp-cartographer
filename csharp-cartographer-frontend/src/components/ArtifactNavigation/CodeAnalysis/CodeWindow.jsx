@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
@@ -263,7 +264,13 @@ const CodeWindow = ({
                                     onMouseDown={() => handleMouseDown(index)}
                                     onMouseEnter={() => handleMouseEnter(index)}
                                 >
-                                    {token.text.replace(/ /g, '\u00A0')}
+                                    {/* {token.text.replace(/ /g, '\u00A0')} */}
+                                    {token.text.split(/\r\n|\r|\n/).map((line, i, arr) => (
+                                        <React.Fragment key={i}>
+                                            {line.replace(/ /g, '\u00A0')}
+                                            {i < arr.length - 1 ? <br /> : null}
+                                        </React.Fragment>
+                                    ))}
                                 </span>
 
                                 {/* Render trailing trivia */}

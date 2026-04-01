@@ -71,14 +71,14 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 // color manually
                 if (token.IsCommonIdentifier())
                 {
-                    ColorManually(token);
+                    TryColorManually(token);
 
                     if (token.HighlightColor is not null)
                         continue;
                 }
 
-                if (token.Map is null)
-                    continue;
+                //if (token.Map is null)
+                //    continue;
 
                 // color by classification
                 if (HighlightColorAlreadyKnown(token))
@@ -90,18 +90,18 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 // color by semantic data
                 if (_config.SemanticDataHighlightingEnabled)
                 {
-                    ColorBySemanticData(token);
+                    TryColorBySemanticData(token);
                     if (token.HighlightColor is not null)
                         continue;
                 }
 
                 // color by semantic role
-                ColorBySemanticRole(token);
+                TryColorBySemanticRole(token);
                 if (token.HighlightColor is not null)
                     continue;
 
-                // color by ancestors (only used for query expression var refs)
-                ColorByAncestors(token);
+                // color by ancestors
+                TryColorByAncestors(token);
                 if (token.HighlightColor is not null)
                     continue;
 
@@ -116,7 +116,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        private static void ColorManually(NavToken token)
+        private static void TryColorManually(NavToken token)
         {
             // early-outs for local var, parameter, or property
             // identifiers that will never be colored as a type
@@ -202,7 +202,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        private static void ColorBySemanticData(NavToken token)
+        private static void TryColorBySemanticData(NavToken token)
         {
             switch (token.SemanticData?.SymbolKind)
             {
@@ -236,7 +236,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        private static void ColorBySemanticRole(NavToken token)
+        private static void TryColorBySemanticRole(NavToken token)
         {
             switch (token.SemanticRole)
             {
@@ -324,10 +324,11 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        private static void ColorByAncestors(NavToken token)
+        private static void TryColorByAncestors(NavToken token)
         {
             // query expression variable refs
-            if (token.IsQueryExpressionVariable())
+            // obj creation property assignments
+            if (token.IsQueryExpressionVariable() || token.IsPropertyAssignmentIdentifier())
             {
                 token.HighlightColor = White;
                 return;

@@ -523,7 +523,7 @@ const TokenSidebarContent = ({
                                                             }}
                                                         >
                                                             {/* Definition */}
-                                                            {activeToken.map.pkLabel}
+                                                            {activeToken.map.fdLabel}
                                                         </Typography>
                                                     </Box>
                                                     <MapTagFocusedDefText>

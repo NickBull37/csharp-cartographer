@@ -77,6 +77,9 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             if (obj is string s)
             {
                 Console.WriteLine(s);
+                if (string.IsNullOrEmpty(s))
+                {
+                }
             }
 
             if (obj is string sss)
@@ -358,6 +361,8 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             where T : notnull
         {
             Dictionary<string, int> lookup;
+
+            int _ = 5;
 
             return (value, value.ToString()!.Length);
         }

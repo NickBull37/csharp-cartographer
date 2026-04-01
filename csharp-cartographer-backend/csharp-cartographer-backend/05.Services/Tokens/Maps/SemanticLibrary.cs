@@ -20,11 +20,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             var roleDefinition = GetRoleDefinition(token.SemanticRole);
             var focusedDefinition = GetFocusedDefinition(token);
+            var focusedDefinitionLabel = GetFocusedDefinitionLabel(token);
 
             return new SemanticMap(
                 token.PrimaryKind,
                 token.SemanticRole,
                 roleDefinition,
+                focusedDefinitionLabel,
                 focusedDefinition
             );
         }
@@ -71,6 +73,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return null;
 
             return DefinitionProvider.GetMapText(key) ?? null;
+        }
+
+        private static string GetFocusedDefinitionLabel(NavToken token)
+        {
+            return token.PrimaryKind switch
+            {
+                PrimaryKind.Identifier => token.IsGenericType()
+                    ? "GenericType"
+                    : token.PrimaryKind.ToString(),
+                _ => token.PrimaryKind.ToString(),
+            };
         }
 
         private static string GetDelimiterKey(NavToken token)
@@ -137,9 +150,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsBitwiseAndOperator())
                 return key + ":BitwiseAnd";
 
-            // (?) conditional-member access: ? -> ?.
-            if (token.IsNullConditionalGuard())
-                return key + ".";
+            // (?.) conditional-member access
+            if (token.SemanticRole is SemanticRole.NullConditionalDot or SemanticRole.NullConditionalQuestion)
+                return "Operator:?.";
+
+            // (c ? t : f) ternary
+            if (token.SemanticRole is SemanticRole.TernaryQuestion or SemanticRole.TernaryColon)
+                return "Operator:c?t:f";
 
             // (=>) lambda / expression body arrow
             if (token.IsLambdaOperator())
@@ -183,6 +200,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.Classification == "field name")
                 return key + "FieldReference";
+
+            if (token.IsGenericType())
+                return key + "GenericType";
 
             // default
             return key + role;

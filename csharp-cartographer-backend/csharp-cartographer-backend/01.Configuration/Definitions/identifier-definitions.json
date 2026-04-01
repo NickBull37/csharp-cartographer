@@ -55,5 +55,11 @@
   },
   "Identifier:StructDeclaration": {
     "Definition": "The name of a {c:color-jade bold}struct{/c} declaration.{RefExt}"
+  },
+  "------------------------------------------------------------------------------------------------------------------": {
+    "Definition": ""
+  },
+  "Identifier:GenericType": {
+    "Definition": "A type that must be supplied a {c:bold}generic type argument{/c}. The generic type argument passed in will replace the {c:bold}generic type parameter{/c} in the type definition."
   }
 }

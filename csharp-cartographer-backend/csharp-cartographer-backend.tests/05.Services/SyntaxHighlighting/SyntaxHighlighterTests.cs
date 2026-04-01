@@ -116,7 +116,9 @@ namespace csharp_cartographer_backend.tests._05.Services.SyntaxHighlighting
             _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(mockNavTokens);
 
             // Assert
-            Assert.All(mockNavTokens.Where(token => token.Text != "." && token.Text != ".."), token => Assert.Equal("color-gray", token.HighlightColor));
+            Assert.All(
+                mockNavTokens.Where(token => token.Text != "." && token.Text != ".."),
+                token => Assert.Equal("color-gray", token.HighlightColor));
 
             var memberAccessOperator = mockNavTokens.Single(token => token.Text == ".");
             Assert.Equal("color-white", memberAccessOperator.HighlightColor);

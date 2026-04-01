@@ -126,18 +126,21 @@
     "Definition": "The member access operator {c:keyword}\".\"{/c} is used to access members such as methods, properties, or fields of the preceeding type."
   },
   "Operator:?.": {
-    "Definition": "The null-conditional operator {c:keyword}\"?.\"{/c} skips member access and returns null immediately if the preceding operand is null."
+    "Definition": "The null-conditional operator {c:keyword}x?.y{/c} skips member access and returns null immediately if the preceding operand is null."
   },
   "Operator:::": {
     "Definition": "The namespace alias qualifier {c:keyword}\"::\"{/c} accesses a member through a specific alias. It is commonly used with global or using aliases."
   },
   "Operator:??": {
-    "Definition": "The null-coalescing operator {c:keyword}\"??\"{/c} returns a fallback value when the left value is null."
+    "Definition": "The null-coalescing operator {c:keyword}\"x ?? y\"{/c} returns a fallback value when the left value is null."
   },
   "Operator:??=": {
     "Definition": "The null-coalescing assignment operator {c:keyword}\"??=\"{/c} assigns a value only if the variable is currently null."
   },
   "Operator:->": {
     "Definition": "The pointer member access operator {c:keyword}\"->\"{/c} accesses a member through a pointer. It is used in unsafe code."
+  },
+  "Operator:c?t:f": {
+    "Definition": "The ternary operator {c:keyword}c ? t : f{/c} evaluates a Boolean expression and returns the result of one of the two expressions, depending on whether the Boolean expression evaluates to true or false."
   }
 }

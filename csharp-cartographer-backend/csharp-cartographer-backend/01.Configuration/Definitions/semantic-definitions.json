@@ -830,6 +830,21 @@
   "WithExpressionSource": {
     "Definition": "The existing value that a {c:color-blue keyword}with{/c} expression copies before applying the specified changes. It provides the starting state for the new value."
   },
+  "Null Conditional (1/2)": {
+    "Definition": "The nullable guard part of the null-conditional operator."
+  },
+  "Null Conditional (2/2)": {
+    "Definition": "The member access part of the null-conditional operator."
+  },
+  "TernaryCondition": {
+    "Definition": "The boolean value that determines whether the {c:bold}true{/c} or {c:bold}false{/c} expression is returned."
+  },
+  "Ternary (1/2)": {
+    "Definition": "Marks the expression that is returned when the ternary condition evaluates to {c:bold}true{/c}."
+  },
+  "Ternary (2/2)": {
+    "Definition": "Marks the expression that is returned when the ternary condition evaluates to {c:bold}false{/c}."
+  },
   "": {
     "Definition": ""
   }

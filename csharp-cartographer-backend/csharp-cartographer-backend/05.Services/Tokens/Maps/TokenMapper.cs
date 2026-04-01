@@ -81,51 +81,44 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             var semanticRole = SemanticRole.Unknown;
 
-            // --- Delimiters ---
-            semanticRole = TryGetDelimiterRole(token);
+            switch (token.PrimaryKind)
+            {
+                case PrimaryKind.Delimiter:
+                    semanticRole = TryGetDelimiterRole(token);
+                    break;
+                case PrimaryKind.Punctuation:
+                    semanticRole = TryGetPunctuationRole(token);
+                    break;
+                case PrimaryKind.Operator:
+                    semanticRole = TryGetOperatorRole(token);
+                    break;
+                case PrimaryKind.Keyword:
+                    semanticRole = TryGetKeywordRole(token);
+                    break;
+                case PrimaryKind.Literal:
+                    semanticRole = TryGetLiteralRole(token);
+                    break;
+                case PrimaryKind.Identifier:
+                    semanticRole = TryGetIdentifierRole(token);
+                    break;
+                default:
+                    break;
+            }
+
             if (semanticRole != SemanticRole.Unknown)
                 return semanticRole;
 
-            // --- Punctuation ---
-            semanticRole = TryGetPunctuationRole(token);
-            if (semanticRole != SemanticRole.Unknown)
-                return semanticRole;
-
-            // --- Operators ---
-            semanticRole = TryGetOperatorRole(token);
-            if (semanticRole != SemanticRole.Unknown)
-                return semanticRole;
-
-            // --- Keywords ---
-            semanticRole = TryGetKeywordRole(token);
-            if (semanticRole != SemanticRole.Unknown)
-                return semanticRole;
-
-            // --- Literals ---
-            semanticRole = TryGetLiteralRole(token);
-            if (semanticRole != SemanticRole.Unknown)
-                return semanticRole;
-
-            // --- Misc ---
-            semanticRole = TryGetMiscRole(token);
-            if (semanticRole != SemanticRole.Unknown)
-                return semanticRole;
-
-            // --- Identifiers ---
-            semanticRole = TryGetIdentifierRole(token);
-            if (semanticRole != SemanticRole.Unknown)
-                return semanticRole;
-
-            return SemanticRole.Unknown;
+            // misc roles can apply to multiple PKs, check last
+            return TryGetMiscRole(token);
         }
 
         #region Semantic Roles
         private static SemanticRole TryGetDelimiterRole(in NavToken token)
         {
-            if (!token.IsDelimiter())
-                return SemanticRole.Unknown;
+            //if (!token.IsDelimiter())
+            //    return SemanticRole.Unknown;
 
-            if (token.Text is "(" or ")")
+            if (token.IsParen())
             {
                 if (token.IsArgumentListDelimiter())
                     return SemanticRole.ArgumentListBoundary;
@@ -191,7 +184,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     return SemanticRole.WhileLoopConditionBoundary;
             }
 
-            if (token.Text is "{" or "}")
+            if (token.IsBrace())
             {
                 if (token.IsAccessorListDelimiter())
                     return SemanticRole.AccessorListBoundary;
@@ -305,7 +298,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     return SemanticRole.WithInitializerExpressionBoundary;
             }
 
-            if (token.Text is "[" or "]")
+            if (token.IsBracket())
             {
                 if (token.IsArrayTypeDelimiter())
                     return SemanticRole.ArrayType;
@@ -323,7 +316,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     return SemanticRole.ImplicitArrayCreation;
             }
 
-            if (token.Text is "<" or ">")
+            if (token.IsClip())
             {
                 if (token.IsTypeArgumentListDelimiter())
                     return SemanticRole.TypeArgumentListBoundary;
@@ -337,8 +330,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole TryGetPunctuationRole(in NavToken token)
         {
-            if (!token.IsPunctuation())
-                return SemanticRole.Unknown;
+            //if (!token.IsPunctuation())
+            //    return SemanticRole.Unknown;
 
             // --- Separators ---
             if (token.Text is "," or ":")
@@ -442,10 +435,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Nullables ---
             if (token.Text is "?")
             {
-                if (token.IsNullConditionalGuard())
-                    return SemanticRole.NullConditionalGuard;
-
-                if (token.IsNullableTypeMarker() || token.IsNullableConstraintTypeMarker())
+                if (token.IsNullableTypeMarker())
                     return SemanticRole.NullableTypeMarker;
             }
 
@@ -454,8 +444,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole TryGetOperatorRole(in NavToken token)
         {
-            if (!token.IsOperator())
-                return SemanticRole.Unknown;
+            //if (!token.IsOperator())
+            //    return SemanticRole.Unknown;
 
             /*
              * Currently not covered are non-short-circuit
@@ -500,21 +490,27 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsLambdaOperator())
                 return SemanticRole.Lambda;
 
-            // Member access: ., ?., [], ?[],
+            // Member access: . / [] / ?[]
             if (token.IsMemberAccessOperator())
                 return SemanticRole.MemberAccess;
 
-            // Null-related: ??, ??=, !
+            // Null-related: ?? / ??= / ?. / !
             if (token.IsNullCoalescingOperator())
                 return SemanticRole.NullCoalescing;
 
             if (token.IsNullCoalescingAssignmentOperator())
                 return SemanticRole.NullCoalescingAssignment;
 
+            if (token.IsNullConditionalOperatorQuestion())
+                return SemanticRole.NullConditionalQuestion;
+
+            if (token.IsNullConditionalOperatorDot())
+                return SemanticRole.NullConditionalDot;
+
             if (token.IsNullForgivingOperator())
                 return SemanticRole.NullForgiving;
 
-            // Pattern matching: =>, 
+            // Pattern matching: =>
             if (token.IsPatternMatchArrow())
                 return SemanticRole.PatternMatchArrow;
 
@@ -531,9 +527,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.Shift;
 
             // Ternary: c ? t : f
-            //if (token.IsTernaryOperator())
-            //    return SemanticRole.Ternary;
-
             if (token.IsTernaryOperatorColon())
                 return SemanticRole.TernaryColon;
 
@@ -548,47 +541,175 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (!token.IsKeyword())
                 return SemanticRole.Unknown;
 
-            // --- Access modifiers ---
-            if (token.IsAccessModifierKeyword())
-                return SemanticRole.AccessModifier;
+            if (token.IsRegularKeyword())
+            {
+                // --- Access modifiers ---
+                if (token.IsAccessModifierKeyword())
+                    return SemanticRole.AccessModifier;
 
-            // --- Accessor keywords ---
-            if (token.IsAccessorKeyword())
-                return SemanticRole.Accessor;
+                // --- Accessor keywords ---
+                if (token.IsAccessorKeyword())
+                    return SemanticRole.Accessor;
 
-            // --- Argument modifier keywords ---
-            if (token.IsArgumentModifierKeyword())
-                return SemanticRole.ArgumentModifier;
+                // --- Argument modifier keywords ---
+                if (token.IsArgumentModifierKeyword())
+                    return SemanticRole.ArgumentModifier;
+
+                // --- Compilation scope keywords ---
+                if (token.IsCompilationScopeKeyword())
+                    return SemanticRole.CompilationScope;
+
+                // --- Data type keywords ---
+                if (token.IsArrayDataType())
+                    return SemanticRole.ArrayDataType;
+
+                if (token.IsDeconstructionVariableType())
+                    return SemanticRole.DeconstructionVariableType;
+
+                if (token.IsFieldType())
+                    return SemanticRole.FieldType;
+
+                if (token.IsLocalVariableType())
+                    return SemanticRole.LocalVariableType;
+
+                if (token.IsLoopIteratorType())
+                    return SemanticRole.LoopIteratorType;
+
+                if (token.IsMethodReturnType())
+                    return SemanticRole.MethodReturnType;
+
+                if (token.IsDelegateReturnType())
+                    return SemanticRole.DelegateReturnType;
+
+                if (token.IsOutVariableType())
+                    return SemanticRole.OutVariableType;
+
+                if (token.IsParameterType())
+                    return SemanticRole.ParameterType;
+
+                if (token.IsPropertyType())
+                    return SemanticRole.PropertyType;
+
+                if (token.IsTupleElementType())
+                    return SemanticRole.TupleElementType;
+
+                // --- Default keyword ---
+                if (token.IsDefaultOperatorKeyword())
+                    return SemanticRole.DefaultOperator;
+
+                if (token.IsDefaultLiteralKeyword())
+                    return SemanticRole.DefaultValue;
+
+                // --- Discard keywords ---
+                if (token.IsDiscardValueKeyword())
+                    return SemanticRole.DiscardValue;
+
+                if (token.IsDiscardPatternKeyword())
+                    return SemanticRole.DiscardPattern;
+
+                // --- Member modifiers ---
+                if (token.IsMemberModifierKeyword())
+                    return SemanticRole.MemberModifier;
+
+                // --- Object construction keywords ---
+                if (token.IsObjectConstructionKeyword())
+                    return SemanticRole.ObjectConstruction;
+
+                if (token.IsObjectConstructionTypeKeyword())
+                    return SemanticRole.ObjectConstructionType;
+
+                // --- Parameter modifier keywords ---
+                if (token.IsParameterModifierKeyword())
+                    return SemanticRole.ParameterModifier;
+
+                // --- Query expressions ---
+                if (token.IsQueryExpressionKeyword())
+                    return SemanticRole.QueryExpression;
+
+                // --- Safety context keywords ---
+                if (token.IsSafetyContextKeyword())
+                    return SemanticRole.SafetyContext;
+
+                // --- Default operator operand keywords ---
+                if (token.IsDefaultOperand())
+                    return SemanticRole.DefaultOperand;
+
+                // --- NameOf operator / operand keywords ---
+                if (token.IsNameOfOperator())
+                    return SemanticRole.NameOfOperator;
+
+                if (token.IsNameOfOperand())
+                    return SemanticRole.NameOfOperand;
+
+                // --- SizeOf operator / operand keywords ---
+                if (token.IsSizeOfOperator())
+                    return SemanticRole.SizeOfOperator;
+
+                if (token.IsSizeOfOperand())
+                    return SemanticRole.SizeOfOperand;
+
+                // --- TypeOf operator / operand keywords ---
+                if (token.IsTypeOfOperator())
+                    return SemanticRole.TypeOfOperator;
+
+                if (token.IsTypeOfOperand())
+                    return SemanticRole.TypeOfOperand;
+
+                // --- Type declaration keywords ---
+                if (token.IsTypeDeclarationKeyword())
+                    return SemanticRole.TypeDeclaration;
+
+                // --- Type modifier keywords ---
+                if (token.IsTypeModifierKeyword())
+                    return SemanticRole.TypeModifier;
+
+                // --- Generic type keywords ---
+                if (token.IsGenericTypeArgument())
+                    return SemanticRole.GenericTypeArgument;
+
+                // --- Type pattern keywords ---
+                if (token.IsTypePattern())
+                    return SemanticRole.TypePattern;
+
+                // --- Type system keywords ---
+                if (token.IsTypeSystemKeyword())
+                    return SemanticRole.TypeSystem;
+
+                // --- With expression keyword ---
+                if (token.IsWithExpressionKeyword())
+                    return SemanticRole.WithExpression;
+            }
+
+            if (token.IsControlKeyword())
+            {
+                // --- Conditional branching keywords ---
+                if (token.IsConditionalBranchingKeyword())
+                    return SemanticRole.ConditionalBranching;
+
+                // --- Control flow keywords ---
+                if (token.IsControlFlowKeyword())
+                    return SemanticRole.ControlFlow;
+
+                // --- Exception handling ---
+                if (token.IsExceptionHandlingKeyword())
+                    return SemanticRole.ExceptionHandling;
+
+                // --- Jump statement keywords ---
+                if (token.IsJumpStatementKeyword())
+                    return SemanticRole.JumpStatement;
+
+                // --- Loop statement keywords ---
+                if (token.IsLoopStatementKeyword())
+                    return SemanticRole.LoopStatement;
+            }
 
             // --- Concurrency keywords ---
             if (token.IsConcurrencyKeyword())
                 return SemanticRole.Concurrency;
 
-            // --- Conditional branching keywords ---
-            if (token.IsConditionalBranchingKeyword())
-                return SemanticRole.ConditionalBranching;
-
             // --- Constraint keywords ---
             if (token.IsConstraintKeyword())
                 return SemanticRole.Constraint;
-
-            // --- Control flow keywords ---
-            if (token.IsControlFlowKeyword())
-                return SemanticRole.ControlFlow;
-
-            // --- Default keyword ---
-            if (token.IsDefaultOperatorKeyword())
-                return SemanticRole.DefaultOperator;
-
-            if (token.IsDefaultLiteralKeyword())
-                return SemanticRole.DefaultValue;
-
-            // --- Discard keywords ---
-            if (token.IsDiscardKeyword())
-                return SemanticRole.DiscardValue;
-
-            if (token.IsDiscardPattern())
-                return SemanticRole.DiscardPattern;
 
             // --- Event keywords ---
             if (GlobalConstants.EventKeywords.Contains(token.Text) && token.Kind == SyntaxKind.EventKeyword)
@@ -596,10 +717,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsEventHandlingKeyword())
                 return SemanticRole.EventHandling;
-
-            // --- Exception handling ---
-            if (token.IsExceptionHandlingKeyword())
-                return SemanticRole.ExceptionHandling;
 
             // --- Implicit parameters ---
             if (token.IsImplicitParameterKeyword())
@@ -609,130 +726,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsIteratorKeyword())
                 return SemanticRole.Iterator;
 
-            // --- Jump statement keywords ---
-            if (token.IsJumpStatementKeyword())
-                return SemanticRole.JumpStatement;
-
-            // --- Loop statement keywords ---
-            if (token.IsLoopStatementKeyword())
-                return SemanticRole.LoopStatement;
-
-            // --- Member modifiers ---
-            if (token.IsMemberModifierKeyword())
-                return SemanticRole.MemberModifier;
-
-            // --- Compilation scope keywords ---
-            if (token.IsCompilationScopeKeyword())
-                return SemanticRole.CompilationScope;
-
-            // --- Object construction keywords ---
-            if (token.IsObjectConstructionKeyword())
-                return SemanticRole.ObjectConstruction;
-
-            if (token.IsObjectConstructionTypeKeyword())
-                return SemanticRole.ObjectConstructionType;
-
-            // --- Parameter modifier keywords ---
-            if (token.IsParameterModifierKeyword())
-                return SemanticRole.ParameterModifier;
-
             // --- Pattern matching keywords ---
             if (token.IsPatternMatchingKeyword())
                 return SemanticRole.PatternMatching;
-
-            // --- Query expressions ---
-            if (token.IsQueryExpressionKeyword())
-                return SemanticRole.QueryExpression;
-
-            // --- Safety context keywords ---
-            if (token.IsSafetyContextKeyword())
-                return SemanticRole.SafetyContext;
-
-            // --- Default operator operand keywords ---
-            if (token.IsDefaultOperand())
-                return SemanticRole.DefaultOperand;
-
-            // --- NameOf operator / operand keywords ---
-            if (token.IsNameOfOperator())
-                return SemanticRole.NameOfOperator;
-
-            if (token.IsNameOfOperand())
-                return SemanticRole.NameOfOperand;
-
-            // --- SizeOf operator / operand keywords ---
-            if (token.IsSizeOfOperator())
-                return SemanticRole.SizeOfOperator;
-
-            if (token.IsSizeOfOperand())
-                return SemanticRole.SizeOfOperand;
-
-            // --- TypeOf operator / operand keywords ---
-            if (token.IsTypeOfOperator())
-                return SemanticRole.TypeOfOperator;
-
-            if (token.IsTypeOfOperand())
-                return SemanticRole.TypeOfOperand;
-
-            // --- Type declaration keywords ---
-            if (token.IsTypeDeclarationKeyword())
-                return SemanticRole.TypeDeclaration;
-
-            // --- Type modifier keywords ---
-            if (token.IsTypeModifierKeyword())
-                return SemanticRole.TypeModifier;
-
-            // --- Type pattern keywords ---
-            if (token.IsTypePattern())
-                return SemanticRole.TypePattern;
-
-            // --- Type system keywords ---
-            if (token.IsTypeSystemKeyword())
-                return SemanticRole.TypeSystem;
-
-            // --- With expression keyword ---
-            if (token.IsWithExpressionKeyword())
-                return SemanticRole.WithExpression;
-
-            // --- Data type keywords ---
-            if (token.IsArrayDataType())
-                return SemanticRole.ArrayDataType;
-
-            if (token.IsDeconstructionVariableType())
-                return SemanticRole.DeconstructionVariableType;
-
-            if (token.IsFieldType())
-                return SemanticRole.FieldType;
-
-            if (token.IsLocalVariableType())
-                return SemanticRole.LocalVariableType;
-
-            if (token.IsLoopIteratorType())
-                return SemanticRole.LoopIteratorType;
-
-            if (token.IsMethodReturnType())
-                return SemanticRole.MethodReturnType;
-
-            if (token.IsDelegateReturnType())
-                return SemanticRole.DelegateReturnType;
-
-            if (token.IsOutVariableType())
-                return SemanticRole.OutVariableType;
-
-            if (token.IsParameterType())
-                return SemanticRole.ParameterType;
-
-            if (token.IsPropertyType())
-                return SemanticRole.PropertyType;
-
-            if (token.IsTupleElementType())
-                return SemanticRole.TupleElementType;
-
-            // --- Generic type keywords ---
-            if (token.IsGenericTypeArgument())
-                return SemanticRole.GenericTypeArgument;
-
-            if (token.IsTypeConstraintKeyword())
-                return SemanticRole.TypeConstraint;
 
             return SemanticRole.Unknown;
         }
@@ -865,6 +861,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsPointerBaseType())
                 return SemanticRole.PointerBaseType;
 
+            // Qualifiers
+            if (token.IsTypeQualifier()) // must be checked before InstanceQualifier
+                return SemanticRole.TypeQualifier;
+
+            if (token.IsInstanceQualifier())
+                return SemanticRole.InstanceQualifier;
+
             // Return values
             if (token.IsLocalFunctionReturnType())
                 return SemanticRole.LocalFunctionReturnType;
@@ -893,9 +896,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsTupleElement())
                 return SemanticRole.TupleElement;
 
-            // Type qualifiers
-            if (token.IsTypeQualifier())
-                return SemanticRole.TypeQualifier;
+            // Type constraints
+            if (token.IsTypeConstraint())
+                return SemanticRole.TypeConstraint;
 
             return SemanticRole.Unknown;
         }
@@ -1058,9 +1061,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsDefaultOperand())
                 return SemanticRole.DefaultOperand;
 
-            if (token.IsDiscardValue())
-                return SemanticRole.DiscardValue;
-
             // Identifier - NameOf operands
             if (token.IsNameOfOperand())
                 return SemanticRole.NameOfOperand;
@@ -1072,10 +1072,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Identifier - TypeOf operands
             if (token.IsTypeOfOperand())
                 return SemanticRole.TypeOfOperand;
-
-            // Identifier - type constraints
-            if (token.IsTypeConstraint())
-                return SemanticRole.TypeConstraint;
 
             // Identifier - type pattern types
             if (token.IsTypePattern())
@@ -1103,6 +1099,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Identifier - lock target
             if (token.IsLockTarget())
                 return SemanticRole.LockTarget;
+
+            // Identifier - ternary condition
+            if (token.IsTernaryCondition())
+                return SemanticRole.TernaryCondition;
 
             // With expression source
             if (token.IsWithExpressionSource())
@@ -1134,9 +1134,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsJoinIntoRangeVariable())
                 return SemanticRole.JoinIntoRangeVariable;
-
-            if (token.IsInstanceQualifier())
-                return SemanticRole.InstanceQualifier;
 
             if (token.IsTargetMember())
                 return SemanticRole.TargetMember;

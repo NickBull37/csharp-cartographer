@@ -12,7 +12,5 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
     public interface ISemanticLibrary
     {
         SemanticMap GetSemanticMap(NavToken token);
-
-        //void AddSemanticInfo(List<NavToken> navTokens);
     }
 }

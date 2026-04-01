@@ -24,6 +24,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
     {
         Unknown,
 
+        #region DELIMITERS
         // ------------ DELIMITERS ------------ //
 
         // Definitions
@@ -120,8 +121,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         UsingResourceDeclarationBoundary,
         WhileLoopBlockBoundary,
         WithInitializerExpressionBoundary,
+        #endregion
 
-
+        #region OPERATORS
         // ------------ OPERATORS ------------ //
         Arithmetic,
         Assignment,
@@ -135,9 +137,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         MemberAccess,
         NullCoalescing,
         NullCoalescingAssignment,
+        [Label("Null Conditional (1/2)")]
+        NullConditionalQuestion,
+        [Label("Null Conditional (2/2)")]
+        NullConditionalDot,
         NullForgiving,
         PatternMatchArrow,
-        //Pointer,
         PointerTypeIndicator,
         Range,
         Shift,
@@ -146,8 +151,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         TernaryColon,
         [Label("Ternary (1/2)")]
         TernaryQuestion,
+        #endregion
 
-
+        #region PUNCTUATION
         // ------------ PUNCTUATION ------------ //
 
         // Separation
@@ -185,17 +191,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         // Misc
         NullableTypeMarker,
-        NullConditionalGuard,
+        #endregion
 
-
-        // ------------ KEYWORDS ------------ //
+        #region ------------ KEYWORDS ------------
 
         AccessModifier,
         Accessor,
         ArgumentModifier,
         CompilationScope,
         Concurrency,
-        //ConcurrencyModifier,
         ConditionalBranching,
         Constraint,
         ControlFlow,
@@ -220,7 +224,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         ObjectConstructionType,
         ParameterModifier,
         PatternMatching,
-        //PolymorphismModifier,
         QueryExpression,
         SafetyContext,
         [Label("sizeof Operator")]
@@ -232,15 +235,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         TypeReference,
         TypeSystem,
         WithExpression,
+        #endregion
 
-
-        // ------------ IDENTIFIERS ------------ //
+        #region ------------ IDENTIFIERS ------------
 
         AttributeArgument,
         ConditionValue,
         ForEachLoopCollection,
         LockTarget,
         ParameterLabel,
+        TernaryCondition,
 
         // Declarations
         Attribute,
@@ -296,8 +300,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         InstanceQualifier,
         TargetMember,
         PropertyAccess,
+        #endregion
 
-
+        #region LITERALS
         // ------------ LITERALS ------------ //
 
         BooleanLiteral,
@@ -311,8 +316,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         InterpolatedStringText,
         InterpolatedStringEnd,
         InterpolatedVerbatimStringStart,
+        #endregion
 
-
+        #region TYPES
         // ------------ TYPES ------------ //
 
         ArrayDataType,
@@ -339,8 +345,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         TupleElementName,
         TupleElementType,
         TypeConstraint,
+        #endregion
 
-
+        #region PATTERN MATCHING
         // ------------ PATTERN MATCHING ------------ //
         ConstantPattern,
         PatternBindingVariable,
@@ -349,8 +356,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         RelationalPattern,
         TypePattern,
         VarPattern,
+        #endregion
 
-
+        #region NAMES / QUALIFIERS
         // ------------ NAMES / QUALIFIERS ------------ //
 
         AliasQualifier,
@@ -358,8 +366,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         NamespaceQualifier,
         TypeAliasDeclaration,
         TypeQualifier,
+        #endregion
 
-
+        #region QUERY EXPRESSIONS
         // ------------ QUERY EXPRESSIONS ------------ //
 
         GroupContinuationRangeVariable,
@@ -376,8 +385,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         JoinRangeVariableReference,
         LetVariableReference,
         RangeVariableReference,
+        #endregion
 
-        // ------------ Misc ------------ //
+        #region MISC
+        // ------------ MISC ------------ //
 
         AddressOfOperand,
         AnonymousObjectElement,
@@ -413,6 +424,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         TernaryFalseValue,
         TypeOfOperand,
         WithExpressionSource,
+        #endregion
     }
 
     public enum TypeSymbols
@@ -507,11 +519,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
     public sealed record SemanticMap
     {
-        public string SRLabel { get; init; }
-
         public string PKLabel { get; init; }
 
+        public string SRLabel { get; init; }
+
         public MapText RoleDefinition { get; set; }
+
+        public string FDLabel { get; init; }
 
         public MapText? FocusedDefinition { get; set; }
 
@@ -519,10 +533,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
             PrimaryKind kind,
             SemanticRole role,
             MapText roleDefinition,
+            string focusedDefinitionLabel,
             MapText? focusedDefinition)
         {
             PKLabel = kind.ToString();
             SRLabel = role.GetSpacedLabel() ?? role.ToSpacedString();
+            FDLabel = focusedDefinitionLabel;
             RoleDefinition = roleDefinition;
             FocusedDefinition = focusedDefinition;
         }
