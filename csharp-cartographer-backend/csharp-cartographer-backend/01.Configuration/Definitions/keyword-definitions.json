@@ -149,6 +149,9 @@
   "implicit": {
     "Definition": "The {c:color-blue keyword}implicit{/c} keyword defines a conversion that happens automatically. It allows safe type conversions without extra syntax."
   },
+  "in:ArgumentModifier": {
+    "Definition": "The {c:color-blue keyword}in{/c} argument modifier indicates that the value is {c:bold}input-only{/c}. The argument can be read but not modified."
+  },
   "in:LoopStatement": {
     "Definition": "The {c:color-purple keyword}in{/c} keyword is used to iterate over collections in a loop."
   },
@@ -290,8 +293,14 @@
   "stackalloc": {
     "Definition": "The {c:color-blue keyword}stackalloc{/c} keyword allocates memory on the stack instead of the heap. It is used for high-performance or low-level scenarios."
   },
-  "static": {
-    "Definition": "{c:color-blue keyword}static{/c} types are types that cannot be instantiated and can only contain {c:color-blue keyword}static{/c} members. {c:color-blue keyword}static{/c} members belong to their type rather than an instance and are shared across all objects."
+  "static:MemberModifier": {
+    "Definition": "{c:color-blue keyword}static{/c} marks a member as belonging to its type rather than to an instance. A {c:color-blue keyword}static{/c} member can be accessed without creating an object and is shared across all instances of the type."
+  },
+  "static:TypeModifier": {
+    "Definition": "{c:color-blue keyword}static{/c} marks a type as non-instantiable and restricts it to containing only {c:color-blue keyword}static{/c} members."
+  },
+  "static:UsingDirectiveModifier": {
+    "Definition": "Used to imports the {c:color-blue keyword}static{/c} members of a type so they can be used without qualifying them with their type name."
   },
   "string": {
     "Definition": "The {c:color-blue keyword}string{/c} keyword defines a sequence of characters. It is commonly used to represent text."

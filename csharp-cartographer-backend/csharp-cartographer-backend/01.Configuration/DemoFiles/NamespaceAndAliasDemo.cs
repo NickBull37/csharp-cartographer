@@ -1,4 +1,5 @@
 ﻿// Static import (namespace/member access variation)
+global using System.Text;
 using static System.Console;
 
 // Namespace alias & type alias

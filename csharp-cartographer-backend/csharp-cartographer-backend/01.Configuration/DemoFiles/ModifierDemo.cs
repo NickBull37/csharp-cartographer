@@ -232,9 +232,19 @@ namespace csharp_cartographer_backend._01.Configuration.DemoFiles
             x++;
         }
 
-        public static void OutParam(out int x)
+        public static void OutParamY(out int y)
         {
-            x = 123;
+            y = 123;
+        }
+
+        public static void OutParamZ(out int z)
+        {
+            z = 123;
+        }
+
+        public static void OutParamZZ(out AsyncDemo zz)
+        {
+            zz = new AsyncDemo();
         }
 
         public static void InParam(in int x)
@@ -280,7 +290,9 @@ namespace csharp_cartographer_backend._01.Configuration.DemoFiles
             int x = 1;
 
             ParameterModifierDemo.RefParam(ref x);           // ref argument
-            ParameterModifierDemo.OutParam(out int y);       // out argument
+            ParameterModifierDemo.OutParamY(out int y);       // out argument
+            ParameterModifierDemo.OutParamZ(out var z);       // out argument
+            ParameterModifierDemo.OutParamZZ(out AsyncDemo zz);       // out argument
             ParameterModifierDemo.InParam(in x);             // in argument
 
             _ = ParameterModifierDemo.ParamsParam(1, 2, 3);  // params argument list

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { Box, Typography, Tooltip, Divider } from '@mui/material';
+import { Box, Stack, Typography, Tooltip, Divider } from '@mui/material';
 import { AppBar, Toolbar, IconButton, Avatar, Button } from '@mui/material';
 import ApiIcon from '@mui/icons-material/Api';
 import colors from '../../../utils/colors';
@@ -57,7 +57,18 @@ const StyledAppBar = styled(AppBar)(() => ({
     paddingTop: '2px'
 }));
 
-const ArtifactBanner = ({ artifactTitle, leftSidebarOpen, numTokens, numTags, numAncestors, generationTime }) => {
+const ArtifactBanner = ({
+    artifactTitle,
+    leftSidebarOpen,
+    numTokens,
+    numTags,
+    numAncestors,
+    tokenListGenerationTime,
+    tokenChartsGenerationTime,
+    mappingTime,
+    highlightingTime,
+    generationTime
+}) => {
 
     return (
 
@@ -97,33 +108,46 @@ const ArtifactBanner = ({ artifactTitle, leftSidebarOpen, numTokens, numTags, nu
                         </IconDataText>
 
                         <IconDataText>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" className="bi bi-pin-map bootstrap-icon-fill-code" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8z"/>
-                                <path fill-rule="evenodd" d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z"/>
-                            </svg>
-                            <DataText>
-                                <span className='titlebox-data'>{(numTags?.toLocaleString()) ?? 0}</span> pins dropped
-                            </DataText>
-                        </IconDataText>
-
-                        <IconDataText>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-map bootstrap-icon-fill-code" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" className="bi bi-map bootstrap-icon-fill-code" viewBox="0 0 16 16">
+                                <path fillRule="evenodd" d="M15.817.113A.5.5 0 0 1 16 .5v14a.5.5 0 0 1-.402.49l-5 1a.5.5 0 0 1-.196 0L5.5 15.01l-4.902.98A.5.5 0 0 1 0 15.5v-14a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0L10.5.99l4.902-.98a.5.5 0 0 1 .415.103M10 1.91l-4-.8v12.98l4 .8zm1 12.98 4-.8V1.11l-4 .8zm-6-.8V1.11l-4 .8v12.98z"/>
                             </svg>
                             <DataText>
                                 <span className='titlebox-data'>{(numAncestors?.toLocaleString()) ?? 0}</span> ancestors mapped
                             </DataText>
                         </IconDataText>
 
-                        <IconDataText>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" class="bi bi-stopwatch bootstrap-icon-fill-code" viewBox="0 0 16 16">
-                                <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5z"/>
-                                <path d="M6.5 1A.5.5 0 0 1 7 .5h2a.5.5 0 0 1 0 1v.57c1.36.196 2.594.78 3.584 1.64l.012-.013.354-.354-.354-.353a.5.5 0 0 1 .707-.708l1.414 1.415a.5.5 0 1 1-.707.707l-.353-.354-.354.354-.013.012A7 7 0 1 1 7 2.071V1.5a.5.5 0 0 1-.5-.5M8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3"/>
-                            </svg>
-                            <DataText>
-                                <span className='titlebox-data'>{generationTime}</span> to generate
-                            </DataText>
-                        </IconDataText>
+                        <Tooltip
+                            arrow
+                            placement="top"
+                            title={
+                                <Stack spacing={0.5}>
+                                    <DataText>
+                                        <span className='titlebox-data'>{tokenListGenerationTime}</span> to generate token list
+                                    </DataText>
+                                    <DataText>
+                                        <span className='titlebox-data'>{tokenChartsGenerationTime}</span> to chart ancestors
+                                    </DataText>
+                                    <DataText>
+                                        <span className='titlebox-data'>{mappingTime}</span> to map tokens
+                                    </DataText>
+                                    <DataText>
+                                        <span className='titlebox-data'>{highlightingTime}</span> to highlight tokens
+                                    </DataText>
+                                </Stack>
+                            }
+                        >
+                            <Box>
+                                <IconDataText>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" className="bi bi-stopwatch bootstrap-icon-fill-code" viewBox="0 0 16 16">
+                                        <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5z"/>
+                                        <path d="M6.5 1A.5.5 0 0 1 7 .5h2a.5.5 0 0 1 0 1v.57c1.36.196 2.594.78 3.584 1.64l.012-.013.354-.354-.354-.353a.5.5 0 0 1 .707-.708l1.414 1.415a.5.5 0 1 1-.707.707l-.353-.354-.354.354-.013.012A7 7 0 1 1 7 2.071V1.5a.5.5 0 0 1-.5-.5M8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3"/>
+                                    </svg>
+                                    <DataText>
+                                        <span className='titlebox-data'>{generationTime}</span> to generate artifact
+                                    </DataText>
+                                </IconDataText>
+                            </Box>
+                        </Tooltip>
                     </Box>
 
                     <Divider

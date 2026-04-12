@@ -233,6 +233,9 @@
   "CollectionElementSeparator": {
     "Definition": "Separates elements within a collection expression."
   },
+  "CollectionExpressionElementSeparator": {
+    "Definition": "Separates elements within a collection expression."
+  },
   "CollectionInitializerElementSeparator": {
     "Definition": "Separates elements within a collection initializer expression."
   },
@@ -449,6 +452,9 @@
   "MethodDeclaration": {
     "Definition": "A method declaration defines a block of code that performs an action or returns a value. Methods are called to run the code they contain."
   },
+  "GenericMethodDeclaration": {
+    "Definition": "A generic method declaration defines a method with one or more type parameters so the same method can work with different data types."
+  },
   "OutVariableDeclaration": {
     "Definition": "A new variable introduced by the {c:color-blue keyword}out{/c} argument modifier. The variable receives the value assigned by the called method and becomes available after the invocation."
   },
@@ -475,6 +481,9 @@
   },
   "MethodInvocation": {
     "Definition": "A method invocation is the act of calling a method to run its code. It may pass arguments and can return a value."
+  },
+  "GenericMethodInvocation": {
+    "Definition": "A generic method invocation is the act of calling a generic method with specific type arguments, either written explicitly or inferred by the compiler."
   },
   "FieldAccess": {
     "Definition": "A field access reads or modifies the value stored in a field. It retrieves data that belongs to an object or type."
@@ -844,6 +853,15 @@
   },
   "Ternary (2/2)": {
     "Definition": "Marks the expression that is returned when the ternary condition evaluates to {c:bold}false{/c}."
+  },
+  "ElementAccessReceiver": {
+    "Definition": "The collection being accessed with brackets to read or write one of its elements."
+  },
+  "InvocationReceiver": {
+    "Definition": "The value or object a method is invoked on."
+  },
+  "UsingDirectiveModifier": {
+    "Definition": "A keyword that changes how a {c:color-blue keyword}using{/c} directive behaves, such as making it apply globally or importing the static members of a type."
   },
   "": {
     "Definition": ""

@@ -16,6 +16,14 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
 
         public int NumAncestorsMapped { get; init; }
 
+        public string TimeToGenerateTokenList { get; set; } = string.Empty;
+
+        public string TimeToGenerateTokenCharts { get; set; } = string.Empty;
+
+        public string TimeToMapTokens { get; set; } = string.Empty;
+
+        public string TimeToHighlightTokens { get; set; } = string.Empty;
+
         public string TimeToGenerate { get; set; } = string.Empty;
 
         public string Title { get; set; } = string.Empty;
@@ -24,12 +32,23 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
 
         public List<NavToken> NavTokens { get; set; } = [];
 
-        public Artifact(string fileName, TimeSpan timeToGenerate, List<NavToken> navTokens)
+        public Artifact(
+            string fileName,
+            List<NavToken> navTokens,
+            TimeSpan tokenGenTime,
+            TimeSpan chartGenTime,
+            TimeSpan mapTime,
+            TimeSpan highlightTime,
+            TimeSpan timeToGenerate)
         {
             CreatedDate = DateTime.Now;
             ArtifactType = GetArtifactType(fileName);
             NumTokensAnalyzed = navTokens.Count;
             NumAncestorsMapped = CountAncestorsMapped(navTokens);
+            TimeToGenerateTokenList = FormatTimeSpan(tokenGenTime);
+            TimeToGenerateTokenCharts = FormatTimeSpan(chartGenTime);
+            TimeToMapTokens = FormatTimeSpan(mapTime);
+            TimeToHighlightTokens = FormatTimeSpan(highlightTime);
             TimeToGenerate = FormatTimeSpan(timeToGenerate);
             Title = fileName;
             NavTokens = navTokens;
@@ -68,11 +87,11 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
         {
             if (timeToGenerate.TotalSeconds < 1)
             {
-                return $"{timeToGenerate.TotalMilliseconds:0} ms"; // Less than 1 second: show milliseconds
+                return $"{timeToGenerate.TotalMilliseconds:0}ms"; // Less than 1 second: show milliseconds
             }
             else if (timeToGenerate.TotalMinutes < 1)
             {
-                return $"{timeToGenerate.Seconds}.{timeToGenerate.Milliseconds:000} seconds"; // Less than 1 minute: show seconds and milliseconds
+                return $"{timeToGenerate.Seconds}.{timeToGenerate.Milliseconds:000}s"; // Less than 1 minute: show seconds and milliseconds
             }
             else
             {

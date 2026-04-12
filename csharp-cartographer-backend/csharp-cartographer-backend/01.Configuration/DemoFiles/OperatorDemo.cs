@@ -221,8 +221,6 @@
                     int* pValue = &val;             // & (AddressOf)
                     Console.WriteLine(*pValue);     // * (Dereference)
                 }
-
-
             }
 
             public record Item(string Name, decimal Price);

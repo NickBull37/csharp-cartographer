@@ -234,6 +234,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         TypeOfOperator,
         TypeReference,
         TypeSystem,
+        UsingDirectiveModifier,
         WithExpression,
         #endregion
 
@@ -258,6 +259,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         EventPropertyDeclaration,
         FieldDeclaration,
         FixedPointerDeclaration,
+        GenericMethodDeclaration,
         InterfaceDeclaration,
         LambdaParameter,
         LocalFunctionDeclaration,
@@ -290,16 +292,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         // Invocations & access
         AssignmentRecipient,
-        NullCoalescingAssignmentRecipient,
         ConstructorInvocation,
-        MethodInvocation,
         EventSubscription,
         EventUnsubscription,
         FieldAccess,
+        GenericMethodInvocation,
         IndexerAccess,
-        InstanceQualifier,
-        TargetMember,
+        MethodInvocation,
+        NullCoalescingAssignmentRecipient,
         PropertyAccess,
+        TargetMember, // rename to AccessTarget?
         #endregion
 
         #region LITERALS
@@ -405,9 +407,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         ConditionalAccessTarget,
         DefaultOperand,
         DereferenceOperand,
+        ElementAccessReceiver,
         ExpressionOperand,
         IndexValue,
         InterpolatedValue,
+        InvocationReceiver, // maybe rename to InvocationTarget?
         LogicalOperand,
         NameOfOperand,
         NullCoalescingAssignmentValue,
@@ -523,7 +527,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         public string SRLabel { get; init; }
 
+        public string? SecondarySRLabel { get; init; }
+
         public MapText RoleDefinition { get; set; }
+
+        public MapText? SecondaryRoleDefinition { get; set; }
 
         public string FDLabel { get; init; }
 
@@ -532,14 +540,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         public SemanticMap(
             PrimaryKind kind,
             SemanticRole role,
+            SemanticRole? secondaryRole,
             MapText roleDefinition,
+            MapText? secondaryDefinition,
             string focusedDefinitionLabel,
             MapText? focusedDefinition)
         {
             PKLabel = kind.ToString();
             SRLabel = role.GetSpacedLabel() ?? role.ToSpacedString();
+            SecondarySRLabel = secondaryRole.GetSpacedLabel() ?? secondaryRole.ToSpacedString();
             FDLabel = focusedDefinitionLabel;
             RoleDefinition = roleDefinition;
+            SecondaryRoleDefinition = secondaryDefinition;
             FocusedDefinition = focusedDefinition;
         }
     }

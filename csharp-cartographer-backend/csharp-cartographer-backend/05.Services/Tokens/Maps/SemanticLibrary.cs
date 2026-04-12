@@ -19,20 +19,25 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         public SemanticMap GetSemanticMap(NavToken token)
         {
             var roleDefinition = GetRoleDefinition(token.SemanticRole);
+            var secondaryDefinition = GetRoleDefinition(token.SecondaryRole);
             var focusedDefinition = GetFocusedDefinition(token);
             var focusedDefinitionLabel = GetFocusedDefinitionLabel(token);
 
             return new SemanticMap(
                 token.PrimaryKind,
                 token.SemanticRole,
+                token.SecondaryRole,
                 roleDefinition,
+                secondaryDefinition,
                 focusedDefinitionLabel,
                 focusedDefinition
             );
         }
 
-        private static MapText GetRoleDefinition(SemanticRole role)
+        private static MapText? GetRoleDefinition(SemanticRole? role)
         {
+            if (role is null)
+                return null;
             /*
              * The SemanticRole is used as the definition key by default. 
              * Delimiters are the exception since they have much more overlap
@@ -261,11 +266,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
              */
 
             var key = $"{token.Text}";
+            bool requiresExt = token.Text
+                is "case"
+                or "default"
+                or "in"
+                or "new"
+                or "static"
+                or "where";
 
-            if (token.Text is "case" or "default" or "in" or "new" or "where")
-                return $"{key}:{token.SemanticRole}";
-
-            return $"{key}";
+            return requiresExt
+                ? $"{key}:{token.SemanticRole}"
+                : key;
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 namespace csharp_cartographer_backend._03.Models.Tokens
 {
     /// <summary>
-    ///     A Model Definition for the NavToken class.
+    ///     A model definition for the NavToken class.
     /// </summary>
     public class NavToken
     {
@@ -46,15 +46,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <summary>A list of the tokens trailing trivia strings.</summary>
         public List<string> TrailingTrivia { get; set; } = [];
 
-        public PrimaryKind PrimaryKind { get; set; } = PrimaryKind.Unknown;
-
-        public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
-
         /// <summary>A collection of token semantic data to display in the UI.</summary>
         public SemanticMap Map { get; set; }
 
         /// <summary>A list of ancestor nodes & data attached to the token.</summary>
         public List<TokenChart> Charts { get; set; } = [];
+
+        [JsonIgnore]
+        public PrimaryKind PrimaryKind { get; set; } = PrimaryKind.Unknown;
+
+        [JsonIgnore]
+        public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
+
+        [JsonIgnore]
+        public SemanticRole? SecondaryRole { get; set; }
 
         /// <summary>The TextSpan of the token text.</summary>
         [JsonIgnore]
@@ -665,27 +670,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && NextToken?.Text == ")";
         }
 
-        public bool IsGenericMethodInvocation() => IsMethodInvocation()
-            && NextToken?.Text == "<";
-
-        public bool IsInstanceQualifier()
+        public bool IsGenericMethodInvocation()
         {
-            // covers member access: return reader.ReadLine();
-            if (HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
-                && NextToken?.Text == "."
-                && PrevToken?.Text != ".")
-            {
-                return true;
-            }
+            var validNext = NextToken?.Text == "<";
+            var validAncestors =
+                HasAncestorAt(1, SyntaxKind.InvocationExpression) ||
+                HasAncestorAt(2, SyntaxKind.InvocationExpression);
 
-            // covers collection access: span[0] = 42;
-            if (HasAncestorAt(1, SyntaxKind.ElementAccessExpression)
-                && NextToken?.Text == "[")
-            {
-                return true;
-            }
-
-            return false;
+            return validNext && validAncestors;
         }
 
         public bool IsLockTarget()
@@ -702,21 +694,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && hasValidAncestors;
         }
 
-        public bool IsMethodIdentifier()
-        {
-            return IsMethodDeclaration() || IsMethodInvocation();
-        }
-
         public bool IsMethodInvocation()
         {
-            // covers regular and generic invocations
-            var nextTokenText = NextToken?.Text;
-            var hasPermittedNextToken = nextTokenText == "(" || nextTokenText == "<";
-            var hasInvocationAncestor =
+            var validNext = NextToken?.Text == "(";
+            var validAncestors =
                 HasAncestorAt(1, SyntaxKind.InvocationExpression) ||
                 HasAncestorAt(2, SyntaxKind.InvocationExpression);
 
-            return hasPermittedNextToken && hasInvocationAncestor;
+            return validNext && validAncestors;
         }
 
         public bool IsNullCoalescingAssignmentRecipient()
@@ -745,22 +730,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsTargetMember()
         {
-            // covers normal member access: return SemanticRole.AssignmentRecipient;
-            if (HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
-                && PrevToken?.Text == ".")
-            {
-                return true;
-            }
+            bool validNeighbors = PrevToken?.Text == "." && NextToken?.Text != ".";
+            if (!validNeighbors)
+                return false;
 
-            // covers conditional access: PrevToken?.Text == "."
-            if (HasAncestorAt(1, SyntaxKind.MemberBindingExpression)
-                && HasAncestorAt(2, SyntaxKind.ConditionalAccessExpression)
-                && PrevToken?.Text == ".")
-            {
-                return true;
-            }
+            bool validNormalAncestors = HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
+            bool validConditionalAncestors = HasAncestorAt(1, SyntaxKind.MemberBindingExpression)
+                && HasAncestorAt(2, SyntaxKind.ConditionalAccessExpression);
 
-            return false;
+            return validNormalAncestors || validConditionalAncestors;
         }
 
         public bool IsTernaryCondition()
@@ -910,8 +888,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && NextToken?.Text == "in";
         }
 
-        public bool IsGenericMethodDeclaration() =>
-            IsMethodDeclaration() && NextToken?.Text == "<";
+        public bool IsGenericMethodDeclaration()
+        {
+            return HasAncestorAt(0, SyntaxKind.MethodDeclaration)
+                && NextToken?.Kind == SyntaxKind.LessThanToken;
+        }
 
         public bool IsLambdaParameterDeclaration()
         {
@@ -969,8 +950,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return false;
         }
 
-
-
         public bool IsLoopIteratorDeclaration()
         {
             return IsForLoopIteratorDeclaration() || IsForEachLoopIteratorDeclaration();
@@ -983,7 +962,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsMethodDeclaration()
         {
-            return HasAncestorAt(0, SyntaxKind.MethodDeclaration);
+            return HasAncestorAt(0, SyntaxKind.MethodDeclaration)
+                && NextToken?.Kind == SyntaxKind.OpenParenToken;
         }
 
         public bool IsOutVariableDeclaration()
@@ -1144,21 +1124,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsTupleElementType()
             => HasAncestorAt(1, SyntaxKind.TupleElement);
 
-        public bool IsMethodReturnType()
-        {
-            if (IsTupleElementName() || IsTupleElementType())
-                return false;
-
-            if (HasAncestorAt(0, SyntaxKind.TypeParameter))
-                return false;
-
-            if (HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause))
-                return false;
-
-            return HasAncestorAt(1, SyntaxKind.MethodDeclaration)
-                || HasAncestorAt(2, SyntaxKind.MethodDeclaration);
-        }
-
         public bool IsTypeParameter()
         {
             // doesn't work for method declarations: GetValue<T>()
@@ -1177,9 +1142,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsOutVariableType()
         {
-            return HasAncestorAt(0, SyntaxKind.IdentifierName)
-                && HasAncestorAt(1, SyntaxKind.DeclarationExpression)
-                && PrevToken?.Text == "out";
+            bool validKind = IsKeyword() || Kind == SyntaxKind.IdentifierToken;
+            bool validPrev = PrevToken?.Text == "out";
+            bool validAncestor = HasAncestorAt(1, SyntaxKind.DeclarationExpression);
+
+            return validKind && validPrev && validAncestor;
         }
 
         public bool IsParameterType() =>
@@ -1217,7 +1184,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             // for single segment namespace declarations
             if (Classification == "namespace name"
-                && AncestorKinds.GetLast() == SyntaxKind.NamespaceDeclaration
+                && AncestorKinds.GetLastAncestor() == SyntaxKind.NamespaceDeclaration
                 && PrevToken?.Text == "namespace")
             {
                 return true;
@@ -1225,15 +1192,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             // for a namespace defined in a namespace
             if (Classification == "namespace name"
-                && AncestorKinds.GetLast() == SyntaxKind.NamespaceDeclaration
-                && AncestorKinds.GetSecondToLast() == SyntaxKind.NamespaceDeclaration)
+                && AncestorKinds.GetLastAncestor() == SyntaxKind.NamespaceDeclaration
+                && AncestorKinds.GetSecondToLastAncestor() == SyntaxKind.NamespaceDeclaration)
             {
                 return true;
             }
 
             return Classification == "namespace name"
-                && AncestorKinds.GetLast() == SyntaxKind.NamespaceDeclaration
-                && AncestorKinds.GetSecondToLast() == SyntaxKind.QualifiedName;
+                && AncestorKinds.GetLastAncestor() == SyntaxKind.NamespaceDeclaration
+                && AncestorKinds.GetSecondToLastAncestor() == SyntaxKind.QualifiedName;
         }
 
         public bool IsNamespaceQualifier()
@@ -1262,21 +1229,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return false;
         }
 
-        public bool IsAliasDeclarationIdentifier()
-        {
-            // covers namespace & type aliases
-            return HasAncestorAt(0, SyntaxKind.IdentifierName)
-                && HasAncestorAt(1, SyntaxKind.NameEquals)
-                && PrevToken?.Text == "using";
-        }
-
         public bool IsNamespaceAliasDeclarationIdentifier()
         {
             if (SemanticData is null)
                 return false;
 
             // alias declarations only appear in using statements, other instances are alias references
-            if (AncestorKinds.GetLast() != SyntaxKind.UsingDirective)
+            if (AncestorKinds.GetLastAncestor() != SyntaxKind.UsingDirective)
                 return false;
 
             //       ⌄
@@ -1294,7 +1253,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return false;
 
             // alias declarations only appear in using statements, other instances are alias references
-            if (AncestorKinds.GetLast() != SyntaxKind.UsingDirective)
+            if (AncestorKinds.GetLastAncestor() != SyntaxKind.UsingDirective)
                 return false;
 
             //          ⌄
@@ -1306,7 +1265,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsAliasQualifier()
         {
             // skip using dir aliases
-            if (AncestorKinds.GetLast() == SyntaxKind.UsingDirective)
+            if (AncestorKinds.GetLastAncestor() == SyntaxKind.UsingDirective)
                 return false;
 
             return SemanticData?.IsAlias == true;
@@ -1719,6 +1678,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsTypeSystemKeyword()
         {
             return GlobalConstants.TypeSystemKeywords.Contains(Text);
+        }
+
+        public bool IsUsingDirectiveModifierKeyword()
+        {
+            if (Kind != SyntaxKind.StaticKeyword && Kind != SyntaxKind.GlobalKeyword)
+                return false;
+
+            return Classification == Keyword
+                && AncestorKinds.GetLastAncestor() == SyntaxKind.UsingDirective;
         }
 
         public bool IsValueAndKeyword()
@@ -2897,6 +2865,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return HasAncestorAt(1, SyntaxKind.DefaultExpression);
         }
 
+        public bool IsElementAccessReceiver()
+        {
+            // span[0] = 42;
+            return HasAncestorAt(1, SyntaxKind.ElementAccessExpression)
+                && NextToken?.Text == "[";
+        }
+
         public bool IsIndexValue()
         {
             // covers single token index argument
@@ -2929,6 +2904,29 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return HasAncestorAt(1, SyntaxKind.Interpolation)
                 && PrevToken?.Text == "{"
                 && NextToken?.Text == "}";
+        }
+
+        public bool IsInvocationReceiver()
+        {
+            // return reader.ReadLine();
+            return HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
+                && NextToken?.Text == "."
+                && PrevToken?.Text != ".";
+        }
+
+        public bool IsMethodReturnType()
+        {
+            if (IsTupleElementName() || IsTupleElementType())
+                return false;
+
+            if (HasAncestorAt(0, SyntaxKind.Parameter) || HasAncestorAt(0, SyntaxKind.TypeParameter))
+                return false;
+
+            if (HasAncestorAt(1, SyntaxKind.TypeParameterConstraintClause))
+                return false;
+
+            return HasAncestorAt(1, SyntaxKind.MethodDeclaration)
+                || HasAncestorAt(2, SyntaxKind.MethodDeclaration);
         }
 
         public bool IsNameOfOperand()

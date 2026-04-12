@@ -77,9 +77,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                         continue;
                 }
 
-                //if (token.Map is null)
-                //    continue;
-
                 // color by classification
                 if (HighlightColorAlreadyKnown(token))
                 {
@@ -210,9 +207,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SymbolKind.Property:
                     token.HighlightColor = White;
                     return;
-                case SymbolKind.Method:
-                    token.HighlightColor = Yellow;
-                    return;
                 default:
                     break;
             }
@@ -293,6 +287,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.ParameterReference:
                     token.HighlightColor = LightBlue;
                     break;
+                case SemanticRole.GenericMethodDeclaration:
+                case SemanticRole.GenericMethodInvocation:
                 case SemanticRole.MethodDeclaration:
                 case SemanticRole.MethodInvocation:
                     token.HighlightColor = Yellow;

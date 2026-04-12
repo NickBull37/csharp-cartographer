@@ -239,13 +239,21 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
             csharp_cartographer_backend._03.Models.Artifacts.Artifact artifact = new(
                 "",
+                [],
                 TimeSpan.Zero,
-                []);
+                TimeSpan.Zero,
+                TimeSpan.Zero,
+                TimeSpan.Zero,
+                TimeSpan.Zero);
 
             _03.Models.Artifacts.Artifact artifact2 = new(
                 "",
+                [],
                 TimeSpan.Zero,
-                []);
+                TimeSpan.Zero,
+                TimeSpan.Zero,
+                TimeSpan.Zero,
+                TimeSpan.Zero);
 
             // Alias used again
             return IO.File.Exists(path);

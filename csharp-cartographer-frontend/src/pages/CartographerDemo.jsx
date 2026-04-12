@@ -18,6 +18,10 @@ const CartographerDemo = () => {
     const [numTokens, setNumTokens] = useState(0);
     const [numTags, setNumTags] = useState(0);
     const [numAncestors, setNumAncestors] = useState(0);
+    const [tokenListGenerationTime, setTokenListGenerationTime] = useState('');
+    const [tokenChartsGenerationTime, setTokenChartsGenerationTime] = useState('');
+    const [mappingTime, setMappingTime] = useState('');
+    const [highlightingTime, setHighlightingTime] = useState('');
     const [generationTime, setGenerationTime] = useState('');
 
     // Left sidebar state variables
@@ -61,6 +65,10 @@ const CartographerDemo = () => {
                 setNumTokens(response.data.numTokensAnalyzed);
                 setNumTags(response.data.numLanguageElementTags);
                 setNumAncestors(response.data.numAncestorsMapped);
+                setTokenListGenerationTime(response.data.timeToGenerateTokenList);
+                setTokenChartsGenerationTime(response.data.timeToGenerateTokenCharts);
+                setMappingTime(response.data.timeToMapTokens);
+                setHighlightingTime(response.data.timeToHighlightTokens);
                 setGenerationTime(response.data.timeToGenerate);
             }
         } catch (error) {
@@ -113,6 +121,10 @@ const CartographerDemo = () => {
                 numTokens={numTokens}
                 numTags={numTags}
                 numAncestors={numAncestors}
+                tokenListGenerationTime={tokenListGenerationTime}
+                tokenChartsGenerationTime={tokenChartsGenerationTime}
+                mappingTime={mappingTime}
+                highlightingTime={highlightingTime}
                 generationTime={generationTime}
             />
 

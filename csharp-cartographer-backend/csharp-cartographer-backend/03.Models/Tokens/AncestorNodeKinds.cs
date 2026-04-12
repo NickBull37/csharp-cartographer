@@ -14,7 +14,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 : ancestorKinds;
         }
 
-        public SyntaxKind? GetLast()
+        public SyntaxKind? GetLastAncestor()
         {
             if (Ancestors.Length == 0)
                 return null;
@@ -22,7 +22,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Ancestors[^1];
         }
 
-        public SyntaxKind? GetSecondToLast()
+        public SyntaxKind? GetSecondToLastAncestor()
         {
             if (Ancestors.Length < 2)
                 return null;
