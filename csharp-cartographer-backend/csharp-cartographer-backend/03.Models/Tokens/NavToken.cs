@@ -730,8 +730,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsTargetMember()
         {
-            bool validNeighbors = PrevToken?.Text == "." && NextToken?.Text != ".";
-            if (!validNeighbors)
+            bool validPrev = PrevToken?.Text == ".";
+            bool validPrevPrev = PrevToken?.PrevToken?.SemanticRole != SemanticRole.AliasQualifier
+                && PrevToken?.PrevToken?.SemanticRole != SemanticRole.NamespaceQualifier;
+
+            if (!validPrev || !validPrevPrev)
                 return false;
 
             bool validNormalAncestors = HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
@@ -1704,55 +1707,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return Text == "var"
                 && Classification == Keyword;
-
-            //// covers local variable data type: var value = 5;
-            //if (Text == "var"
-            //    && Kind == SyntaxKind.IdentifierToken
-            //    && HasAncestorAt(0, SyntaxKind.IdentifierName)
-            //    && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
-            //    && HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement))
-            //{
-            //    return true;
-            //}
-
-            //// covers out variable data type: TryGetValue(key, out var value)
-            //if (Text == "var"
-            //    && PrevToken?.Text == "out"
-            //    && Kind == SyntaxKind.IdentifierToken)
-            //{
-            //    return true;
-            //}
-
-            //// covers variable deconstruction: var (id, name) = GetUser();
-            //if (Text == "var"
-            //    && NextToken?.Text == "("
-            //    && Kind == SyntaxKind.IdentifierToken
-            //    && HasAncestorAt(1, SyntaxKind.DeclarationExpression))
-            //{
-            //    return true;
-            //}
-
-            //// covers using statements: using (var wr = new StreamWriter(file))
-            //if (Text == "var"
-            //    && PrevToken?.Text == "("
-            //    && Kind == SyntaxKind.IdentifierToken
-            //    && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
-            //    && HasAncestorAt(2, SyntaxKind.UsingStatement))
-            //{
-            //    return true;
-            //}
-
-            //// covers inline using statements: using var wr = new StreamWriter(file);
-            //if (Text == "var"
-            //    && PrevToken?.Text == "using"
-            //    && Kind == SyntaxKind.IdentifierToken
-            //    && HasAncestorAt(1, SyntaxKind.VariableDeclaration)
-            //    && HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement))
-            //{
-            //    return true;
-            //}
-
-            //return false;
         }
 
         public bool IsWithExpressionKeyword()

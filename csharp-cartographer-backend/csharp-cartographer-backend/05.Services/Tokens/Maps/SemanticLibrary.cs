@@ -19,16 +19,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         public SemanticMap GetSemanticMap(NavToken token)
         {
             var roleDefinition = GetRoleDefinition(token.SemanticRole);
-            var secondaryDefinition = GetRoleDefinition(token.SecondaryRole);
+            //var secondaryDefinition = GetRoleDefinition(token.SecondaryRole);
             var focusedDefinition = GetFocusedDefinition(token);
             var focusedDefinitionLabel = GetFocusedDefinitionLabel(token);
 
             return new SemanticMap(
                 token.PrimaryKind,
                 token.SemanticRole,
-                token.SecondaryRole,
+                //token.SecondaryRole,
                 roleDefinition,
-                secondaryDefinition,
+                //secondaryDefinition,
                 focusedDefinitionLabel,
                 focusedDefinition
             );

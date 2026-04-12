@@ -26,7 +26,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             token.PrimaryKind = GetPrimaryKind(token);
             token.SemanticRole = GetSemanticRole(token);
-            token.SecondaryRole = TryGetSecondaryRole(token);
+            //token.SecondaryRole = TryGetSecondaryRole(token);
             token.Map = _semanticLibrary.GetSemanticMap(token);
         }
 

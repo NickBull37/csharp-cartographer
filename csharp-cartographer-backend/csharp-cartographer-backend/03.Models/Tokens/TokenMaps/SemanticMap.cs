@@ -540,18 +540,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         public SemanticMap(
             PrimaryKind kind,
             SemanticRole role,
-            SemanticRole? secondaryRole,
+            //SemanticRole? secondaryRole,
             MapText roleDefinition,
-            MapText? secondaryDefinition,
+            //MapText? secondaryDefinition,
             string focusedDefinitionLabel,
             MapText? focusedDefinition)
         {
             PKLabel = kind.ToString();
             SRLabel = role.GetSpacedLabel() ?? role.ToSpacedString();
-            SecondarySRLabel = secondaryRole.GetSpacedLabel() ?? secondaryRole.ToSpacedString();
+            //SecondarySRLabel = secondaryRole.GetSpacedLabel() ?? secondaryRole.ToSpacedString();
             FDLabel = focusedDefinitionLabel;
             RoleDefinition = roleDefinition;
-            SecondaryRoleDefinition = secondaryDefinition;
+            //SecondaryRoleDefinition = secondaryDefinition;
             FocusedDefinition = focusedDefinition;
         }
     }
