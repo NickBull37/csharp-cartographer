@@ -49,7 +49,6 @@ builder.Services.AddScoped<IRoslynCorrector, RoslynCorrector>();
 builder.Services.AddScoped<ISemanticLibrary, SemanticLibrary>();
 builder.Services.AddScoped<ISyntaxHighlighter, SyntaxHighlighter>();
 builder.Services.AddScoped<ITokenChartGenerator, TokenChartGenerator>();
-builder.Services.AddScoped<ITokenChartWizard, TokenChartWizard>();
 builder.Services.AddScoped<ITokenMapper, TokenMapper>();
 
 // configure DI for csharp-cartographer clients

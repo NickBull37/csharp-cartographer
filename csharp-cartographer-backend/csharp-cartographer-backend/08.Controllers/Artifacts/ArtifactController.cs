@@ -72,10 +72,6 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
                 var artifact = await _generateArtifactWorkflow.ExecGenerateUserArtifact(dto, cancellationToken);
                 return Ok(artifact);
             }
-            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-            {
-                return StatusCode(499);
-            }
             catch (Exception ex)
             {
                 CartographerLogger.LogException(ex);

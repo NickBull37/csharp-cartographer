@@ -1,29 +1,32 @@
-﻿using Microsoft.CodeAnalysis;
-using System.Text.Json.Serialization;
-
-namespace csharp_cartographer_backend._03.Models.Tokens
+﻿namespace csharp_cartographer_backend._03.Models.Tokens
 {
-    public class TokenChart
+    public sealed record TokenChart
     {
-        public string Label { get; set; } = string.Empty;
+        public string Label { get; }
 
-        public string? Alias { get; set; }
+        public HighlightRange? HighlightRange { get; }
 
         public List<string> Facts { get; set; } = [];
 
         public List<string> Insights { get; set; } = [];
 
-        public HighlightRange? HighlightRange { get; set; }
-
-        // Obsolete
-        [JsonIgnore]
-        public List<SyntaxToken> Tokens { get; set; } = [];
+        public TokenChart(string label, HighlightRange? highlightRange)
+        {
+            Label = label;
+            HighlightRange = highlightRange;
+        }
     }
 
-    public class HighlightRange
+    public sealed record HighlightRange
     {
-        public int StartIndex { get; set; }
+        public int StartIndex { get; }
 
-        public int EndIndex { get; set; }
+        public int EndIndex { get; }
+
+        public HighlightRange(int start, int end)
+        {
+            StartIndex = start;
+            EndIndex = end;
+        }
     }
 }

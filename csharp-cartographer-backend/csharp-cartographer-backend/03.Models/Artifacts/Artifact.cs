@@ -54,6 +54,19 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
             NavTokens = navTokens;
         }
 
+        public static Artifact ForFailure()
+        {
+            return new Artifact(
+                "Error",
+                [],
+                TimeSpan.Zero,
+                TimeSpan.Zero,
+                TimeSpan.Zero,
+                TimeSpan.Zero,
+                TimeSpan.Zero
+            );
+        }
+
         private static string GetArtifactType(string fileName)
         {
             return fileName switch

@@ -57,64 +57,73 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
              *   Steps to generate an artifact:
              * 
              *   0. Read in source code from user uploaded file & generate FileData.
-             *   1. Start stopwatch.
-             *   2. Generate a list of NavTokens from source file's SyntaxTree.
-             *   3. Generate ancestor charts for each NavToken.
-             *   4. Map NavTokens.
-             *   5. Add TokenTags definitions & insights.
-             *   6. Add syntax highlighting for NavTokens.
+             *   1. Start stopwatch and set first checkpoint.
+             *   2. Generate a list of nav tokens from the source file.
+             *   3. Generate a token chart for each token and its ancestors.
+             *   4. Add semantic details to each token and it's map.
+             *   5. Add syntax highlighting for each token.
+             *   6. Stop stopwatch and capture total elapsed time.
              *   7. Build artifact.
-             *   8. Stop stopwatch.
-             *   9. Return artifact.
+             *   *  Log artifact data (optional)
+             *   8. Return artifact.
              */
 
-            // Step 1. Start stopwatch.
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            TimeSpan lastCheckpoint = TimeSpan.Zero;
+            try
+            {
+                // Step 1. Start stopwatch and set first checkpoint.
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                TimeSpan lastCheckpoint = TimeSpan.Zero;
 
-            // Step 2. Turn the Roslyn data into a list of NavTokens.
-            var navTokens = await _navTokenGenerator.GenerateNavTokens(fileData, cancellationToken);
-            var tokenGenTime = stopwatch.Elapsed - lastCheckpoint;
-            lastCheckpoint = stopwatch.Elapsed;
+                // Step 2. Generate a list of nav tokens from the source file.
+                var navTokens = await _navTokenGenerator.GenerateNavTokens(fileData, cancellationToken);
+                var tokenGenTime = stopwatch.Elapsed - lastCheckpoint;
+                lastCheckpoint = stopwatch.Elapsed;
 
-            // Step 3. Generate ancestor charts for each token.
-            _tokenChartGenerator.GenerateTokenCharts(navTokens);
-            var chartGenTime = stopwatch.Elapsed - lastCheckpoint;
-            lastCheckpoint = stopwatch.Elapsed;
+                // Step 3. Generate a token chart for each token and it's ancestors.
+                _tokenChartGenerator.GenerateTokenCharts(navTokens);
+                var chartGenTime = stopwatch.Elapsed - lastCheckpoint;
+                lastCheckpoint = stopwatch.Elapsed;
 
-            // Step 4. Map NavTokens.
-            _tokenMapper.MapNavTokens(navTokens);
-            var mapTime = stopwatch.Elapsed - lastCheckpoint;
-            lastCheckpoint = stopwatch.Elapsed;
+                // Step 4. Add semantic details to each token and it's map.
+                _tokenMapper.MapNavTokens(navTokens);
+                var mapTime = stopwatch.Elapsed - lastCheckpoint;
+                lastCheckpoint = stopwatch.Elapsed;
 
-            // Step 5. Add token chart definitions & insights.
-            //_tokenChartWizard.AddFactsAndInsightsToNavTokenCharts(navTokens);
+                // Step 5. Add syntax highlighting for each token.
+                _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
+                var highlightTime = stopwatch.Elapsed - lastCheckpoint;
+                //lastCheckpoint = stopwatch.Elapsed;
 
-            // Step 6. Add syntax highlighting for NavTokens.
-            _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
-            var highlightTime = stopwatch.Elapsed - lastCheckpoint;
-            lastCheckpoint = stopwatch.Elapsed;
+                // Step 6. Stop stopwatch and capture total elapsed time.
+                stopwatch.Stop();
+                var totalTime = stopwatch.Elapsed;
 
-            // Step 7. Stop stopwatch and capture total time.
-            stopwatch.Stop();
-            var totalTime = stopwatch.Elapsed;
+                // Step 7. Build artifact.
+                var artifact = new Artifact(
+                    fileData.FileName,
+                    navTokens,
+                    tokenGenTime,
+                    chartGenTime,
+                    mapTime,
+                    highlightTime,
+                    totalTime
+                );
 
-            // Step 8. Build artifact.
-            var artifact = new Artifact(
-                fileData.FileName,
-                navTokens,
-                tokenGenTime,
-                chartGenTime,
-                mapTime,
-                highlightTime,
-                totalTime
-            );
+                // Bonus: Log artifact data (optional)
+                LogArtifactData(artifact);
 
-            // Bonus: Log artifact data (optional)
-            LogArtifactData(artifact);
-
-            // Step 9. Return artifact.
-            return artifact;
+                // Step 8. Return artifact.
+                return artifact;
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                CartographerLogger.LogException(ex);
+                return Artifact.ForFailure();
+            }
         }
 
         private void LogArtifactData(Artifact artifact)

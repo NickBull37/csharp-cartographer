@@ -7,63 +7,75 @@ namespace csharp_cartographer_backend._05.Services.Charts
 {
     public class TokenChartGenerator : ITokenChartGenerator
     {
-        private static readonly HashSet<SyntaxKind> _KindsToSkip =
+        private static readonly HashSet<SyntaxKind> KindsToSkip =
         [
             SyntaxKind.CompilationUnit,
             SyntaxKind.EndOfFileToken,
             //SyntaxKind.Block,
         ];
 
-        /// <summary>Iterates through NavTokens and adds a chart for itself and each ancestor node.</summary>
-        /// <param name="navTokens">The list of NavTokens.</param>
-        public void GenerateTokenCharts(List<NavToken> navTokens)
+        /// <summary>
+        /// Generates a chart for each token and its ancestor nodes.
+        /// A cache of ancestor nodes and their charts is maintained so charts
+        /// can be reused when consecutive tokens share the same ancestors.
+        /// </summary>
+        /// <param name="navTokens">The list of NavTokens to generate charts for.</param>
+        public void GenerateTokenCharts(IReadOnlyList<NavToken> navTokens)
         {
+            var cachedAncestors = new Dictionary<SyntaxNode, TokenChart>();
+
             var tokenIndexBySpan = navTokens.ToDictionary(
-                t => t.RoslynToken.FullSpan,
-                t => t.Index);
+                token => token.RoslynToken.FullSpan,
+                token => token.Index);
 
             foreach (var token in navTokens)
             {
-                var tokenChart = CreateSingleTokenChart(token);
-                token.Charts.Add(tokenChart);
+                token.Charts.Add(CreateTokenChart(token));
 
-                foreach (var ancestor in GetAncestorNodes(token.RoslynToken))
+                var ancestorNodes = GetAncestorNodes(token.RoslynToken)
+                    .Where(node => !KindsToSkip.Contains(node.Kind()))
+                    .ToList();
+
+                foreach (var ancestorNode in ancestorNodes)
                 {
-                    if (_KindsToSkip.Contains(ancestor.Kind()))
+                    if (KindsToSkip.Contains(ancestorNode.Kind()))
                         continue;
 
-                    var ancestorChart = CreateAncestorNodeChart(
-                        ancestor,
-                        tokenIndexBySpan);
-
-                    token.Charts.Add(ancestorChart);
+                    if (cachedAncestors.TryGetValue(ancestorNode, out var cachedChart))
+                    {
+                        token.Charts.Add(cachedChart);
+                    }
+                    else
+                    {
+                        token.Charts.Add(CreateAncestorNodeChart(ancestorNode, tokenIndexBySpan));
+                    }
                 }
+
+                UpdateAncestorCache(ancestorNodes, token.Charts, cachedAncestors);
             }
+
+            // TODO: trim single token ancestors
         }
 
-        private static TokenChart CreateSingleTokenChart(NavToken token)
+        private static TokenChart CreateTokenChart(NavToken token)
         {
-            return new TokenChart
-            {
-                Label = token.Kind.ToString(),
-                HighlightRange = new HighlightRange
-                {
-                    StartIndex = token.Index,
-                    EndIndex = token.Index,
-                }
-            };
+            return new TokenChart(
+                token.Kind.ToString(),
+                new HighlightRange(token.Index, token.Index));
         }
 
-        private static TokenChart CreateAncestorNodeChart(SyntaxNode node, Dictionary<TextSpan, int> tokenIndexBySpan)
+        private static TokenChart CreateAncestorNodeChart(
+            SyntaxNode node,
+            Dictionary<TextSpan, int> tokenIndexBySpan)
         {
-            return new TokenChart
-            {
-                Label = node.Kind().ToString(),
-                HighlightRange = TryCreateNodeHighlightRange(node, tokenIndexBySpan),
-            };
+            return new TokenChart(
+                node.Kind().ToString(),
+                TryGetNodeHighlightRange(node, tokenIndexBySpan));
         }
 
-        private static HighlightRange? TryCreateNodeHighlightRange(SyntaxNode node, Dictionary<TextSpan, int> tokenIndexBySpan)
+        private static HighlightRange? TryGetNodeHighlightRange(
+            SyntaxNode node,
+            Dictionary<TextSpan, int> tokenIndexBySpan)
         {
             using var enumerator = node.DescendantTokens().GetEnumerator();
 
@@ -84,11 +96,7 @@ namespace csharp_cartographer_backend._05.Services.Charts
             if (!tokenIndexBySpan.TryGetValue(lastToken.FullSpan, out var endIndex))
                 return null;
 
-            return new HighlightRange
-            {
-                StartIndex = startIndex,
-                EndIndex = endIndex,
-            };
+            return new HighlightRange(startIndex, endIndex);
         }
 
         private static IEnumerable<SyntaxNode> GetAncestorNodes(SyntaxToken token)
@@ -98,6 +106,20 @@ namespace csharp_cartographer_backend._05.Services.Charts
             {
                 yield return parent;
                 parent = parent.Parent;
+            }
+        }
+
+        private static void UpdateAncestorCache(
+            IEnumerable<SyntaxNode> ancestors,
+            IEnumerable<TokenChart> charts,
+            Dictionary<SyntaxNode, TokenChart> cachedAncestors)
+        {
+            cachedAncestors.Clear();
+
+            // the first chart is always for the token itself, skip caching this one
+            foreach (var (ancestor, chart) in ancestors.Zip(charts.Skip(1)))
+            {
+                cachedAncestors[ancestor] = chart;
             }
         }
     }
