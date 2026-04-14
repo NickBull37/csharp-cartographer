@@ -26,7 +26,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             token.PrimaryKind = GetPrimaryKind(token);
             token.SemanticRole = GetSemanticRole(token);
-            //token.SecondaryRole = TryGetSecondaryRole(token);
             token.Map = _semanticLibrary.GetSemanticMap(token);
         }
 
@@ -1161,7 +1160,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         }
         #endregion
 
-        #region Special Case Tokens
+        #region Special Case Tokens [Obsolete]
         private static SemanticRole GetSpecialCaseKeywordRole(NavToken token)
         {
             /*

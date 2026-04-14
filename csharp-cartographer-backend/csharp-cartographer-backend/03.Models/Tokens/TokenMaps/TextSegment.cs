@@ -9,5 +9,10 @@
         public string? ToolTip { get; set; }
 
         public string? Link { get; init; }
+
+        public static TextSegment Undefined()
+        {
+            return new TextSegment { Text = "Could not find definition." };
+        }
     }
 }

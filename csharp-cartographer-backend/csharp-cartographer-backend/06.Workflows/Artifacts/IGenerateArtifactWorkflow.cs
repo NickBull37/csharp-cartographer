@@ -1,4 +1,5 @@
-﻿using csharp_cartographer_backend._03.Models.Artifacts;
+﻿using csharp_cartographer_backend._02.Utilities.ActionResponse;
+using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._08.Controllers.Artifacts.Dtos;
 
 namespace csharp_cartographer_backend._06.Workflows.Artifacts
@@ -11,7 +12,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         /// <param name="fileName">The name of the demo file.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A fully mapped artifact.</returns>
-        Task<Artifact> ExecGenerateDemoArtifact(string fileName, CancellationToken cancellationToken);
+        Task<ActionResponse<Artifact>> ExecGenerateDemoArtifact(string fileName, CancellationToken cancellationToken);
 
         /// <summary>
         /// Executes the generate-artifact workflow for user uploaded files.
@@ -19,6 +20,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         /// <param name="requestDto">The DTO containing the uploaded file data.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A fully mapped artifact.</returns>
-        Task<Artifact> ExecGenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken);
+        Task<ActionResponse<Artifact>> ExecGenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken);
     }
 }

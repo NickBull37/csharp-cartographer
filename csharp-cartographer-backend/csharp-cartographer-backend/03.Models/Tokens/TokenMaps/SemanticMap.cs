@@ -1,6 +1,4 @@
-﻿using csharp_cartographer_backend._02.Utilities.Helpers;
-
-namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
+﻿namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 {
     /// <summary>
     /// Describes the general syntax category the token falls under.
@@ -527,31 +525,27 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         public string SRLabel { get; init; }
 
+        public string FDLabel { get; init; }
+
         public string? SecondarySRLabel { get; init; }
 
-        public MapText RoleDefinition { get; set; }
+        public MapText? RoleDefinition { get; set; }
 
         public MapText? SecondaryRoleDefinition { get; set; }
-
-        public string FDLabel { get; init; }
 
         public MapText? FocusedDefinition { get; set; }
 
         public SemanticMap(
-            PrimaryKind kind,
-            SemanticRole role,
-            //SemanticRole? secondaryRole,
-            MapText roleDefinition,
-            //MapText? secondaryDefinition,
-            string focusedDefinitionLabel,
+            string kindLabel,
+            string roleLabel,
+            string focusedLabel,
+            MapText? roleDefinition,
             MapText? focusedDefinition)
         {
-            PKLabel = kind.ToString();
-            SRLabel = role.GetSpacedLabel() ?? role.ToSpacedString();
-            //SecondarySRLabel = secondaryRole.GetSpacedLabel() ?? secondaryRole.ToSpacedString();
-            FDLabel = focusedDefinitionLabel;
+            PKLabel = kindLabel;
+            SRLabel = roleLabel;
+            FDLabel = focusedLabel;
             RoleDefinition = roleDefinition;
-            //SecondaryRoleDefinition = secondaryDefinition;
             FocusedDefinition = focusedDefinition;
         }
     }

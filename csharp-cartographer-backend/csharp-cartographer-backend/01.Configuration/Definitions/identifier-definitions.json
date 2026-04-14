@@ -1,65 +1,65 @@
 {
-  "Identifier:Attribute": {
+  "ID:Attribute": {
     "Definition": "The name of a {c:bold}class{/c} that inherits from {c:color-white keyword}System.{/c}{c:color-green keyword}Attribute{/c}.{JumpExt}"
   },
-  "Identifier:ClassDeclaration": {
+  "ID:ClassDeclaration": {
     "Definition": "The name of a {c:color-green bold}class{/c} declaration.{RefExt}"
   },
-  "Identifier:ConstructorDeclaration": {
+  "ID:ConstructorDeclaration": {
     "Definition": "The name of a type {c:color-green bold}constructor{/c} declaration.{RefExt}"
   },
-  "Identifier:ConstructorInvocation": {
+  "ID:ConstructorInvocation": {
     "Definition": "The name of a type {c:color-green bold}constructor{/c}.{JumpExt}"
   },
-  "Identifier:EnumDeclaration": {
+  "ID:EnumDeclaration": {
     "Definition": "The name of an {c:color-light-green bold}enum{/c} declaration.{RefExt}"
   },
-  "Identifier:FieldDeclaration": {
+  "ID:FieldDeclaration": {
     "Definition": "The name of a {c:color-white bold}field{/c} declared within the containing type."
   },
-  "Identifier:FieldReference": {
+  "ID:FieldReference": {
     "Definition": "The name of a {c:color-white bold}field{/c} declared within the containing type."
   },
-  "Identifier:LambdaParameter": {
+  "ID:LambdaParameter": {
     "Definition": "The name of a {c:color-light-blue bold}lambda parameter{/c} that can be used inside the lambda expression it's declared in.<break/>Its value is supplied each time the lambda expression runs, typically from the current item in a collection or from an argument passed into the expression."
   },
-  "Identifier:LambdaParameterReference": {
+  "ID:LambdaParameterReference": {
     "Definition": "The name of the {c:color-light-blue bold}lambda parameter{/c} declared before the lambda operator ({c:code}=>{/c}) in the current lambda expression."
   },
-  "Identifier:LocalVariableDeclaration": {
+  "ID:LocalVariableDeclaration": {
     "Definition": "The name of a {c:color-light-blue bold}local variable{/c} that is accessible from below the declaration statement to the end of the containing scope."
   },
-  "Identifier:LocalVariableReference": {
+  "ID:LocalVariableReference": {
     "Definition": "The name of a {c:color-light-blue bold}local varaible{/c} declared above within the containing scope."
   },
-  "Identifier:MethodDeclaration": {
+  "ID:MethodDeclaration": {
     "Definition": "The name of a {c:color-yellow bold}method{/c} name that can be invoked.{RefExt}"
   },
-  "Identifier:MethodInvocation": {
+  "ID:MethodInvocation": {
     "Definition": "The name of a {c:color-yellow bold}method{/c} being invoked.{HovExt}"
   },
-  "Identifier:Parameter": {
+  "ID:Parameter": {
     "Definition": "The name of a {c:color-light-blue bold}parameter{/c} that is accessible anywhere within the following method or constructor body."
   },
-  "Identifier:ParameterReference": {
+  "ID:ParameterReference": {
     "Definition": "The name of a {c:color-light-blue bold}parameter{/c} defined in the containing method or constructor {c:tt color-light-blue}signature{/c}."
   },
-  "Identifier:PropertyDeclaration": {
+  "ID:PropertyDeclaration": {
     "Definition": "The name of a {c:color-white bold}property{/c} declared within the containing type."
   },
-  "Identifier:RecordDeclaration": {
+  "ID:RecordDeclaration": {
     "Definition": "The name of a {c:color-green bold}record{/c} declaration.{RefExt}"
   },
-  "Identifier:RecordStructDeclaration": {
+  "ID:RecordStructDeclaration": {
     "Definition": "The name of a {c:color-green bold}record struct{/c} declaration.{RefExt}"
   },
-  "Identifier:StructDeclaration": {
+  "ID:StructDeclaration": {
     "Definition": "The name of a {c:color-jade bold}struct{/c} declaration.{RefExt}"
   },
   "------------------------------------------------------------------------------------------------------------------": {
     "Definition": ""
   },
-  "Identifier:GenericType": {
+  "ID:GenericType": {
     "Definition": "A type that must be supplied a {c:bold}generic type argument{/c}. The generic type argument passed in will replace the {c:bold}generic type parameter{/c} in the type definition."
   }
 }

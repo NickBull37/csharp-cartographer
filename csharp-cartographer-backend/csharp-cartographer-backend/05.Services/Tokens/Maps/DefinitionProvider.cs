@@ -8,6 +8,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
     public static partial class DefinitionProvider
     {
+        [GeneratedRegex(@"\{c:(?<classes>[^}]+)\}(?<text>.*?)\{\/c\}", RegexOptions.Singleline)]
+        private static partial Regex StyledSpanRegex();
+
         private const string LineBreakPlaceholder = "<break/>";
         private const string HovExtPlaceholder = "{HovExt}";
         private const string JumpExtPlaceholder = "{JumpExt}";
@@ -17,13 +20,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         private const string JumpToDefinitionExtension = "<break/>Put your cursor inside the identifier name in your IDE and hit {c:keyword}F12{/c} to jump to the identifier's definition.";
         private const string ReferenceExtension = "<break/>Look for a {c:underline}references{/c} link above the declaration in your IDE to see everywhere it's currently being used.";
 
+        private static readonly Lazy<IReadOnlyDictionary<string, MapText>> Definitions
+            = new(LoadDefinitions);
+
         public static MapText? GetMapText(string key)
             => Definitions.Value.TryGetValue(key, out var mapText)
                 ? mapText
                 : null;
-
-        private static readonly Lazy<IReadOnlyDictionary<string, MapText>> Definitions
-            = new(LoadDefinitions);
 
         private static IReadOnlyDictionary<string, MapText> LoadDefinitions()
         {
@@ -178,8 +181,5 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 }
             }
         }
-
-        [GeneratedRegex(@"\{c:(?<classes>[^}]+)\}(?<text>.*?)\{\/c\}", RegexOptions.Singleline)]
-        private static partial Regex StyledSpanRegex();
     }
 }

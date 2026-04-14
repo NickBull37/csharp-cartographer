@@ -8,13 +8,7 @@
         {
             return new MapText
             {
-                Segments =
-                [
-                    new TextSegment()
-                    {
-                        Text = "Could not find definition."
-                    }
-                ]
+                Segments = [TextSegment.Undefined()]
             };
         }
     }

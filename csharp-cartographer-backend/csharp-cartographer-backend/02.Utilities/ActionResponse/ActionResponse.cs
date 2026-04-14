@@ -2,73 +2,46 @@
 {
     public class ActionResponse
     {
-        public bool IsSuccess { get; set; }
+        public bool IsSuccess { get; }
 
-        public string? ErrorMessage { get; set; }
-    }
+        public bool IsFailure => !IsSuccess;
 
-    public class PassingAR : ActionResponse
-    {
-        public PassingAR()
+        public string? ErrorMessage { get; }
+
+        private ActionResponse(bool isSuccess, string? errorMessage)
         {
-            IsSuccess = true;
-        }
-    }
-
-    public class FailingAR : ActionResponse
-    {
-        public FailingAR()
-        {
-            IsSuccess = false;
-            ErrorMessage = string.Empty;
-        }
-
-        public FailingAR(string errorMessage)
-        {
-            IsSuccess = false;
+            IsSuccess = isSuccess;
             ErrorMessage = errorMessage;
         }
+
+        public static ActionResponse Success()
+            => new(isSuccess: true, errorMessage: null);
+
+        public static ActionResponse Failure(string errorMessage)
+            => new(isSuccess: false, errorMessage);
     }
 
     public class ActionResponse<T>
     {
-        public T? Content { get; set; }
+        public bool IsSuccess { get; }
 
-        public bool IsSuccess { get; set; }
+        public bool IsFailure => !IsSuccess;
 
-        public string? ErrorMessage { get; set; }
-    }
+        public T? Content { get; }
 
-    public class PassingAR<T> : ActionResponse<T>
-    {
-        public PassingAR(T content)
+        public string? ErrorMessage { get; }
+
+        private ActionResponse(bool isSuccess, T? content, string? errorMessage)
         {
+            IsSuccess = isSuccess;
             Content = content;
-            IsSuccess = true;
-        }
-    }
-
-    public class FailingAR<T> : ActionResponse<T>
-    {
-        public FailingAR(T content)
-        {
-            Content = content;
-            IsSuccess = false;
-            ErrorMessage = string.Empty;
-        }
-
-        public FailingAR(string errorMessage)
-        {
-            Content = default;
-            IsSuccess = false;
             ErrorMessage = errorMessage;
         }
 
-        public FailingAR(T content, string errorMessage)
-        {
-            Content = content;
-            IsSuccess = false;
-            ErrorMessage = errorMessage;
-        }
+        public static ActionResponse<T> Success(T content)
+            => new(true, content, null);
+
+        public static ActionResponse<T> Failure(string errorMessage)
+            => new(false, default, errorMessage);
     }
 }

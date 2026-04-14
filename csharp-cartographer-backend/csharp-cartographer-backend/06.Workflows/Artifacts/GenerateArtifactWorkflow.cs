@@ -1,4 +1,5 @@
 ﻿using csharp_cartographer_backend._01.Configuration.Configs;
+using csharp_cartographer_backend._02.Utilities.ActionResponse;
 using csharp_cartographer_backend._02.Utilities.Logging;
 using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._03.Models.Files;
@@ -39,19 +40,19 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _config = config.Value;
         }
 
-        public async Task<Artifact> ExecGenerateDemoArtifact(string fileName, CancellationToken cancellationToken)
+        public async Task<ActionResponse<Artifact>> ExecGenerateDemoArtifact(string fileName, CancellationToken cancellationToken)
         {
             FileData fileData = _fileProcessor.ReadInTestFileData(fileName);
             return await GenerateArtifact(fileData, cancellationToken);
         }
 
-        public async Task<Artifact> ExecGenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken)
+        public async Task<ActionResponse<Artifact>> ExecGenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken)
         {
             FileData fileData = _fileProcessor.ReadInFileData(requestDto);
             return await GenerateArtifact(fileData, cancellationToken);
         }
 
-        private async Task<Artifact> GenerateArtifact(FileData fileData, CancellationToken cancellationToken)
+        private async Task<ActionResponse<Artifact>> GenerateArtifact(FileData fileData, CancellationToken cancellationToken)
         {
             /*
              *   Steps to generate an artifact:
@@ -113,7 +114,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
                 LogArtifactData(artifact);
 
                 // Step 8. Return artifact.
-                return artifact;
+                return ActionResponse<Artifact>.Success(artifact);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
@@ -122,7 +123,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             catch (Exception ex)
             {
                 CartographerLogger.LogException(ex);
-                return Artifact.ForFailure();
+                return ActionResponse<Artifact>.Failure("An exception occurred during artifact generation.");
             }
         }
 

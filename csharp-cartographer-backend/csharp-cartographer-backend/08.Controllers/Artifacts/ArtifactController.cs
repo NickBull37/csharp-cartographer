@@ -1,5 +1,4 @@
-﻿using csharp_cartographer_backend._02.Utilities.Logging;
-using csharp_cartographer_backend._06.Workflows.Artifacts;
+﻿using csharp_cartographer_backend._06.Workflows.Artifacts;
 using csharp_cartographer_backend._08.Controllers.Artifacts.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,24 +30,17 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
                     statusCode: StatusCodes.Status400BadRequest);
             }
 
-            try
-            {
-                var artifact = await _generateArtifactWorkflow.ExecGenerateDemoArtifact(fileName, cancellationToken);
-                return Ok(artifact);
-            }
-            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-            {
-                return StatusCode(499);
-            }
-            catch (Exception ex)
-            {
-                CartographerLogger.LogException(ex);
+            var actionResponse = await _generateArtifactWorkflow.ExecGenerateDemoArtifact(fileName, cancellationToken);
 
+            if (actionResponse.IsFailure)
+            {
                 return Problem(
                     type: "Internal Server Error",
-                    detail: ex.Message,
+                    detail: actionResponse.ErrorMessage,
                     statusCode: StatusCodes.Status500InternalServerError);
             }
+
+            return Ok(actionResponse.Content);
         }
         #endregion
 
@@ -67,20 +59,17 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
                     statusCode: StatusCodes.Status400BadRequest);
             }
 
-            try
-            {
-                var artifact = await _generateArtifactWorkflow.ExecGenerateUserArtifact(dto, cancellationToken);
-                return Ok(artifact);
-            }
-            catch (Exception ex)
-            {
-                CartographerLogger.LogException(ex);
+            var actionResponse = await _generateArtifactWorkflow.ExecGenerateUserArtifact(dto, cancellationToken);
 
+            if (actionResponse.IsFailure)
+            {
                 return Problem(
                     type: "Internal Server Error",
-                    detail: ex.Message,
+                    detail: actionResponse.ErrorMessage,
                     statusCode: StatusCodes.Status500InternalServerError);
             }
+
+            return Ok(actionResponse.Content);
         }
         #endregion
     }
