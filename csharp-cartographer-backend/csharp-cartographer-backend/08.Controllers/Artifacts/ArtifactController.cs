@@ -25,7 +25,7 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
                 return BadRequest("The file name must match one of the existing demo files available.");
             }
 
-            var response = await _generateArtifactWorkflow.ExecGenerateDemoArtifact(fileName, cancellationToken);
+            var response = await _generateArtifactWorkflow.GenerateDemoArtifact(fileName, cancellationToken);
 
             if (response.IsFailure)
             {
@@ -43,7 +43,7 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
         [Route("generate-artifact")]
         public async Task<IActionResult> GenerateArtifact([FromBody] GenerateArtifactDto dto, CancellationToken cancellationToken)
         {
-            var response = await _generateArtifactWorkflow.ExecGenerateUserArtifact(dto, cancellationToken);
+            var response = await _generateArtifactWorkflow.GenerateUserArtifact(dto, cancellationToken);
 
             if (response.IsFailure)
             {

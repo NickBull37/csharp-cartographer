@@ -40,13 +40,13 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _config = config.Value;
         }
 
-        public async Task<ActionResponse<Artifact>> ExecGenerateDemoArtifact(string fileName, CancellationToken cancellationToken)
+        public async Task<ActionResponse<Artifact>> GenerateDemoArtifact(string fileName, CancellationToken cancellationToken)
         {
             FileData fileData = _fileProcessor.ReadInTestFileData(fileName);
             return await GenerateArtifact(fileData, cancellationToken);
         }
 
-        public async Task<ActionResponse<Artifact>> ExecGenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken)
+        public async Task<ActionResponse<Artifact>> GenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken)
         {
             FileData fileData = _fileProcessor.ReadInFileData(requestDto);
             return await GenerateArtifact(fileData, cancellationToken);
@@ -64,45 +64,33 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
              *   4. Add semantic details to each token and it's map.
              *   5. Add syntax highlighting for each token.
              *   6. Stop stopwatch and capture total elapsed time.
-             *   7. Build artifact.
+             *   7. Build artifact timings.
+             *   8. Build artifact.
              *   *  Log artifact data (optional)
-             *   8. Return artifact.
+             *   9. Return artifact.
              */
 
             try
             {
-                // Step 1. Start stopwatch and set first checkpoint.
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                TimeSpan lastCheckpoint = TimeSpan.Zero;
+                TimeSpan checkpoint = TimeSpan.Zero;
 
-                // Step 2. Generate a list of nav tokens from the source file.
                 var navTokens = await _navTokenGenerator.GenerateNavTokens(fileData, cancellationToken);
-                var tokenGenTime = stopwatch.Elapsed - lastCheckpoint;
-                lastCheckpoint = stopwatch.Elapsed;
+                var tokenGenTime = TimeSinceCheckpoint(stopwatch, ref checkpoint);
 
-                // Step 3. Generate a token chart for each token and it's ancestors.
                 _tokenChartGenerator.GenerateTokenCharts(navTokens);
-                var chartGenTime = stopwatch.Elapsed - lastCheckpoint;
-                lastCheckpoint = stopwatch.Elapsed;
+                var chartGenTime = TimeSinceCheckpoint(stopwatch, ref checkpoint);
 
-                // Step 4. Add semantic details to each token and it's map.
                 _tokenMapper.MapNavTokens(navTokens);
-                var mapTime = stopwatch.Elapsed - lastCheckpoint;
-                lastCheckpoint = stopwatch.Elapsed;
+                var mapTime = TimeSinceCheckpoint(stopwatch, ref checkpoint);
 
-                // Step 5. Add syntax highlighting for each token.
                 _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
-                var highlightTime = stopwatch.Elapsed - lastCheckpoint;
-                //lastCheckpoint = stopwatch.Elapsed;
+                var highlightTime = stopwatch.Elapsed - checkpoint;
 
-                // Step 6. Stop stopwatch and capture total elapsed time.
                 stopwatch.Stop();
                 var totalTime = stopwatch.Elapsed;
 
-                // Step 7. Build artifact.
-                var artifact = new Artifact(
-                    fileData.FileName,
-                    navTokens,
+                var timings = new ArtifactTimes(
                     tokenGenTime,
                     chartGenTime,
                     mapTime,
@@ -110,10 +98,14 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
                     totalTime
                 );
 
-                // Bonus: Log artifact data (optional)
+                var artifact = new Artifact(
+                    fileData.FileName,
+                    navTokens,
+                    timings
+                );
+
                 LogArtifactData(artifact);
 
-                // Step 8. Return artifact.
                 return ActionResponse<Artifact>.Success(artifact);
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
@@ -147,6 +139,13 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
                 CartographerLogger.LogTokens(unidentifiedTokens);
             }
+        }
+
+        private static TimeSpan TimeSinceCheckpoint(Stopwatch stopwatch, ref TimeSpan checkpoint)
+        {
+            TimeSpan elapsed = stopwatch.Elapsed - checkpoint;
+            checkpoint = stopwatch.Elapsed;
+            return elapsed;
         }
     }
 }

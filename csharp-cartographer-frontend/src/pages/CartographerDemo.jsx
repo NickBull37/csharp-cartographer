@@ -65,11 +65,11 @@ const CartographerDemo = () => {
                 setNumTokens(response.data.numTokensAnalyzed);
                 setNumTags(response.data.numLanguageElementTags);
                 setNumAncestors(response.data.numAncestorsMapped);
-                setTokenListGenerationTime(response.data.timeToGenerateTokenList);
-                setTokenChartsGenerationTime(response.data.timeToGenerateTokenCharts);
-                setMappingTime(response.data.timeToMapTokens);
-                setHighlightingTime(response.data.timeToHighlightTokens);
-                setGenerationTime(response.data.timeToGenerate);
+                setTokenListGenerationTime(response.data.timings.tokenGenerationTime);
+                setTokenChartsGenerationTime(response.data.timings.chartGenerationTime);
+                setMappingTime(response.data.timings.mappingTime);
+                setHighlightingTime(response.data.timings.highlightTime);
+                setGenerationTime(response.data.timings.totalTime);
             }
         } catch (error) {
             console.log('Create artifact API call failed.');
@@ -78,42 +78,6 @@ const CartographerDemo = () => {
 
     return (
         <Box>
-
-            {/* <TitleBox
-                artifactTitle={artifactTitle}
-                leftSidebarOpen={leftSidebarOpen}
-                numTokens={numTokens}
-                numTags={numTags}
-                numAncestors={numAncestors}
-                generationTime={generationTime}
-            />
-
-            <AiSidebar
-                navTokens={navTokens}
-                leftSidebarOpen={leftSidebarOpen}
-                setLeftSidebarOpen={setLeftSidebarOpen}
-                selectedTokens={selectedTokens}
-                setSelectedTokens={setSelectedTokens}
-            />
-
-            <CodeWindow
-                leftSidebarOpen={leftSidebarOpen}
-                tokenList={navTokens}
-                activeToken={activeToken}
-                setActiveToken={setActiveToken}
-                activeHighlightIndices={activeHighlightIndices}
-                setActiveHighlightIndices={setActiveHighlightIndices}
-                selectedTokens={selectedTokens}
-                setSelectedTokens={setSelectedTokens}
-            />
-
-            <TokenSidebar
-                navTokens={navTokens}
-                activeToken={activeToken}
-                setActiveToken={setActiveToken}
-                activeHighlightIndices={activeHighlightIndices}
-                setActiveHighlightIndices={setActiveHighlightIndices}
-            /> */}
 
             <ArtifactBanner
                 artifactTitle={artifactTitle}
@@ -141,13 +105,8 @@ const CartographerDemo = () => {
                 tokenList={navTokens}
                 activeToken={activeToken}
                 setActiveToken={setActiveToken}
-
                 activeHighlightRange={activeHighlightRange}
                 setActiveHighlightRange={setActiveHighlightRange}
-
-                // activeHighlightIndices={activeHighlightIndices}
-                // setActiveHighlightIndices={setActiveHighlightIndices}
-
                 selectedTokens={selectedTokens}
                 setSelectedTokens={setSelectedTokens}
             />
@@ -156,12 +115,8 @@ const CartographerDemo = () => {
                 navTokens={navTokens}
                 activeToken={activeToken}
                 setActiveToken={setActiveToken}
-
                 activeHighlightRange={activeHighlightRange}
                 setActiveHighlightRange={setActiveHighlightRange}
-                
-                // activeHighlightIndices={activeHighlightIndices}
-                // setActiveHighlightIndices={setActiveHighlightIndices}
             />
             
         </Box>

@@ -1,70 +1,43 @@
-﻿using csharp_cartographer_backend._03.Models.Tokens;
+﻿using csharp_cartographer_backend._03.Models.Insights;
+using csharp_cartographer_backend._03.Models.Tokens;
 
 namespace csharp_cartographer_backend._03.Models.Artifacts
 {
-    public class Artifact
+    public sealed class Artifact
     {
-        public int ID { get; set; }
+        public Guid ID { get; } = Guid.NewGuid();
 
-        public DateTime CreatedDate { get; init; }
+        public DateTime CreatedDate { get; } = DateTime.Now;
 
         public string Language { get; } = "C#";
 
-        public string ArtifactType { get; init; } = string.Empty;
+        public string ArtifactType { get; }
 
-        public int NumTokensAnalyzed { get; init; }
+        public string FileName { get; }
 
-        public int NumAncestorsMapped { get; init; }
+        public int TokenCount { get; }
 
-        public string TimeToGenerateTokenList { get; set; } = string.Empty;
+        public int AncestorCount { get; }
 
-        public string TimeToGenerateTokenCharts { get; set; } = string.Empty;
+        public List<NavToken> NavTokens { get; }
 
-        public string TimeToMapTokens { get; set; } = string.Empty;
-
-        public string TimeToHighlightTokens { get; set; } = string.Empty;
-
-        public string TimeToGenerate { get; set; } = string.Empty;
-
-        public string Title { get; set; } = string.Empty;
+        public ArtifactTimes Timings { get; }
 
         public string? Description { get; set; }
 
-        public List<NavToken> NavTokens { get; set; } = [];
+        public IEnumerable<Insight> Insights { get; set; } = [];
 
         public Artifact(
             string fileName,
             List<NavToken> navTokens,
-            TimeSpan tokenGenTime,
-            TimeSpan chartGenTime,
-            TimeSpan mapTime,
-            TimeSpan highlightTime,
-            TimeSpan timeToGenerate)
+            ArtifactTimes timings)
         {
-            CreatedDate = DateTime.Now;
             ArtifactType = GetArtifactType(fileName);
-            NumTokensAnalyzed = navTokens.Count;
-            NumAncestorsMapped = CountAncestorsMapped(navTokens);
-            TimeToGenerateTokenList = FormatTimeSpan(tokenGenTime);
-            TimeToGenerateTokenCharts = FormatTimeSpan(chartGenTime);
-            TimeToMapTokens = FormatTimeSpan(mapTime);
-            TimeToHighlightTokens = FormatTimeSpan(highlightTime);
-            TimeToGenerate = FormatTimeSpan(timeToGenerate);
-            Title = fileName;
+            TokenCount = navTokens.Count;
+            AncestorCount = CountAncestorsMapped(navTokens);
+            FileName = fileName;
             NavTokens = navTokens;
-        }
-
-        public static Artifact ForFailure()
-        {
-            return new Artifact(
-                "Error",
-                [],
-                TimeSpan.Zero,
-                TimeSpan.Zero,
-                TimeSpan.Zero,
-                TimeSpan.Zero,
-                TimeSpan.Zero
-            );
+            Timings = timings;
         }
 
         private static string GetArtifactType(string fileName)
@@ -83,33 +56,52 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
             };
         }
 
-        private static int CountAncestorsMapped(List<NavToken> navTokens)
+        private static int CountAncestorsMapped(IEnumerable<NavToken> navTokens)
         {
-            var chartCount = 0;
+            int count = 0;
             foreach (var token in navTokens)
             {
-                foreach (var chart in token.Charts)
-                {
-                    chartCount++;
-                }
+                count += token.Charts.Count;
             }
-            return chartCount;
+            return count;
+        }
+    }
+
+    public sealed class ArtifactTimes
+    {
+        public string TokenGenerationTime { get; }
+        public string ChartGenerationTime { get; }
+        public string MappingTime { get; }
+        public string HighlightTime { get; }
+        public string TotalTime { get; }
+
+        public ArtifactTimes(
+            TimeSpan tokenGenerationTime,
+            TimeSpan chartGenerationTime,
+            TimeSpan mappingTime,
+            TimeSpan highlightTime,
+            TimeSpan totalTime)
+        {
+            TokenGenerationTime = FormatTimeSpan(tokenGenerationTime);
+            ChartGenerationTime = FormatTimeSpan(chartGenerationTime);
+            MappingTime = FormatTimeSpan(mappingTime);
+            HighlightTime = FormatTimeSpan(highlightTime);
+            TotalTime = FormatTimeSpan(totalTime);
         }
 
-        private static string FormatTimeSpan(TimeSpan timeToGenerate)
+        private static string FormatTimeSpan(TimeSpan time)
         {
-            if (timeToGenerate.TotalSeconds < 1)
+            if (time.TotalSeconds < 1)
             {
-                return $"{timeToGenerate.TotalMilliseconds:0}ms"; // Less than 1 second: show milliseconds
+                return $"{time.TotalMilliseconds:0}ms";
             }
-            else if (timeToGenerate.TotalMinutes < 1)
+
+            if (time.TotalMinutes < 1)
             {
-                return $"{timeToGenerate.Seconds}.{timeToGenerate.Milliseconds:000}s"; // Less than 1 minute: show seconds and milliseconds
+                return $"{time.TotalSeconds:0.000}s";
             }
-            else
-            {
-                return timeToGenerate.ToString(@"hh\:mm\:ss\.fff"); // Standard HH:MM:SS.MS format
-            }
+
+            return time.ToString(@"hh\:mm\:ss\.fff");
         }
     }
 }

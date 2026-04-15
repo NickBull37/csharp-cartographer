@@ -24,16 +24,15 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
             ClearLogFile(LogType.ArtifactLog);
 
             LogMessage(" ", _artifactLogPath);
-            LogMessage($"==============================  {artifact.Title}  ==============================", _artifactLogPath);
+            LogMessage($"==============================  {artifact.FileName}  ==============================", _artifactLogPath);
             LogMessage(" ", _artifactLogPath);
             //LogMessage("-------------------------- Misc data --------------------------");
             LogMessage($"CreatedDate: {artifact.CreatedDate}", _artifactLogPath);
-            LogMessage($"TimeToGenerate: {artifact.TimeToGenerate}", _artifactLogPath);
             LogMessage($"Language: {artifact.Language}", _artifactLogPath);
             LogMessage($"ArtifactType: {artifact.ArtifactType}", _artifactLogPath);
-            LogMessage($"NumTokensAnalyzed: {artifact.NumTokensAnalyzed}", _artifactLogPath);
+            LogMessage($"NumTokensAnalyzed: {artifact.TokenCount}", _artifactLogPath);
             //LogMessage("------------------------- Token data -------------------------");
-            LogMessage($"NumAncestorsMapped: {artifact.NumAncestorsMapped}", _artifactLogPath);
+            LogMessage($"NumAncestorsMapped: {artifact.AncestorCount}", _artifactLogPath);
         }
 
         public static void LogException(Exception ex)

@@ -6,9 +6,9 @@
 
         public HighlightRange? HighlightRange { get; }
 
-        public List<string> Facts { get; set; } = [];
+        public List<string> Facts { get; } = [];
 
-        public List<string> Insights { get; set; } = [];
+        public List<string> Insights { get; } = [];
 
         public TokenChart(string label, HighlightRange? highlightRange)
         {
@@ -17,16 +17,10 @@
         }
     }
 
-    public sealed record HighlightRange
+    public readonly struct HighlightRange(int startIndex, int endIndex)
     {
-        public int StartIndex { get; }
+        public int StartIndex { get; } = startIndex;
 
-        public int EndIndex { get; }
-
-        public HighlightRange(int start, int end)
-        {
-            StartIndex = start;
-            EndIndex = end;
-        }
+        public int EndIndex { get; } = endIndex;
     }
 }

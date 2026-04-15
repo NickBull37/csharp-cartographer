@@ -43,5 +43,8 @@
 
         public static ActionResponse<T> Failure(string errorMessage)
             => new(false, default, errorMessage);
+
+        public static ActionResponse<T> Failure(T content, string errorMessage)
+            => new(false, content, errorMessage);
     }
 }

@@ -13,6 +13,10 @@ const UserCodeCartograph = ({artifact}) => {
     const [numTokens, setNumTokens] = useState(0);
     const [numTags, setNumTags] = useState(0);
     const [numAncestors, setNumAncestors] = useState(0);
+    const [tokenListGenerationTime, setTokenListGenerationTime] = useState('');
+    const [tokenChartsGenerationTime, setTokenChartsGenerationTime] = useState('');
+    const [mappingTime, setMappingTime] = useState('');
+    const [highlightingTime, setHighlightingTime] = useState('');
     const [generationTime, setGenerationTime] = useState('');
 
     // Left sidebar state variables
@@ -38,7 +42,11 @@ const UserCodeCartograph = ({artifact}) => {
         setNumTokens(artifact.numTokensAnalyzed);
         setNumTags(artifact.numLanguageElementTags);
         setNumAncestors(artifact.numAncestorsMapped);
-        setGenerationTime(artifact.timeToGenerate);
+        setTokenListGenerationTime(artifact.timings.tokenGenerationTime);
+        setTokenChartsGenerationTime(artifact.timings.chartGenerationTime);
+        setMappingTime(artifact.timings.mappingTime);
+        setHighlightingTime(artifact.timings.highlightTime);
+        setGenerationTime(artifact.timings.totalTime);
 
         console.log("Artifact", artifact);
 
@@ -57,6 +65,10 @@ const UserCodeCartograph = ({artifact}) => {
                 numTokens={numTokens}
                 numTags={numTags}
                 numAncestors={numAncestors}
+                tokenListGenerationTime={tokenListGenerationTime}
+                tokenChartsGenerationTime={tokenChartsGenerationTime}
+                mappingTime={mappingTime}
+                highlightingTime={highlightingTime}
                 generationTime={generationTime}
             />
 
