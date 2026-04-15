@@ -152,6 +152,7 @@ const UserCodeUpload = ({setArtifact}) => {
                             Upload file
                             <VisuallyHiddenInput
                                 type="file"
+                                accept=".cs"
                                 onChange={handleUpload}
                             />
                         </UploadButton>

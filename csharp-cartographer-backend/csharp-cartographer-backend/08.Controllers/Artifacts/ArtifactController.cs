@@ -15,7 +15,6 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
             _generateArtifactWorkflow = generateArtifactWorkflow;
         }
 
-        #region GET Endpoints
         /// <summary>Generates and returns the requested demo artifact.</summary>
         [HttpGet]
         [Route("get-demo-artifact")]
@@ -23,54 +22,38 @@ namespace csharp_cartographer_backend._08.Controllers.Artifacts
         {
             if (string.IsNullOrWhiteSpace(fileName))
             {
-                return Problem(
-                    type: "Bad Request",
-                    title: "Invalid file name",
-                    detail: "The file name must match one of the existing demo files available.",
-                    statusCode: StatusCodes.Status400BadRequest);
+                return BadRequest("The file name must match one of the existing demo files available.");
             }
 
-            var actionResponse = await _generateArtifactWorkflow.ExecGenerateDemoArtifact(fileName, cancellationToken);
+            var response = await _generateArtifactWorkflow.ExecGenerateDemoArtifact(fileName, cancellationToken);
 
-            if (actionResponse.IsFailure)
+            if (response.IsFailure)
             {
                 return Problem(
                     type: "Internal Server Error",
-                    detail: actionResponse.ErrorMessage,
+                    detail: response.ErrorMessage,
                     statusCode: StatusCodes.Status500InternalServerError);
             }
 
-            return Ok(actionResponse.Content);
+            return Ok(response.Content);
         }
-        #endregion
 
-        #region POST Endpoints
         /// <summary>Generates and returns an artifact for user uploaded source code.</summary>
         [HttpPost]
         [Route("generate-artifact")]
         public async Task<IActionResult> GenerateArtifact([FromBody] GenerateArtifactDto dto, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(dto.FileName) || string.IsNullOrEmpty(dto.FileContent))
-            {
-                return Problem(
-                    type: "Bad Request",
-                    title: "Missing file name/content",
-                    detail: "The uploaded file must have a file name and valid C# source code.",
-                    statusCode: StatusCodes.Status400BadRequest);
-            }
+            var response = await _generateArtifactWorkflow.ExecGenerateUserArtifact(dto, cancellationToken);
 
-            var actionResponse = await _generateArtifactWorkflow.ExecGenerateUserArtifact(dto, cancellationToken);
-
-            if (actionResponse.IsFailure)
+            if (response.IsFailure)
             {
                 return Problem(
                     type: "Internal Server Error",
-                    detail: actionResponse.ErrorMessage,
+                    detail: response.ErrorMessage,
                     statusCode: StatusCodes.Status500InternalServerError);
             }
 
-            return Ok(actionResponse.Content);
+            return Ok(response.Content);
         }
-        #endregion
     }
 }
