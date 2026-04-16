@@ -4,6 +4,7 @@ const colors = {
     navbarBg: "#262626",
     bannerBg: "#404040",
     sidebarBg: "#404040",
+    divider: "#808080",
 
     tokenTagBg: "#333333",
     

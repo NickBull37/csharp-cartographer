@@ -13,18 +13,14 @@ const TOTAL_OFFSET = 110;
 
 const CustomSidebar = styled(Drawer)(() => ({
     flexShrink: 0,
-    
     '& .MuiDrawer-paper': {
         boxSizing: 'border-box',
         transition: 'width 0.3s',
-        top: TOTAL_OFFSET, // set to 150px to create a gap below the existing AppBar & TitleBox
+        top: TOTAL_OFFSET, // set to 110px to create a gap below the existing AppBar & TitleBox
         height: `calc(100% - ${TOTAL_OFFSET}px)`, // adjust height to fit screen and allow scrolling
-        // backgroundColor: colors.gray25,
         backgroundColor: colors.sidebarBg,
         borderColor: colors.gray50,
         color: '#fff',
-        //borderRadius: '4px 0px 0px 0px',
-        //boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.4), 0px 4px 5px 0px rgba(0, 0, 0, 0.28), 0px 1px 10px 0px rgba(0, 0, 0, 0.24)',
         overflow: 'auto',
         '&::-webkit-scrollbar': {
             width: '4px', // width of the scrollbar
@@ -68,7 +64,7 @@ const ClosedSidebarHeaderText = styled(Typography)(() => ({
     position: 'absolute',
     top: '47%',
     left: '50%',
-    transform: 'translate(-50%, -95%)', // center text
+    transform: 'translate(-50%, -95%)',
     whiteSpace: 'nowrap',
 }));
 
@@ -89,17 +85,16 @@ const RightSidebar = ({
     };
 
     const VerticalText = ({ text }) => (
-    <Stack alignItems="center" spacing={0}>
-        {text.split('').map((char, i) => (
-            <span key={i}>
-                {char === ' ' ? '\u00A0' : char}
-            </span>
-        ))}
-    </Stack>
-);
+        <Stack alignItems="center" spacing={0}>
+            {text.split('').map((char, i) => (
+                <span key={i}>
+                    {char === ' ' ? '\u00A0' : char}
+                </span>
+            ))}
+        </Stack>
+    );
 
     return (
-
         <CustomSidebar
             variant="permanent"
             anchor="right"
@@ -123,8 +118,8 @@ const RightSidebar = ({
                         <Divider sx={{ bgcolor: '#808080' }} />
 
                         <ClosedSidebarHeaderText className='cartographer4'>
-        <VerticalText text="Token Analysis" />
-    </ClosedSidebarHeaderText>
+                            <VerticalText text="Token Analysis" />
+                        </ClosedSidebarHeaderText>
                     </Stack>
                 :
                     <Stack>

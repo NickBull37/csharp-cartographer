@@ -104,7 +104,6 @@ const UserCodeUpload = ({setArtifact}) => {
 
             if (response.status === 200) {
                 setArtifact(response.data);
-                // navigate('/staging');
                 navigate('/cartograph');
             }
         } catch (error) {

@@ -11,7 +11,6 @@ const UserCodeCartograph = ({artifact}) => {
     const [artifactType, setArtifactType] = useState('');
     const [dateCreated, setDateCreated] = useState();
     const [numTokens, setNumTokens] = useState(0);
-    const [numTags, setNumTags] = useState(0);
     const [numAncestors, setNumAncestors] = useState(0);
     const [tokenListGenerationTime, setTokenListGenerationTime] = useState('');
     const [tokenChartsGenerationTime, setTokenChartsGenerationTime] = useState('');
@@ -20,7 +19,6 @@ const UserCodeCartograph = ({artifact}) => {
     const [generationTime, setGenerationTime] = useState('');
 
     // Left sidebar state variables
-    const [artifactDescription, setArtifactDescription] = useState('');
     const [leftSidebarOpen, setLeftSidebarOpen] = useState(false);
     const [selectedTokens, setSelectedTokens] = useState([]);
     
@@ -33,23 +31,19 @@ const UserCodeCartograph = ({artifact}) => {
     
     // Use Effects
     useEffect(() => {
-        
-        setArtifactTitle(artifact.title);
+        setArtifactTitle(artifact.fileName);
         setArtifactLanguage(artifact.language);
         setArtifactType(artifact.artifactType);
         setDateCreated(artifact.createdDate);
         setNavTokens(artifact.navTokens);
-        setNumTokens(artifact.numTokensAnalyzed);
-        setNumTags(artifact.numLanguageElementTags);
-        setNumAncestors(artifact.numAncestorsMapped);
+        setNumTokens(artifact.tokenCount);
+        setNumAncestors(artifact.ancestorCount);
         setTokenListGenerationTime(artifact.timings.tokenGenerationTime);
         setTokenChartsGenerationTime(artifact.timings.chartGenerationTime);
         setMappingTime(artifact.timings.mappingTime);
         setHighlightingTime(artifact.timings.highlightTime);
         setGenerationTime(artifact.timings.totalTime);
-
-        console.log("Artifact", artifact);
-
+        //console.log("Artifact", artifact);
     }, [artifact]);
 
     useEffect(() => {
@@ -63,7 +57,6 @@ const UserCodeCartograph = ({artifact}) => {
                 artifactTitle={artifactTitle}
                 leftSidebarOpen={leftSidebarOpen}
                 numTokens={numTokens}
-                numTags={numTags}
                 numAncestors={numAncestors}
                 tokenListGenerationTime={tokenListGenerationTime}
                 tokenChartsGenerationTime={tokenChartsGenerationTime}

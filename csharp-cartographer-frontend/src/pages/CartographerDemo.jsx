@@ -2,7 +2,16 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from "axios";
 import { Box } from '@mui/material';
-import { TitleBox, ArtifactBanner, AiSidebar, LeftSidebar, TokenSidebar, RightSidebar, CodeWindow } from "../components";
+import {
+    TitleBox,
+    ArtifactBanner,
+    AiSidebar,
+    LeftSidebar,
+    InsightsSidebar,
+    TokenSidebar,
+    RightSidebar,
+    CodeWindow
+} from "../components";
 
 const CartographerDemo = () => {
 
@@ -16,7 +25,6 @@ const CartographerDemo = () => {
     const [artifactLanguage, setArtifactLanguage] = useState('');
     const [artifactType, setArtifactType] = useState('');
     const [numTokens, setNumTokens] = useState(0);
-    const [numTags, setNumTags] = useState(0);
     const [numAncestors, setNumAncestors] = useState(0);
     const [tokenListGenerationTime, setTokenListGenerationTime] = useState('');
     const [tokenChartsGenerationTime, setTokenChartsGenerationTime] = useState('');
@@ -25,14 +33,12 @@ const CartographerDemo = () => {
     const [generationTime, setGenerationTime] = useState('');
 
     // Left sidebar state variables
-    const [artifactDescription, setArtifactDescription] = useState('');
     const [leftSidebarOpen, setLeftSidebarOpen] = useState(false);
     const [selectedTokens, setSelectedTokens] = useState([]);
     
     // Code content state variables
     const [navTokens, setNavTokens] = useState([]);
     const [activeHighlightRange, setActiveHighlightRange] = useState(null);
-    // const [activeHighlightIndices, setActiveHighlightIndices] = useState([]);
 
     // Right sidebar state variables
     const [activeToken, setActiveToken] = useState();
@@ -56,15 +62,13 @@ const CartographerDemo = () => {
             const response = await axios.get(`https://localhost:44300/Artifact/get-demo-artifact?fileName=${encodeURIComponent(selectedFile)}`);
 
             if (response.status === 200) {
-                setArtifactTitle(response.data.title);
+                setArtifactTitle(response.data.fileName);
                 setArtifactLanguage(response.data.language);
                 setArtifactType(response.data.artifactType);
                 setDateCreated(response.data.createdDate);
-                setArtifactDescription(response.data.description);
                 setNavTokens(response.data.navTokens);
-                setNumTokens(response.data.numTokensAnalyzed);
-                setNumTags(response.data.numLanguageElementTags);
-                setNumAncestors(response.data.numAncestorsMapped);
+                setNumTokens(response.data.tokenCount);
+                setNumAncestors(response.data.ancestorCount);
                 setTokenListGenerationTime(response.data.timings.tokenGenerationTime);
                 setTokenChartsGenerationTime(response.data.timings.chartGenerationTime);
                 setMappingTime(response.data.timings.mappingTime);
@@ -83,7 +87,6 @@ const CartographerDemo = () => {
                 artifactTitle={artifactTitle}
                 leftSidebarOpen={leftSidebarOpen}
                 numTokens={numTokens}
-                numTags={numTags}
                 numAncestors={numAncestors}
                 tokenListGenerationTime={tokenListGenerationTime}
                 tokenChartsGenerationTime={tokenChartsGenerationTime}

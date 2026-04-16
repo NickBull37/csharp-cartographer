@@ -1,13 +1,11 @@
-import * as React from 'react';
 import { useState } from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Box, Stack, Typography, Divider } from '@mui/material';
 import { Drawer, IconButton } from '@mui/material';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-import { AiSidebarContent } from "../../../components";
+import { AiSidebarContent, InsightsSidebarContent } from "../../../components";
 import colors from '../../../utils/colors';
-import { BorderColor } from '@mui/icons-material';
 
 const HEADER_HEIGHT = 55;
 const ARTIFACTBANNER_HEIGHT = 55;
@@ -18,14 +16,11 @@ const CustomSidebar = styled(Drawer)(() => ({
     '& .MuiDrawer-paper': {
         boxSizing: 'border-box',
         transition: 'width 0.3s',
-        top: TOTAL_OFFSET, // set to 150px to create a gap below the existing AppBar & TitleBox
-        //height: 'calc(100% - 140px)', // adjust height to fit screen and allow scrolling
-        // backgroundColor: colors.gray25,
+        top: TOTAL_OFFSET, // set to 110px to create a gap below the existing AppBar & TitleBox
+        height: `calc(100% - ${TOTAL_OFFSET}px)`, // adjust height to fit screen and allow scrolling
         backgroundColor: colors.sidebarBg,
         borderColor: colors.gray50,
         color: '#fff',
-        //borderRadius: '4px 0px 0px 0px',
-        //boxShadow: '0px 2px 4px -1px rgba(0, 0, 0, 0.4), 0px 4px 5px 0px rgba(0, 0, 0, 0.28), 0px 1px 10px 0px rgba(0, 0, 0, 0.24)',
         overflow: 'auto',
         '&::-webkit-scrollbar': {
             width: '4px', // width of the scrollbar
@@ -65,31 +60,36 @@ const OpenSidebarToggle = styled(IconButton)(() => ({
 }));
 
 const ClosedSidebarHeaderText = styled(Typography)(() => ({
-    fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
     color: '#cccccc',
     position: 'absolute',
-    top: '47%',
+    top: '56%',
     left: '50%',
-    transform: 'translate(-50%, -50%) rotate(-90deg)', // center and rotate text
+    transform: 'translate(-50%, -95%)',
     whiteSpace: 'nowrap',
-    fontSize: '1.25rem',
-    textShadow: '1px 1px 2px #000, 0 0 16px #333333, 0 0 5px #1a1a1a',
 }));
 
-const OpenSidebarHeaderText = styled(Typography)(() => ({
-    fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace",
-    color: '#00e6cf',
-}));
+const LeftSidebar = ({
+    navTokens,
+    leftSidebarOpen,
+    setLeftSidebarOpen,
+    selectedTokens,
+    setSelectedTokens
+}) => {
 
-const LeftSidebar = ({ navTokens, leftSidebarOpen, setLeftSidebarOpen, selectedTokens, setSelectedTokens }) => {
-
-    // State Variables
-        const [sidebarOpen, setSidebarOpen] = useState(false);
-    
     // Event Handlers
     const handleDrawerToggle = () => {
         setLeftSidebarOpen(!leftSidebarOpen);
     };
+
+    const VerticalText = ({ text }) => (
+        <Stack alignItems="center" spacing={0}>
+            {text.split('').map((char, i) => (
+                <span key={i}>
+                    {char === ' ' ? '\u00A0' : char}
+                </span>
+            ))}
+        </Stack>
+    );
 
     return (
         <CustomSidebar
@@ -113,8 +113,8 @@ const LeftSidebar = ({ navTokens, leftSidebarOpen, setLeftSidebarOpen, selectedT
 
                         <Divider sx={{ bgcolor: '#808080' }} />
 
-                        <ClosedSidebarHeaderText>
-                            AI Analysis
+                        <ClosedSidebarHeaderText className='cartographer4'>
+                            <VerticalText text="Artifact Insights" />
                         </ClosedSidebarHeaderText>
                     </Stack>
                 :
@@ -127,9 +127,9 @@ const LeftSidebar = ({ navTokens, leftSidebarOpen, setLeftSidebarOpen, selectedT
                                 p: '4px 4px 4px 12px'
                             }}
                         >
-                            <OpenSidebarHeaderText>
-                                AI Analysis
-                            </OpenSidebarHeaderText>
+                            <Typography className='cartographer3'>
+                                Artifact Insights
+                            </Typography>
 
                             <OpenSidebarToggle
                                 onClick={handleDrawerToggle}
@@ -143,7 +143,12 @@ const LeftSidebar = ({ navTokens, leftSidebarOpen, setLeftSidebarOpen, selectedT
 
                         <Divider sx={{ bgcolor: '#808080' }} />
 
-                        <AiSidebarContent
+                        {/* <AiSidebarContent
+                            navTokens={navTokens}
+                            selectedTokens={selectedTokens}
+                            setSelectedTokens={setSelectedTokens}
+                        /> */}
+                        <InsightsSidebarContent
                             navTokens={navTokens}
                             selectedTokens={selectedTokens}
                             setSelectedTokens={setSelectedTokens}
