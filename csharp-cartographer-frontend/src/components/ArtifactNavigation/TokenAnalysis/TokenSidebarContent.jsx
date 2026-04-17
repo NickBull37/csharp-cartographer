@@ -414,7 +414,7 @@ const TokenSidebarContent = ({
                                                     justifyContent="space-between"
                                                     alignItems="center"
                                                     sx={{
-                                                        background: 'rgba(38, 38, 38, 0.65)',
+                                                        background: 'rgba(38, 38, 38, 0.75)',
                                                         borderBottom: '1px solid #666666',
                                                         borderRadius: '5px 5px 0 0',
                                                         px: '14px',

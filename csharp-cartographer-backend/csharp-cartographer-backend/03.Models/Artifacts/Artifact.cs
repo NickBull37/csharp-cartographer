@@ -14,7 +14,7 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
         public int AncestorCount { get; }
         public List<NavToken> NavTokens { get; }
         public ArtifactTimes Timings { get; }
-        public IEnumerable<Insight> Insights { get; set; } = [];
+        public Insight? Insight { get; set; }
 
         public Artifact(
             string fileName,

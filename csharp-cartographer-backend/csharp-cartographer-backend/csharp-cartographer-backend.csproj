@@ -20,6 +20,7 @@
     <Content Remove="01.Configuration\Definitions\modifier-definitions.json" />
     <Content Remove="01.Configuration\Definitions\operator-definitions.json" />
     <Content Remove="01.Configuration\Definitions\semantic-definitions.json" />
+    <Content Remove="01.Configuration\DemoInsights\dto-insights.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +31,7 @@
     <EmbeddedResource Include="01.Configuration\Definitions\modifier-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\operator-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\semantic-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\DemoInsights\dto-insights.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,10 +43,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="10.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="01.Configuration\DemoInsights\" />
   </ItemGroup>
 
 </Project>

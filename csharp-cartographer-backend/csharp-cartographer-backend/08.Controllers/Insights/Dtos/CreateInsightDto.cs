@@ -17,12 +17,15 @@ namespace csharp_cartographer_backend._08.Controllers.Insights.Dtos
         [JsonPropertyName("highlights")]
         public IEnumerable<int> Highlights { get; init; } = [];
 
-        [JsonPropertyName("notes")]
+        [JsonPropertyName("noteDtos")]
         public IEnumerable<CreateNoteDto> NoteDtos { get; init; } = [];
     }
 
     public sealed class CreateNoteDto
     {
+        [JsonPropertyName("label")]
+        public string? Label { get; init; }
+
         [Required]
         [JsonPropertyName("text")]
         public string Text { get; init; } = default!;

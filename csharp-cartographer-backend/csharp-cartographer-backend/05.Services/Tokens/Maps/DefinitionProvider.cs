@@ -56,10 +56,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 using var reader = new StreamReader(stream);
                 var json = reader.ReadToEnd();
 
-                var dict = JsonSerializer.Deserialize<Dictionary<string, DefinitionEntry>>(json, jsonOptions)
+                var dictionary = JsonSerializer.Deserialize<Dictionary<string, DefinitionEntry>>(json, jsonOptions)
                     ?? new Dictionary<string, DefinitionEntry>(StringComparer.OrdinalIgnoreCase);
 
-                foreach (var (key, entry) in dict)
+                foreach (var (key, entry) in dictionary)
                 {
                     if (merged.ContainsKey(key))
                         throw new InvalidOperationException($"Duplicate definition key '{key}' in '{resourceName}'.");

@@ -3,6 +3,7 @@ using csharp_cartographer_backend._04.DataAccess.Insights;
 using csharp_cartographer_backend._05.Services.AiAnalysis;
 using csharp_cartographer_backend._05.Services.Charts;
 using csharp_cartographer_backend._05.Services.Files;
+using csharp_cartographer_backend._05.Services.Insights;
 using csharp_cartographer_backend._05.Services.Roslyn;
 using csharp_cartographer_backend._05.Services.SyntaxHighlighting;
 using csharp_cartographer_backend._05.Services.Tokens;
@@ -45,6 +46,7 @@ builder.Services.Configure<FormOptions>(options =>
 // configure DI for csharp-cartographer services
 builder.Services.AddScoped<IAiAnalysisService, AiAnalysisService>();
 builder.Services.AddScoped<IFileProcessor, FileProcessor>();
+builder.Services.AddScoped<IInsightService, InsightService>();
 builder.Services.AddScoped<INavTokenGenerator, NavTokenGenerator>();
 builder.Services.AddScoped<IRoslynAnalyzer, RoslynAnalyzer>();
 builder.Services.AddScoped<IRoslynCorrector, RoslynCorrector>();

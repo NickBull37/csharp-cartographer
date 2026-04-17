@@ -5,6 +5,7 @@ using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._03.Models.Files;
 using csharp_cartographer_backend._05.Services.Charts;
 using csharp_cartographer_backend._05.Services.Files;
+using csharp_cartographer_backend._05.Services.Insights;
 using csharp_cartographer_backend._05.Services.SyntaxHighlighting;
 using csharp_cartographer_backend._05.Services.Tokens;
 using csharp_cartographer_backend._05.Services.Tokens.Maps;
@@ -18,6 +19,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
     public class GenerateArtifactWorkflow : IGenerateArtifactWorkflow
     {
         private readonly IFileProcessor _fileProcessor;
+        private readonly IInsightService _insightService;
         private readonly INavTokenGenerator _navTokenGenerator;
         private readonly ISyntaxHighlighter _syntaxHighlighter;
         private readonly ITokenChartGenerator _tokenChartGenerator;
@@ -26,6 +28,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
         public GenerateArtifactWorkflow(
             IFileProcessor fileProcessor,
+            IInsightService insightService,
             INavTokenGenerator navTokenGenerator,
             ISyntaxHighlighter syntaxHighlighter,
             ITokenChartGenerator tokenChartGenerator,
@@ -33,6 +36,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             IOptions<CartographerConfig> config)
         {
             _fileProcessor = fileProcessor;
+            _insightService = insightService;
             _navTokenGenerator = navTokenGenerator;
             _syntaxHighlighter = syntaxHighlighter;
             _tokenChartGenerator = tokenChartGenerator;
@@ -44,12 +48,15 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         {
             FileData fileData = _fileProcessor.ReadInTestFileData(fileName);
 
-            var artifact = await GenerateArtifact(fileData, cancellationToken);
+            var actionResponse = await GenerateArtifact(fileData, cancellationToken);
 
-            // add notes to demo artifacts
-            // call insight service GetDemoFileInsights(string fileName);
+            var insight = _insightService.GetDemoFileInsight(fileName);
+            if (insight is not null)
+            {
+                actionResponse.Content.Insight = insight;
+            }
 
-            return artifact;
+            return actionResponse;
         }
 
         public async Task<ActionResponse<Artifact>> GenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken)
