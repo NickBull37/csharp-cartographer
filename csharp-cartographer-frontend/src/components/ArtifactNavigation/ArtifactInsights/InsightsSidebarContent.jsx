@@ -51,10 +51,10 @@ const StyledTextField = styled(TextField)(() => ({
         fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
         fontSize: '14px',
         letterSpacing: '0.04em',
-        color: colors.gray90,
+        color: colors.gray80,
     },
     '& .MuiInputLabel-root.Mui-focused': {
-        color: colors.gray90,
+        color: colors.gray85,
     },
     '& .MuiOutlinedInput-root': {
         fontFamily: "'Roboto','Helvetica','Arial',sans-serif",
@@ -159,11 +159,12 @@ const InsightsSidebarContent = ({
                 </FlexBox>
 
                 <StyledTextField
-                    label="Artifact Insight"
+                    label="Description"
                     variant="outlined"
                     multiline
-                    rows={30}
-                    placeholder="Type here..."
+                    // rows={30}
+                    rows={10}
+                    placeholder="Enter description..."
                 />
             </Stack>
         </ContentContainer>

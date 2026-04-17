@@ -1,18 +1,28 @@
-﻿namespace csharp_cartographer_backend._03.Models.Insights
+﻿using csharp_cartographer_backend._08.Controllers.Insights.Dtos;
+
+namespace csharp_cartographer_backend._03.Models.Insights
 {
     public sealed class Insight
     {
         public Guid ID { get; } = Guid.NewGuid();
         public DateTime CreatedDate { get; } = DateTime.Now;
         public Guid ArtifactID { get; }
-        public string Text { get; }
-        public IEnumerable<int> Highlights { get; }
+        public string Description { get; set; }
+        public IEnumerable<int> Highlights { get; set; }
+        public IEnumerable<Note> Notes { get; set; }
 
-        public Insight(Guid artifactId, string text, IEnumerable<int> highlights)
+        public Insight(CreateInsightDto insightDto)
         {
-            ArtifactID = artifactId;
-            Text = text;
-            Highlights = highlights;
+            List<Note> notes = [];
+            foreach (var noteDto in insightDto.NoteDtos)
+            {
+                notes.Add(new Note(ID, noteDto));
+            }
+
+            ArtifactID = insightDto.ArtifactID;
+            Description = insightDto.Description;
+            Highlights = insightDto.Highlights;
+            Notes = notes;
         }
     }
 }

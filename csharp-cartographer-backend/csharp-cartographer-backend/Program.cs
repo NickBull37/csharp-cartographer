@@ -1,4 +1,5 @@
 using csharp_cartographer_backend._01.Configuration.Configs;
+using csharp_cartographer_backend._04.DataAccess.Insights;
 using csharp_cartographer_backend._05.Services.AiAnalysis;
 using csharp_cartographer_backend._05.Services.Charts;
 using csharp_cartographer_backend._05.Services.Files;
@@ -7,6 +8,7 @@ using csharp_cartographer_backend._05.Services.SyntaxHighlighting;
 using csharp_cartographer_backend._05.Services.Tokens;
 using csharp_cartographer_backend._05.Services.Tokens.Maps;
 using csharp_cartographer_backend._06.Workflows.Artifacts;
+using csharp_cartographer_backend._06.Workflows.Insights;
 using csharp_cartographer_backend._07.Clients.ChatGpt;
 using Microsoft.AspNetCore.Http.Features;
 
@@ -59,6 +61,10 @@ builder.Services.AddHttpClient<IChatGptClient, ChatGptClient>((client) =>
 
 // configure DI for csharp-cartographer workflows
 builder.Services.AddScoped<IGenerateArtifactWorkflow, GenerateArtifactWorkflow>();
+builder.Services.AddScoped<ICreateInsightWorkflow, CreateInsightWorkflow>();
+
+// configure DI for csharp-cartographer repositories
+builder.Services.AddScoped<IInsightRepository, InsightRepository>();
 
 var app = builder.Build();
 

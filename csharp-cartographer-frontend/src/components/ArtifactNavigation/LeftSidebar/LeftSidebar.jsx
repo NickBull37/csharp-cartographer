@@ -62,7 +62,7 @@ const OpenSidebarToggle = styled(IconButton)(() => ({
 const ClosedSidebarHeaderText = styled(Typography)(() => ({
     color: '#cccccc',
     position: 'absolute',
-    top: '56%',
+    top: '50%',
     left: '50%',
     transform: 'translate(-50%, -95%)',
     whiteSpace: 'nowrap',
@@ -114,7 +114,7 @@ const LeftSidebar = ({
                         <Divider sx={{ bgcolor: '#808080' }} />
 
                         <ClosedSidebarHeaderText className='cartographer4'>
-                            <VerticalText text="Artifact Insights" />
+                            <VerticalText text="Artifact Legend" />
                         </ClosedSidebarHeaderText>
                     </Stack>
                 :
@@ -128,7 +128,7 @@ const LeftSidebar = ({
                             }}
                         >
                             <Typography className='cartographer3'>
-                                Artifact Insights
+                                Artifact Legend
                             </Typography>
 
                             <OpenSidebarToggle

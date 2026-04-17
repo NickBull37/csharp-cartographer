@@ -43,7 +43,13 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         public async Task<ActionResponse<Artifact>> GenerateDemoArtifact(string fileName, CancellationToken cancellationToken)
         {
             FileData fileData = _fileProcessor.ReadInTestFileData(fileName);
-            return await GenerateArtifact(fileData, cancellationToken);
+
+            var artifact = await GenerateArtifact(fileData, cancellationToken);
+
+            // add notes to demo artifacts
+            // call insight service GetDemoFileInsights(string fileName);
+
+            return artifact;
         }
 
         public async Task<ActionResponse<Artifact>> GenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken)
