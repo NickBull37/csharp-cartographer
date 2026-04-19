@@ -7,10 +7,18 @@
 
         public decimal Temperature { get; init; } = 0.7m;
 
-        public decimal TemperatureTest { get; init; } = 0.7M;
+        public List<Message> Messages { get; init; }
 
-        public double TemperatureTestTest { get; init; } = 0.7;
-
-        public List<Message> Messages { get; init; } = [];
+        public CreateChatCompletionDto(string prompt, string code)
+        {
+            Messages =
+            [
+                new Message
+                {
+                    Role = "user",
+                    Content = $"{prompt}\r\n{code}"
+                }
+            ];
+        }
     }
 }

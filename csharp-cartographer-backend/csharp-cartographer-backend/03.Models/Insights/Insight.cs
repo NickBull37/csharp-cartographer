@@ -7,6 +7,7 @@ namespace csharp_cartographer_backend._03.Models.Insights
         public Guid ID { get; } = Guid.NewGuid();
         public DateTime CreatedDate { get; } = DateTime.Now;
         public Guid ArtifactID { get; }
+        public string Label { get; }
         public string Description { get; set; }
         public IEnumerable<int> Highlights { get; set; }
         public IEnumerable<Note> Notes { get; set; }
@@ -20,6 +21,7 @@ namespace csharp_cartographer_backend._03.Models.Insights
             }
 
             ArtifactID = insightDto.ArtifactID;
+            Label = insightDto.Label;
             Description = insightDto.Description;
             Highlights = insightDto.Highlights;
             Notes = notes;

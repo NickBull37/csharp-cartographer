@@ -70,6 +70,7 @@ const ClosedSidebarHeaderText = styled(Typography)(() => ({
 
 const LeftSidebar = ({
     navTokens,
+    artifactInsight,
     leftSidebarOpen,
     setLeftSidebarOpen,
     selectedTokens,
@@ -78,7 +79,14 @@ const LeftSidebar = ({
 
     // Event Handlers
     const handleDrawerToggle = () => {
-        setLeftSidebarOpen(!leftSidebarOpen);
+        if (!leftSidebarOpen) {
+            setLeftSidebarOpen(!leftSidebarOpen);
+            setSelectedTokens(artifactInsight.notes[0].highlights);
+        }
+        else {
+            setLeftSidebarOpen(!leftSidebarOpen);
+            setSelectedTokens([]);
+        }
     };
 
     const VerticalText = ({ text }) => (
@@ -124,7 +132,7 @@ const LeftSidebar = ({
                             justifyContent="space-between"
                             alignItems="center"
                             sx={{
-                                p: '4px 4px 4px 12px'
+                                p: '1px 4px 1px 20px'
                             }}
                         >
                             <Typography className='cartographer3'>
@@ -150,6 +158,7 @@ const LeftSidebar = ({
                         /> */}
                         <InsightsSidebarContent
                             navTokens={navTokens}
+                            artifactInsight={artifactInsight}
                             selectedTokens={selectedTokens}
                             setSelectedTokens={setSelectedTokens}
                         />

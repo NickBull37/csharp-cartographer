@@ -35,6 +35,7 @@ const CartographerDemo = () => {
     // Left sidebar state variables
     const [leftSidebarOpen, setLeftSidebarOpen] = useState(false);
     const [selectedTokens, setSelectedTokens] = useState([]);
+    const [artifactInsight, setArtifactInsight] = useState();
     
     // Code content state variables
     const [navTokens, setNavTokens] = useState([]);
@@ -74,6 +75,7 @@ const CartographerDemo = () => {
                 setMappingTime(response.data.timings.mappingTime);
                 setHighlightingTime(response.data.timings.highlightTime);
                 setGenerationTime(response.data.timings.totalTime);
+                setArtifactInsight(response.data.insight);
             }
         } catch (error) {
             console.log('Create artifact API call failed.');
@@ -97,6 +99,7 @@ const CartographerDemo = () => {
 
             <LeftSidebar
                 navTokens={navTokens}
+                artifactInsight={artifactInsight}
                 leftSidebarOpen={leftSidebarOpen}
                 setLeftSidebarOpen={setLeftSidebarOpen}
                 selectedTokens={selectedTokens}

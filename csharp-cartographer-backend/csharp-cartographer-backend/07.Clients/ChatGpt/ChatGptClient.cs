@@ -3,14 +3,13 @@ using csharp_cartographer_backend._02.Utilities.Logging;
 using csharp_cartographer_backend._05.Services.AiAnalysis.Models;
 using csharp_cartographer_backend._07.Clients.ChatGpt.Dtos;
 using Microsoft.Extensions.Options;
-using System.Text;
 using System.Text.Json;
 
 namespace csharp_cartographer_backend._07.Clients.ChatGpt
 {
     public class ChatGptClient : IChatGptClient
     {
-        private const string DefaultErrorMsg = "An error occurred while retrieving data. Please try again.";
+        private const string DefaultErrorMsg = "An error occurred while retrieving code analysis. Please try again.";
 
         private readonly CartographerConfig _config;
         private readonly HttpClient _httpClient;
@@ -25,7 +24,7 @@ namespace csharp_cartographer_backend._07.Clients.ChatGpt
         {
             try
             {
-                var dto = CreateRequestDto(code);
+                var dto = new CreateChatCompletionDto(_config.ChatGptPrompt, code);
                 var requestJson = JsonSerializer.Serialize(dto);
 
                 using HttpContent requestContent = new StringContent(
@@ -43,47 +42,26 @@ namespace csharp_cartographer_backend._07.Clients.ChatGpt
                 var responseContent = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
                 var response = JsonSerializer.Deserialize<ChatCompletionResponse>(responseContent);
 
-                var analysis = ExtractAnalysisFromResponse(response);
-                return CodeAnalysisResult.Ok(analysis);
+                var analysis = response?.Choices.First().Message.Content ?? DefaultErrorMsg;
+
+                return analysis is not null
+                    ? CodeAnalysisResult.Ok(analysis)
+                    : CodeAnalysisResult.Fail(); ;
             }
             catch (HttpRequestException ex)
             {
                 CartographerLogger.LogException(ex);
-                return CodeAnalysisResult.Fail("An error occurred while retrieving data. Please try again.");
+                return CodeAnalysisResult.Fail();
             }
             catch (JsonException ex)
             {
                 CartographerLogger.LogException(ex);
-                return CodeAnalysisResult.Fail("A deserialization error occurred while processing the response.");
+                return CodeAnalysisResult.Fail();
             }
             catch (OperationCanceledException)
             {
                 throw;
             }
-        }
-
-        private CreateChatCompletionDto CreateRequestDto(string code)
-        {
-            return new CreateChatCompletionDto
-            {
-                Model = "gpt-4o-mini",
-                Temperature = 0.7m,
-                Messages =
-                [
-                    new Message
-                    {
-                        Role = "user",
-                        Content = $"{_config.ChatGptPrompt}\r\n\r\n{code}"
-                    }
-                ]
-            };
-        }
-
-        private static string ExtractAnalysisFromResponse(ChatCompletionResponse? response)
-        {
-            return response is not null
-                ? response.Choices.First().Message.Content
-                : DefaultErrorMsg;
         }
     }
 }

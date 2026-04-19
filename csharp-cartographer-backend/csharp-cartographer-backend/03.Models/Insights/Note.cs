@@ -7,9 +7,9 @@ namespace csharp_cartographer_backend._03.Models.Insights
         public Guid ID { get; } = Guid.NewGuid();
         public DateTime CreatedDate { get; } = DateTime.Now;
         public Guid InsightID { get; }
-        public string? Label { get; }
-        public string Text { get; set; }
-        public IEnumerable<int> Highlights { get; set; }
+        public string Label { get; }
+        public string Text { get; }
+        public IEnumerable<int> Highlights { get; }
 
         public Note(Guid insightID, CreateNoteDto dto)
         {

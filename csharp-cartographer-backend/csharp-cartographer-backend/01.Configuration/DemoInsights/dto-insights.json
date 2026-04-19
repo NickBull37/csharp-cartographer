@@ -1,19 +1,23 @@
 {
   "GenerateArtifactDto.cs": {
     "ArtifactID": "11111111-1111-1111-1111-111111111111",
-    "Description": "This dto was designed to be immutable once received to avoid any unintentional changes in the data that could cause downstream side effects. It also has built in validation to ensure all required data is provided.",
-    "Highlights": [ 32, 56, 59, 60, 61, 62, 64, 78, 81, 82, 83, 84 ],
+    "Label": "Data Transfer Object",
+    "Description": "This dto was designed to be immutable once received to avoid any unintentional changes and includes validation attributes used in model binding to ensure required values are present.",
+    "Highlights": [ 31, 32, 33, 56, 57, 59, 60, 61, 62, 63, 64, 65, 78, 79, 81, 82, 83, 84 ],
     "NoteDtos": [
       {
-        "Text": "The \"Required\" attribute ensures a value is provided at the controller level and automatically returns a 400 error if a value is missing.",
-        "Highlights": [ 32, 64 ]
+        "Label": "Required Attributes",
+        "Text": "The [Required] attribute ensures the property cannot be null, an empty string, or a string of only white-space characters. It will throw a validation exception and displays an error message if validation fails.",
+        "Highlights": [ 31, 32, 33, 63, 64, 65 ]
       },
       {
-        "Text": "Dto properties are init-only so user input can't be modified unintentionally.",
-        "Highlights": [ 56, 78 ]
+        "Label": "Init-Only Properties",
+        "Text": "The user-uploaded file name and content have no reason to ever change so properties are init-only to ensure their values cannot be modified after the object is created.",
+        "Highlights": [ 56, 57, 78, 79 ]
       },
       {
-        "Text": "This assignment to default just provides a way to apply the null-forgiving operator to remove nullability warnings since a value is required to create the object.",
+        "Label": "Default Assignment",
+        "Text": "This assignment to default here just provides a valid syntax to apply the null-forgiving operator and remove any nullability warnings. This is safe because values for both properties are already required and cannot be modified so they should never be null.",
         "Highlights": [ 59, 60, 61, 62, 81, 82, 83, 84 ]
       }
     ]

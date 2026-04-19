@@ -1,0 +1,25 @@
+{
+  "ArtifactController.cs": {
+    "ArtifactID": "11111111-1111-1111-1111-111111111111",
+    "Label": "API Controller",
+    "Description": "This controller handles incoming artifact generation requests for both demo and user-uploaded files. It performs basic request validation, handles 400 and 500 level errors accordingly, and supports cancellation.",
+    "Highlights": [ 31, 32, 33, 36, 37, 38, 56, 57, 59, 60, 61, 62, 63, 64, 65, 78, 79, 81, 82, 83, 84 ],
+    "NoteDtos": [
+      {
+        "Label": "Query Parameter Validation",
+        "Text": "When using [ApiController], values passed as query parameters are validated during model binding. Invalid or missing values will produce an automatic 400 BadRequest. Manual validation is still needed to catch empty strings.",
+        "Highlights": [ 36, 37, 38, 85, 86, 87, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 111 ]
+      },
+      {
+        "Label": "Request Body Validation",
+        "Text": "When using [ApiController] and a DTO with properties that have the [Required] attribute, the framework will handle validation during model binding and automatically return a 400 BadRequest if a value is not found. The [Required] attribute does protect against empty strings so manual validation is not necessary unless further customization is desired.",
+        "Highlights": [ 36, 37, 38, 179, 180, 181, 182, 183 ]
+      },
+      {
+        "Label": "Cancellation Support",
+        "Text": "Each endpoint should accept a CancellationToken and pass it along to any async method calls. If the cancellation token is not passed, work may continue after the request is no longer needed.",
+        "Highlights": [ 91, 92, 122, 185, 186, 199 ]
+      }
+    ]
+  }
+}

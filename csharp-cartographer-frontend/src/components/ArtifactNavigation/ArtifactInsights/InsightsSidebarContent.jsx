@@ -41,7 +41,7 @@ const InsightNoteLabel = styled(Typography)(() => ({
     fontSize: '13px',
     color: colors.gray95,
     textTransform: 'uppercase',
-    letterSpacing: '0.035em',
+    letterSpacing: '0.05em',
     fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
     fontWeight: '600'
 }));
@@ -67,9 +67,6 @@ const AccordionSummary = styled((props) => (
     />
 ))(() => ({
     background: 'rgba(38, 38, 38, 0.75)',
-    margin: 0,
-    paddingTop: 0,
-    paddingBottom: 0,
     [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
         {
             transform: 'rotate(90deg)',
@@ -77,7 +74,7 @@ const AccordionSummary = styled((props) => (
 }));
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-    padding: '18px',
+    padding: '20px',
     background: 'rgba(38, 38, 38, 0.375)',
 }));
 
@@ -156,20 +153,28 @@ const StyledTextField = styled(TextField)(() => ({
 
 const InsightsSidebarContent = ({
     navTokens,
+    artifactInsight,
     selectedTokens,
     setSelectedTokens
 }) => {
 
     // State Variables
-    const [artifactId, setArtifactId] = useState();
-    const [insightText, setInsightText] = useState();
-    const [insightTokens, setInsightTokens] = useState([]);
-
-    const [expanded, setExpanded] = React.useState('panel1');
+    const [expanded, setExpanded] = useState(artifactInsight.notes[0].id);
+    const [activeNote, setActiveNote] = useState(artifactInsight.notes[0]);
 
     // Event Handlers
-    const handleAccordianChange = (panel) => (event, newExpanded) => {
-        setExpanded(newExpanded ? panel : false);
+    const handleAccordianChange = (noteId) => (event, newExpanded) => {
+        setExpanded(newExpanded ? noteId : false);
+
+        if (!newExpanded) {
+            setSelectedTokens([]);
+            setActiveNote(null);
+            return;
+        }
+
+        const matchingNote = artifactInsight.notes.find(note => note.id === noteId);
+        setActiveNote(matchingNote ?? null);
+        setSelectedTokens(matchingNote?.highlights ?? []);
     };
 
     function HandleClearTokens() {
@@ -177,28 +182,8 @@ const InsightsSidebarContent = ({
     }
 
     // Use Effects
-    useEffect(() => {
-        setInsightTokens(selectedTokens);
-    }, [selectedTokens]);
 
     // API Calls
-    async function SaveInsight() {
-        try {
-            const response = await axios.post("https://localhost:44300/Artifact/save-insight", {
-                artifactId: artifactId,
-                insightText: insightText,
-                insightTokens: insightTokens
-            });
-
-            if (response.status === 200) {
-
-            }
-        } catch (error) {
-            console.log(error);
-        } finally {
-
-        }
-    }
 
     return (
         <ContentContainer>
@@ -210,12 +195,12 @@ const InsightsSidebarContent = ({
                         alignItems="center"
                         sx={{
                             background: 'rgba(38, 38, 38, 0.75)',
-                            px: '14px',
+                            px: '20px',
                             py: '10px',
                         }}
                     >
                         <FileNameLabel>
-                            Data Transfer Object
+                            {artifactInsight.label}
                         </FileNameLabel>
                         <InsightLabel>
                             Insight
@@ -224,150 +209,59 @@ const InsightsSidebarContent = ({
                     <Box
                         sx={{
                             background: 'rgba(38, 38, 38, 0.375)',
-                            p: '18px',
+                            p: '20px',
                         }}
                     >
                         <InsightDescription>
-                            This dto was designed to be immutable once received to avoid any unintentional changes in the data that could cause downstream side effects. It also has built in validation to ensure all required data is provided.
+                            {artifactInsight.description}
                         </InsightDescription>
                     </Box>
                 </Box>
 
                 <div>
-                    <Accordion
-                        expanded={expanded === 'panel1'}
-                        onChange={handleAccordianChange('panel1')}
-                    >
-                        <AccordionSummary
-                            aria-controls="panel1d-content"
-                            id="panel1d-header"
+                    {artifactInsight.notes.map((note, index) => (
+                        <Accordion
+                            key={note.id}
+                            expanded={expanded === note.id}
+                            onChange={handleAccordianChange(note.id)}
                         >
-                            <Box
-                                display="flex"
-                                alignItems="center"
+                            <AccordionSummary
+                                aria-controls={`${note.id}-content`}
+                                id={`${note.id}-header`}
                             >
-                                <ExploreIcon
-                                    sx={{
-                                        fontSize: '19px',
-                                        color: 'rgba(255, 128, 191, 1)',
-                                        mr: '0.75rem',
-                                    }}
-                                />
-                                <InsightNoteLabel component="span">Insight #1</InsightNoteLabel>
-                            </Box>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <InsightNoteText>
-                                The "Required" attribute ensures a value is provided by the incoming request and automatically returns a 400 Bad Request error if a value is missing.
-                            </InsightNoteText>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion expanded={expanded === 'panel2'} onChange={handleAccordianChange('panel2')}>
-                        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                            <Box
-                                display="flex"
-                                alignItems="center"
-                            >
-                                <ExploreIcon
-                                    sx={{
-                                        fontSize: '19px',
-                                        color: colors.gray45,
-                                        mr: '0.75rem',
-                                    }}
-                                />
-                                <InsightNoteLabel component="span">Insight #2</InsightNoteLabel>
-                            </Box>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <InsightNoteText>
-                                This attribute specifies the value used for this property during json deserialization and ensures the right assignment is made, although these names would match by default so this isn't totally necessary.
-                            </InsightNoteText>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion expanded={expanded === 'panel3'} onChange={handleAccordianChange('panel3')}>
-                        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                            <Box
-                                display="flex"
-                                alignItems="center"
-                            >
-                                <ExploreIcon
-                                    sx={{
-                                        fontSize: '19px',
-                                        color: colors.gray45,
-                                        mr: '0.75rem',
-                                    }}
-                                />
-                                <InsightNoteLabel component="span">Insight #3</InsightNoteLabel>
-                            </Box>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <InsightNoteText>
-                                Dto properties are init-only and can only be assigned a value at object creation. This prevents any unintentional modification of data that has no reason to ever change.
-                            </InsightNoteText>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion expanded={expanded === 'panel4'} onChange={handleAccordianChange('panel4')}>
-                        <AccordionSummary aria-controls="panel4d-content" id="panel4d-header">
-                            <Box
-                                display="flex"
-                                alignItems="center"
-                            >
-                                <ExploreIcon
-                                    sx={{
-                                        fontSize: '19px',
-                                        color: colors.gray45,
-                                        mr: '0.75rem',
-                                    }}
-                                />
-                                <InsightNoteLabel component="span">Insight #4</InsightNoteLabel>
-                            </Box>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <InsightNoteText>
-                                This assignment to default just provides a valid syntax to apply the null-forgiving operator to the property. This removes nullability warnings safely since a value is required on the incoming request.
-                            </InsightNoteText>
-                        </AccordionDetails>
-                    </Accordion>
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                >
+                                    <ExploreIcon
+                                        sx={{
+                                            fontSize: '19px',
+                                            color: note.id === activeNote?.id
+                                                ? '#ff66b3'
+                                                : colors.gray45,
+                                            mr: '0.75rem',
+                                        }}
+                                    />
+                                    <InsightNoteLabel component="span">
+                                        {note.label}
+                                    </InsightNoteLabel>
+                                </Box>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <InsightNoteText>
+                                    {note.text}
+                                </InsightNoteText>
+                            </AccordionDetails>
+                        </Accordion>
+                    ))}
                 </div>
-            </Stack>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            {/*---------------- Save Insight Tab ----------------*/}
-            {/* <Stack
-                gap={3}
-                sx={{
-                    width: '100%'
-                }}
-            >
-                <FlexBox
-                    justifyContent="space-between"
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    sx={{
+                        mt: '2rem'
+                    }}
                 >
                     <ClearBtn
                         variant="outlined"
@@ -376,33 +270,9 @@ const InsightsSidebarContent = ({
                     >
                         Clear Tokens
                     </ClearBtn>
-                    <SaveBtn
-                        variant="contained"
-                        size="small"
-                        endIcon={
-                            <SendIcon
-                                sx={{
-                                    color: '#fff',
-                                    height: '14px',
-                                    width: '14px',
-                                    mt: '-2px'
-                                }}
-                            />
-                        }
-                    >
-                        Save Insight
-                    </SaveBtn>
-                </FlexBox>
+                </Box>
+            </Stack>
 
-                <StyledTextField
-                    label="Description"
-                    variant="outlined"
-                    multiline
-                    // rows={30}
-                    rows={10}
-                    placeholder="Enter description..."
-                />
-            </Stack> */}
         </ContentContainer>
     );
 }

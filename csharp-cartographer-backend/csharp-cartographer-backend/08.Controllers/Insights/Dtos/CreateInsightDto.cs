@@ -10,6 +10,10 @@ namespace csharp_cartographer_backend._08.Controllers.Insights.Dtos
         public Guid ArtifactID { get; init; }
 
         [Required]
+        [JsonPropertyName("label")]
+        public string Label { get; init; } = default!;
+
+        [Required]
         [JsonPropertyName("description")]
         public string Description { get; init; } = default!;
 
@@ -23,8 +27,9 @@ namespace csharp_cartographer_backend._08.Controllers.Insights.Dtos
 
     public sealed class CreateNoteDto
     {
+        [Required]
         [JsonPropertyName("label")]
-        public string? Label { get; init; }
+        public string Label { get; init; } = default!;
 
         [Required]
         [JsonPropertyName("text")]

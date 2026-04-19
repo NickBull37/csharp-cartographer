@@ -20,7 +20,13 @@
     <Content Remove="01.Configuration\Definitions\modifier-definitions.json" />
     <Content Remove="01.Configuration\Definitions\operator-definitions.json" />
     <Content Remove="01.Configuration\Definitions\semantic-definitions.json" />
+    <Content Remove="01.Configuration\DemoInsights\controller-insights.json" />
     <Content Remove="01.Configuration\DemoInsights\dto-insights.json" />
+    <Content Remove="01.Configuration\DemoInsights\helper-insights.json" />
+    <Content Remove="01.Configuration\DemoInsights\model-insights.json" />
+    <Content Remove="01.Configuration\DemoInsights\provider-insights.json" />
+    <Content Remove="01.Configuration\DemoInsights\service-insights.json" />
+    <Content Remove="01.Configuration\DemoInsights\workflow-insights.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,7 +37,13 @@
     <EmbeddedResource Include="01.Configuration\Definitions\modifier-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\operator-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\semantic-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\DemoInsights\controller-insights.json" />
     <EmbeddedResource Include="01.Configuration\DemoInsights\dto-insights.json" />
+    <EmbeddedResource Include="01.Configuration\DemoInsights\helper-insights.json" />
+    <EmbeddedResource Include="01.Configuration\DemoInsights\model-insights.json" />
+    <EmbeddedResource Include="01.Configuration\DemoInsights\provider-insights.json" />
+    <EmbeddedResource Include="01.Configuration\DemoInsights\service-insights.json" />
+    <EmbeddedResource Include="01.Configuration\DemoInsights\workflow-insights.json" />
   </ItemGroup>
 
   <ItemGroup>

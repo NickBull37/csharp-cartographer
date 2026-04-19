@@ -1,0 +1,25 @@
+{
+  "GenerateArtifactWorkflow.cs": {
+    "ArtifactID": "11111111-1111-1111-1111-111111111111",
+    "Label": "Workflow Class",
+    "Description": "",
+    "Highlights": [ 31, 32, 33, 56, 57, 59, 60, 61, 62, 63, 64, 65, 78, 79, 81, 82, 83, 84 ],
+    "NoteDtos": [
+      {
+        "Label": "",
+        "Text": "",
+        "Highlights": [ 31, 32, 33, 63, 64, 65 ]
+      },
+      {
+        "Label": "",
+        "Text": "",
+        "Highlights": [ 56, 57, 78, 79 ]
+      },
+      {
+        "Label": "",
+        "Text": "",
+        "Highlights": [ 59, 60, 61, 62, 81, 82, 83, 84 ]
+      }
+    ]
+  }
+}
