@@ -115,10 +115,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole? TryGetSecondaryRole(in NavToken token)
         {
-            if (token.SemanticRole == SemanticRole.InvocationReceiver)
+            if (token.SemanticRole == SemanticRole.InstanceQualifier)
             {
                 if (token.IsTargetMember())
                     return SemanticRole.TargetMember;
+
+                if (token.IsConditionalAccessTarget())
+                    return SemanticRole.ConditionalAccessTarget;
+
+                if (token.IsNullForgivingOperand())
+                    return SemanticRole.NullForgivingOperand;
             }
 
             return null;
@@ -837,9 +843,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsNullCoalescingTarget())
                 return SemanticRole.NullCoalescingTarget;
 
-            if (token.IsNullForgivingOperand())
-                return SemanticRole.NullForgivingOperand;
-
             if (token.IsShiftOperand())
                 return SemanticRole.ShiftOperand;
 
@@ -873,9 +876,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Receivers
             if (token.IsElementAccessReceiver())
                 return SemanticRole.ElementAccessReceiver;
-
-            if (token.IsInvocationReceiver())
-                return SemanticRole.InvocationReceiver;
 
             // Return values
             if (token.IsLocalFunctionReturnType())
@@ -1043,6 +1043,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsAliasQualifier())
                 return SemanticRole.AliasQualifier;
+
+            if (token.IsInstanceQualifier())
+                return SemanticRole.InstanceQualifier;
+
+            if (token.IsContainingTypeMemberQualifer())
+                return SemanticRole.ContainingTypeMemberQualifer;
 
             // --- Identifiers: misc types ---
             if (token.IsBaseType())

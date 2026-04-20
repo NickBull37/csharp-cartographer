@@ -291,11 +291,13 @@
         // Invocations & access
         AssignmentRecipient,
         ConstructorInvocation,
+        ContainingTypeMemberQualifer,
         EventSubscription,
         EventUnsubscription,
         FieldAccess,
         GenericMethodInvocation,
         IndexerAccess,
+        InstanceQualifier,
         MethodInvocation,
         NullCoalescingAssignmentRecipient,
         PropertyAccess,
@@ -409,7 +411,6 @@
         ExpressionOperand,
         IndexValue,
         InterpolatedValue,
-        InvocationReceiver, // maybe rename to InvocationTarget?
         LogicalOperand,
         NameOfOperand,
         NullCoalescingAssignmentValue,

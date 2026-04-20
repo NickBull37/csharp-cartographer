@@ -33,6 +33,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <summary>The token classification.</summary>
         public string Classification { get; set; }
 
+        /// <summary>The token classification list.</summary>
+        public List<string> ClassificationList { get; set; }
+
         /// <summary>The classification the token should be colored as.</summary>
         [JsonIgnore]
         public string ColorAs { get; set; }
@@ -677,7 +680,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 HasAncestorAt(1, SyntaxKind.InvocationExpression) ||
                 HasAncestorAt(2, SyntaxKind.InvocationExpression);
 
-            return validNext && validAncestors;
+            bool hasArgList = false;
+            var forwardToken = NextToken;
+            while (forwardToken?.Text != "." && forwardToken?.Text != ";")
+            {
+                var foundClosingClip = forwardToken?.Text == ">";
+                if (foundClosingClip && forwardToken?.NextToken?.Text == "(")
+                {
+                    hasArgList = true;
+                }
+
+                forwardToken = forwardToken?.NextToken;
+            }
+
+            return validNext && validAncestors && hasArgList;
         }
 
         public bool IsLockTarget()
@@ -1272,6 +1288,50 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return false;
 
             return SemanticData?.IsAlias == true;
+        }
+
+        public bool IsInstanceQualifier()
+        {
+            bool validClassification = Classification
+                is "field name"
+                or "local name"
+                or "parameter name";
+
+            bool validNext = NextToken?.Text is "." or "!" or "?";
+
+            if (!validClassification || !validNext)
+                return false;
+
+            if (NextToken?.Text == ".")
+            {
+                return HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
+            }
+
+            if (NextToken?.Text == "!")
+            {
+                return HasAncestorAt(1, SyntaxKind.SuppressNullableWarningExpression)
+                    && HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression);
+            }
+
+            if (NextToken?.Text == "?")
+            {
+                return HasAncestorAt(1, SyntaxKind.ConditionalAccessExpression);
+            }
+
+            return false;
+        }
+
+        public bool IsContainingTypeMemberQualifer()
+        {
+            bool validClassification = Classification
+                is "field name"
+                or "property name";
+
+            bool validNext = NextToken?.Text is "." or "!" or "?";
+
+            return validClassification
+                && validNext
+                && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
         }
 
         /*
@@ -2639,10 +2699,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsTypeQualifier()
         {
-            // skips non-qualifier tokens
-            if (NextToken?.Text != ".")
-                return false;
-
             // avoids accidentally catching on instance vars that look like qualifiers
             if (Classification
                 is "field name"
@@ -2659,28 +2715,49 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (IsQueryExpressionVariable())
                 return false;
 
-            //           ⌄
-            // System.Console.WriteLine(text);
-            if (PrevToken?.Text == ".")
+            return IsTypeQualifier() || IsGenericTypeQualifier();
+
+            bool IsTypeQualifier()
             {
-                return HasAncestorAt(0, SyntaxKind.IdentifierName)
-                    && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
-                    && HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression)
-                    && PrevToken?.PrevToken?.SemanticRole is SemanticRole.NamespaceQualifier or SemanticRole.AliasQualifier;
+                // skips non-qualifier tokens
+                if (NextToken?.Text != ".")
+                    return false;
+
+                //           ⌄
+                // System.Console.WriteLine(text);
+                if (PrevToken?.Text == ".")
+                {
+                    return HasAncestorAt(0, SyntaxKind.IdentifierName)
+                        && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
+                        && HasAncestorAt(2, SyntaxKind.SimpleMemberAccessExpression)
+                        && PrevToken?.PrevToken?.SemanticRole is SemanticRole.NamespaceQualifier or SemanticRole.AliasQualifier;
+                }
+
+                //    ⌄                         ⌄
+                // Console.WriteLine(text);    Guid.NewGuid();
+                if (PrevToken?.Text != ".")
+                {
+                    bool validParent = HasAncestorAt(0, SyntaxKind.IdentifierName)
+                        || HasAncestorAt(0, SyntaxKind.PredefinedType);
+                    bool validGrandParent = HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
+
+                    return validParent && validGrandParent;
+                }
+
+                return false;
             }
 
-            //    ⌄                         ⌄
-            // Console.WriteLine(text);    Guid.NewGuid();
-            if (PrevToken?.Text != ".")
+            bool IsGenericTypeQualifier()
             {
-                bool validParent = HasAncestorAt(0, SyntaxKind.IdentifierName)
-                    || HasAncestorAt(0, SyntaxKind.PredefinedType);
-                bool validGrandParent = HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
+                // skips non-generic-qualifier tokens
+                if (NextToken?.Text != "<")
+                    return false;
 
-                return validParent && validGrandParent;
+                //                ⌄
+                // var ar = ActionResponse<Artifact>.Failure("Error");
+                return HasAncestorAt(0, SyntaxKind.GenericName)
+                    && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
             }
-
-            return false;
         }
         #endregion
 

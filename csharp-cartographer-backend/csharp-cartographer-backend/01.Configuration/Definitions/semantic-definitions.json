@@ -857,11 +857,11 @@
   "ElementAccessReceiver": {
     "Definition": "The collection being accessed with brackets to read or write one of its elements."
   },
-  "InvocationReceiver": {
-    "Definition": "The value or object a method is invoked on."
-  },
   "UsingDirectiveModifier": {
     "Definition": "A keyword that changes how a {c:color-blue keyword}using{/c} directive behaves, such as making it apply globally or importing the static members of a type."
+  },
+  "ContainingTypeMemberQualifer": {
+    "Definition": "The name of a field or property defined in the containing type that is being used to qualify access to another member."
   },
   "": {
     "Definition": ""

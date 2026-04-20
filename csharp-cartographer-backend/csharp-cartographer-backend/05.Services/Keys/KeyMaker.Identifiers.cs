@@ -48,6 +48,9 @@ namespace csharp_cartographer_backend._05.Services.Keys
 
                 if (token.Classification == "field name")
                     return new DefinitionKey(IdentifierKind, "FieldReference", []);
+
+                if (token.Classification == "property name")
+                    return new DefinitionKey(IdentifierKind, "PropertyReference", []);
             }
 
             return new DefinitionKey(IdentifierKind, token.SemanticRole.ToString(), []);

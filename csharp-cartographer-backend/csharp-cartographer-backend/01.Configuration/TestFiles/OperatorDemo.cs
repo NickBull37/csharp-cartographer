@@ -1,4 +1,6 @@
-﻿using csharp_cartographer_backend._03.Models.Tokens;
+﻿using csharp_cartographer_backend._02.Utilities.ActionResponse;
+using csharp_cartographer_backend._03.Models.Artifacts;
+using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._06.Workflows.Artifacts;
 using Microsoft.CodeAnalysis;
 using Handler = System.Action<int>;
@@ -458,6 +460,7 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
         public TSyntax? FindFirstNode<TSyntax>(SyntaxNode root)
             where TSyntax : SyntaxNode
         {
+            var ar = ActionResponse<Artifact>.Failure("Error");
             return root.DescendantNodes().OfType<TSyntax?>().FirstOrDefault();
         }
 

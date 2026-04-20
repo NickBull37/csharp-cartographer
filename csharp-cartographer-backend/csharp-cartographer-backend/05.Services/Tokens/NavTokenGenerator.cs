@@ -52,6 +52,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 
                 // add classification & color-as
                 var classification = GetTokenClassification(token, classificationLookup) ?? string.Empty;
+                var classificationList = GetTokenClassificationList(token, classificationLookup) ?? [];
                 newToken.Classification = _roslynCorrector.GetCorrectedClassification(newToken, classification) ?? classification;
                 newToken.ColorAs = _roslynCorrector.GetCorrectedColorAs(newToken, classification) ?? classification;
 
@@ -69,19 +70,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             var classifiedSpans = await GetClassifiedSpans(syntaxTree, document, cancellationToken);
 
             return classifiedSpans
-                .GroupBy(c => c.TextSpan.Start)
-                .ToDictionary(g => g.Key, g => g.ToList());
-        }
-
-        private static string? GetTokenClassification(
-            SyntaxToken token,
-            IReadOnlyDictionary<int, List<ClassifiedSpan>> classificationLookup)
-        {
-            if (!classificationLookup.TryGetValue(token.Span.Start, out var candidates) || candidates is null)
-            {
-                return null;
-            }
-            return candidates.FirstOrDefault(c => c.TextSpan.Length == token.Span.Length).ClassificationType;
+                .GroupBy(span => span.TextSpan.Start)
+                .ToDictionary(group => group.Key, group => group.ToList());
         }
 
         private static async Task<IEnumerable<ClassifiedSpan>> GetClassifiedSpans(
@@ -93,6 +83,28 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             var fullSpan = new TextSpan(0, text.Length);
 
             return await Classifier.GetClassifiedSpansAsync(document, fullSpan, cancellationToken) ?? [];
+        }
+
+        private static string? GetTokenClassification(
+            SyntaxToken token,
+            IReadOnlyDictionary<int, List<ClassifiedSpan>> classificationLookup)
+        {
+            if (!classificationLookup.TryGetValue(token.Span.Start, out var candidates) || candidates is null)
+            {
+                return null;
+            }
+            return candidates.FirstOrDefault(candidate => candidate.TextSpan == token.Span).ClassificationType;
+        }
+
+        private static IEnumerable<string>? GetTokenClassificationList(
+            SyntaxToken token,
+            IReadOnlyDictionary<int, List<ClassifiedSpan>> classificationLookup)
+        {
+            if (!classificationLookup.TryGetValue(token.Span.Start, out var candidates) || candidates is null)
+            {
+                return null;
+            }
+            return candidates.Where(candidate => candidate.TextSpan == token.Span).Select(c => c.ClassificationType);
         }
     }
 }

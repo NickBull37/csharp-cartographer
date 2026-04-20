@@ -47,6 +47,9 @@
   "ID:PropertyDeclaration": {
     "Definition": "The name of a {c:color-white bold}property{/c} declared within the containing type."
   },
+  "ID:PropertyReference": {
+    "Definition": "The name of a {c:bold}property{/c} defined within the containing type."
+  },
   "ID:RecordDeclaration": {
     "Definition": "The name of a {c:color-green bold}record{/c} declaration.{RefExt}"
   },

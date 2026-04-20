@@ -2,7 +2,7 @@
   "GenerateArtifactWorkflow.cs": {
     "ArtifactID": "11111111-1111-1111-1111-111111111111",
     "Label": "Workflow Class",
-    "Description": "",
+    "Description": "This workflow for generating an artifact was built to contain the list of steps needed to generate an artifact. It captures the time needed for each step to identify bottle necks and made reordering steps easy. ",
     "Highlights": [ 31, 32, 33, 56, 57, 59, 60, 61, 62, 63, 64, 65, 78, 79, 81, 82, 83, 84 ],
     "NoteDtos": [
       {
