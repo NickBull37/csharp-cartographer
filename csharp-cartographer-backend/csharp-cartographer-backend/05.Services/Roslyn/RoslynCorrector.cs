@@ -3,68 +3,44 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace csharp_cartographer_backend._05.Services.Roslyn
 {
-    public class RoslynCorrector : IRoslynCorrector
+    public static class RoslynCorrector
     {
-        public string? GetCorrectedClassification(NavToken token, string? roslynClassification)
+        public static (string? corrected, string? colorAs) GetCorrectedClassifications(NavToken token, string? roslyn)
         {
-            return roslynClassification switch
+            var corrected = GetCorrected(token, roslyn);
+            var colorAs = GetColorAs(token, corrected);
+
+            return (corrected, colorAs);
+        }
+
+        private static string? GetCorrected(NavToken token, string? roslyn)
+        {
+            var corrected = roslyn switch
             {
-                "keyword" => GetKeywordCorrection(token),
-                "identifier" => GetIdentifierCorrection(token),
-                "operator" => GetOperatorCorrection(token),
-                "punctuation" => GetPunctuationCorrection(token),
-                "static symbol" => GetStaticSymbolCorrection(token),
+                "keyword" => GetKeywordCorrected(token),
+                "identifier" => GetIdentifierCorrected(token),
+                "operator" => GetOperatorCorrected(token),
+                "punctuation" => GetPunctuationCorrected(token),
                 _ => null,
             };
+
+            return corrected;
         }
 
-        public string? GetCorrectedColorAs(NavToken token, string? roslynClassification)
+        private static string? GetColorAs(NavToken token, string? corrected)
         {
-            if (string.IsNullOrEmpty(roslynClassification))
-                return null;
+            var colorAs = corrected switch
+            {
+                "delimiter" => "delimiter",
+                "keyword" => "keyword",
+                "punctuation" => GetPunctuationColorAs(token),
+                _ => null,
+            };
 
-            bool isNintKeyword = token.Text is "nint" && token.SemanticData?.SymbolName == "IntPtr";
-            bool isNuintKeyword = token.Text is "nuint" && token.SemanticData?.SymbolName == "UIntPtr";
-            if (isNintKeyword || isNuintKeyword)
-                return "keyword";
-
-            return null;
+            return colorAs;
         }
 
-        private static string? GetOperatorCorrection(NavToken token)
-        {
-            if (token.IsQualifiedNameSeparator())
-                return "punctuation";
-
-            if (token.IsNullableTypeMarker())
-                return "punctuation";
-
-            return null;
-        }
-
-        private static string? GetPunctuationCorrection(NavToken token)
-        {
-            if (token.IsDelimiter())
-                return "delimiter";
-
-            if (token.IsRangeOperator())
-                return "operator";
-
-            return null;
-        }
-
-        private static string? GetIdentifierCorrection(NavToken token)
-        {
-            bool isNintKeyword = token.Text is "nint" && token.SemanticData?.SymbolName == "IntPtr";
-            bool isNuintKeyword = token.Text is "nuint" && token.SemanticData?.SymbolName == "UIntPtr";
-
-            if (isNintKeyword || isNuintKeyword)
-                return "keyword";
-
-            return null;
-        }
-
-        private static string? GetKeywordCorrection(NavToken token)
+        private static string? GetKeywordCorrected(NavToken token)
         {
             bool isArgsKeyword = token.Kind == SyntaxKind.IdentifierToken
                 && token.Text == "args";
@@ -75,18 +51,43 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             return null;
         }
 
-        private static string? GetStaticSymbolCorrection(NavToken token)
+        private static string? GetIdentifierCorrected(NavToken token)
         {
-            // constant identifiers
-            bool isFieldSymbol = token.SemanticData?.IsFieldSymbol ?? false;
-            bool IsConstant = token.SemanticData?.IsConst ?? false;
+            bool isNintKeyword = token.Text is "nint" && token.SemanticData?.SymbolName == "IntPtr";
+            bool isNuintKeyword = token.Text is "nuint" && token.SemanticData?.SymbolName == "UIntPtr";
 
-            if (isFieldSymbol && IsConstant)
-                return "constant name";
+            if (isNintKeyword || isNuintKeyword)
+                return "keyword";
 
-            // field refs
-            if (isFieldSymbol)
-                return "field name";
+            return null;
+        }
+
+        private static string? GetOperatorCorrected(NavToken token)
+        {
+            if (token.IsQualifiedNameSeparator())
+                return "punctuation";
+
+            if (token.IsNullableTypeMarker())
+                return "punctuation";
+
+            return null;
+        }
+
+        private static string? GetPunctuationCorrected(NavToken token)
+        {
+            if (token.IsDelimiter())
+                return "delimiter";
+
+            if (token.IsRangeOperator())
+                return "operator";
+
+            return null;
+        }
+
+        private static string? GetPunctuationColorAs(NavToken token)
+        {
+            if (token.IsNullableTypeMarker())
+                return "operator";
 
             return null;
         }

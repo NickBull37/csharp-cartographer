@@ -230,7 +230,6 @@
         TypeModifier,
         [Label("typeof Operator")]
         TypeOfOperator,
-        TypeReference,
         TypeSystem,
         UsingDirectiveModifier,
         WithExpression,
@@ -301,7 +300,7 @@
         MethodInvocation,
         NullCoalescingAssignmentRecipient,
         PropertyAccess,
-        TargetMember, // rename to AccessTarget?
+        TargetMember,
         #endregion
 
         #region LITERALS
@@ -528,11 +527,7 @@
 
         public string FDLabel { get; init; }
 
-        public string? SecondarySRLabel { get; init; }
-
         public MapText? RoleDefinition { get; set; }
-
-        public MapText? SecondaryRoleDefinition { get; set; }
 
         public MapText? FocusedDefinition { get; set; }
 

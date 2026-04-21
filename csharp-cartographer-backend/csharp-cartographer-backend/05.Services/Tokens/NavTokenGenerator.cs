@@ -10,12 +10,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens
     public class NavTokenGenerator : INavTokenGenerator
     {
         private readonly IRoslynAnalyzer _roslynAnalyzer;
-        private readonly IRoslynCorrector _roslynCorrector;
 
-        public NavTokenGenerator(IRoslynAnalyzer roslynAnalyzer, IRoslynCorrector roslynCorrector)
+        public NavTokenGenerator(IRoslynAnalyzer roslynAnalyzer)
         {
             _roslynAnalyzer = roslynAnalyzer;
-            _roslynCorrector = roslynCorrector;
         }
 
         public async Task<List<NavToken>> GenerateNavTokens(FileData fileData, CancellationToken cancellationToken)
@@ -24,37 +22,28 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             var semanticModel = _roslynAnalyzer.GetSemanticModel(syntaxTree, cancellationToken);
 
             SyntaxNode root = syntaxTree.GetRoot(cancellationToken);
-            var roslynTokens = root.DescendantTokens();
+            var syntaxTokens = root.DescendantTokens().SkipLast(1); // skips EndOfFile token
             var classificationLookup = await BuildClassificationLookup(syntaxTree, fileData.Document, cancellationToken);
 
             List<NavToken> navTokens = [];
             int index = 0;
 
-            foreach (var token in roslynTokens)
+            foreach (var syntaxToken in syntaxTokens)
             {
-                // create new token
-                var newToken = new NavToken(token, index);
+                var navToken = new NavToken(syntaxToken, index);
+                navTokens.Add(navToken);
 
-                // add to token list
-                navTokens.Add(newToken);
-
-                // each token in list needs data from the ones before & after for token mapping
+                // save prev & next tokens for easy lookups
                 if (index > 0)
                 {
                     var prevToken = navTokens[index - 1];
 
-                    newToken.PrevToken = prevToken;
-                    prevToken.NextToken = newToken;
+                    navToken.PrevToken = prevToken;
+                    prevToken.NextToken = navToken;
                 }
 
-                // add semantic data
-                _roslynAnalyzer.AddTokenSemanticData(newToken, semanticModel, syntaxTree, cancellationToken);
-
-                // add classification & color-as
-                var classification = GetTokenClassification(token, classificationLookup) ?? string.Empty;
-                var classificationList = GetTokenClassificationList(token, classificationLookup) ?? [];
-                newToken.Classification = _roslynCorrector.GetCorrectedClassification(newToken, classification) ?? classification;
-                newToken.ColorAs = _roslynCorrector.GetCorrectedColorAs(newToken, classification) ?? classification;
+                _roslynAnalyzer.AddSemanticData(navToken, semanticModel, syntaxTree, cancellationToken);
+                _roslynAnalyzer.AddClassificationData(navToken, syntaxToken, classificationLookup);
 
                 index++;
             }
@@ -83,28 +72,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens
             var fullSpan = new TextSpan(0, text.Length);
 
             return await Classifier.GetClassifiedSpansAsync(document, fullSpan, cancellationToken) ?? [];
-        }
-
-        private static string? GetTokenClassification(
-            SyntaxToken token,
-            IReadOnlyDictionary<int, List<ClassifiedSpan>> classificationLookup)
-        {
-            if (!classificationLookup.TryGetValue(token.Span.Start, out var candidates) || candidates is null)
-            {
-                return null;
-            }
-            return candidates.FirstOrDefault(candidate => candidate.TextSpan == token.Span).ClassificationType;
-        }
-
-        private static IEnumerable<string>? GetTokenClassificationList(
-            SyntaxToken token,
-            IReadOnlyDictionary<int, List<ClassifiedSpan>> classificationLookup)
-        {
-            if (!classificationLookup.TryGetValue(token.Span.Start, out var candidates) || candidates is null)
-            {
-                return null;
-            }
-            return candidates.Where(candidate => candidate.TextSpan == token.Span).Select(c => c.ClassificationType);
         }
     }
 }

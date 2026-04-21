@@ -133,7 +133,9 @@ const TokenSidebarContent = ({
     // State Variables
     const [tokenText, setTokenText] = useState('');
     const [tokenLabel, setTokenLabel] = useState('');
+    const [classifications, setClassifications] = useState(null);
     const [classification, setClassification] = useState('');
+    const [classificationList, setClassificationList] = useState([]);
     const [tokenDefinition, setTokenDefinition] = useState('');
     const [comprehensiveElement, setComprehensiveElement] = useState('');
     const [highlightColor, setHighlightColor] = useState('');
@@ -212,7 +214,9 @@ const TokenSidebarContent = ({
         if (activeToken) {
             setTokenText(activeToken.text || '');
             setTokenLabel(activeToken.label || '');
+            setClassifications(activeToken.classifications || null);
             setClassification(activeToken.classification || '');
+            setClassificationList(activeToken.classificationList || []);
             setTokenDefinition(activeToken.definition || '');
             setComprehensiveElement(activeToken.comprehensiveElement || '');
             setHighlightColor(activeToken.highlightColor || '');
@@ -220,7 +224,9 @@ const TokenSidebarContent = ({
         } else {
             setTokenText('');
             setTokenLabel('');
+            setClassifications(null);
             setClassification('');
+            setClassificationList([]);
             setTokenDefinition('');
             setComprehensiveElement('');
             setHighlightColor('');
@@ -341,7 +347,31 @@ const TokenSidebarContent = ({
                                 py: '2px'
                             }}
                         >
-                            {classification} - {activeTokenIndex}
+                            {activeTokenIndex} - [{classifications?.originalSet.join(', ')}]
+                        </Typography>
+                        <Typography
+                            className='code'
+                            sx={{
+                                px: 1,
+                                color: colors.gray60,
+                                fontSize: '14px',
+                                textAlign: 'center',
+                                py: '2px'
+                            }}
+                        >
+                            color as: [{classifications?.colorAs}]
+                        </Typography>
+                        <Typography
+                            className='code'
+                            sx={{
+                                px: 1,
+                                color: colors.gray60,
+                                fontSize: '14px',
+                                textAlign: 'center',
+                                py: '2px'
+                            }}
+                        >
+                            corrected: [{classifications?.corrected}]
                         </Typography>
 
                         <Divider sx={{ bgcolor: '#808080' }} />

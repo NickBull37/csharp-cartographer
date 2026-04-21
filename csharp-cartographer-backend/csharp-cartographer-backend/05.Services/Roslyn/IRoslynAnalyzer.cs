@@ -1,6 +1,7 @@
 ﻿using csharp_cartographer_backend._03.Models.Files;
 using csharp_cartographer_backend._03.Models.Tokens;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Classification;
 
 namespace csharp_cartographer_backend._05.Services.Roslyn
 {
@@ -10,10 +11,15 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 
         SemanticModel GetSemanticModel(SyntaxTree syntaxTree, CancellationToken cancellationToken);
 
-        void AddTokenSemanticData(
+        void AddSemanticData(
             NavToken token,
             SemanticModel semanticModel,
             SyntaxTree syntaxTree,
             CancellationToken cancellationToken);
+
+        void AddClassificationData(
+            NavToken navToken,
+            SyntaxToken syntaxToken,
+            IReadOnlyDictionary<int, List<ClassifiedSpan>> classificationLookup);
     }
 }

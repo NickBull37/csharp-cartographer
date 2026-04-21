@@ -119,6 +119,7 @@
                 int firstNumber = numbers[0];                   // []
                 int[]? nullableNumbers = null;
                 int? nullableFirst = nullableNumbers?[0];       // ?[]
+                int textTest = text!.Length;
 
 
                 // ------------------------------------------------------------

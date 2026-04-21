@@ -1,6 +1,7 @@
 ﻿using csharp_cartographer_backend._03.Models.Files;
 using csharp_cartographer_backend._03.Models.Tokens;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Classification;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -12,6 +13,13 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 
     public class RoslynAnalyzer : IRoslynAnalyzer
     {
+        //private readonly IRoslynCorrector _roslynCorrector;
+
+        //public RoslynAnalyzer(IRoslynCorrector roslynCorrector)
+        //{
+        //    _roslynCorrector = roslynCorrector;
+        //}
+
         public SyntaxTree GetSyntaxTree(FileData fileData, CancellationToken cancellationToken)
         {
             return CSharpSyntaxTree.ParseText(
@@ -28,7 +36,28 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             return compilationUnit.GetSemanticModel(syntaxTree);
         }
 
-        public void AddTokenSemanticData(
+        public void AddClassificationData(
+            NavToken navToken,
+            SyntaxToken syntaxToken,
+            IReadOnlyDictionary<int, List<ClassifiedSpan>> classificationLookup)
+        {
+            if (!classificationLookup.TryGetValue(syntaxToken.Span.Start, out var matches) || matches is null)
+            {
+                return;
+            }
+
+            var classifications = matches
+                .Where(match => match.TextSpan == syntaxToken.Span)
+                .Select(match => match.ClassificationType)
+                .OrderBy(match => match);
+
+            var original = classifications.FirstOrDefault(classification => classification != "static symbol") ?? "unknown";
+            var (corrected, colorAs) = RoslynCorrector.GetCorrectedClassifications(navToken, original);
+
+            navToken.Classifications = new Classifications(classifications, original, colorAs, corrected);
+        }
+
+        public void AddSemanticData(
             NavToken token,
             SemanticModel semanticModel,
             SyntaxTree syntaxTree,

@@ -37,7 +37,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
              *   corrected for various edge cases.
              */
 
-            switch (token.Classification)
+            switch (token.Classifications.Final)
             {
                 case "delimiter":
                     return PrimaryKind.Delimiter;
@@ -547,9 +547,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole GetKeywordRole(in NavToken token)
         {
-            //if (!token.IsKeyword())
-            //    return SemanticRole.Unknown;
-
             // blue keywords
             if (token.IsRegularKeyword())
             {
@@ -665,10 +662,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 // --- Type declaration keywords ---
                 if (token.IsTypeDeclarationKeyword())
                     return SemanticRole.TypeDeclaration;
-
-                // --- Generic type keywords ---
-                if (token.IsGenericTypeArgument())
-                    return SemanticRole.GenericTypeArgument;
 
                 // --- Type pattern keywords ---
                 if (token.IsTypePattern())
@@ -801,6 +794,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsOutVariableType())
                 return SemanticRole.OutVariableType;
+
+            // Generic types
+            if (token.IsGenericTypeArgument())
+                return SemanticRole.GenericTypeArgument;
 
             // Index values
             if (token.IsIndexValue())
@@ -1060,9 +1057,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsCatchExceptionVariable())
                 return SemanticRole.CatchExceptionVariable;
 
-            if (token.IsGenericTypeArgument())
-                return SemanticRole.GenericTypeArgument;
-
             if (token.IsGenericTypeParameter())
                 return SemanticRole.GenericTypeParameter;
 
@@ -1107,8 +1101,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.AttributeArgument;
 
             // Identifier - type references
-            if (token.IsTypeReference())
-                return SemanticRole.TypeReference;
+            //if (token.IsTypeReference())
+            //    return SemanticRole.TypeReference;
 
             // Identifier - condition values
             if (token.IsConditionValue())

@@ -36,20 +36,20 @@ namespace csharp_cartographer_backend._05.Services.Keys
 
             if (!DeclarationRoles.Contains(token.SemanticRole))
             {
-                if (token.Classification == "parameter name")
+                if (token.Classifications.Final == "parameter name")
                 {
                     return token.IsLambdaParameterReference()
                         ? new DefinitionKey(IdentifierKind, "LambdaParameterReference", [])
                         : new DefinitionKey(IdentifierKind, "ParameterReference", []);
                 }
 
-                if (token.Classification == "local name")
+                if (token.Classifications.Final == "local name")
                     return new DefinitionKey(IdentifierKind, "LocalVariableReference", []);
 
-                if (token.Classification == "field name")
+                if (token.Classifications.Final == "field name")
                     return new DefinitionKey(IdentifierKind, "FieldReference", []);
 
-                if (token.Classification == "property name")
+                if (token.Classifications.Final == "property name")
                     return new DefinitionKey(IdentifierKind, "PropertyReference", []);
             }
 
