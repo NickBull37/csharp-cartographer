@@ -1,5 +1,4 @@
 ﻿using csharp_cartographer_backend._03.Models.Tokens;
-using Microsoft.CodeAnalysis.CSharp;
 
 namespace csharp_cartographer_backend._05.Services.Roslyn
 {
@@ -42,11 +41,11 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 
         private static string? GetKeywordCorrected(NavToken token)
         {
-            bool isArgsKeyword = token.Kind == SyntaxKind.IdentifierToken
-                && token.Text == "args";
+            if (token.IsArgsIdentifierKeyword())
+                return "identifier - keyword";
 
-            if (isArgsKeyword)
-                return "identifier";
+            if (token.IsKeywordOperator())
+                return "keyword - operator";
 
             return null;
         }
@@ -64,10 +63,13 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 
         private static string? GetOperatorCorrected(NavToken token)
         {
-            if (token.IsQualifiedNameSeparator())
+            if (token.IsNullableTypeMarker())
                 return "punctuation";
 
-            if (token.IsNullableTypeMarker())
+            if (token.IsPointerTypeIndicator())
+                return "punctuation";
+
+            if (token.IsQualifiedNameSeparator())
                 return "punctuation";
 
             return null;

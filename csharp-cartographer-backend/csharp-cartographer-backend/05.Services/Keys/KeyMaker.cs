@@ -37,6 +37,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 PrimaryKind.Identifier => GetIdentifierKey(token),
                 PrimaryKind.Literal => GetLiteralKey(token),
                 PrimaryKind.Keyword => GetKeywordKey(token),
+                PrimaryKind.KeywordOperator => GetOperatorKey(token),
                 _ => null,
             };
 

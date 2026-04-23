@@ -24,6 +24,9 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 or "static"
                 or "where";
 
+            if (token.IsVarPatternKeyword())
+                return new DefinitionKey(KeywordKind, token.Text, ["PatternMatching"]);
+
             return requiresExt
                 ? new DefinitionKey(KeywordKind, token.Text, [token.SemanticRole.ToString()])
                 : new DefinitionKey(KeywordKind, token.Text, []);

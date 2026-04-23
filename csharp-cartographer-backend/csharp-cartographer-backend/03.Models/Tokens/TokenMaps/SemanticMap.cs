@@ -6,13 +6,19 @@
     public enum PrimaryKind
     {
         Unknown,
-        Keyword,
         Delimiter,
+        Identifier,
+        Keyword,
+        Literal,
         Operator,
         Punctuation,
-        Identifier,
-        Literal,
-        Other
+
+        [Label("Keyword / Literal")]
+        KeywordLiteral,
+        [Label("Keyword / Operator")]
+        KeywordOperator,
+        [Label("Identifier / Keyword")]
+        IdentifierKeyword
     }
 
     /// <summary>
@@ -22,28 +28,56 @@
     {
         Unknown,
 
-        #region DELIMITERS
-        // ------------ DELIMITERS ------------ //
+        #region ------------ DELIMITERS ------------
 
-        // Definitions
-        [Label("DefinitionBoundary")]
-        ClassBoundary,
-        [Label("DefinitionBoundary")]
-        ConstructorBoundary,
-        [Label("DefinitionBoundary")]
-        EnumBoundary,
-        [Label("DefinitionBoundary")]
-        InterfaceBoundary,
-        [Label("DefinitionBoundary")]
-        LocalFunctionBoundary,
-        [Label("DefinitionBoundary")]
-        MethodBoundary,
-        [Label("DefinitionBoundary")]
-        RecordBoundary,
-        [Label("DefinitionBoundary")]
-        RecordStructBoundary,
-        [Label("DefinitionBoundary")]
-        StructBoundary,
+        AccessorListBoundary,
+        AnonymousObjectCreationExpressionBoundary,
+        ArrayInitializationBoundary,
+        ArrayType,
+        AttributeListBoundary,
+        CastTypeBoundary,
+        CatchArgumentBoundary,
+        CatchFilterBoundary,
+        CollectionInitializerExpressionBoundary,
+        CollectionExpressionBoundary,
+        DeconstructionBoundary,
+        DefaultExpressionBoundary,
+        ImplicitArrayCreation,
+        InterpolatedValueBoundary,
+        NamespaceBoundary,
+        ObjectInitializerBoundary,
+        ParenthesizedExpressionBoundary,
+        ParenthesizedPatternBoundary,
+        PropertyPatternBoundary,
+        SizeOfExpressionBoundary,
+        TupleExpressionBoundary,
+        TupleTypeBoundary,
+        TypeOfExpressionBoundary,
+        UsingResourceDeclarationBoundary,
+        WithInitializerExpressionBoundary,
+
+        // Arg/Param Lists
+        ArgumentListBoundary,
+        AttributeArgumentListBoundary,
+        BracketedArgumentListBoundary,
+        ParameterListBoundary,
+        TypeArgumentListBoundary,
+        TypeParameterListBoundary,
+
+        // Blocks
+        AddAccessorBlockBoundary,
+        CatchBlockBoundary,
+        ElseBlockBoundary,
+        ForEachBlockBoundary,
+        ForLoopBlockBoundary,
+        IfBlockBoundary,
+        LambdaExpressionBlockBoundary,
+        RemoveAccessorBlockBoundary,
+        SetAccessorBlockBoundary,
+        SwitchExpressionBlockBoundary,
+        SwitchStatementBlockBoundary,
+        TryBlockBoundary,
+        WhileLoopBlockBoundary,
 
         // Condition
         [Label("ConditionBoundary")]
@@ -53,7 +87,7 @@
         [Label("ConditionBoundary")]
         WhileLoopConditionBoundary,
 
-        // Context
+        // Context Blocks
         [Label("ContextBlockBoundary")]
         CheckedStatementBlockBoundary,
         [Label("ContextBlockBoundary")]
@@ -72,87 +106,71 @@
         ForEachControlBoundary,
         [Label("LoopControlBoundary")]
         ForLoopControlBoundary,
-        StatementControlBoundary,
+        [Label("StatementControlBoundary")]
+        FixedStatementControlBoundary,
+        [Label("StatementControlBoundary")]
+        LockStatementControlBoundary,
 
-        AccessorListBoundary,
-        AddAccessorBlockBoundary,
-        AnonymousObjectCreationExpressionBoundary,
-        ArgumentListBoundary,
-        ArrayInitializationBoundary,
-        ArrayType,
-        AttributeListBoundary,
-        AttributeArgumentListBoundary,
-        BlockBoundary,
-        BracketedArgumentListBoundary,
-        CastTypeBoundary,
-        CatchArgumentBoundary,
-        CatchBlockBoundary,
-        CatchFilterBoundary,
-        CollectionInitializerExpressionBoundary,
-        CollectionExpressionBoundary,
-        DeconstructionBoundary,
-        DefaultExpressionBoundary,
-        ElseBlockBoundary,
-        ForEachBlockBoundary,
-        ForLoopBlockBoundary,
-        IfBlockBoundary,
-        ImplicitArrayCreation,
-        InterpolatedValueBoundary,
-        LambdaExpressionBlockBoundary,
-        NamespaceBoundary,
-        ObjectInitializerBoundary,
-        ParameterListBoundary,
-        ParenthesizedExpressionBoundary,
-        ParenthesizedPatternBoundary,
-        PropertyPatternBoundary,
-        RemoveAccessorBlockBoundary,
-        SetAccessorBlockBoundary,
-        SizeOfExpressionBoundary,
-        SwitchExpressionBoundary,
-        SwitchStatementBoundary,
-        TryBlockBoundary,
-        TupleExpressionBoundary,
-        TupleTypeBoundary,
-        TypeArgumentListBoundary,
-        TypeOfExpressionBoundary,
-        TypeParameterListBoundary,
-        UsingResourceDeclarationBoundary,
-        WhileLoopBlockBoundary,
-        WithInitializerExpressionBoundary,
+        // Type Definitions
+        [Label("DefinitionBoundary")]
+        ClassBoundary,
+        [Label("DefinitionBoundary")]
+        ConstructorBoundary,
+        [Label("DefinitionBoundary")]
+        EnumBoundary,
+        [Label("DefinitionBoundary")]
+        InterfaceBoundary,
+        [Label("DefinitionBoundary")]
+        LocalFunctionBoundary,
+        [Label("DefinitionBoundary")]
+        MethodBoundary,
+        [Label("DefinitionBoundary")]
+        RecordBoundary,
+        [Label("DefinitionBoundary")]
+        RecordStructBoundary,
+        [Label("DefinitionBoundary")]
+        StructBoundary,
         #endregion
 
-        #region OPERATORS
-        // ------------ OPERATORS ------------ //
+        #region ------------ OPERATORS ------------
+
         Arithmetic,
         Assignment,
         Bitwise,
         BooleanLogical,
         Comparison,
-        ExpressionBodyArrow,
+        Equality,
+        ExpressionBodyArrow, // move to punc
         IndexFromEnd,
         Indirection,
         Lambda,
         MemberAccess,
+        NamespaceAlias,
         NullCoalescing,
         NullCoalescingAssignment,
+        NullForgiving,
+        PatternMatchArrow,
+        Range,
+        Shift,
+        Ternary,
+        TypeTesting,
+
+        // multi-token
         [Label("Null Conditional (1/2)")]
         NullConditionalQuestion,
         [Label("Null Conditional (2/2)")]
         NullConditionalDot,
-        NullForgiving,
-        PatternMatchArrow,
-        PointerTypeIndicator,
-        Range,
-        Shift,
-        Ternary,
         [Label("Ternary (2/2)")]
         TernaryColon,
         [Label("Ternary (1/2)")]
         TernaryQuestion,
         #endregion
 
-        #region PUNCTUATION
-        // ------------ PUNCTUATION ------------ //
+        #region ------------ PUNCTUATION ------------
+
+        // Misc
+        NullableTypeMarker,
+        PointerTypeIndicator,
 
         // Separation
         AnonymousObjectMemberDeclarationSeparator,
@@ -186,63 +204,74 @@
         DefaultLabelTerminator,
         ParameterLabelTerminator,
         StatementTerminator,
-
-        // Misc
-        NullableTypeMarker,
         #endregion
 
         #region ------------ KEYWORDS ------------
 
+        // blue
         AccessModifier,
         Accessor,
         ArgumentModifier,
         CompilationScope,
-        Concurrency,
-        ConditionalBranching,
         Constraint,
-        ControlFlow,
-        [Label("default Operator")]
-        DefaultOperator,
         DefaultValue,
-        DiscardValue,
         DiscardPattern,
+        DiscardValue,
         EventHandling,
-        ExceptionHandling,
         ImplicitParameter,
         Iterator,
-        JumpStatement,
         LiteralValue,
-        LoopStatement,
         MemberDeclaration,
         MemberModifier,
-        [Label("nameof Operator")]
-        NameOfOperator,
         NamespaceImport,
         ObjectConstruction,
         ObjectConstructionType,
         ParameterModifier,
-        PatternMatching,
         QueryExpression,
         SafetyContext,
-        [Label("sizeof Operator")]
-        SizeOfOperator,
         TypeDeclaration,
         TypeModifier,
-        [Label("typeof Operator")]
-        TypeOfOperator,
         TypeSystem,
         UsingDirectiveModifier,
         WithExpression,
+
+        // purple
+        JumpStatement,
+        ConditionalBranching,
+        ExceptionHandling,
+        ControlFlow,
+        LoopStatement,
+
+        // blue | purple
+        Concurrency,
+        PatternMatching,
         #endregion
 
         #region ------------ IDENTIFIERS ------------
 
-        AttributeArgument,
+        AssignmentRecipient,
+        BaseType,
+        CatchExceptionType,
+        CatchExceptionVariable,
         ConditionValue,
+        EventFieldType,
         ForEachLoopCollection,
+        GenericTypeParameter,
         LockTarget,
+        NullCoalescingAssignmentRecipient,
         ParameterLabel,
         TernaryCondition,
+        TupleElementName,
+        WithExpressionSource,
+
+        // Alias & qualifiers
+        AliasQualifier,
+        ContainingTypeMemberQualifer,
+        ElementAccessQualifer,
+        InstanceQualifier,
+        NamespaceAliasDeclaration,
+        NamespaceQualifier,
+        TypeAliasDeclaration,
 
         // Declarations
         Attribute,
@@ -270,6 +299,33 @@
         RecordStructDeclaration,
         StructDeclaration,
 
+        // Invocations & access
+        ConstructorInvocation,
+        EventSubscription,
+        EventUnsubscription,
+        FieldAccess, // 
+        GenericMethodInvocation,
+        IndexerAccess, //
+        MethodInvocation,
+        PropertyAccess, //
+        TargetMember,
+
+        // Query expressions
+        GroupContinuationRangeVariable,
+        GroupElement,
+        JoinIntoRangeVariable,
+        JoinRangeVariable,
+        JoinSource,
+        LetVariable,
+        QuerySource,
+        QueryVariableReference,
+        RangeVariable,
+        GroupContinuationRangeVariableReference,
+        JoinIntoRangeVariableReference,
+        JoinRangeVariableReference,
+        LetVariableReference,
+        RangeVariableReference,
+
         // References
         ClassReference,
         ConstantReference,
@@ -286,25 +342,9 @@
         RecordReference,
         RecordStructReference,
         StructReference,
-
-        // Invocations & access
-        AssignmentRecipient,
-        ConstructorInvocation,
-        ContainingTypeMemberQualifer,
-        EventSubscription,
-        EventUnsubscription,
-        FieldAccess,
-        GenericMethodInvocation,
-        IndexerAccess,
-        InstanceQualifier,
-        MethodInvocation,
-        NullCoalescingAssignmentRecipient,
-        PropertyAccess,
-        TargetMember,
         #endregion
 
-        #region LITERALS
-        // ------------ LITERALS ------------ //
+        #region ------------ LITERALS ------------
 
         BooleanLiteral,
         CharacterLiteral,
@@ -319,21 +359,58 @@
         InterpolatedVerbatimStringStart,
         #endregion
 
-        #region TYPES
-        // ------------ TYPES ------------ //
+        #region ------------ MISC ------------
 
+        AnonymousObjectElement,
+        Argument,
+        AssignmentValue,
+        AttributeArgument,
+        CastTarget,
+        CollectionElement,
+        CollectionLength,
+        IndexValue,
+        InterpolatedValue,
+        NullCoalescingAssignmentValue,
+        QueryReturnValue,
+        ReturnValue,
+        SwitchArmValue,
+        SwitchMatchTarget,
+
+        // Operands
+        AddressOfOperand,
+        ArithmeticOperand,
+        BitwiseOperand,
+        ComparisonOperand,
+        ConcatenationOperand,
+        DefaultOperand,
+        DereferenceOperand,
+        LogicalOperand,
+        NameOfOperand,
+        NullCoalescingFallback,
+        NullCoalescingTarget,
+        NullForgivingOperand,
+        ShiftOperand,
+        SizeOfOperand,
+        TernaryTrueValue,
+        TernaryFalseValue,
+        TypeOfOperand,
+
+        // Pattern matching
+        ConstantPattern,
+        PatternBindingVariable,
+        PatternMatchTarget,
+        PropertyPattern,
+        RelationalPattern,
+        TypePattern,
+        VarPattern,
+
+        // Types
         ArrayDataType,
-        BaseType,
-        CatchExceptionType,
-        CatchExceptionVariable,
+        CastType,
         DeconstructionVariableType,
         DelegateReturnType,
-        EventFieldType,
-        EventPropertyType,
         FieldType,
         GenericTypeArgument,
-        GenericTypeParameter,
-        TypeParameterConstraint,
         LocalFunctionReturnType,
         LocalVariableType,
         LoopIteratorType,
@@ -343,90 +420,34 @@
         PointerBaseType,
         PropertyType,
         TupleElement,
-        TupleElementName,
         TupleElementType,
         TypeConstraint,
-        #endregion
-
-        #region PATTERN MATCHING
-        // ------------ PATTERN MATCHING ------------ //
-        ConstantPattern,
-        PatternBindingVariable,
-        PatternMatchTarget,
-        PropertyPattern,
-        RelationalPattern,
-        TypePattern,
-        VarPattern,
-        #endregion
-
-        #region NAMES / QUALIFIERS
-        // ------------ NAMES / QUALIFIERS ------------ //
-
-        AliasQualifier,
-        NamespaceAliasDeclaration,
-        NamespaceQualifier,
-        TypeAliasDeclaration,
+        TypeParameterConstraint,
         TypeQualifier,
         #endregion
 
-        #region QUERY EXPRESSIONS
-        // ------------ QUERY EXPRESSIONS ------------ //
+        #region ------------ KEYWORD LITERALS ------------
 
-        GroupContinuationRangeVariable,
-        GroupElement,
-        JoinIntoRangeVariable,
-        JoinRangeVariable,
-        JoinSource,
-        LetVariable,
-        QuerySource,
-        QueryVariableReference,
-        RangeVariable,
-        GroupContinuationRangeVariableReference,
-        JoinIntoRangeVariableReference,
-        JoinRangeVariableReference,
-        LetVariableReference,
-        RangeVariableReference,
         #endregion
 
-        #region MISC
-        // ------------ MISC ------------ //
+        #region ------------ KEYWORD OPERATORS ------------
 
-        AddressOfOperand,
-        AnonymousObjectElement,
-        ArithmeticOperand,
-        AssignmentValue,
-        Argument,
-        BitwiseOperand,
-        CastType,
-        CastTarget,
-        CollectionElement,
-        CollectionLength,
-        ComparisonOperand,
-        ConcatenationOperand,
+        DefaultOperator,
+        NameOfOperator,
+        SizeOfOperator,
+        TypeOfOperator,
+        #endregion
+
+        #region ------------ IDENTIFIER KEYWORDS ------------
+
+        #endregion
+    }
+
+    public enum SecondaryRole
+    {
         ConditionalAccessTarget,
-        DefaultOperand,
-        DereferenceOperand,
-        ElementAccessReceiver,
-        ExpressionOperand,
-        IndexValue,
-        InterpolatedValue,
-        LogicalOperand,
-        NameOfOperand,
-        NullCoalescingAssignmentValue,
-        NullCoalescingFallback,
-        NullCoalescingTarget,
         NullForgivingOperand,
-        QueryReturnValue,
-        ShiftOperand,
-        SizeOfOperand,
-        SwitchArmValue,
-        SwitchMatchTarget,
-        ReturnValue,
-        TernaryTrueValue,
-        TernaryFalseValue,
-        TypeOfOperand,
-        WithExpressionSource,
-        #endregion
+        TargetMember,
     }
 
     public enum TypeSymbols
@@ -527,6 +548,7 @@
 
         public string FDLabel { get; init; }
 
+        // TODO: deprecate MapText class
         public MapText? RoleDefinition { get; set; }
 
         public MapText? FocusedDefinition { get; set; }

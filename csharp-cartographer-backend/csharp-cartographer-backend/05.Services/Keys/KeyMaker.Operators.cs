@@ -38,7 +38,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 return new DefinitionKey(OperatorKind, "c?t:f", []);
             }
 
-            // (!)(^)(*)(&)(=>) overlaps with other operators, requires full name
+            // (+)(-)(!)(^)(*)(&)(=>) overlaps with other operators, requires full name
             string? operatorName = GetOperatorNameExtension(token);
             if (operatorName is not null)
             {
@@ -51,6 +51,12 @@ namespace csharp_cartographer_backend._05.Services.Keys
 
         private static string? GetOperatorNameExtension(NavToken token)
         {
+            // (+)(-) unary plus / unary minus
+            if (token.IsUnaryPlusOperator())
+                return "UnaryPlus";
+            if (token.IsUnaryMinusOperator())
+                return "UnaryMinus";
+
             // (!) logical NOT / null forgiving
             if (token.IsLogicalNotOperator())
                 return "LogicalNot";

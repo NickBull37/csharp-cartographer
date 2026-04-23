@@ -5,6 +5,12 @@
   "OP:-": {
     "Definition": "The minus operator {c:keyword}\"-\"{/c} subtracts one numeric value from another or negates a number."
   },
+  "OP:+:UnaryPlus": {
+    "Definition": "The unary plus operator {c:keyword}\"+\"{/c} returns the value of its operand."
+  },
+  "OP:-:UnaryMinus": {
+    "Definition": "The unary minus operator {c:keyword}\"-\"{/c} computes the numeric negation of its operand."
+  },
   "OP:*:Multiplication": {
     "Definition": "The multiplication operator {c:keyword}(*){/c} multiplies two numeric values."
   },
@@ -75,7 +81,7 @@
     "Definition": "The index operator \"{c:keyword}^{/c}\" specifies a position counted from the end of a sequence."
   },
   "OP:~": {
-    "Definition": "The bitwise NOT operator {c:keyword}\"~\"{/c} flips all the bits of a value. Zeros become ones and ones become zeros."
+    "Definition": "The bitwise complement operator {c:keyword}\"~\"{/c} flips all the bits of a value. Zeros become ones and ones become zeros."
   },
   "OP:<<": {
     "Definition": "The left shift operator {c:keyword}\"<<\"{/c} moves the bits of a value to the left by a specified amount."
@@ -93,10 +99,10 @@
     "Definition": "The logical NOT operator {c:keyword}\"!\"{/c} reverses a Boolean value. True becomes false, and false becomes true."
   },
   "OP:&&": {
-    "Definition": "The logical AND operator {c:keyword}\"&&\"{/c} returns true only if both conditions are true. It stops evaluating as soon as one condition is false."
+    "Definition": "The conditional-logical AND operator {c:keyword}\"&&\"{/c} returns true only if both conditions are true. It stops evaluating as soon as one condition is false."
   },
   "OP:||": {
-    "Definition": "The logical OR operator {c:keyword}\"||\"{/c} returns true if at least one condition is true. It stops evaluating as soon as a true condition is found."
+    "Definition": "The conditional-logical OR operator {c:keyword}\"||\"{/c} returns true if at least one condition is true. It stops evaluating as soon as a true condition is found."
   },
   "OP:<": {
     "Definition": "The less-than operator {c:keyword}\"<\"{/c} checks whether the value on the left is smaller than the value on the right."
@@ -129,7 +135,7 @@
     "Definition": "The null-conditional operator {c:keyword}x?.y{/c} skips member access and returns null immediately if the preceding operand is null."
   },
   "OP:::": {
-    "Definition": "The namespace alias qualifier {c:keyword}\"::\"{/c} accesses a member through a specific alias. It is commonly used with global or using aliases."
+    "Definition": "The namespace alias operator {c:keyword}\"::\"{/c} is used to access a member of an aliased namespace and can only be used between two identifiers. The left-hand identifier can be one of a namespace alias, an extern alias, or the {c:color-blue keyword}global{/c} alias."
   },
   "OP:??": {
     "Definition": "The null-coalescing operator {c:keyword}\"x ?? y\"{/c} returns a fallback value when the left value is null."
@@ -142,5 +148,17 @@
   },
   "OP:c?t:f": {
     "Definition": "The ternary operator {c:keyword}c ? t : f{/c} evaluates a Boolean expression and returns the result of one of the two expressions, depending on whether the Boolean expression evaluates to true or false."
+  },
+  "OP:default": {
+    "Definition": "The {c:color-blue keyword}default{/c} operator produces the default value for the specified type."
+  },
+  "OP:nameof": {
+    "Definition": "The {c:color-blue keyword}nameof{/c} operator produces the name of a variable, type, or member as the string constant."
+  },
+  "OP:sizeof": {
+    "Definition": "The {c:color-blue keyword}sizeof{/c} operator returns the number of bytes occupied by a variable of a given type."
+  },
+  "OP:typeof": {
+    "Definition": "The {c:color-blue keyword}typeof{/c} operator produces the System.Type instance for a type"
   }
 }

@@ -23,9 +23,6 @@
   "AttributeArgumentListBoundary": {
     "Definition": "Marks the boundaries of the argument list passed to an attribute."
   },
-  "BlockBoundary": {
-    "Definition": "Marks the boundaries of a block of code."
-  },
   "BracketedArgumentListBoundary": {
     "Definition": "Marks the boundaries of an argument list used to access elements of an array."
   },
@@ -134,13 +131,10 @@
   "SizeOfExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}sizeof{/c} expression."
   },
-  "StatementControlBoundary": {
-    "Definition": "Marks the boundaries of the control that determines how the statement behaves."
-  },
-  "SwitchExpressionBoundary": {
+  "SwitchExpressionBlockBoundary": {
     "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} expression."
   },
-  "SwitchStatementBoundary": {
+  "SwitchStatementBlockBoundary": {
     "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} statement."
   },
   "SwitchStatementConditionBoundary": {
@@ -854,7 +848,7 @@
   "Ternary (2/2)": {
     "Definition": "Marks the expression that is returned when the ternary condition evaluates to {c:bold}false{/c}."
   },
-  "ElementAccessReceiver": {
+  "ElementAccessQualifer": {
     "Definition": "The collection being accessed with brackets to read or write one of its elements."
   },
   "UsingDirectiveModifier": {

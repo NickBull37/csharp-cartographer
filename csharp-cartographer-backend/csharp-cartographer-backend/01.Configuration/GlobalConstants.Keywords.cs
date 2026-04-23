@@ -182,44 +182,6 @@
         ];
 
         /// <summary>
-        /// public / private / protected / internal
-        /// </summary>
-        public static readonly HashSet<string> AccessModifiers =
-        [
-            "public",
-            "private",
-            "protected",
-            "internal",
-        ];
-
-        /// <summary>
-        /// get / set / init
-        /// </summary>
-        public static readonly HashSet<string> AccessorKeywords =
-        [
-            "get",
-            "set",
-            "init",
-
-            /*
-             *  Covered by EventHandling
-             *  
-             *  - add
-             *  - remove
-             */
-        ];
-
-        /// <summary>
-        /// in / out / ref
-        /// </summary>
-        public static readonly HashSet<string> ArgumentModifiers =
-        [
-            "in",
-            "out",
-            "ref",
-        ];
-
-        /// <summary>
         /// alias / file / global / namespace / using
         /// </summary>
         public static readonly HashSet<string> CompilationScopeKeywords =
@@ -241,62 +203,6 @@
         ];
 
         /// <summary>
-        /// if / else
-        /// </summary>
-        public static readonly HashSet<string> ConditionalBranchingKeywords =
-        [
-            "if",
-            "else",
-        ];
-
-        /// <summary>
-        /// Covers:<br/>
-        /// managed / notnull / unmanaged
-        /// <br/><br/>
-        /// Does NOT cover:<br/>
-        /// where
-        /// </summary>
-        public static readonly HashSet<string> ConstraintKeywords =
-        [
-            "managed",
-            "notnull",
-            "unmanaged",
-
-            /*
-             *  Covered by manual check since "where"
-             *  can fall under multiple roles
-             *  
-             *  - where
-             */
-        ];
-
-        /// <summary>
-        /// switch
-        /// </summary>
-        public static readonly HashSet<string> ControlFlowKeywords =
-        [
-            "switch",
-
-            /*
-             *  Covered by manual check since "case" & "default
-             *  can fall under multiple roles
-             *  
-             *  - case
-             *  - default
-             */
-        ];
-
-        /// <summary>
-        /// case / default / switch
-        /// </summary>
-        public static readonly HashSet<Keyword> ControlFlowKeywordsTest =
-        [
-            new Keyword ("switch", true),
-            new Keyword ("case", false),
-            new Keyword ("default", false),
-        ];
-
-        /// <summary>
         /// event / add / remove
         /// </summary>
         public static readonly HashSet<string> EventKeywords =
@@ -307,44 +213,11 @@
         ];
 
         /// <summary>
-        /// try / catch / finally / throw
-        /// </summary>
-        public static readonly HashSet<string> ExceptionHandlingKeywords =
-        [
-            "try",
-            "catch",
-            "finally",
-            "throw",
-        ];
-
-        /// <summary>
         /// yield
         /// </summary>
         public static readonly HashSet<string> IteratorKeywords =
         [
             "yield",
-        ];
-
-        /// <summary>
-        /// break / continue / goto / return
-        /// </summary>
-        public static readonly HashSet<string> JumpStatementKeywords =
-        [
-            "break",
-            "continue",
-            "goto",
-            "return",
-        ];
-
-        /// <summary>
-        /// do / for / foreach / while
-        /// </summary>
-        public static readonly HashSet<string> LoopStatementKeywords =
-        [
-            "do",
-            "for",
-            "foreach",
-            "while",
         ];
 
         /// <summary>
@@ -382,39 +255,6 @@
              *  also fall under other semantic roles
              *  
              *  - this
-             */
-        ];
-
-        /// <summary>
-        /// in / out / params / ref / scoped / this
-        /// </summary>
-        public static readonly HashSet<string> ParameterModifiers =
-        [
-            "in",
-            "out",
-            "params",
-            "ref",
-            "scoped",
-            "this",
-        ];
-
-        /// <summary>
-        /// and / as / is / not / or / when
-        /// </summary>
-        public static readonly HashSet<string> PatternMatchingKeywords =
-        [
-            "and",
-            "as",
-            "is",
-            "not",
-            "or",
-            "when",
-
-            /*
-             *  Covered by manual check since "case" can
-             *  also fall under control flow
-             *  
-             *  - case
              */
         ];
 
@@ -489,20 +329,6 @@
              *  - sizeof
              *  - typeof
              */
-        ];
-
-        /// <summary>
-        /// class / delegate / enum / interface / operator / record / struct
-        /// </summary>
-        public static readonly HashSet<string> TypeDeclarationKeywords =
-        [
-            "class",
-            "delegate",
-            "enum",
-            "interface",
-            "operator",
-            "record",
-            "struct",
         ];
 
         /// <summary>

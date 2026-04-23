@@ -9,8 +9,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
     {
         public SemanticMap GetSemanticMap(NavToken token)
         {
-            var kindLabel = token.PrimaryKind.ToString();
-            var roleLabel = GetRoleLabel(token.SemanticRole);
+            var kindLabel = GetLabelOrSpacedString(token.PrimaryKind);
+            var roleLabel = GetLabelOrSpacedString(token.SemanticRole);
             var focusedLabel = GetFocusedLabel(token);
             var roleDefinition = GetRoleDefinition(token.SemanticRole);
             var focusedDefinition = GetFocusedDefinition(token);
@@ -24,9 +24,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             );
         }
 
-        private static string GetRoleLabel(SemanticRole role)
+        private static string GetLabelOrSpacedString<TEnum>(TEnum value)
+            where TEnum : Enum
         {
-            return role.GetSpacedLabel() ?? role.ToSpacedString();
+            return value.GetSpacedLabel() ?? value.ToSpacedString();
         }
 
         private static string GetFocusedLabel(NavToken token)

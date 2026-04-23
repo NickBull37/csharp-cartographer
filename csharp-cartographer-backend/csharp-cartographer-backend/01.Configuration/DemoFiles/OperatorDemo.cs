@@ -9,10 +9,10 @@
         {
             public void Demo(int a, int b)
             {
-                // ------------------------------------------------------------
-                // Arithmetic: +, -, *, /, %, ++, --
-                // Unary: +, -, ++, --
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
+                // Arithmetic Unary: ++, --, +, -
+                // Arithmetic Binary: +, -, *, /, %
+                // ----------------------------------------------------------------------
                 int sum = a + b;
                 int diff = a - b;
                 int prod = a * b;
@@ -22,15 +22,15 @@
                 int unaryPlus = +a;
                 int unaryMinus = -a;
 
-                a++;         // post-increment
-                b--;         // post-decrement
                 ++a;         // pre-increment
                 --b;         // pre-decrement
+                a++;         // post-increment
+                b--;         // post-decrement
 
 
-                // ------------------------------------------------------------
-                // Assignment: =, +=, -=, *=, /=, %=, &=, |=, ^=, <<=, >>=, >>>=
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
+                // Assignment: =, +=, -=, *=, /=, %=, &=, |=, ^=, <<=, >>=, >>>=, ??=
+                // ----------------------------------------------------------------------
                 int value = 1;
                 value += 2;
                 value -= 1;
@@ -43,34 +43,58 @@
                 value <<= 1;
                 value >>= 1;
                 value >>>= 1;
+                string? nullableString = null;
+                nullableString ??= "assign-if-null";
 
 
-                // ------------------------------------------------------------
-                // Comparison: ==, !=, >, <, >=, <=
-                // ------------------------------------------------------------
-                bool eq = a == b;
-                bool neq = a != b;
+                // ----------------------------------------------------------------------
+                // Bitwise: &, |, ^, ~
+                // ----------------------------------------------------------------------
+                int andBits = a & b;                         // & bitwise AND
+                int orBits = a | b;                          // | bitwise OR
+                int xorBits = a ^ b;                         // ^ bitwise XOR
+                int bitComp = ~a;                            // ~ bitwise complement
+
+
+                // Boolean Logical
+                // ----------------------------------------------------------------------
+                // unary logical: !
+                // binary logical: &, |, ^
+                // binary conditional: &&, ||
+                // ----------------------------------------------------------------------
+                bool trueVal = true;
+                bool falseVal = !trueVal;                         // ! (logical NOT)
+
+                bool logicalAnd = trueVal & falseVal;             // & (logical AND)
+                bool logicalOr = trueVal | falseVal;              // | (logical OR)
+                bool logicalExOr = trueVal ^ falseVal;            // ^ (logical XOR)
+
+                bool conditionalAnd = (a > 0) && (b > 0);         // && (conditional AND)
+                bool conditionalOr = (a > 0) || (b < 0);          // || (conditional OR)
+
+
+                // ----------------------------------------------------------------------
+                // Comparison: <, >, <=, >=
+                // ----------------------------------------------------------------------
                 bool gt = a > b;
                 bool lt = a < b;
                 bool gte = a >= b;
                 bool lte = a <= b;
 
 
-                // ------------------------------------------------------------
-                // Boolean Logical: &&, ||, !
-                // ------------------------------------------------------------
-                bool andAlso = (a > 0) && (b > 0);           // && (logical AND)
-                bool orElse = (a > 0) || (b < 0);            // || (logical OR)
-                bool boolVal = true;
-                bool logicalNot = !boolVal;                  // !  (logical NOT)
+                // ----------------------------------------------------------------------
+                // Equality: ==, !=
+                // ----------------------------------------------------------------------
+                bool eq = a == b;
+                bool neq = a != b;
 
 
-                // ------------------------------------------------------------
-                // Null: ??, ??=, ?. , ?[] , !, x?.y
-                // ------------------------------------------------------------
-                string? nullableString = null;
-                string name = nullableString ?? "default-name";   // ??  (null-coalescing)
-                nullableString ??= "now-initialized";             // ??= (null-coalescing assignment)
+                // ----------------------------------------------------------------------
+                // Null: ??, ?. , ?[] , !, x?.y
+                // ----------------------------------------------------------------------
+                string? nullString = null;
+                string name = nullString ?? "default-name";       // ??  (null-coalescing)
+
                 int? length = nullableString?.Length;             // ?.  (null-conditional access)
 
                 int[]? maybeNumbers = null;
@@ -78,38 +102,22 @@
 
                 string definitelyNotNull = nullableString!;       // !   (null-forgiving)
 
-                var ternary = nullableString is null ? "default" : nullableString;
+                var ternary = nullableString is null
+                    ? "default"             // true value
+                    : nullableString;       // false value
 
 
-                // ------------------------------------------------------------
-                // Bitwise: &, |, ^, ~
-                // ------------------------------------------------------------
-                int andBits = a & b;                         // & bitwise AND
-                int orBits = a | b;                          // | bitwise OR
-                int xorBits = a ^ b;                         // ^ bitwise XOR
-                int bitNot = ~a;                             // ~ bitwise NOT
-
-
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
                 // Shift: <<, >>, >>>
-                // ------------------------------------------------------------
-                int leftShift = a << 1;
-                int rightShift = a >> 1;            // arithmetic right shift (sign-preserving)
-                int logicalRightShift = a >>> 1;    // logical right shift (zero-fill)
+                // ----------------------------------------------------------------------
+                int leftShift = a << 1;             // left shift
+                int rightShift = a >> 1;            // right shift
+                int logicalRightShift = a >>> 1;    // unsigned right shift
 
 
-                // ------------------------------------------------------------
-                // Keyword: nameof, sizeof, typeof, default(T)
-                // ------------------------------------------------------------
-                string className = nameof(OperatorDemo);     // nameof
-                int sizeOfInt = sizeof(int);                 // sizeof
-                Type type = typeof(OperatorDemo);               // typeof
-                string defaultString = default(string);      // default(T)
-
-
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
                 // Member Access: ., ?., [], ?[]
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
                 string text = "text";
 
                 int textLength = text.Length;                   // .
@@ -122,15 +130,15 @@
                 int textTest = text!.Length;
 
 
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
                 // Lambda: =>
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
                 Func<int, int> square = x => x * x;
 
 
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
                 // Index & range: ^, ..
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
                 int index = 1;
                 int offset = 1;
                 int start = 1;
@@ -189,9 +197,9 @@
                 int[] mixed4 = numbersArray[..^(offset + 2)];       // expression end-from-end
 
 
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
                 // new, checked, unchecked, stackalloc
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
                 var list = new List<int> { 1, 2, 3 };        // new
 
                 checked                                      // checked
@@ -205,26 +213,63 @@
                 Span<int> span = stackalloc int[5];          // stackalloc
 
 
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
                 // with expression (copy-and-mutate)
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
                 var item = new Item("Apples", 1.19m);
-                var saleItem = item with { Price = 0.79m };    // with
+                var saleItem = item with { Price = 0.79m };
                 var testItem = GetItem() with { Price = 0.79m };
 
 
-                // ------------------------------------------------------------
-                // Indirection: *p / &x
-                // ------------------------------------------------------------
+                // ----------------------------------------------------------------------
+                // Indirection: *p, &x, ->
+                // ----------------------------------------------------------------------
                 unsafe
                 {
                     int val = 10;
-                    int* pValue = &val;             // & (AddressOf)
-                    Console.WriteLine(*pValue);     // * (Dereference)
+                    int* pValue = &val;             // & (address-of)
+                    Console.WriteLine(*pValue);     // * (pointer indirection)
+
+                    MyStruct stVal = new() { Number = 10 };
+                    MyStruct* stPtr = &stVal;       // & (address-of)
+                    Console.WriteLine(*pValue);     // * (pointer indirection)
+                    stPtr->Number = 5;              // -> (pointer member access)
                 }
+
+                // ----------------------------------------------------------------------
+                // Type Testing: 
+                // ----------------------------------------------------------------------
+                object test = GetItem();
+
+                // is
+                Console.WriteLine(test is Item); // output: True
+
+                // is (pattern matching)
+                if (test is string) { }
+                if (test is string output) { }
+
+                // as
+                string? textFromAs = test as string;
+
+                // typeof
+                Type stringType = typeof(string);
+
+
+                // ----------------------------------------------------------------------
+                // Keyword: nameof, sizeof, typeof, default(T)
+                // ----------------------------------------------------------------------
+                string className = nameof(OperatorDemo);        // nameof
+                int sizeOfInt = sizeof(int);                    // sizeof
+                Type type = typeof(OperatorDemo);               // typeof
+                string defaultString = default(string);         // default(T)
             }
 
             public record Item(string Name, decimal Price);
+
+            public struct MyStruct
+            {
+                public int Number;
+            }
 
             public Item GetItem()
             {

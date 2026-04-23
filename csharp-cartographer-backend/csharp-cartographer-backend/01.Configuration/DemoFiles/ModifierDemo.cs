@@ -247,9 +247,8 @@ namespace csharp_cartographer_backend._01.Configuration.DemoFiles
             zz = new AsyncDemo();
         }
 
-        public static void InParam(in int x)
+        public static void InParam(in int x) /* x is read-only */
         {
-            /* x is read-only */
         }
 
         public static int ParamsParam(params int[] values)
@@ -263,9 +262,8 @@ namespace csharp_cartographer_backend._01.Configuration.DemoFiles
             x += 10;
         }
 
-        public static void ScopedInParam(scoped in int x)
+        public static void ScopedInParam(scoped in int x) /* x is read-only */
         {
-            /* x is read-only */
         }
     }
 
