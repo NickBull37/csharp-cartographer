@@ -320,9 +320,6 @@
   "ControlFlow": {
     "Definition": "Control flow keywords determine the order in which code executes. They control how execution moves through a program."
   },
-  "EventHandling": {
-    "Definition": "Event handling keywords define how code responds when events occur. They allow programs to react to actions or changes."
-  },
   "ExceptionHandling": {
     "Definition": "Exception handling keywords manage errors that occur while a program is running. They allow errors to be caught and handled safely."
   },

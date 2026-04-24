@@ -20,6 +20,32 @@ namespace DelegateAndEventDemo
 
         public event Func<int, (int min, int max)> RangeRequested;
 
+        private TemperatureChangedHandler? _customTemperatureChanged;
+
+        public event TemperatureChangedHandler CustomTemperatureChanged
+        {
+            add // subscriber added
+            {
+                _customTemperatureChanged += value;
+            }
+            remove // subscriber removed
+            {
+                _customTemperatureChanged -= value;
+            }
+        }
+
+        public event TemperatureChangedHandler? CustomTemperatureChangedTwo
+        {
+            add // subscriber added
+            {
+                _customTemperatureChanged += value;
+            }
+            remove // subscriber removed
+            {
+                _customTemperatureChanged -= value;
+            }
+        }
+
         public int Temperature
         {
             get => _temperature;
@@ -73,13 +99,23 @@ namespace DelegateAndEventDemo
 
     public class BuiltInDelegates
     {
-        public event Action TemperatureChanged;
+        public static event Action TemperatureChanged;
 
         public event Action<int> TemperatureChangedWithValue;
 
         public event Func<int, int> ValueTransformed;
 
         public event Func<int, (int min, int max)> RangeRequested;
+
+        public static event TemperatureChangedHandler? CustomTemperatureChangedTwo
+        {
+            add
+            {
+            }
+            remove
+            {
+            }
+        }
     }
 
     namespace MyApp.Events

@@ -16,18 +16,20 @@ namespace csharp_cartographer_backend._05.Services.Keys
 
         private static DefinitionKey GetKeywordKey(NavToken token)
         {
-            bool requiresExt = token.Text
+            if (token.IsVarPatternKeyword())
+                return new DefinitionKey(KeywordKind, token.Text, ["PatternMatching"]);
+
+            if (token.IsDefaultLiteral())
+                return new DefinitionKey(KeywordKind, token.Text, ["Literal"]);
+
+            bool requiresRoleExt = token.Text
                 is "case"
-                or "default"
                 or "in"
                 or "new"
                 or "static"
                 or "where";
 
-            if (token.IsVarPatternKeyword())
-                return new DefinitionKey(KeywordKind, token.Text, ["PatternMatching"]);
-
-            return requiresExt
+            return requiresRoleExt
                 ? new DefinitionKey(KeywordKind, token.Text, [token.SemanticRole.ToString()])
                 : new DefinitionKey(KeywordKind, token.Text, []);
         }

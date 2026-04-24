@@ -81,6 +81,13 @@ namespace csharp_cartographer_backend._01.Configuration.DemoFiles
         }
     }
 
+    file class FileDemo
+    {
+        public static void FileTypeModifier()
+        {
+        }
+    }
+
 
     // ----------------------------------------------------------------------------------
     //                                Member Modifiers
@@ -107,20 +114,16 @@ namespace csharp_cartographer_backend._01.Configuration.DemoFiles
     }
 
     // partial
-    public class PartialDemo
+    public partial class PartialDemo
     {
-        public partial class PartialTypeDemo
-        {
-            public void PartA()
-            {
-            }
-        }
+        partial void PartialMemberDemo();
 
-        public partial class PartialTypeDemo
+    }
+
+    public partial class PartialDemo
+    {
+        partial void PartialMemberDemo()
         {
-            public void PartB()
-            {
-            }
         }
     }
 
@@ -302,4 +305,15 @@ namespace csharp_cartographer_backend._01.Configuration.DemoFiles
             ParameterModifierDemo.ScopedInParam(in x);
         }
     }
+
+    //public class TestExtensions
+    //{
+    //    extension()
+    //    {
+    //        public int WordCount()
+    //        {
+
+    //        }
+    //    }
+    //}
 }

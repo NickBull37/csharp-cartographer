@@ -181,82 +181,8 @@
             "yield"
         ];
 
-        /// <summary>
-        /// alias / file / global / namespace / using
-        /// </summary>
-        public static readonly HashSet<string> CompilationScopeKeywords =
-        [
-            "alias",
-            "file",
-            "global",
-            "namespace",
-            "using",
-        ];
 
-        /// <summary>
-        /// await / lock
-        /// </summary>
-        public static readonly HashSet<string> ConcurrencyKeywords =
-        [
-            "await",
-            "lock",
-        ];
 
-        /// <summary>
-        /// event / add / remove
-        /// </summary>
-        public static readonly HashSet<string> EventKeywords =
-        [
-            "event",
-            "add",
-            "remove",
-        ];
-
-        /// <summary>
-        /// yield
-        /// </summary>
-        public static readonly HashSet<string> IteratorKeywords =
-        [
-            "yield",
-        ];
-
-        /// <summary>
-        /// abstract / async / const / extern / new / override / partial /
-        /// readonly / required / sealed / static / virtual / volatile / unsafe
-        /// </summary>
-        public static readonly HashSet<string> MemberModifiers =
-        [
-            "abstract",
-            "async",
-            "const",
-            "extern",
-            "new",
-            "override",
-            "partial",
-            "readonly",
-            "required",
-            "sealed",
-            "static",
-            "virtual",
-            "volatile",
-            "unsafe",
-        ];
-
-        /// <summary>
-        /// base / new
-        /// </summary>
-        public static readonly HashSet<string> ObjectConstructionKeywords =
-        [
-            "base",
-            "new",
-
-            /*
-             *  Covered by manual check since "new" and "this" can
-             *  also fall under other semantic roles
-             *  
-             *  - this
-             */
-        ];
 
         /// <summary>
         /// bool / byte / sbyte / short / ushort / int / uint / long /
@@ -284,52 +210,6 @@
             "nuint",
         ];
 
-        /// <summary>
-        /// ascending / by / descending / equals / from / group /
-        /// into / join / let / on / orderby / select / where
-        /// </summary>
-        public static readonly HashSet<string> QueryExpressionKeywords =
-        [
-            "ascending",
-            "by",
-            "descending",
-            "equals",
-            "from",
-            "group",
-            "into",
-            "join",
-            "let",
-            "on",
-            "orderby",
-            "select",
-            "where",
-
-            /*
-             *  Covered by manual check since "in" can also fall
-             *  under loop statements and parameter modifiers
-             *  
-             *  - in
-             */
-        ];
-
-        /// <summary>
-        /// checked / fixed / stackalloc / unchecked / unsafe
-        /// </summary>
-        public static readonly HashSet<string> SafetyContextKeywords =
-        [
-            "checked",
-            "fixed",
-            "stackalloc",
-            "unchecked",
-            "unsafe",
-
-            /*
-             *  Covered by individual Operator roles
-             *  
-             *  - sizeof
-             *  - typeof
-             */
-        ];
 
         /// <summary>
         /// abstract / file / partial / readonly / ref / sealed / static / unsafe
@@ -344,21 +224,6 @@
             "sealed",
             "static",
             "unsafe",
-        ];
-
-        /// <summary>
-        /// dynamic / nameof
-        /// </summary>
-        public static readonly HashSet<string> TypeSystemKeywords =
-        [
-            "dynamic",
-            "nameof",
-
-            /*
-             *  Covered by IdentifierType roles
-             *  
-             *  - var
-             */
         ];
     }
 }

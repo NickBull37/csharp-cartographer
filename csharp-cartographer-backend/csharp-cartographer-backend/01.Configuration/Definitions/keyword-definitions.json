@@ -11,9 +11,6 @@
   "KW:and": {
     "Definition": "The {c:color-blue keyword}and{/c} keyword is used in pattern matching to require multiple conditions to be true. All parts of the pattern must match."
   },
-  "KW:as": {
-    "Definition": "The {c:color-blue keyword}as{/c} keyword attempts to convert a value to a specified type. If the conversion fails, it returns null instead of throwing an error."
-  },
   "KW:ascending": {
     "Definition": "The {c:color-blue keyword}ascending{/c} keyword sorts query results from lowest to highest. It is commonly used in LINQ order-by expressions."
   },
@@ -65,14 +62,11 @@
   "KW:decimal": {
     "Definition": "The {c:color-blue keyword}decimal{/c} keyword defines a high-precision numeric type. It is commonly used for financial and monetary calculations."
   },
-  "KW:default:ControlFlow": {
+  "KW:default:Literal": {
+    "Definition": "The {c:color-blue keyword}default{/c} keyword represents the default value for the specified value type or null for reference types."
+  },
+  "KW:default": {
     "Definition": "The {c:color-purple keyword}default{/c} label provides a fallback value or action when no other option matches."
-  },
-  "KW:default:DefaultOperator": {
-    "Definition": "The {c:color-blue keyword}default{/c} keyword-operator returns the default value for the provided type."
-  },
-  "KW:default:DefaultValue": {
-    "Definition": "The {c:color-blue keyword}default{/c} literal keyword represents the literal default value for a type."
   },
   "KW:delegate": {
     "Definition": "The {c:color-blue keyword}delegate{/c} keyword defines a type that represents a method reference. It allows methods to be passed and invoked indirectly."
@@ -176,9 +170,6 @@
   "KW:into": {
     "Definition": "The {c:color-blue keyword}into{/c} keyword continues a query after a group or join operation. It allows further processing of query results."
   },
-  "KW:is": {
-    "Definition": "The {c:color-blue keyword}is{/c} keyword checks whether a value matches a given type or pattern. It is commonly used in conditions."
-  },
   "KW:join": {
     "Definition": "The {c:color-blue keyword}join{/c} keyword combines data from two sources based on a related value. It is used in LINQ queries to match items."
   },
@@ -193,9 +184,6 @@
   },
   "KW:managed": {
     "Definition": "The {c:color-blue keyword}managed{/c} keyword specifies that code is managed by the runtime. It is used in advanced interoperability scenarios."
-  },
-  "KW:nameof": {
-    "Definition": "The {c:color-blue keyword}nameof{/c} keyword returns the name of a variable, type, or member as a string. It helps avoid hard-coded names."
   },
   "KW:namespace": {
     "Definition": "The {c:color-blue keyword}namespace{/c} keyword groups related types into a named scope, helping organize code and prevent naming conflicts across large projects."

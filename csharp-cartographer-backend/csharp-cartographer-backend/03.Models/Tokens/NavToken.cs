@@ -121,10 +121,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return kinds.Any(kind => HasAncestorAt(index, kind));
         }
 
-        public bool IsNullableType() => HasAncestorAt(1, SyntaxKind.NullableType);
-
-        public bool IsPredefinedType() => SyntaxFacts.IsPredefinedType(Kind);
-
         #region Delimiter Checks
         public bool IsDelimiter() => Kind
             is SyntaxKind.OpenBraceToken
@@ -1242,6 +1238,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 || HasAncestorAt(3, SyntaxKind.EventFieldDeclaration);
         }
 
+        public bool IsEventPropertyType()
+        {
+            // covers nullable and non-nullable types
+            return HasAncestorAt(1, SyntaxKind.EventDeclaration)
+                || HasAncestorAt(2, SyntaxKind.EventDeclaration);
+        }
+
         public bool IsTupleElementName()
         {
             return HasAncestorAt(0, SyntaxKind.TupleElement);
@@ -1394,15 +1397,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Keyword Checks
-        public bool IsKeyword()
-        {
-            return SyntaxFacts.IsKeywordKind(Kind)
-                || IsDiscardValueKeyword()
-                || IsNameofAndKeyword()
-                || IsValueAndKeyword()
-                || IsVarAndKeyword();
-        }
-
         public bool IsRegularKeyword() => Classifications.Final == Keyword;
 
         public bool IsControlKeyword() => Classifications.Final == KeywordControl;
@@ -1429,13 +1423,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.AddKeyword
                 or SyntaxKind.RemoveKeyword;
 
-            var validAncestor = HasAncestorAt(0, SyntaxKind.GetAccessorDeclaration)
+            var validParent = HasAncestorAt(0, SyntaxKind.GetAccessorDeclaration)
                 || HasAncestorAt(0, SyntaxKind.SetAccessorDeclaration)
                 || HasAncestorAt(0, SyntaxKind.InitAccessorDeclaration)
                 || HasAncestorAt(0, SyntaxKind.AddAccessorDeclaration)
                 || HasAncestorAt(0, SyntaxKind.RemoveAccessorDeclaration);
 
-            return validKind && validAncestor;
+            return validKind && validParent;
         }
 
         public bool IsArgumentModifierKeyword()
@@ -1452,32 +1446,55 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsCompilationScopeKeyword()
         {
-            return GlobalConstants.CompilationScopeKeywords.Contains(Text);
+            /// alias / global / namespace / using
+
+            var validKind = Kind
+                is SyntaxKind.AliasKeyword
+                or SyntaxKind.GlobalKeyword
+                or SyntaxKind.NamespaceKeyword
+                or SyntaxKind.UsingKeyword;
+
+            var validParent = HasAncestorAt(0, SyntaxKind.ExternAliasDirective)
+                || HasAncestorAt(0, SyntaxKind.IdentifierName)
+                || HasAncestorAt(0, SyntaxKind.NamespaceDeclaration)
+                || HasAncestorAt(0, SyntaxKind.UsingDirective);
+
+            return validKind && validParent;
         }
 
         public bool IsConcurrencyKeyword()
         {
-            return GlobalConstants.ConcurrencyKeywords.Contains(Text);
+            /// await / lock
+
+            var validKind = Kind
+                is SyntaxKind.AwaitKeyword
+                or SyntaxKind.LockKeyword;
+
+            var validParent = HasAncestorAt(0, SyntaxKind.AwaitExpression)
+                || HasAncestorAt(0, SyntaxKind.LockStatement);
+
+            return validKind && validParent;
         }
 
         public bool IsConditionalBranchingKeyword()
         {
+            /// if / else
+
             var validKind = Kind
                 is SyntaxKind.IfKeyword
                 or SyntaxKind.ElseKeyword;
 
-            var validAncestor = HasAncestorAt(0, SyntaxKind.IfStatement)
+            var validParent = HasAncestorAt(0, SyntaxKind.IfStatement)
                 || HasAncestorAt(0, SyntaxKind.ElseClause);
 
-            return validKind && validAncestor;
+            return validKind && validParent;
         }
 
         public bool IsConstraintKeyword()
         {
-            // notnull, unmanaged, where
+            /// notnull, unmanaged, where
 
-            return IsWhereConstraintKeyword()
-                || IsNotNullOrUnmangedConstraintKeyword();
+            return IsWhereConstraintKeyword() || IsNotNullOrUnmangedConstraintKeyword();
 
             bool IsWhereConstraintKeyword()
             {
@@ -1487,65 +1504,69 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             bool IsNotNullOrUnmangedConstraintKeyword()
             {
+                var validText = Text is "notnull" or "unmanaged";
                 var validKind = Kind is SyntaxKind.IdentifierToken;
-                var validAncestor = HasAncestorAt(0, SyntaxKind.IdentifierName)
+                var validParent = HasAncestorAt(0, SyntaxKind.IdentifierName)
                     || HasAncestorAt(0, SyntaxKind.TypeConstraint);
 
-                return validKind && validAncestor;
+                return validText && validKind && validParent;
             }
         }
 
         public bool IsControlFlowKeyword()
         {
-            // case, default, switch
+            /// case, default, switch
 
             var validKind = Kind
                 is SyntaxKind.CaseKeyword
                 or SyntaxKind.DefaultKeyword
                 or SyntaxKind.SwitchKeyword;
 
-            var validAncestor = HasAncestorAt(0, SyntaxKind.CaseSwitchLabel)
+            var validParent = HasAncestorAt(0, SyntaxKind.CaseSwitchLabel)
                 || HasAncestorAt(0, SyntaxKind.CasePatternSwitchLabel)
                 || HasAncestorAt(0, SyntaxKind.DefaultSwitchLabel)
                 || HasAncestorAt(0, SyntaxKind.SwitchStatement)
                 || HasAncestorAt(0, SyntaxKind.SwitchExpression);
 
-            return validKind && validAncestor;
+            return validKind && validParent;
         }
 
-        public bool IsDefaultLiteralKeyword()
+        public bool IsDefaultLiteral()
         {
             return Kind == SyntaxKind.DefaultKeyword
                 && HasAncestorAt(0, SyntaxKind.DefaultLiteralExpression);
-        }
+        } // non-role
 
         public bool IsDiscardValueKeyword()
         {
-            // covers discard in deconstruction variables
-            if (Kind == SyntaxKind.UnderscoreToken && HasAncestorAt(0, SyntaxKind.DiscardDesignation))
-                return true;
+            /// discard (_)
 
-            // covers discard assignments & out params
-            if (Text == "_"
-                && Kind == SyntaxKind.IdentifierToken
-                && PrimaryKind == PrimaryKind.Keyword)
+            return IsDiscardAssignment() || IsDiscardDeconstruction();
+
+            bool IsDiscardAssignment()
             {
-                return true;
+                bool validText = Text == "_";
+                bool validKind = Kind is SyntaxKind.IdentifierToken;
+                bool validClass = Classifications.Original == Keyword;
+
+                return validText && validKind && validClass;
             }
 
-            return false;
+            bool IsDiscardDeconstruction()
+            {
+                bool validKind = Kind is SyntaxKind.UnderscoreToken;
+                bool validParent = HasAncestorAt(0, SyntaxKind.DiscardDesignation);
+
+                return validKind && validParent;
+            }
         }
 
         public bool IsDiscardPatternKeyword()
         {
-            // covers discard in switch expressions
+            /// discard (_) in switch expressions
+
             return Kind == SyntaxKind.UnderscoreToken
                 && HasAncestorAt(0, SyntaxKind.DiscardPattern);
-        }
-
-        public bool IsEventHandlingKeyword()
-        {
-            return GlobalConstants.EventKeywords.Contains(Text);
         }
 
         public bool IsExceptionHandlingKeyword()
@@ -1558,28 +1579,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.FinallyKeyword
                 or SyntaxKind.ThrowKeyword;
 
-            var validAncestor = HasAncestorAt(0, SyntaxKind.TryStatement)
+            var validParent = HasAncestorAt(0, SyntaxKind.TryStatement)
                 || HasAncestorAt(0, SyntaxKind.CatchClause)
                 || HasAncestorAt(0, SyntaxKind.FinallyClause)
                 || HasAncestorAt(0, SyntaxKind.ThrowStatement);
 
-            return validKind && validAncestor;
-        }
-
-        public bool IsImplicitParameterKeyword()
-        {
-            bool hasKeywordClassification = Classifications.Final == "keyword";
-            bool hasAccessorAncestor = HasAncestor(SyntaxKind.AccessorList);
-
-            return hasAccessorAncestor
-                && hasKeywordClassification
-                && Kind == SyntaxKind.IdentifierToken
-                && Text == "value";
+            return validKind && validParent;
         }
 
         public bool IsIteratorKeyword()
         {
-            return GlobalConstants.IteratorKeywords.Contains(Text);
+            /// yield
+
+            return Kind == SyntaxKind.YieldKeyword
+                && HasAncestorAt(0, SyntaxKind.YieldReturnStatement);
         }
 
         public bool IsJumpStatementKeyword()
@@ -1592,12 +1605,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.GotoKeyword
                 or SyntaxKind.ReturnKeyword;
 
-            var validAncestor = HasAncestorAt(0, SyntaxKind.BreakStatement)
+            var validParent = HasAncestorAt(0, SyntaxKind.BreakStatement)
                 || HasAncestorAt(0, SyntaxKind.ContinueStatement)
                 || HasAncestorAt(0, SyntaxKind.GotoStatement)
                 || HasAncestorAt(0, SyntaxKind.ReturnStatement);
 
-            return validKind && validAncestor;
+            return validKind && validParent;
         }
 
         public bool IsLoopStatementKeyword()
@@ -1611,55 +1624,99 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.InKeyword
                 or SyntaxKind.WhileKeyword;
 
-            var validAncestor = HasAncestorAt(0, SyntaxKind.DoStatement)
+            var validParent = HasAncestorAt(0, SyntaxKind.DoStatement)
                 || HasAncestorAt(0, SyntaxKind.ForStatement)
                 || HasAncestorAt(0, SyntaxKind.ForEachStatement)
                 || HasAncestorAt(0, SyntaxKind.ForEachVariableStatement)
                 || HasAncestorAt(0, SyntaxKind.WhileStatement);
 
-            return validKind && validAncestor;
+            return validKind && validParent;
+        }
+
+        public bool IsMemberDeclarationKeyword()
+        {
+            /// event
+
+            var validAncestor = HasAncestorAt(0, SyntaxKind.EventDeclaration)
+                || HasAncestorAt(0, SyntaxKind.EventFieldDeclaration);
+
+            return Kind == SyntaxKind.EventKeyword && validAncestor;
         }
 
         public bool IsMemberModifierKeyword()
         {
-            bool validParent = HasAncestorAt(0, SyntaxKind.FieldDeclaration)
+            /// abstract / async / const / extern / new / override / partial /
+            /// readonly / required / sealed / static / unsafe / virtual / volatile
+
+            var validKind = Kind
+                is SyntaxKind.AbstractKeyword
+                or SyntaxKind.AsyncKeyword
+                or SyntaxKind.ConstKeyword
+                or SyntaxKind.ExternKeyword
+                or SyntaxKind.NewKeyword
+                or SyntaxKind.OverrideKeyword
+                or SyntaxKind.PartialKeyword
+                or SyntaxKind.ReadOnlyKeyword
+                or SyntaxKind.RequiredKeyword
+                or SyntaxKind.SealedKeyword
+                or SyntaxKind.StaticKeyword
+                or SyntaxKind.UnsafeKeyword
+                or SyntaxKind.VirtualKeyword
+                or SyntaxKind.VolatileKeyword;
+
+            var validParent = HasAncestorAt(0, SyntaxKind.EventDeclaration)
+                || HasAncestorAt(0, SyntaxKind.EventFieldDeclaration)
+                || HasAncestorAt(0, SyntaxKind.FieldDeclaration)
                 || HasAncestorAt(0, SyntaxKind.MethodDeclaration)
                 || HasAncestorAt(0, SyntaxKind.PropertyDeclaration);
 
-            if (!validParent)
-                return false;
-
-            return GlobalConstants.MemberModifiers.Contains(Text);
-        }
-
-        public bool IsNameofAndKeyword()
-        {
-            // for some reason nameof isn't considered a keyword but sizeof & typeof are...
-            return Kind == SyntaxKind.IdentifierToken
-                && HasAncestorAt(1, SyntaxKind.InvocationExpression)
-                && NextToken?.Text == "(";
+            return validKind && validParent;
         }
 
         public bool IsObjectConstructionKeyword()
         {
-            var parentKind = AncestorKinds.Ancestors.FirstOrDefault();
-            bool validParent = parentKind
-                is SyntaxKind.ObjectCreationExpression
-                or SyntaxKind.ArrayCreationExpression
-                or SyntaxKind.ImplicitObjectCreationExpression
-                or SyntaxKind.ImplicitArrayCreationExpression
-                or SyntaxKind.AnonymousObjectCreationExpression;
+            /// base / new / this
 
-            if (!validParent)
-                return false;
+            var validKind = Kind
+                is SyntaxKind.BaseKeyword
+                or SyntaxKind.NewKeyword
+                or SyntaxKind.ThisKeyword;
 
-            return GlobalConstants.ObjectConstructionKeywords.Contains(Text);
+            var validParent = HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression)
+                || HasAncestorAt(0, SyntaxKind.ArrayCreationExpression)
+                || HasAncestorAt(0, SyntaxKind.ImplicitArrayCreationExpression)
+                || HasAncestorAt(0, SyntaxKind.ImplicitObjectCreationExpression)
+                || HasAncestorAt(0, SyntaxKind.ObjectCreationExpression)
+                || HasAncestorAt(0, SyntaxKind.ThisExpression);
+
+            return validKind && validParent;
         }
 
-        public bool IsObjectConstructionTypeKeyword()
+        public bool IsOperatorDeclarationKeyword()
         {
-            return SyntaxFacts.IsPredefinedType(Kind)
-                && HasAncestorAt(1, SyntaxKind.ObjectCreationExpression);
+            /// operator
+
+            var validKind = Kind is SyntaxKind.OperatorKeyword;
+
+            var validParent = HasAncestorAt(0, SyntaxKind.OperatorDeclaration)
+                || HasAncestorAt(0, SyntaxKind.ConversionOperatorDeclaration);
+
+            return validKind && validParent;
+        }
+
+        public bool IsOperatorModifierKeyword()
+        {
+            /// explicit, implicit, static
+
+            var validKind = Kind
+                is SyntaxKind.ExplicitKeyword
+                or SyntaxKind.ImplicitKeyword
+                or SyntaxKind.StaticKeyword;
+
+            var validParent = HasAncestorAt(0, SyntaxKind.OperatorDeclaration)
+                || HasAncestorAt(0, SyntaxKind.ConversionOperatorDeclaration);
+
+            return validKind && validParent;
         }
 
         public bool IsParameterModifierKeyword()
@@ -1679,7 +1736,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsPatternMatchingKeyword()
         {
-            // and, is, not, or, var 
+            /// and, is, not, or, var 
 
             var validKind = Kind
                 is SyntaxKind.IsKeyword
@@ -1688,125 +1745,131 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.OrKeyword
                 or SyntaxKind.VarKeyword;
 
-            var validAncestor = HasAncestorAt(0, SyntaxKind.IsPatternExpression)
+            var validParent = HasAncestorAt(0, SyntaxKind.IsPatternExpression)
                 || HasAncestorAt(0, SyntaxKind.AndPattern)
                 || HasAncestorAt(0, SyntaxKind.NotPattern)
                 || HasAncestorAt(0, SyntaxKind.OrPattern)
                 || HasAncestorAt(0, SyntaxKind.VarPattern);
 
-            return validKind && validAncestor;
-        }
-
-        public bool IsPatternMatchingKeyword(SyntaxKind? kind)
-        {
-            if (kind is null)
-                return false;
-
-            return kind
-                is SyntaxKind.AndKeyword
-                or SyntaxKind.AsKeyword
-                or SyntaxKind.IsKeyword
-                or SyntaxKind.NotKeyword
-                or SyntaxKind.OrKeyword
-                or SyntaxKind.WhenKeyword;
+            return validKind && validParent;
         }
 
         public bool IsQueryExpressionKeyword()
         {
-            // "in" and "where" not included in query expression keywords
-            // because they don't always fall into the query expression role
-            // and must be checked manually.
+            /// ascending / by / descending / equals / from / group /
+            /// in / into / join / let / on / orderby / select / where
 
-            var parentKind = AncestorKinds.Ancestors.FirstOrDefault();
-            if (Text == "in" && parentKind.ToString().Contains("Clause"))
-                return true;
+            var validKind = Kind
+                is SyntaxKind.AscendingKeyword
+                or SyntaxKind.ByKeyword
+                or SyntaxKind.DescendingKeyword
+                or SyntaxKind.EqualsKeyword
+                or SyntaxKind.FromKeyword
+                or SyntaxKind.GroupKeyword
+                or SyntaxKind.InKeyword
+                or SyntaxKind.IntoKeyword
+                or SyntaxKind.JoinKeyword
+                or SyntaxKind.LetKeyword
+                or SyntaxKind.OnKeyword
+                or SyntaxKind.OrderByKeyword
+                or SyntaxKind.SelectKeyword
+                or SyntaxKind.WhereKeyword;
 
-            if (Text == "where" && parentKind == SyntaxKind.WhereClause)
-                return true;
+            var validParent = HasAncestorAt(0, SyntaxKind.AscendingOrdering)
+                || HasAncestorAt(0, SyntaxKind.DescendingOrdering)
+                || HasAncestorAt(0, SyntaxKind.FromClause)
+                || HasAncestorAt(0, SyntaxKind.GroupClause)
+                || HasAncestorAt(0, SyntaxKind.JoinClause)
+                || HasAncestorAt(0, SyntaxKind.JoinIntoClause)
+                || HasAncestorAt(0, SyntaxKind.LetClause)
+                || HasAncestorAt(0, SyntaxKind.OrderByClause)
+                || HasAncestorAt(0, SyntaxKind.QueryContinuation)
+                || HasAncestorAt(0, SyntaxKind.SelectClause)
+                || HasAncestorAt(0, SyntaxKind.WhereClause);
 
-            return GlobalConstants.QueryExpressionKeywords.Contains(Text);
+            return validKind && validParent;
         }
 
         public bool IsSafetyContextKeyword()
         {
-            if (!GlobalConstants.SafetyContextKeywords.Contains(Text))
-                return false;
+            /// checked / fixed / stackalloc / unchecked / unsafe
 
-            bool isStackalloc = Kind == SyntaxKind.StackAllocKeyword;
-            bool validParent = HasAncestorAt(0, SyntaxKind.CheckedStatement)
+            var validKind = Kind
+                is SyntaxKind.CheckedKeyword
+                or SyntaxKind.FixedKeyword
+                or SyntaxKind.StackAllocKeyword
+                or SyntaxKind.UncheckedKeyword
+                or SyntaxKind.UnsafeKeyword;
+
+            var validParent = HasAncestorAt(0, SyntaxKind.CheckedStatement)
                 || HasAncestorAt(0, SyntaxKind.FixedStatement)
+                || HasAncestorAt(0, SyntaxKind.StackAllocArrayCreationExpression)
                 || HasAncestorAt(0, SyntaxKind.UncheckedStatement)
                 || HasAncestorAt(0, SyntaxKind.UnsafeStatement);
 
-            return validParent || isStackalloc;
+            return validKind && validParent;
         }
 
         public bool IsTypeDeclarationKeyword()
         {
-            /// class / delegate / enum / interface / operator / record / struct
+            /// class / delegate / enum / extension / interface / operator / record / struct
 
             var validKind = Kind
                 is SyntaxKind.ClassKeyword
                 or SyntaxKind.DelegateKeyword
                 or SyntaxKind.EnumKeyword
+                or SyntaxKind.ExtensionKeyword
                 or SyntaxKind.InterfaceKeyword
-                or SyntaxKind.OperatorKeyword
                 or SyntaxKind.RecordKeyword
                 or SyntaxKind.StructKeyword;
 
-            var validAncestor = HasAncestorAt(0, SyntaxKind.ClassDeclaration)
+            var validParent = HasAncestorAt(0, SyntaxKind.ClassDeclaration)
                 || HasAncestorAt(0, SyntaxKind.DelegateDeclaration)
                 || HasAncestorAt(0, SyntaxKind.EnumDeclaration)
+                || HasAncestorAt(0, SyntaxKind.ExtensionBlockDeclaration)
                 || HasAncestorAt(0, SyntaxKind.InterfaceDeclaration)
-                || HasAncestorAt(0, SyntaxKind.OperatorDeclaration)
                 || HasAncestorAt(0, SyntaxKind.RecordDeclaration)
                 || HasAncestorAt(0, SyntaxKind.RecordStructDeclaration)
                 || HasAncestorAt(0, SyntaxKind.StructDeclaration);
 
-            return validKind && validAncestor;
+            return validKind && validParent;
         }
 
         public bool IsTypeModifierKeyword()
         {
-            bool validParent = HasAncestorAt(0, SyntaxKind.ClassDeclaration)
+            /// abstract / file / partial / readonly / ref / sealed / static / unsafe
+
+            var validKind = Kind
+                is SyntaxKind.AbstractKeyword
+                or SyntaxKind.FileKeyword
+                or SyntaxKind.PartialKeyword
+                or SyntaxKind.ReadOnlyKeyword
+                or SyntaxKind.RefKeyword
+                or SyntaxKind.SealedKeyword
+                or SyntaxKind.StaticKeyword
+                or SyntaxKind.UnsafeKeyword;
+
+            var validParent = HasAncestorAt(0, SyntaxKind.ClassDeclaration)
+                || HasAncestorAt(0, SyntaxKind.DelegateDeclaration)
+                || HasAncestorAt(0, SyntaxKind.EnumDeclaration)
+                || HasAncestorAt(0, SyntaxKind.ExtensionBlockDeclaration)
+                || HasAncestorAt(0, SyntaxKind.InterfaceDeclaration)
                 || HasAncestorAt(0, SyntaxKind.RecordDeclaration)
-                || HasAncestorAt(0, SyntaxKind.StructDeclaration)
-                || HasAncestorAt(0, SyntaxKind.RecordStructDeclaration);
+                || HasAncestorAt(0, SyntaxKind.RecordStructDeclaration)
+                || HasAncestorAt(0, SyntaxKind.StructDeclaration);
 
-            if (!validParent)
-                return false;
-
-            return GlobalConstants.TypeModifiers.Contains(Text);
-        }
-
-        public bool IsTypeSystemKeyword()
-        {
-            return GlobalConstants.TypeSystemKeywords.Contains(Text);
+            return validKind && validParent;
         }
 
         public bool IsUsingDirectiveModifierKeyword()
         {
-            if (Kind != SyntaxKind.StaticKeyword && Kind != SyntaxKind.GlobalKeyword)
-                return false;
+            /// global / static
 
-            return Classifications.Final == Keyword
-                && AncestorKinds.GetLastAncestor() == SyntaxKind.UsingDirective;
-        }
+            var validKind = Kind
+                is SyntaxKind.GlobalKeyword
+                or SyntaxKind.StaticKeyword;
 
-        public bool IsValueAndKeyword()
-        {
-            bool hasKeywordClassification = Classifications.Final == "keyword";
-
-            // covers implicit accessor parameters
-            return Kind == SyntaxKind.IdentifierToken
-                && Text == "value"
-                && hasKeywordClassification;
-        }
-
-        public bool IsVarAndKeyword()
-        {
-            return Text == "var"
-                && Classifications.Final == Keyword;
+            return validKind && HasAncestorAt(0, SyntaxKind.UsingDirective);
         }
 
         public bool IsVarPatternKeyword()
@@ -1817,6 +1880,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsWithExpressionKeyword()
         {
+            // TODO: move with to object creation?
             return Kind == SyntaxKind.WithKeyword
                 && HasAncestorAt(0, SyntaxKind.WithExpression);
         }
@@ -1825,8 +1889,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #region Literal Checks
         public bool IsLiteral()
         {
-            // This is currently only used for getting Definition keys 
-            // and true/false literals are covered by keyword definitions.
             return Kind
                 is SyntaxKind.NumericLiteralToken
                 //or SyntaxKind.TrueKeyword
@@ -1847,22 +1909,21 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsCharacterLiteral()
         {
-            return Kind == SyntaxKind.CharacterLiteralToken
-                && HasAncestorAt(0, SyntaxKind.CharacterLiteralExpression);
+            return Kind == SyntaxKind.CharacterLiteralToken;
         }
 
         public bool IsDecimalValue()
         {
             return Kind == SyntaxKind.NumericLiteralToken
                 && Text.Length > 0
-                && (Text[^1] == 'm' || Text[^1] == 'M');
+                && Text[^1] is 'm' or 'M';
         }
 
         public bool IsFloatingPointValue()
         {
             return Kind == SyntaxKind.NumericLiteralToken
                 && Text.Length > 0
-                && (Text[^1] == 'f' || Text[^1] == 'F');
+                && Text[^1] is 'f' or 'F';
         }
 
         public bool IsInterpolatedString()
@@ -1899,11 +1960,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsInterpolatedVerbatimStringStart()
         {
             return Kind == SyntaxKind.InterpolatedVerbatimStringStartToken;
-        }
-
-        public bool IsNullLiteral()
-        {
-            return Kind == SyntaxKind.NullKeyword;
         }
 
         public bool IsNumericFormatSpecifier()
@@ -2945,12 +3001,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsPatternMatchTarget()
         {
-            bool hasValidNextToken = IsPatternMatchingKeyword(NextToken?.Kind);
-            if (!hasValidNextToken)
-                return false;
+            bool validNext = NextToken?.IsPatternMatchingKeyword() ?? false;
 
-            return HasAncestorAt(1, SyntaxKind.IsExpression)
+            bool validGrandParent = HasAncestorAt(1, SyntaxKind.IsExpression)
                 || HasAncestorAt(1, SyntaxKind.IsPatternExpression);
+
+            return validNext && validGrandParent;
         }
 
         public bool IsPropertyPattern()
@@ -3188,11 +3244,29 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsOutVariableType()
         {
-            bool validKind = IsKeyword() || Kind == SyntaxKind.IdentifierToken;
-            bool validPrev = PrevToken?.Text == "out";
-            bool validAncestor = HasAncestorAt(1, SyntaxKind.DeclarationExpression);
+            bool validKind = Kind
+                is SyntaxKind.IdentifierToken
+                or SyntaxKind.BoolKeyword
+                or SyntaxKind.ByteKeyword
+                or SyntaxKind.SByteKeyword
+                or SyntaxKind.CharKeyword
+                or SyntaxKind.DecimalKeyword
+                or SyntaxKind.DoubleKeyword
+                or SyntaxKind.FloatKeyword
+                or SyntaxKind.IntKeyword
+                or SyntaxKind.UIntKeyword
+                or SyntaxKind.LongKeyword
+                or SyntaxKind.ULongKeyword
+                or SyntaxKind.ObjectKeyword
+                or SyntaxKind.ShortKeyword
+                or SyntaxKind.UShortKeyword
+                or SyntaxKind.StringKeyword
+                or SyntaxKind.VarKeyword;
 
-            return validKind && validPrev && validAncestor;
+            bool validPrev = PrevToken?.Kind is SyntaxKind.OutKeyword;
+            bool validGrandParent = HasAncestorAt(1, SyntaxKind.DeclarationExpression);
+
+            return validKind && validPrev && validGrandParent;
         }
 
         public bool IsParameterType()
@@ -3269,7 +3343,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             // avoids accidentally catching on instance vars that look like qualifiers
             if (Classifications.Final
-                is "field name"
+                is "event name"
+                or "field name"
                 or "local name"
                 or "parameter name"
                 or "property name")
@@ -3288,12 +3363,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             bool IsTypeQualifier()
             {
                 // skips non-qualifier tokens
-                if (NextToken?.Text != ".")
+                if (NextToken?.Kind != SyntaxKind.DotToken)
                     return false;
 
                 //           ⌄
                 // System.Console.WriteLine(text);
-                if (PrevToken?.Text == ".")
+                if (PrevToken?.Kind == SyntaxKind.DotToken)
                 {
                     return HasAncestorAt(0, SyntaxKind.IdentifierName)
                         && HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression)
@@ -3303,10 +3378,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
                 //    ⌄                         ⌄
                 // Console.WriteLine(text);    Guid.NewGuid();
-                if (PrevToken?.Text != ".")
+                //            ⌄
+                // _ when !string.IsNullOrEmpty(parentKind) => SemanticRole.QueryExpression,
+                if (PrevToken?.Kind is not SyntaxKind.DotToken)
                 {
                     bool validParent = HasAncestorAt(0, SyntaxKind.IdentifierName)
                         || HasAncestorAt(0, SyntaxKind.PredefinedType);
+
                     bool validGrandParent = HasAncestorAt(1, SyntaxKind.SimpleMemberAccessExpression);
 
                     return validParent && validGrandParent;

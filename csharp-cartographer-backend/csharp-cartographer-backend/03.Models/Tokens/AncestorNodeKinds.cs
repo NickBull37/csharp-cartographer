@@ -55,6 +55,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public static bool operator !=(AncestorNodeKinds left, AncestorNodeKinds right) =>
             !left.Equals(right);
 
+        public static explicit operator SyntaxKind[](AncestorNodeKinds value) =>
+            value.Ancestors.ToArray();
+
+        public static implicit operator AncestorNodeKinds(ImmutableArray<SyntaxKind> ancestorKinds) =>
+            new(ancestorKinds);
+
         public bool HasAny(SyntaxKind kind) =>
             Ancestors.Contains(kind);
     }

@@ -13,6 +13,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
         private const string DelimiterKind = "DL";
         private const string IdentifierKind = "ID";
         private const string KeywordKind = "KW";
+        private const string KeywordOperatorKind = "KWOP";
         private const string LiteralKind = "LT";
         private const string OperatorKind = "OP";
         private const string PunctuationKind = "PN";
@@ -37,7 +38,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 PrimaryKind.Identifier => GetIdentifierKey(token),
                 PrimaryKind.Literal => GetLiteralKey(token),
                 PrimaryKind.Keyword => GetKeywordKey(token),
-                PrimaryKind.KeywordOperator => GetOperatorKey(token),
+                PrimaryKind.KeywordOperator => GetKeywordOperatorKey(token),
                 _ => null,
             };
 

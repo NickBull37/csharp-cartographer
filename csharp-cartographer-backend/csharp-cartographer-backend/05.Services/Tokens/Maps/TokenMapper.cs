@@ -1,5 +1,4 @@
-﻿using csharp_cartographer_backend._01.Configuration;
-using csharp_cartographer_backend._03.Models.Tokens;
+﻿using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -544,8 +543,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsPatternMatchArrow())
                 return SemanticRole.PatternMatchArrow;
 
-
-
             // Range: ..
             if (token.IsRangeOperator())
                 return SemanticRole.Range;
@@ -605,16 +602,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsTupleElementType())
                     return SemanticRole.TupleElementType;
 
-                // --- Default literal keyword ---
-                if (token.IsDefaultLiteralKeyword())
-                    return SemanticRole.DefaultValue;
-
                 // --- Discard keywords ---
                 if (token.IsDiscardValueKeyword())
                     return SemanticRole.DiscardValue;
 
                 if (token.IsDiscardPatternKeyword())
                     return SemanticRole.DiscardPattern;
+
+                // --- Member declaration keywords ---
+                if (token.IsMemberDeclarationKeyword())
+                    return SemanticRole.MemberDeclaration;
 
                 // --- Modifier keywords ---
                 if (token.IsAccessModifierKeyword())
@@ -639,8 +636,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsObjectConstructionKeyword())
                     return SemanticRole.ObjectConstruction;
 
-                if (token.IsObjectConstructionTypeKeyword())
-                    return SemanticRole.ObjectConstructionType;
+                // --- Operator keywords ---
+                if (token.IsOperatorDeclarationKeyword())
+                    return SemanticRole.OperatorDeclaration;
+
+                if (token.IsOperatorModifierKeyword())
+                    return SemanticRole.OperatorModifier;
 
                 // --- Query expressions ---
                 if (token.IsQueryExpressionKeyword())
@@ -674,10 +675,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsTypePattern())
                     return SemanticRole.TypePattern;
 
-                // --- Type system keywords ---
-                if (token.IsTypeSystemKeyword())
-                    return SemanticRole.TypeSystem;
-
                 // --- With expression keyword ---
                 if (token.IsWithExpressionKeyword())
                     return SemanticRole.WithExpression;
@@ -698,6 +695,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsExceptionHandlingKeyword())
                     return SemanticRole.ExceptionHandling;
 
+                // --- Iterator keywords ---
+                if (token.IsIteratorKeyword())
+                    return SemanticRole.Iterator;
+
                 // --- Jump statement keywords ---
                 if (token.IsJumpStatementKeyword())
                     return SemanticRole.JumpStatement;
@@ -710,21 +711,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Concurrency keywords ---
             if (token.IsConcurrencyKeyword())
                 return SemanticRole.Concurrency;
-
-            // --- Event keywords ---
-            if (GlobalConstants.EventKeywords.Contains(token.Text) && token.Kind == SyntaxKind.EventKeyword)
-                return SemanticRole.MemberDeclaration;
-
-            if (token.IsEventHandlingKeyword())
-                return SemanticRole.EventHandling;
-
-            // --- Implicit parameters ---
-            if (token.IsImplicitParameterKeyword())
-                return SemanticRole.ImplicitParameter;
-
-            // --- Iterator keywords ---
-            if (token.IsIteratorKeyword())
-                return SemanticRole.Iterator;
 
             // --- Pattern matching keywords ---
             if (token.IsPatternMatchingKeyword())
@@ -996,6 +982,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsEventFieldType())
                 return SemanticRole.EventFieldType;
 
+            if (token.IsEventPropertyType())
+                return SemanticRole.EventPropertyType;
+
             if (token.IsFieldType())
                 return SemanticRole.FieldType;
 
@@ -1198,7 +1187,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 // switch label, default literal
                 "default" => parentKind switch
                 {
-                    "DefaultLiteralExpression" => SemanticRole.DefaultValue,
                     "DefaultExpression" => SemanticRole.DefaultOperator,
                     "DefaultSwitchLabel" => SemanticRole.ControlFlow,
                     _ => SemanticRole.Unknown

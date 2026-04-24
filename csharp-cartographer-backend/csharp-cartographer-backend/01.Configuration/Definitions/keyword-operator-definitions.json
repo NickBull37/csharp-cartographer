@@ -1,0 +1,20 @@
+{
+  "KWOP:as": {
+    "Definition": "The {c:color-blue keyword}as{/c} keyword-operator attempts to convert a value to a specified type. If the conversion fails, it returns null instead of throwing an error."
+  },
+  "KWOP:default": {
+    "Definition": "The {c:color-blue keyword}default{/c} keyword-operator returns the default value for the provided type."
+  },
+  "KWOP:is": {
+    "Definition": "The {c:color-blue keyword}is{/c} keyword-operator checks whether a value matches a given type or pattern."
+  },
+  "KWOP:nameof": {
+    "Definition": "The {c:color-blue keyword}nameof{/c} keyword-operator returns the name of a variable, type, or member as a string."
+  },
+  "KWOP:sizeof": {
+    "Definition": "The {c:color-blue keyword}sizeof{/c} keyword-operator returns the number of bytes occupied by a variable of a given type."
+  },
+  "KWOP:typeof": {
+    "Definition": "The {c:color-blue keyword}typeof{/c} keyword-operator produces the System.Type instance for the specified type."
+  }
+}

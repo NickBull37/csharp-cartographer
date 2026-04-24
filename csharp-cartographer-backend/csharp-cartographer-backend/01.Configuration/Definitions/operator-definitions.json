@@ -148,17 +148,5 @@
   },
   "OP:c?t:f": {
     "Definition": "The ternary operator {c:keyword}c ? t : f{/c} evaluates a Boolean expression and returns the result of one of the two expressions, depending on whether the Boolean expression evaluates to true or false."
-  },
-  "OP:default": {
-    "Definition": "The {c:color-blue keyword}default{/c} operator produces the default value for the specified type."
-  },
-  "OP:nameof": {
-    "Definition": "The {c:color-blue keyword}nameof{/c} operator produces the name of a variable, type, or member as the string constant."
-  },
-  "OP:sizeof": {
-    "Definition": "The {c:color-blue keyword}sizeof{/c} operator returns the number of bytes occupied by a variable of a given type."
-  },
-  "OP:typeof": {
-    "Definition": "The {c:color-blue keyword}typeof{/c} operator produces the System.Type instance for a type"
   }
 }
