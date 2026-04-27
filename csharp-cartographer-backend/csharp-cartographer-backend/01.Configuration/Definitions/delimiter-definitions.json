@@ -23,6 +23,12 @@
   "DL:InterfaceBoundary:Close": {
     "Definition": "The end of an {c:color-blue keyword}interface{/c} definition."
   },
+  "DL:ListPatternBoundary:Open": {
+    "Definition": "The opening of the {c:bold}list pattern{/c} clause."
+  },
+  "DL:ListPatternBoundary:Close": {
+    "Definition": "The end of the {c:bold}list pattern{/c} clause."
+  },
   "DL:LocalFunctionBoundary:Open": {
     "Definition": "The beginning of the {c:bold}local function{/c} definition."
   },
@@ -34,6 +40,12 @@
   },
   "DL:MethodBoundary:Close": {
     "Definition": "The end of the {c:bold}method{/c} definition."
+  },
+  "DL:PositionalPatternBoundary:Open": {
+    "Definition": "The opening of the {c:bold}positional pattern{/c} clause."
+  },
+  "DL:PositionalPatternBoundary:Close": {
+    "Definition": "The end of the {c:bold}positional pattern{/c} clause."
   },
   "DL:RecordBoundary:Open": {
     "Definition": "The beginning of a {c:color-blue keyword}record{/c} definition."

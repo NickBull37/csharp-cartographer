@@ -3,22 +3,40 @@
     "Definition": "The name of a {c:bold}class{/c} that inherits from {c:color-white keyword}System.{/c}{c:color-green keyword}Attribute{/c}.{JumpExt}"
   },
   "ID:ClassDeclaration": {
-    "Definition": "The name of a {c:color-green bold}class{/c} declaration.{RefExt}"
+    "Definition": "A {c:bold}class{/c} declaration defines a blueprint for creating objects that contain data and behavior. It groups related variables and methods into a single reusable unit.{RefExt}"
   },
   "ID:ConstructorDeclaration": {
-    "Definition": "The name of a type {c:color-green bold}constructor{/c} declaration.{RefExt}"
+    "Definition": "A {c:bold}constructor{/c} is a special method that runs when a new instance of an object is created. Defining input parameters is {c:bold}optional{/c} but can be helpful in setting up the object's initial state."
   },
   "ID:ConstructorInvocation": {
     "Definition": "The name of a type {c:color-green bold}constructor{/c}.{JumpExt}"
   },
+  "ID:DelegateDeclaration": {
+    "Definition": "A {c:bold}delegate{/c} declaration defines a type that represents a reference to a method. Delegates allow methods to be passed around and called later."
+  },
   "ID:EnumDeclaration": {
-    "Definition": "The name of an {c:color-light-green bold}enum{/c} declaration.{RefExt}"
+    "Definition": "An {c:bold}enum{/c} declaration defines a set of named constants. It is commonly used to represent a fixed list of related values."
+  },
+  "ID:EnumMemberDeclaration": {
+    "Definition": "An {c:bold}enum member{/c} declaration defines a single named value inside an enum. Each member represents one possible option from the enum."
+  },
+  "ID:EventDeclaration": {
+    "Definition": "An {c:bold}event{/c} declaration defines a notification that other code can respond to when something happens. Events are commonly used for signaling changes or actions."
+  },
+  "ID:EventFieldDeclaration": {
+    "Definition": "An {c:bold}event field{/c} declaration declares an event that uses a delegate type behind the scenes. It allows objects to subscribe and react when the event is raised."
   },
   "ID:FieldDeclaration": {
-    "Definition": "The name of a {c:color-white bold}field{/c} declared within the containing type."
+    "Definition": "A {c:bold}field{/c} declaration defines a variable that belongs to a class or struct. Fields store data that represents the state of an object. It is only accessible from within the type."
   },
   "ID:FieldReference": {
     "Definition": "The name of a {c:color-white bold}field{/c} declared within the containing type."
+  },
+  "ID:GenericMethodDeclaration": {
+    "Definition": "A {c:bold}generic method{/c} declaration defines a method with one or more type parameters so the same method can work with different data types."
+  },
+  "ID:InterfaceDeclaration": {
+    "Definition": "The identifier of an {c:color-blue keyword}interface{/c} declaration. An implementation must be provided by any type that implements this interface. This allows different classes to share the same behavior without sharing implementation."
   },
   "ID:LambdaParameter": {
     "Definition": "The name of a {c:color-light-blue bold}lambda parameter{/c} that can be used inside the lambda expression it's declared in.<break/>Its value is supplied each time the lambda expression runs, typically from the current item in a collection or from an argument passed into the expression."
@@ -26,14 +44,17 @@
   "ID:LambdaParameterReference": {
     "Definition": "The name of the {c:color-light-blue bold}lambda parameter{/c} declared before the lambda operator ({c:code}=>{/c}) in the current lambda expression."
   },
+  "ID:LocalFunctionDeclaration": {
+    "Definition": "The name of a {c:color-yellow bold}local function{/c}. A local function is declared inside another member or local scope and acts like a helper function that is only available within that containing scope."
+  },
   "ID:LocalVariableDeclaration": {
-    "Definition": "The name of a {c:color-light-blue bold}local variable{/c} that is accessible from below the declaration statement to the end of the containing scope."
+    "Definition": "A {c:bold}local variable{/c} declaration defines a variable inside a method or block of code. Local variables are only accessible within the scope where they are declared."
   },
   "ID:LocalVariableReference": {
     "Definition": "The name of a {c:color-light-blue bold}local varaible{/c} declared above within the containing scope."
   },
   "ID:MethodDeclaration": {
-    "Definition": "The name of a {c:color-yellow bold}method{/c} name that can be invoked.{RefExt}"
+    "Definition": "A {c:bold}method{/c} declaration defines a block of code that performs an action or returns a value. Methods are called to run the code they contain."
   },
   "ID:MethodInvocation": {
     "Definition": "The name of a {c:color-yellow bold}method{/c} being invoked.{HovExt}"
@@ -45,19 +66,19 @@
     "Definition": "The name of a {c:color-light-blue bold}parameter{/c} defined in the containing method or constructor {c:tt color-light-blue}signature{/c}."
   },
   "ID:PropertyDeclaration": {
-    "Definition": "The name of a {c:color-white bold}property{/c} declared within the containing type."
+    "Definition": "A {c:bold}property{/c} declaration defines a member that provides controlled access to data on an object. Properties often include logic for getting or setting values."
   },
   "ID:PropertyReference": {
     "Definition": "The name of a {c:bold}property{/c} defined within the containing type."
   },
   "ID:RecordDeclaration": {
-    "Definition": "The name of a {c:color-green bold}record{/c} declaration.{RefExt}"
+    "Definition": "A {c:bold}record{/c} declaration defines a reference type designed for storing data. Records provide built-in support for value-based equality and immutability."
   },
   "ID:RecordStructDeclaration": {
-    "Definition": "The name of a {c:color-green bold}record struct{/c} declaration.{RefExt}"
+    "Definition": "A {c:bold}record struct{/c} declaration defines a value type designed for storing data. Record structs combine the efficiency of structs with record-style features."
   },
   "ID:StructDeclaration": {
-    "Definition": "The name of a {c:color-jade bold}struct{/c} declaration.{RefExt}"
+    "Definition": "A {c:bold}struct{/c} declaration defines a value type that groups related data together. Structs are often used for small, lightweight data objects."
   },
   "------------------------------------------------------------------------------------------------------------------": {
     "Definition": ""

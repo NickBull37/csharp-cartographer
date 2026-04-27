@@ -38,7 +38,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 return new DefinitionKey(OperatorKind, "c?t:f", []);
             }
 
-            // (+)(-)(!)(^)(*)(&)(=>) overlaps with other operators, requires full name
+            // (+)(-)(!)(^)(*)(&)(..)(=>) overlaps with other operators, requires full name
             string? operatorName = GetOperatorNameExtension(token);
             if (operatorName is not null)
             {
@@ -80,6 +80,12 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 return "AddressOf";
             if (token.IsBitwiseAndOperator())
                 return "BitwiseAnd";
+
+            // (..) range / slice
+            if (token.IsRangeOperator())
+                return "Range";
+            if (token.IsSliceOperator())
+                return "Slice";
 
             // (=>) lambda / expression body arrow
             if (token.IsLambdaOperator())

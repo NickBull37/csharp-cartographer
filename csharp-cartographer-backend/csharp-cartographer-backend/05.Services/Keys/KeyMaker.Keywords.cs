@@ -27,6 +27,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 or "in"
                 or "new"
                 or "static"
+                or "using"
                 or "where";
 
             return requiresRoleExt

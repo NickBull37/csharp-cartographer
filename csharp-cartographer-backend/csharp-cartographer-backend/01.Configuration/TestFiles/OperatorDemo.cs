@@ -136,6 +136,22 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                 max2++; // overflow ignored
 
                 object _sync = new object();
+                var testString = new string(' ', 15);
+                _ = new bool();
+                _ = new byte();
+                _ = new sbyte();
+                _ = new char();
+                _ = new decimal();
+                _ = new double();
+                _ = new float();
+                _ = new int();
+                _ = new uint();
+                _ = new nint();
+                _ = new nuint();
+                _ = new long();
+                _ = new ulong();
+                _ = new short();
+                _ = new ushort();
 
                 fixed (int* p = numbers)
                 {
@@ -282,6 +298,28 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             for (TestNode? n = start; n != null; n = n.Parent)
             {
                 Console.WriteLine(n.Name);
+            }
+            for (var i = 1; i < 100; i++)
+            {
+            }
+
+            int[] intArray = [1, 2, 3, 4, 5];
+            TestNode[] myArray = [new TestNode("Root"), new TestNode("Child")];
+
+            foreach (var number in intArray)
+            {
+            }
+
+            foreach (int number in intArray)
+            {
+            }
+
+            foreach (TestNode node in myArray)
+            {
+            }
+
+            foreach (TestNode? node in myArray)
+            {
             }
 
             int test = GetText().Length;
@@ -722,12 +760,12 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             // 4) group ... by
             var grouped =
                 from n in items
-                group n by n.Category;
+                group n by n!.Category;
 
             // 5) group ... by ... into
             var groupedFiltered =
                 from n in items
-                group n by n.Category into g
+                group n by n?.Category into g
                 where g.Count() > 1
                 select new
                 {
@@ -766,8 +804,22 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                     MaxDoubled = g.Max(x => x.doubled)
                 };
 
-            // Force enumeration so everything actually runs
-            Console.WriteLine("Done");
+            unsafe
+            {
+                var fulltest =
+                    from p in items
+                    where p.Pointer->Value > 10
+                    select new
+                    {
+                        Id = p.Pointer->Id,
+                        Value = p.Pointer->Value
+                    };
+            }
+        }
+
+        public unsafe struct ItemWrapper
+        {
+            public Item* Pointer;
         }
 
         public class Item
@@ -775,6 +827,8 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             public int Id { get; set; }
             public int Value { get; set; }
             public string Category { get; set; } = "";
+
+            unsafe public Item* Pointer;
         }
 
         public class Label

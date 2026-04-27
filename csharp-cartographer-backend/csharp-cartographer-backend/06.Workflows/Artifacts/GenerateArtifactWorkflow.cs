@@ -1,6 +1,5 @@
 ﻿using csharp_cartographer_backend._01.Configuration.Configs;
 using csharp_cartographer_backend._02.Utilities.ActionResponse;
-using csharp_cartographer_backend._02.Utilities.Logging;
 using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._03.Models.Files;
 using csharp_cartographer_backend._05.Services.Charts;
@@ -13,6 +12,7 @@ using csharp_cartographer_backend._08.Controllers.Artifacts.Dtos;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace csharp_cartographer_backend._06.Workflows.Artifacts
 {
@@ -25,6 +25,9 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         private readonly ITokenChartGenerator _tokenChartGenerator;
         private readonly ITokenMapper _tokenMapper;
         private readonly CartographerConfig _config;
+        private readonly ILogger<GenerateArtifactWorkflow> _logger;
+
+        private readonly JsonSerializerOptions options = new() { WriteIndented = true };
 
         public GenerateArtifactWorkflow(
             IFileProcessor fileProcessor,
@@ -33,7 +36,8 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             ISyntaxHighlighter syntaxHighlighter,
             ITokenChartGenerator tokenChartGenerator,
             ITokenMapper tokenMapper,
-            IOptions<CartographerConfig> config)
+            IOptions<CartographerConfig> config,
+            ILogger<GenerateArtifactWorkflow> logger)
         {
             _fileProcessor = fileProcessor;
             _insightService = insightService;
@@ -42,6 +46,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _tokenChartGenerator = tokenChartGenerator;
             _tokenMapper = tokenMapper;
             _config = config.Value;
+            _logger = logger;
         }
 
         public async Task<ActionResponse<Artifact>> GenerateDemoArtifact(string fileName, CancellationToken cancellationToken)
@@ -127,7 +132,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             }
             catch (Exception ex)
             {
-                CartographerLogger.LogException(ex);
+                _logger.LogError(ex, "An error occurred.");
                 return ActionResponse<Artifact>.Failure("An exception occurred during artifact generation.");
             }
         }
@@ -135,22 +140,40 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         private void LogArtifactData(Artifact artifact)
         {
             if (_config.ShouldLogArtifact)
-                CartographerLogger.LogArtifact(artifact);
+                _logger.LogInformation("Artifact: {@Artifact}", artifact);
 
             if (_config.ShouldLogSemanticData)
             {
                 var identifiers = artifact.NavTokens
-                    .Where(token => token.SemanticData is not null);
+                    .Where(token => token.SemanticData is not null)
+                    .Select(token => new
+                    {
+                        token.Index,
+                    });
 
-                CartographerLogger.LogTokens(identifiers);
+                var json = JsonSerializer.Serialize(identifiers, options);
+                _logger.LogInformation("{newline}{json}", Environment.NewLine, json);
             }
 
             if (_config.ShouldLogUnidentifiedTokens)
             {
-                var unidentifiedTokens = artifact.NavTokens
-                    .Where(token => token.HighlightColor == "color-red");
+                var tokens = artifact.NavTokens
+                    .Where(token => token.HighlightColor == "color-red")
+                    .Select(token => new
+                    {
+                        token.Index,
+                        token.Text,
+                        token.Classifications.Original,
+                        token.Classifications.Corrected,
+                        token.Classifications.Final,
+                        token.HighlightColor,
+                        token.PrimaryKind,
+                        token.SemanticRole,
+                        token.Kind,
+                    });
 
-                CartographerLogger.LogTokens(unidentifiedTokens);
+                var json = JsonSerializer.Serialize(tokens, options);
+                _logger.LogInformation("{newline}{json}", Environment.NewLine, json);
             }
         }
 

@@ -68,78 +68,50 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         {
             foreach (var token in navTokens)
             {
-                // color manually
-                if (token.IsCommonIdentifier())
+                // no role defined - color red
+                if (token.SemanticRole == SemanticRole.Unknown)
                 {
-                    TryColorManually(token);
-
-                    if (token.HighlightColor is not null)
-                        continue;
-                }
-
-                // color by classification
-                if (HighlightColorAlreadyKnown(token))
-                {
-                    ColorByClassification(token);
+                    token.HighlightColor = Red;
                     continue;
                 }
 
-                // color by semantic data
-                if (_config.SemanticDataHighlightingEnabled)
-                {
-                    TryColorBySemanticData(token);
-                    if (token.HighlightColor is not null)
-                        continue;
-                }
+                TryColorManually(token);
+                if (token.HighlightColor is not null)
+                    continue;
 
-                // color by semantic role
+                TryColorByClassification(token);
+                if (token.HighlightColor is not null)
+                    continue;
+
+                TryColorBySemanticData(token);
+                if (token.HighlightColor is not null)
+                    continue;
+
                 TryColorBySemanticRole(token);
                 if (token.HighlightColor is not null)
                     continue;
 
-                // color by ancestors
                 TryColorByAncestors(token);
                 if (token.HighlightColor is not null)
                     continue;
 
-                // No color found - color red
                 token.HighlightColor = Red;
-            }
-
-            foreach (var token in navTokens)
-            {
-                if (token.SemanticRole == SemanticRole.Unknown)
-                    token.HighlightColor = Red;
             }
         }
 
-        private static void TryColorManually(NavToken token)
+        private void TryColorManually(NavToken token)
         {
-            // early-outs for local var, parameter, or property
-            // identifiers that will never be colored as a type
-            if (token.SemanticRole
-                is SemanticRole.MemberAccess
-                or SemanticRole.TargetMember)
-            {
-                return;
-            }
-
-            if (token.SemanticRole.ToString().Contains("Declaration"))
+            if (!_config.ManualHighlightingEnabled)
                 return;
 
-            if (token.SemanticRole.ToString().Contains("Reference"))
+            /*
+             *  Only used for slightly more accurate coloring for enums
+             *  and structs if the match a common system type identifier.
+             */
+
+            if (token.SemanticRole != SemanticRole.TypeQualifier)
                 return;
 
-            if (token.SemanticRole == SemanticRole.AssignmentRecipient)
-                return;
-
-            if ((token.Text is "nint" or "nuint")
-                && token.Classifications.Final == "keyword")
-            {
-                return;
-            }
-
-            // if it looks like a common type name, color it accordingly
             if (GlobalConstants.CommonEnums.Contains(token.Text))
                 token.HighlightColor = LightGreen;
 
@@ -147,7 +119,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 token.HighlightColor = Jade;
         }
 
-        private static void ColorByClassification(NavToken token)
+        private static void TryColorByClassification(NavToken token)
         {
             switch (token.Classifications.ColorAs)
             {
@@ -183,6 +155,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case "keyword - control":
                     token.HighlightColor = Purple;
                     break;
+                case "constant name":
                 case "delimiter":
                 case "enum member name":
                 case "event name":
@@ -200,8 +173,11 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             }
         }
 
-        private static void TryColorBySemanticData(NavToken token)
+        private void TryColorBySemanticData(NavToken token)
         {
+            if (!_config.SemanticDataHighlightingEnabled)
+                return;
+
             switch (token.SemanticData?.SymbolKind)
             {
                 case SymbolKind.Field:
@@ -227,7 +203,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     token.HighlightColor = Jade;
                     return;
                 default:
-                    break;
+                    return;
             }
         }
 
@@ -240,11 +216,11 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.EnumMemberReference:
                 case SemanticRole.FieldDeclaration:
                 case SemanticRole.FieldReference:
-                case SemanticRole.TargetMember:
                 case SemanticRole.NamespaceAliasDeclaration:
                 case SemanticRole.PropertyAccess:
                 case SemanticRole.PropertyDeclaration:
                 case SemanticRole.PropertyReference:
+                case SemanticRole.TargetMember:
                 case SemanticRole.TupleElementName:
                 // query expression vars
                 case SemanticRole.GroupContinuationRangeVariable:
@@ -272,7 +248,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.EnumReference:
                 case SemanticRole.InterfaceDeclaration:
                 case SemanticRole.InterfaceReference:
-                case SemanticRole.NumericLiteral:
                     token.HighlightColor = LightGreen;
                     break;
                 case SemanticRole.RecordStructDeclaration:
@@ -307,7 +282,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.FieldType:
                 case SemanticRole.GenericTypeArgument:
                 case SemanticRole.LocalVariableType:
-                case SemanticRole.LoopIteratorType:
+                case SemanticRole.ForLoopIteratorType:
+                case SemanticRole.ForEachLoopIteratorType:
                 case SemanticRole.MethodReturnType:
                 case SemanticRole.ParameterType:
                 case SemanticRole.PropertyType:
@@ -345,40 +321,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 && char.IsUpper(text[0])
                 && char.IsUpper(text[1]);
 
-            if (looksLikeInterface)
-                return LightGreen;
-
-            return Green;
-        }
-
-        private static bool HighlightColorAlreadyKnown(NavToken token)
-        {
-            return token.Classifications.ColorAs
-                is "class name"
-                or "constant name"
-                or "delegate name"
-                or "delimiter"
-                or "enum name"
-                or "enum member name"
-                or "event name"
-                or "field name"
-                or "interface name"
-                or "keyword"
-                or "keyword - control"
-                or "local name"
-                or "method name"
-                //or "namespace name"
-                or "number"
-                or "operator"
-                or "parameter name"
-                or "property name"
-                or "punctuation"
-                or "record class name"
-                or "record struct name"
-                or "string"
-                or "string - verbatim"
-                or "struct name"
-                or "type parameter name";
+            return looksLikeInterface
+                ? LightGreen
+                : Green;
         }
     }
 }

@@ -122,8 +122,11 @@
   "OP:!=": {
     "Definition": "The inequality operator {c:keyword}\"!=\"{/c} checks whether two values are not equal. It returns true when they differ."
   },
-  "OP:..": {
-    "Definition": "The range operator {c:keyword}\"..\"{/c} represents a range of values between two indices. It is commonly used with arrays and spans."
+  "OP:..:Range": {
+    "Definition": "The range operator {c:keyword}..{/c} represents a range of values between two indices. It is commonly used with arrays and spans."
+  },
+  "OP:..:Slice": {
+    "Definition": "The slice operator {c:keyword}..{/c} is used to match or capture a slice of elements in a list pattern. It represents a range of collection elements before, after, and between patterns."
   },
   "OP:=>:Lambda": {
     "Definition": "The lambda operator {c:keyword}\"=>\"{/c} separates parameters from the body of a lambda expression. It defines an inline function."

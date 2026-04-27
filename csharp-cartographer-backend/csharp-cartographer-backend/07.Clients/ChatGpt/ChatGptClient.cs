@@ -44,6 +44,10 @@ namespace csharp_cartographer_backend._07.Clients.ChatGpt
 
                 var analysis = response?.Choices.First().Message.Content ?? DefaultErrorMsg;
 
+                var testanalysis = response.Choices.First().Message.Content ?? DefaultErrorMsg;
+
+                var testtestanalysis = response!.Choices.First().Message.Content ?? DefaultErrorMsg;
+
                 return analysis is not null
                     ? CodeAnalysisResult.Ok(analysis)
                     : CodeAnalysisResult.Fail(); ;

@@ -119,6 +119,9 @@
   "ParenthesizedPatternBoundary": {
     "Definition": "Marks the boundaries of a parenthesized pattern."
   },
+  "PatternBoundary": {
+    "Definition": "Marks the boundaries of a pattern matching clause."
+  },
   "PropertyPatternBoundary": {
     "Definition": "Marks the boundaries of a property pattern clause."
   },
@@ -248,6 +251,9 @@
   "ParameterSeparator": {
     "Definition": "Separates parameters in a method, constructor, or lambda declaration."
   },
+  "PatternElementSeparator": {
+    "Definition": "Separates elements in a pattern matching clause."
+  },
   "PropertyInitializationSeparator": {
     "Definition": "Separates a property name from its assigned value during initialization."
   },
@@ -332,9 +338,6 @@
   "JumpStatement": {
     "Definition": "Jump statements immediately move execution to another location in code. They are used to exit loops or methods early."
   },
-  "LiteralValue": {
-    "Definition": "Literal value keywords represent fixed values written directly in code. They are not stored in variables."
-  },
   "LoopStatement": {
     "Definition": "Loop statements repeat a block of code while a condition is met. They are used to process data multiple times."
   },
@@ -343,9 +346,6 @@
   },
   "MemberModifier": {
     "Definition": "Member modifiers change how a class member behaves or can be used. They add rules such as visibility or mutability."
-  },
-  "NamespaceImport": {
-    "Definition": "Namespace import keywords make types from other namespaces available in a file. They reduce the need to write fully qualified names."
   },
   "ObjectConstruction": {
     "Definition": "Object construction keywords create new instances of types. They allocate and initialize objects in memory."
@@ -392,33 +392,12 @@
   "Attribute": {
     "Definition": "Attributes add extra information (metadata) to code elements like classes, methods, or properties. Attributes are often used to control behavior or provide instructions to tools and frameworks."
   },
-  "ClassDeclaration": {
-    "Definition": "A class declaration defines a blueprint for creating objects that contain data and behavior. It groups related variables and methods into a single reusable unit."
-  },
-  "ConstructorDeclaration": {
-    "Definition": "A {c:bold}constructor{/c} is a special method that runs when a new instance of an object is created. Defining input parameters is {c:bold}optional{/c} but can be helpful in setting up the object's initial state."
-  },
   "DeconstructionVariable": {
     "Definition": "The identifier for a new {c:bold}local variable{/c} that will receive a value when the assigned value is deconstructed."
   },
-  "DelegateDeclaration": {
-    "Definition": "A delegate declaration defines a type that represents a reference to a method. Delegates allow methods to be passed around and called later."
-  },
-  "EnumDeclaration": {
-    "Definition": "An enum declaration defines a set of named constant values. It is commonly used to represent a fixed list of related options."
-  },
-  "EnumMemberDeclaration": {
-    "Definition": "An enum member declaration defines a single named value inside an enum. Each member represents one possible option from the enum."
-  },
-  "EventDeclaration": {
-    "Definition": "An event declaration defines a notification that other code can respond to when something happens. Events are commonly used for signaling changes or actions."
-  },
-  "EventFieldDeclaration": {
-    "Definition": "An event field declaration declares an event that uses a delegate type behind the scenes. It allows objects to subscribe and react when the event is raised."
-  },
-  "FieldDeclaration": {
-    "Definition": "A field declaration defines a variable that belongs to a class or struct. Fields store data that represents the state of an object."
-  },
+
+
+
   "FixedPointerDeclaration": {
     "Definition": "The name of the pointer variable declared by a {c:color-blue keyword}fixed{/c} statement. This variable points to the pinned data for the duration of the fixed block."
   },
@@ -428,24 +407,11 @@
   "ForEachLoopIteratorDeclaration": {
     "Definition": "The loop variable declared in a {c:color-purple keyword}foreach{/c} loop that represents the current item. On each iteration, it holds the next element from the collection being processed."
   },
-  "InterfaceDeclaration": {
-    "Definition": "The identifier of an {c:color-blue keyword}interface{/c} declaration. An implementation must be provided by any type that implements this interface. This allows different classes to share the same behavior without sharing implementation."
-  },
-  "LocalFunctionDeclaration": {
-    "Definition": "The name of a {c:color-yellow bold}local function{/c}. A local function is declared inside another member or local scope and acts like a helper function that is only available within that containing scope."
-  },
-  "LocalVariableDeclaration": {
-    "Definition": "A local variable declaration defines a variable inside a method or block of code. Local variables are only accessible within the scope where they are declared."
-  },
+
   "LoopIteratorDeclaration": {
     "Definition": "The variable declared in a {c:color-purple keyword}for{/c} or {c:color-purple keyword}foreach{/c} that gets updated for each iteration of the loop. This iterator variable is only accessible from within the scope of the loop statement."
   },
-  "MethodDeclaration": {
-    "Definition": "A method declaration defines a block of code that performs an action or returns a value. Methods are called to run the code they contain."
-  },
-  "GenericMethodDeclaration": {
-    "Definition": "A generic method declaration defines a method with one or more type parameters so the same method can work with different data types."
-  },
+
   "OutVariableDeclaration": {
     "Definition": "A new variable introduced by the {c:color-blue keyword}out{/c} argument modifier. The variable receives the value assigned by the called method and becomes available after the invocation."
   },
@@ -455,18 +421,7 @@
   "Parameter": {
     "Definition": "A variable defined in the {c:bold}signature{/c} of a method or constructor that receives a value from wherever it's called. The value passed in from the caller is referred to as an {c:bold}argument{/c}."
   },
-  "PropertyDeclaration": {
-    "Definition": "A property declaration defines a member that provides controlled access to data on an object. Properties often include logic for getting or setting values."
-  },
-  "RecordDeclaration": {
-    "Definition": "A record declaration defines a reference type designed for storing data. Records provide built-in support for value-based equality and immutability."
-  },
-  "RecordStructDeclaration": {
-    "Definition": "A record struct declaration defines a value type designed for storing data. Record structs combine the efficiency of structs with record-style features."
-  },
-  "StructDeclaration": {
-    "Definition": "A struct declaration defines a value type that groups related data together. Structs are often used for small, lightweight data objects."
-  },
+
   "ConstructorInvocation": {
     "Definition": "This identifier refers to a constructor being invoked in an object creation expression. It shares a name with the type whose constructor is being called to create the new object instance."
   },
@@ -563,7 +518,7 @@
   "LocalVariableType": {
     "Definition": "A local variable data type defines what kind of value a local variable can hold. It determines how the variable can be used within its scope."
   },
-  "LoopIteratorType": {
+  "Loop Iterator Type": {
     "Definition": "The data type of the iterator variable declared in a {c:color-purple keyword}for{/c} or {c:color-purple keyword}foreach{/c} loop."
   },
   "MethodReturnType": {
@@ -758,8 +713,8 @@
   "IndexFromEnd": {
     "Definition": "The {c:bold}index{/c} operator {c:keyword}^{/c} specifies a position counted from the end of a sequence."
   },
-  "Range": {
-    "Definition": "The .. operator in an index or slice expression that specifies a range between a start and end position in a sequence."
+  "RangeSlice": {
+    "Definition": "The {c:keyword}..{/c} operator targets a range of elements in a collection to match or capture."
   },
   "InstanceQualifier": {
     "Definition": "The identifier of the the instance object."
@@ -853,6 +808,21 @@
   },
   "ContainingTypeMemberQualifer": {
     "Definition": "The name of a field or property defined in the containing type that is being used to qualify access to another member."
+  },
+  "Type Declaration": {
+    "Definition": "The identifier for a {c:color-blue keyword}class{/c}, {c:color-blue keyword}struct{/c}, {c:color-blue keyword}record{/c}, {c:color-blue keyword}enum{/c}, or {c:color-blue keyword}interface{/c}. The elements defined inside this type are the type members. This identifier can be used to access the members inside."
+  },
+  "Member Declaration": {
+    "Definition": "The identifier for a type member (method, property, field, event, constructor, operator). Where this identifier can be referenced from is determined by the its {c:bold}access modifier{/c}."
+  },
+  "Local Declaration": {
+    "Definition": "The identifier for a variable, constant, or local function inside a method, accessor, or block. This identifier can be referenced only within the enclosing scope in which it is defined."
+  },
+  "Parameter Declaration": {
+    "Definition": "The identifier for a value that needs to be passed to a method, constructor, or lambda function. This identifier can be referenced only within the body of the member or expression in which it is defined."
+  },
+  "ResourceManagement": {
+    "Definition": "A keyword for controlling the lifetime of a resource, usually by ensuring setup and cleanup happen at the correct time. This commonly includes disposable resources that are automatically cleaned up when execution leaves a scope."
   },
   "": {
     "Definition": ""

@@ -80,7 +80,7 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             if (token.IsDelimiter())
                 return "delimiter";
 
-            if (token.IsRangeOperator())
+            if (token.IsRangeOperator() || token.IsSliceOperator())
                 return "operator";
 
             return null;

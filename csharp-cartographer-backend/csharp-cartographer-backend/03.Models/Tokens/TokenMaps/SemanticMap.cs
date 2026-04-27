@@ -111,7 +111,13 @@
         [Label("StatementControlBoundary")]
         LockStatementControlBoundary,
 
-        // Type Definitions
+        // Pattern Matching
+        [Label("PatternBoundary")]
+        ListPatternBoundary,
+        [Label("PatternBoundary")]
+        PositionalPatternBoundary,
+
+        // Definitions
         [Label("DefinitionBoundary")]
         ClassBoundary,
         [Label("DefinitionBoundary")]
@@ -140,7 +146,7 @@
         BooleanLogical,
         Comparison,
         Equality,
-        ExpressionBodyArrow, // move to punc
+        ExpressionBodyArrow, // move to punc?
         IndexFromEnd,
         Indirection,
         Lambda,
@@ -149,8 +155,9 @@
         NullCoalescing,
         NullCoalescingAssignment,
         NullForgiving,
+        OperatorSymbol,
         PatternMatchArrow,
-        Range,
+        RangeSlice,
         Shift,
         Ternary,
         TypeTesting,
@@ -169,15 +176,15 @@
         #region ------------ PUNCTUATION ------------
 
         // Misc
+        ArrayRankIndicator,
         NullableTypeMarker,
         PointerTypeIndicator,
 
-        // Separation
+        // Separators
         AnonymousObjectMemberDeclarationSeparator,
         ArgumentSeparator,
         ArrayInitializerElementSeparator,
         ArrayLengthSeparator,
-        ArrayRankIndicator,
         AttributeArgumentSeparator,
         BaseTypeSeparator,
         CollectionExpressionElementSeparator,
@@ -189,6 +196,7 @@
         MemberPatternSeparator,
         OrderByClauseSeparator,
         ParameterSeparator,
+        PatternElementSeparator,
         PropertyInitializationSeparator,
         QualifiedNameSeparator,
         SwitchArmSeparator,
@@ -214,22 +222,19 @@
         ArgumentModifier,
         CompilationScope,
         Constraint,
-        //DefaultValue,
         DiscardPattern,
         DiscardValue,
         Iterator,
-        LiteralValue,
         MemberDeclaration,
         MemberModifier,
-        NamespaceImport,
         ObjectConstruction,
-        OperatorDeclaration,
-        OperatorModifier,
         ParameterModifier,
         QueryExpression,
+        ResourceManagement,
         SafetyContext,
         TypeDeclaration,
         TypeModifier,
+        TypeSystem,
         UsingDirectiveModifier,
         WithExpression,
 
@@ -248,6 +253,7 @@
         #region ------------ IDENTIFIERS ------------
 
         AssignmentRecipient,
+        Attribute,
         BaseType,
         CatchExceptionType,
         CatchExceptionVariable,
@@ -263,39 +269,72 @@
         TupleElementName,
         WithExpressionSource,
 
-        // Alias & qualifiers
+        // Qualifiers
         AliasQualifier,
         ContainingTypeMemberQualifer,
         ElementAccessQualifer,
         InstanceQualifier,
-        NamespaceAliasDeclaration,
         NamespaceQualifier,
-        TypeAliasDeclaration,
 
         // Declarations
-        Attribute,
-        ClassDeclaration,
-        ConstructorDeclaration,
-        DeconstructionVariable,
-        DelegateDeclaration,
-        EnumDeclaration,
-        EnumMemberDeclaration,
-        EventFieldDeclaration,
-        EventPropertyDeclaration,
-        FieldDeclaration,
-        FixedPointerDeclaration,
-        GenericMethodDeclaration,
-        InterfaceDeclaration,
-        LambdaParameter,
-        LocalFunctionDeclaration,
-        LocalVariableDeclaration,
-        LoopIteratorDeclaration,
-        MethodDeclaration,
         OutVariableDeclaration,
-        Parameter,
+
+        // Alias Declarations
+        NamespaceAliasDeclaration,
+        TypeAliasDeclaration,
+
+        // Local Declarations
+        [Label("Local Declaration")]
+        DeconstructionVariable,
+        [Label("Local Declaration")]
+        FixedPointerDeclaration,
+        [Label("Local Declaration")]
+        LocalVariableDeclaration,
+        [Label("Local Declaration")]
+        LoopIteratorDeclaration,
+
+        // Member Declarations
+        [Label("Member Declaration")]
+        ConstructorDeclaration,
+        [Label("Member Declaration")]
+        EnumMemberDeclaration,
+        [Label("Member Declaration")]
+        EventFieldDeclaration,
+        [Label("Member Declaration")]
+        EventPropertyDeclaration,
+        [Label("Member Declaration")]
+        FieldDeclaration,
+        [Label("Member Declaration")]
+        GenericMethodDeclaration,
+        [Label("Member Declaration")]
+        LocalFunctionDeclaration,
+        [Label("Member Declaration")]
+        MethodDeclaration,
+        [Label("Member Declaration")]
+        OperatorDeclaration,
+        [Label("Member Declaration")]
         PropertyDeclaration,
+
+        // Parameter Declarations
+        [Label("Parameter Declaration")]
+        LambdaParameter,
+        [Label("Parameter Declaration")]
+        Parameter,
+
+        // Type Declarations
+        [Label("Type Declaration")]
+        ClassDeclaration,
+        [Label("Type Declaration")]
+        DelegateDeclaration,
+        [Label("Type Declaration")]
+        EnumDeclaration,
+        [Label("Type Declaration")]
+        InterfaceDeclaration,
+        [Label("Type Declaration")]
         RecordDeclaration,
+        [Label("Type Declaration")]
         RecordStructDeclaration,
+        [Label("Type Declaration")]
         StructDeclaration,
 
         // Invocations & access
@@ -345,13 +384,13 @@
 
         #region ------------ LITERALS ------------
 
-        BooleanLiteral,
-        CharacterLiteral,
-        NullValue,
+        //BooleanLiteral,
+        //CharacterLiteral,
+        //NullValue,
         NumericFormatSpecifier,
-        NumericLiteral,
-        QuotedString,
-        VerbatimString,
+        //NumericLiteral,
+        //QuotedString,
+        //VerbatimString,
         InterpolatedStringStart,
         InterpolatedStringText,
         InterpolatedStringEnd,
@@ -409,10 +448,14 @@
         DeconstructionVariableType,
         DelegateReturnType,
         FieldType,
+        [Label("Loop Iterator Type")]
+        ForEachLoopIteratorType,
+        [Label("Loop Iterator Type")]
+        ForLoopIteratorType,
         GenericTypeArgument,
         LocalFunctionReturnType,
         LocalVariableType,
-        LoopIteratorType,
+        //LoopIteratorType,
         MethodReturnType,
         OutVariableType,
         ParameterType,

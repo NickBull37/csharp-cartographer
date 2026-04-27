@@ -34,26 +34,41 @@ namespace csharp_cartographer_backend._05.Services.Keys
             if (token.IsGenericType())
                 return new DefinitionKey(IdentifierKind, "GenericType", []);
 
-            if (!DeclarationRoles.Contains(token.SemanticRole))
-            {
-                if (token.Classifications.Final == "parameter name")
-                {
-                    return token.IsLambdaParameterReference()
-                        ? new DefinitionKey(IdentifierKind, "LambdaParameterReference", [])
-                        : new DefinitionKey(IdentifierKind, "ParameterReference", []);
-                }
-
-                if (token.Classifications.Final == "local name")
-                    return new DefinitionKey(IdentifierKind, "LocalVariableReference", []);
-
-                if (token.Classifications.Final == "field name")
-                    return new DefinitionKey(IdentifierKind, "FieldReference", []);
-
-                if (token.Classifications.Final == "property name")
-                    return new DefinitionKey(IdentifierKind, "PropertyReference", []);
-            }
+            var key = GetIdentifierReferenceKey(token);
+            if (key is not null)
+                return key;
 
             return new DefinitionKey(IdentifierKind, token.SemanticRole.ToString(), []);
+        }
+
+        private static DefinitionKey? GetIdentifierReferenceKey(NavToken token)
+        {
+            bool isDeclarationRole = DeclarationRoles.Contains(token.SemanticRole);
+            bool isPotentialReferenceRole = token.Classifications.Final
+                is "field name"
+                or "event name"
+                or "event field name"
+                or "local name"
+                or "parameter name"
+                or "property name";
+
+            if (isDeclarationRole || !isPotentialReferenceRole)
+            {
+                return null;
+            }
+
+            return token.Classifications.Final switch
+            {
+                "event name" => null,
+                "event field name" => null,
+                "field name" => new DefinitionKey(IdentifierKind, "FieldReference", []),
+                "local name" => new DefinitionKey(IdentifierKind, "LocalVariableReference", []),
+                "parameter name" => token.IsLambdaParameterReference()
+                                        ? new DefinitionKey(IdentifierKind, "LambdaParameterReference", [])
+                                        : new DefinitionKey(IdentifierKind, "ParameterReference", []),
+                "property name" => new DefinitionKey(IdentifierKind, "PropertyReference", []),
+                _ => null,
+            };
         }
     }
 }

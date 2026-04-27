@@ -1,4 +1,6 @@
-﻿namespace csharp_cartographer_backend._01.Configuration.DemoFiles
+﻿using csharp_cartographer_backend._03.Models.Tokens;
+
+namespace csharp_cartographer_backend._01.Configuration.DemoFiles
 {
     public class PatternMatchingDemo
     {
@@ -13,14 +15,66 @@
             // --- Basic pattern forms ---
 
             _ = obj is string;                     // type pattern
+            _ = obj is NavToken;                     // type pattern
             _ = obj is string s;                   // declaration pattern (captures)
             _ = number is 5;                       // constant pattern
             _ = maybeObj is null;                  // constant pattern
             _ = maybeObj is not null;              // constant pattern
             _ = number is > 0;                     // relational pattern
             _ = tuple is (var a, var b);           // positional pattern
+            _ = array is [1, ..];                  // list pattern
             _ = array is [1, .. var rest];         // list pattern
             _ = obj is var x;                      // var pattern (always matches)
+
+            string[] words = ["hello", "world"];
+
+            if (words is ["hello", "world"]) // exact match
+            {
+            }
+
+            object[] items = [1, "test", 3.14];
+
+            if (items is [int, string, double]) // types match
+            {
+            }
+
+            int[] numbers = [1, 2, 3, 4];
+
+            if (numbers is [var first, var second, var third]) // first, second, third
+            {
+            }
+
+            if (numbers is [1, var middle, 3]) // middle = middle
+            {
+            }
+
+            if (numbers is [_, _, 15]) // ends with 15
+            {
+            }
+
+            if (numbers is [1, .. var remaining]) // remaining = [2, 3, 4]
+            {
+            }
+
+            if (numbers is [..]) // matches if numbers is not null
+            {
+            }
+
+            if (numbers is [.. var startingSlice, 50]) // slices all elements before first pattern
+            {
+            }
+
+            if (numbers is [1, .. var middleSlice, 50]) // slices all elements between constant patterns
+            {
+            }
+
+            if (numbers is [_, _, _]) // exactly 3 elements
+            {
+            }
+
+            if (numbers is [1, var z, 3] && z > 1) // Middle is greater than 1
+            {
+            }
 
             object numericObj = number;
             _ = numericObj is int or long;         // combinator type patterns

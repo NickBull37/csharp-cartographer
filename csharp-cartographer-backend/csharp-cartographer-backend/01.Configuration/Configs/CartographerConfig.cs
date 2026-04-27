@@ -18,6 +18,12 @@
         public bool ShouldLogUnidentifiedTokens { get; set; }
 
         /// <summary>
+        ///     If true the SyntaxHighlighter will attempt to color common enum & struct identifiers manually
+        ///     since they are indistinguishable from classes if defined outside the uploaded file.
+        /// </summary>
+        public bool ManualHighlightingEnabled { get; set; }
+
+        /// <summary>
         ///     If true the SyntaxHighlighter will use Roslyn "internal implementation only"
         ///     semantic data to color tokens defined in referenced assembiles.
         /// </summary>
