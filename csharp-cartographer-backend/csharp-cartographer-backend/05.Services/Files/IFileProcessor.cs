@@ -8,5 +8,7 @@ namespace csharp_cartographer_backend._05.Services.Files
         FileData ReadInTestFileData(string fileName);
 
         FileData ReadInFileData(GenerateArtifactDto requestDto);
+
+        FileData ReadInCodeSnippetData(string snippet);
     }
 }

@@ -43,16 +43,6 @@ namespace csharp_cartographer_backend._05.Services.Files
                 _ => string.Empty
             };
 
-            var fileLines = new List<string>();
-            using (StreamReader sr = new(demoFile))
-            {
-                string? line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    fileLines.Add(line);
-                }
-            }
-
             // TODO: move workspace and document generation to RoslynAnalyzer.cs
             var workspace = new AdhocWorkspace();
             var sourceCode = File.ReadAllText(demoFile);
@@ -66,28 +56,16 @@ namespace csharp_cartographer_backend._05.Services.Files
             var project = workspace.AddProject(projectInfo);
             var document = workspace.AddDocument(project.Id, "UserUpload.cs", SourceText.From(sourceCode));
 
-            return new FileData
-            {
-                FileName = Path.GetFileName(demoFile),
-                FileLines = fileLines,
-                Content = File.ReadAllText(demoFile),
-                Workspace = workspace,
-                Document = document
-            };
+            return new FileData(
+                Path.GetFileName(demoFile),
+                File.ReadAllText(demoFile),
+                workspace,
+                document
+            );
         }
 
         public FileData ReadInFileData(GenerateArtifactDto requestDto)
         {
-            var fileLines = new List<string>();
-            using (StringReader sr = new(requestDto.FileContent))
-            {
-                string? line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    fileLines.Add(line);
-                }
-            }
-
             // Create workspace
             var workspace = new AdhocWorkspace();
 
@@ -111,14 +89,42 @@ namespace csharp_cartographer_backend._05.Services.Files
                 SourceText.From(sourceCode)
             );
 
-            return new FileData
-            {
-                FileName = requestDto.FileName,
-                FileLines = fileLines,
-                Content = requestDto.FileContent,
-                Workspace = workspace,
-                Document = document
-            };
+            return new FileData(
+                requestDto.FileName,
+                requestDto.FileContent,
+                workspace,
+                document
+            );
+        }
+
+        public FileData ReadInCodeSnippetData(string snippet)
+        {
+            // Create workspace
+            var workspace = new AdhocWorkspace();
+
+            // Create a Roslyn project
+            var projectInfo = ProjectInfo.Create(
+                ProjectId.CreateNewId(),
+                VersionStamp.Create(),
+                name: "CodeSnippetProject",
+                assemblyName: "CodeSnippetProject",
+                language: LanguageNames.CSharp
+            );
+            var project = workspace.AddProject(projectInfo);
+
+            // Add the document with the uploaded content
+            var document = workspace.AddDocument(
+                project.Id,
+                "Code Snippet",
+                SourceText.From(snippet)
+            );
+
+            return new FileData(
+                "Code Snippet",
+                snippet,
+                workspace,
+                document
+            );
         }
     }
 }

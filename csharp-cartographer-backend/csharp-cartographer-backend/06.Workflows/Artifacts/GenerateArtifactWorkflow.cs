@@ -24,8 +24,8 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         private readonly ISyntaxHighlighter _syntaxHighlighter;
         private readonly ITokenChartGenerator _tokenChartGenerator;
         private readonly ITokenMapper _tokenMapper;
-        private readonly CartographerConfig _config;
         private readonly ILogger<GenerateArtifactWorkflow> _logger;
+        private readonly CartographerConfig _config;
 
         private readonly JsonSerializerOptions options = new() { WriteIndented = true };
 
@@ -36,8 +36,8 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             ISyntaxHighlighter syntaxHighlighter,
             ITokenChartGenerator tokenChartGenerator,
             ITokenMapper tokenMapper,
-            IOptions<CartographerConfig> config,
-            ILogger<GenerateArtifactWorkflow> logger)
+            ILogger<GenerateArtifactWorkflow> logger,
+            IOptions<CartographerConfig> config)
         {
             _fileProcessor = fileProcessor;
             _insightService = insightService;
@@ -45,8 +45,8 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _syntaxHighlighter = syntaxHighlighter;
             _tokenChartGenerator = tokenChartGenerator;
             _tokenMapper = tokenMapper;
-            _config = config.Value;
             _logger = logger;
+            _config = config.Value;
         }
 
         public async Task<ActionResponse<Artifact>> GenerateDemoArtifact(string fileName, CancellationToken cancellationToken)
@@ -96,11 +96,11 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
                 var navTokens = await _navTokenGenerator.GenerateNavTokens(fileData, cancellationToken);
                 var tokenGenTime = TimeSinceCheckpoint(stopwatch, ref checkpoint);
 
-                _tokenChartGenerator.GenerateTokenCharts(navTokens);
-                var chartGenTime = TimeSinceCheckpoint(stopwatch, ref checkpoint);
-
                 _tokenMapper.MapNavTokens(navTokens);
                 var mapTime = TimeSinceCheckpoint(stopwatch, ref checkpoint);
+
+                _tokenChartGenerator.GenerateTokenCharts(navTokens);
+                var chartGenTime = TimeSinceCheckpoint(stopwatch, ref checkpoint);
 
                 _syntaxHighlighter.AddSyntaxHighlightingToNavTokens(navTokens);
                 var highlightTime = stopwatch.Elapsed - checkpoint;
