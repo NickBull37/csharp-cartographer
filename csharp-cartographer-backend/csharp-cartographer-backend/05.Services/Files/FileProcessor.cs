@@ -7,123 +7,95 @@ namespace csharp_cartographer_backend._05.Services.Files
 {
     public class FileProcessor : IFileProcessor
     {
-        private readonly string projectRoot = Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.FullName;
-        private readonly string solutionRoot = Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName;
+        private readonly string _projectRoot = Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.FullName;
+        private readonly string _solutionRoot = Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName;
 
-        private readonly string _modelDefinitionDemoFilePath = @"03.Models\Tokens\NavToken.cs";
-        private readonly string _workflowDemoFilePath = @"06.Workflows\Artifacts\GenerateArtifactWorkflow.cs";
-        private readonly string _serviceDemoFilePath = @"05.Services\SyntaxHighlighting\SyntaxHighlighter.cs";
-        private readonly string _repositoryDemoFilePath = @"04.DataAccess\Artifacts\ArtifactRepository.cs";
-        private readonly string _controllerDemoFilePath = @"08.Controllers\Artifacts\ArtifactController.cs";
-        private readonly string _helperClassDemoFilePath = @"02.Utilities\Helpers\StringHelpers.cs";
-        private readonly string _configDemoFilePath = @"01.Configuration\Configs\CartographerConfig.cs";
-        private readonly string _dtoDemoFilePath = @"08.Controllers\Artifacts\Dtos\GenerateArtifactDto.cs";
-        private readonly string _clientDemoFilePath = @"07.Clients\ChatGpt\ChatGptClient.cs";
-        private readonly string _unitTestDemoFilePath = @"csharp-cartographer-backend.tests\05.Services\SyntaxHighlighting\SyntaxHighlighterTests.cs";
-
-        private readonly string _operatorDemoFilePath = @"01.Configuration\TestFiles\OperatorDemo.cs";
-        private readonly string _collectionDemoFilePath = @"01.Configuration\TestFiles\CollectionDemo.cs";
-
-        public FileData ReadInTestFileData(string fileName)
+        private readonly Dictionary<string, string> _projectDemoFiles = new()
         {
-            var demoFile = fileName switch
-            {
-                "NavToken.cs" => Path.Combine(projectRoot, _modelDefinitionDemoFilePath),
-                "GenerateArtifactWorkflow.cs" => Path.Combine(projectRoot, _workflowDemoFilePath),
-                "SyntaxHighlighter.cs" => Path.Combine(projectRoot, _serviceDemoFilePath),
-                "ArtifactRepository.cs" => Path.Combine(projectRoot, _repositoryDemoFilePath),
-                "ArtifactController.cs" => Path.Combine(projectRoot, _controllerDemoFilePath),
-                "StringHelpers.cs" => Path.Combine(projectRoot, _helperClassDemoFilePath),
-                "CartographerConfig.cs" => Path.Combine(projectRoot, _configDemoFilePath),
-                "GenerateArtifactDto.cs" => Path.Combine(projectRoot, _dtoDemoFilePath),
-                "ChatGptProvider.cs" => Path.Combine(projectRoot, _clientDemoFilePath),
-                "SyntaxHighlighterTests.cs" => Path.Combine(solutionRoot, _unitTestDemoFilePath),
-                "OperatorDemo.cs" => Path.Combine(projectRoot, _operatorDemoFilePath),
-                "CollectionDemo.cs" => Path.Combine(projectRoot, _collectionDemoFilePath),
-                _ => string.Empty
-            };
+            ["NavToken.cs"] = @"03.Models\Tokens\NavToken.cs",
+            ["GenerateArtifactWorkflow.cs"] = @"06.Workflows\Artifacts\GenerateArtifactWorkflow.cs",
+            ["SyntaxHighlighter.cs"] = @"05.Services\SyntaxHighlighting\SyntaxHighlighter.cs",
+            ["ArtifactRepository.cs"] = @"04.DataAccess\Artifacts\ArtifactRepository.cs",
+            ["ArtifactController.cs"] = @"08.Controllers\Artifacts\ArtifactController.cs",
+            ["StringHelpers.cs"] = @"02.Utilities\Helpers\StringHelpers.cs",
+            ["CartographerConfig.cs"] = @"01.Configuration\Configs\CartographerConfig.cs",
+            ["GenerateArtifactDto.cs"] = @"08.Controllers\Artifacts\Dtos\GenerateArtifactDto.cs",
+            ["ChatGptProvider.cs"] = @"07.Clients\ChatGpt\ChatGptClient.cs",
+            ["OperatorDemo.cs"] = @"01.Configuration\TestFiles\OperatorDemo.cs",
+            ["SyntaxHighlighterTests.cs"] = @"csharp-cartographer-backend.tests\05.Services\SyntaxHighlighting\SyntaxHighlighterTests.cs"
+        };
 
-            // TODO: move workspace and document generation to RoslynAnalyzer.cs
-            var workspace = new AdhocWorkspace();
-            var sourceCode = File.ReadAllText(demoFile);
-            var projectInfo = ProjectInfo.Create(
-                ProjectId.CreateNewId(),
-                VersionStamp.Create(),
-                name: "UserCodeProject",
-                assemblyName: "UserCodeProject",
-                language: LanguageNames.CSharp
-            );
-            var project = workspace.AddProject(projectInfo);
-            var document = workspace.AddDocument(project.Id, "UserUpload.cs", SourceText.From(sourceCode));
+        private readonly Dictionary<string, string> _solutionDemoFiles = new()
+        {
+            ["SyntaxHighlighterTests.cs"] = @"csharp-cartographer-backend.tests\05.Services\SyntaxHighlighting\SyntaxHighlighterTests.cs"
+        };
 
-            return new FileData(
-                Path.GetFileName(demoFile),
-                File.ReadAllText(demoFile),
-                workspace,
-                document
+        public FileData ReadInDemoFileData(string fileName)
+        {
+            var filePath = GetDemoFilePath(fileName);
+
+            return CreateFileData(
+                fileName: Path.GetFileName(filePath),
+                sourceCode: File.ReadAllText(filePath),
+                projectName: "DemoCodeProject"
             );
         }
 
-        public FileData ReadInFileData(GenerateArtifactDto requestDto)
+        public FileData ReadInUploadedFileData(GenerateArtifactDto requestDto)
         {
-            // Create workspace
-            var workspace = new AdhocWorkspace();
-
-            // Use the uploaded file's content directly
-            var sourceCode = requestDto.FileContent;
-
-            // Create a Roslyn project
-            var projectInfo = ProjectInfo.Create(
-                ProjectId.CreateNewId(),
-                VersionStamp.Create(),
-                name: "UserCodeProject",
-                assemblyName: "UserCodeProject",
-                language: LanguageNames.CSharp
-            );
-            var project = workspace.AddProject(projectInfo);
-
-            // Add the document with the uploaded content
-            var document = workspace.AddDocument(
-                project.Id,
-                requestDto.FileName,
-                SourceText.From(sourceCode)
-            );
-
-            return new FileData(
-                requestDto.FileName,
-                requestDto.FileContent,
-                workspace,
-                document
+            return CreateFileData(
+                fileName: requestDto.FileName,
+                sourceCode: requestDto.FileContent,
+                projectName: "UserCodeProject"
             );
         }
 
         public FileData ReadInCodeSnippetData(string snippet)
         {
-            // Create workspace
-            var workspace = new AdhocWorkspace();
-
-            // Create a Roslyn project
-            var projectInfo = ProjectInfo.Create(
-                ProjectId.CreateNewId(),
-                VersionStamp.Create(),
-                name: "CodeSnippetProject",
-                assemblyName: "CodeSnippetProject",
-                language: LanguageNames.CSharp
+            return CreateFileData(
+                fileName: "CodeSnippet",
+                sourceCode: snippet,
+                projectName: "CodeSnippetProject"
             );
-            var project = workspace.AddProject(projectInfo);
+        }
 
-            // Add the document with the uploaded content
+        private static FileData CreateFileData(string fileName, string sourceCode, string projectName)
+        {
+            using var workspace = new AdhocWorkspace();
+
+            var project = workspace.AddProject(CreateProjectInfo(projectName));
+
             var document = workspace.AddDocument(
                 project.Id,
-                "Code Snippet",
-                SourceText.From(snippet)
+                fileName,
+                SourceText.From(sourceCode)
             );
 
-            return new FileData(
-                "Code Snippet",
-                snippet,
-                workspace,
-                document
+            return new FileData(fileName, sourceCode, document);
+        }
+
+        private static ProjectInfo CreateProjectInfo(string projectName)
+        {
+            return ProjectInfo.Create(
+                id: ProjectId.CreateNewId(),
+                version: VersionStamp.Create(),
+                name: projectName,
+                assemblyName: projectName,
+                language: LanguageNames.CSharp
+            );
+        }
+
+        private string GetDemoFilePath(string fileName)
+        {
+            if (_projectDemoFiles.TryGetValue(fileName, out var projectRelativePath))
+                return Path.Combine(_projectRoot, projectRelativePath);
+
+            if (_solutionDemoFiles.TryGetValue(fileName, out var solutionRelativePath))
+                return Path.Combine(_solutionRoot, solutionRelativePath);
+
+            throw new ArgumentException(
+                $"The demo file '{fileName}' is not supported.",
+                nameof(fileName)
             );
         }
     }

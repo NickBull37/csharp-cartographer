@@ -7,19 +7,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace csharp_cartographer_backend._05.Services.Roslyn
 {
-
     // TODO: See if it's possible pass in common c# libraries to analyzer to get
     //       more data on common types (DateTime, Console, Guid, etc.)
 
     public class RoslynAnalyzer : IRoslynAnalyzer
     {
-        //private readonly IRoslynCorrector _roslynCorrector;
-
-        //public RoslynAnalyzer(IRoslynCorrector roslynCorrector)
-        //{
-        //    _roslynCorrector = roslynCorrector;
-        //}
-
         public SyntaxTree GetSyntaxTree(FileData fileData, CancellationToken cancellationToken)
         {
             return CSharpSyntaxTree.ParseText(
@@ -58,15 +50,15 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
         }
 
         public void AddSemanticData(
-            NavToken token,
+            NavToken navToken,
             SemanticModel semanticModel,
             SyntaxTree syntaxTree,
             CancellationToken cancellationToken)
         {
-            if (token.Kind != SyntaxKind.IdentifierToken)
+            if (navToken.Kind != SyntaxKind.IdentifierToken)
                 return;
 
-            token.SemanticData = GetSemanticData(token, semanticModel, syntaxTree, cancellationToken);
+            navToken.SemanticData = GetSemanticData(navToken, semanticModel, syntaxTree, cancellationToken);
         }
 
         private static TokenSemanticData? GetSemanticData(
@@ -82,7 +74,7 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             var data = new TokenSemanticData();
 
             // 1) REFERENCES / BINDING: SymbolInfo for the node
-            var symbolInfo = semanticModel.GetSymbolInfo(node, cancellationToken: cancellationToken);
+            var symbolInfo = semanticModel.GetSymbolInfo(node, cancellationToken);
 
             data.Symbol = symbolInfo.Symbol;
 
@@ -304,6 +296,36 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 
         private static SyntaxNode? GetSemanticNode(SyntaxToken token)
         {
+            if (token.Text == "Console")
+            {
+
+            }
+
+            if (token.Text == "Models")
+            {
+
+            }
+
+            if (token.Text == "Tokens")
+            {
+
+            }
+
+            if (token.Text == "StringBuilder")
+            {
+
+            }
+
+            if (token.Text == "IO")
+            {
+
+            }
+
+            if (token.Text == "csharp_cartographer_backend")
+            {
+
+            }
+
             var parent = token.Parent;
             if (parent is null)
                 return null;
@@ -318,7 +340,8 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                 return parent;
 
             // Type / member declarations (if you ever pass tokens from these nodes)
-            if (parent is MethodDeclarationSyntax
+            if (parent
+                is MethodDeclarationSyntax
                 or ConstructorDeclarationSyntax
                 or PropertyDeclarationSyntax
                 or ClassDeclarationSyntax

@@ -16,6 +16,18 @@ namespace Testing_Multiple_Namespaces_In_One_File
     public class TestClass
     {
     }
+
+    namespace Testing_Nested_Namespace
+    {
+    }
+
+    namespace csharp_cartographer_backend._01.Configuration.DemoFiles
+    {
+    }
+
+    namespace csharp_cartographer_backend._03.Models.Tokens
+    {
+    }
 }
 
 namespace csharp_cartographer_backend._01.Configuration.DemoFiles
@@ -24,6 +36,12 @@ namespace csharp_cartographer_backend._01.Configuration.DemoFiles
     {
         public void Demo()
         {
+            var navToken = new _03.Models.Tokens.NavToken();
+
+            var demo = new DemoOne.DemoClassOne();
+
+            var demo2 = new global::System.Collections.Stack();
+
             // ------------------------------------------------------------
             // Base namespace qualification: System.* vs using static
             // ------------------------------------------------------------
@@ -85,5 +103,13 @@ namespace csharp_cartographer_backend._01.Configuration.DemoFiles
             bool fromAlias = IO.File.Exists("demo.txt");
             bool fullyQualified = System.IO.File.Exists("demo.txt");
         }
+    }
+}
+
+namespace DemoOne
+{
+    public class DemoClassOne
+    {
+
     }
 }

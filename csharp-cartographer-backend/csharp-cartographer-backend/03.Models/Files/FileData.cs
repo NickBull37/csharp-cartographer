@@ -4,19 +4,16 @@ namespace csharp_cartographer_backend._03.Models.Files
 {
     public class FileData
     {
-        public string FileName { get; set; } = string.Empty;
+        public string FileName { get; init; }
 
-        public string Content { get; set; } = string.Empty;
+        public string Content { get; init; }
 
-        public AdhocWorkspace Workspace { get; set; } = new();
+        public Document Document { get; init; }
 
-        public Document? Document { get; set; }
-
-        public FileData(string fileName, string content, AdhocWorkspace workspace, Document document)
+        public FileData(string fileName, string content, Document document)
         {
             FileName = fileName;
             Content = content;
-            Workspace = workspace;
             Document = document;
         }
     }

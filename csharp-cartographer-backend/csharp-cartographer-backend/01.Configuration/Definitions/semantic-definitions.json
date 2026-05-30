@@ -824,6 +824,9 @@
   "ResourceManagement": {
     "Definition": "A keyword for controlling the lifetime of a resource, usually by ensuring setup and cleanup happen at the correct time. This commonly includes disposable resources that are automatically cleaned up when execution leaves a scope."
   },
+  "Type": {
+    "Definition": "The name of a type imported by the using directive."
+  },
   "": {
     "Definition": ""
   }

@@ -1023,9 +1023,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsForEachLoopCollectionIdentifier())
                 return SemanticRole.ForEachLoopCollection;
 
-            //if (token.IsLoopIteratorType())
-            //    return SemanticRole.LoopIteratorType;
-
             // --- Identifiers: invocations ---
             if (token.IsGenericMethodInvocation())
                 return SemanticRole.GenericMethodInvocation;
@@ -1070,6 +1067,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsTupleElementType())
                 return SemanticRole.TupleElementType;
+
+            if (token.IsTypeIdentifier())
+                return SemanticRole.Type;
 
             if (token.IsTypeParameterConstraint())
                 return SemanticRole.TypeParameterConstraint;

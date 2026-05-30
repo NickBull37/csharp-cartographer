@@ -267,6 +267,7 @@
         ParameterLabel,
         TernaryCondition,
         TupleElementName,
+        Type,
         WithExpressionSource,
 
         // Qualifiers

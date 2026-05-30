@@ -1,5 +1,6 @@
 ﻿using csharp_cartographer_backend._01.Configuration.Configs;
 using csharp_cartographer_backend._02.Utilities.ActionResponse;
+using csharp_cartographer_backend._02.Utilities.Logging;
 using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._03.Models.Files;
 using csharp_cartographer_backend._05.Services.Charts;
@@ -51,7 +52,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
         public async Task<ActionResponse<Artifact>> GenerateDemoArtifact(string fileName, CancellationToken cancellationToken)
         {
-            FileData fileData = _fileProcessor.ReadInTestFileData(fileName);
+            FileData fileData = _fileProcessor.ReadInDemoFileData(fileName);
 
             var actionResponse = await GenerateArtifact(fileData, cancellationToken);
 
@@ -66,7 +67,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
         public async Task<ActionResponse<Artifact>> GenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken)
         {
-            FileData fileData = _fileProcessor.ReadInFileData(requestDto);
+            FileData fileData = _fileProcessor.ReadInUploadedFileData(requestDto);
             return await GenerateArtifact(fileData, cancellationToken);
         }
 
@@ -153,6 +154,14 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
                 var json = JsonSerializer.Serialize(identifiers, options);
                 _logger.LogInformation("{newline}{json}", Environment.NewLine, json);
+            }
+
+            if (_config.ShouldLogSemanticData)
+            {
+                var identifiers = artifact.NavTokens
+                    .Where(token => token.SemanticData is not null);
+
+                CartographerLogger.LogTokens(identifiers);
             }
 
             if (_config.ShouldLogUnidentifiedTokens)

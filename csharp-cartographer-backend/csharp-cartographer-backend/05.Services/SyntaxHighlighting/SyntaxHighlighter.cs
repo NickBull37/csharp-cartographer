@@ -105,8 +105,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 return;
 
             /*
-             *  Only used for slightly more accurate coloring for enums
-             *  and structs if the match a common system type identifier.
+             *  Only used for slightly more accurate highlighting of enums and
+             *  structs if the token matches a common system type identifier.
              */
 
             if (token.SemanticRole != SemanticRole.TypeQualifier)
@@ -241,6 +241,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.CatchExceptionType:
                 case SemanticRole.RecordDeclaration:
                 case SemanticRole.RecordReference:
+                case SemanticRole.Type:
                 case SemanticRole.TypeAliasDeclaration:
                     token.HighlightColor = Green;
                     break;
@@ -309,7 +310,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static string GetNamespaceQualifierColor(NavToken token)
         {
-            return token.IsUsingDirectiveQualifier() || token.IsNamespaceDeclarationQualifier()
+            return token.IsUsingDirectiveNamespaceQualifier() || token.IsNamespaceDeclarationQualifier()
                 ? White
                 : Gray;
         }
