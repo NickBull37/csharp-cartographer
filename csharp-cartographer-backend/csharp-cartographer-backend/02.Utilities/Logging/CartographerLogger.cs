@@ -134,7 +134,6 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
             LogMessage($"IsAliasTargetSymbol: {s.IsAliasTargetSymbol}", _tokenLogPath);
             LogMessage($"IsOperation: {s.IsOperation}", _tokenLogPath);
             LogMessage($"IsTypeSymbol: {s.IsTypeSymbol}", _tokenLogPath);
-            LogMessage($"IsConvertedTypeSymbol: {s.IsConvertedTypeSymbol}", _tokenLogPath);
 
             // --- Declarations ---
             var dSym = s.DeclaredSymbol;
@@ -150,7 +149,7 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
             if (aSym is not null)
             {
                 LogMessage("----------- Alias symbol -----------", _tokenLogPath);
-                LogMessage($"IsAlias: {s.IsAlias.ToString() ?? "..."}", _tokenLogPath);
+                LogMessage($"IsAlias: {s.IsAliasSymbol.ToString() ?? "..."}", _tokenLogPath);
                 LogMessage($"AliasName: {s.AliasName ?? "..."}", _tokenLogPath);
                 LogMessage($"AliasTargetKind: {s.AliasTargetSymbol?.Kind.ToString() ?? "..."}", _tokenLogPath);
                 LogMessage($"AliasTargetDisplayString: {s.AliasTargetName ?? "..."}", _tokenLogPath);
@@ -217,7 +216,6 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
                 // --- TypeInfo (original + converted) ---
                 LogMessage("----------- TypeInfo -----------", _tokenLogPath);
                 LogMessage($"TypeKind: {s.TypeKind?.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"ConvertedTypeKind: {s.ConvertedTypeKind?.ToString() ?? "..."}", _tokenLogPath);
             }
 
             if (s.Operation is not null)

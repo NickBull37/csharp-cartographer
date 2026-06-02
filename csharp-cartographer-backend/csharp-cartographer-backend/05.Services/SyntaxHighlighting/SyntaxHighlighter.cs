@@ -107,9 +107,23 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             /*
              *  Only used for slightly more accurate highlighting of enums and
              *  structs if the token matches a common system type identifier.
+             *  
+             *  Limited by semantic role to avoid coloring instance identifiers
+             *  that may share a name with a type identifier.
              */
 
-            if (token.SemanticRole != SemanticRole.TypeQualifier)
+            List<SemanticRole> validRoles =
+            [
+                SemanticRole.ArrayDataType,
+                SemanticRole.ConstructorInvocation,
+                SemanticRole.LocalVariableType,
+                SemanticRole.MethodReturnType,
+                SemanticRole.ParameterType,
+                SemanticRole.PropertyType,
+                SemanticRole.TypeQualifier,
+            ];
+
+            if (!validRoles.Contains(token.SemanticRole))
                 return;
 
             if (GlobalConstants.CommonEnums.Contains(token.Text))

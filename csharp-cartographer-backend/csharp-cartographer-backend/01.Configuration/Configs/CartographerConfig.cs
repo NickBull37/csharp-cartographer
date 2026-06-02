@@ -3,11 +3,6 @@
     public class CartographerConfig
     {
         /// <summary>
-        ///     If true the artifact data will be logged to /02.Utilities/Logging/Logs/ArtifactLog.txt.
-        /// </summary>
-        public bool ShouldLogArtifact { get; set; }
-
-        /// <summary>
         ///     If true any identifier tokens with semantic data will be logged to /02.Utilities/Logging/Logs/TokenLog.txt.
         /// </summary>
         public bool ShouldLogSemanticData { get; set; }

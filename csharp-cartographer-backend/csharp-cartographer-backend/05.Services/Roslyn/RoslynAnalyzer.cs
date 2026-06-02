@@ -144,7 +144,7 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 
                 if (aliasSymbol is not null)
                 {
-                    data.IsAlias = true;
+                    data.IsAliasSymbol = true;
                     data.AliasName = aliasSymbol.Name;
                     data.AliasTargetSymbol = aliasSymbol.Target;
                     data.AliasTargetName = aliasSymbol.Target.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
@@ -152,9 +152,6 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                     // IMPORTANT: Keep BOTH so you can differentiate "this was an alias" vs "this resolves to X"
                     data.Symbol = aliasSymbol;              // preserve alias symbol identity
                     data.AliasTargetSymbol = aliasSymbol.Target;
-
-                    // If you want your downstream mapping to act on the target, also store:
-                    data.SymbolUnwrapped = aliasSymbol.Target;
                 }
             }
 
@@ -266,11 +263,11 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 
             // 5) TypeInfo (+ conversion) for the node
             var typeInfo = semanticModel.GetTypeInfo(node, cancellationToken);
-            data.TypeSymbol = typeInfo.Type;
+            if (typeInfo.Type?.TypeKind != TypeKind.Error)
+                data.TypeSymbol = typeInfo.Type;
 
-            if (typeInfo.Type is ITypeSymbol type)
+            if (data.TypeSymbol is ITypeSymbol type)
             {
-                data.IsTypeSymbol = true;
                 data.TypeKind = type.TypeKind;
             }
 
@@ -296,36 +293,6 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 
         private static SyntaxNode? GetSemanticNode(SyntaxToken token)
         {
-            if (token.Text == "Console")
-            {
-
-            }
-
-            if (token.Text == "Models")
-            {
-
-            }
-
-            if (token.Text == "Tokens")
-            {
-
-            }
-
-            if (token.Text == "StringBuilder")
-            {
-
-            }
-
-            if (token.Text == "IO")
-            {
-
-            }
-
-            if (token.Text == "csharp_cartographer_backend")
-            {
-
-            }
-
             var parent = token.Parent;
             if (parent is null)
                 return null;

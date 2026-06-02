@@ -1,4 +1,5 @@
 ﻿using csharp_cartographer_backend._03.Models.Tokens;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace csharp_cartographer_backend._05.Services.Roslyn
 {
@@ -12,14 +13,15 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             return (corrected, colorAs);
         }
 
-        private static string? GetCorrected(NavToken token, string? roslyn)
+        private static string? GetCorrected(NavToken token, string? roslynClass)
         {
-            var corrected = roslyn switch
+            var corrected = roslynClass switch
             {
                 "keyword" => GetKeywordCorrected(token),
                 "identifier" => GetIdentifierCorrected(token),
                 "operator" => GetOperatorCorrected(token),
                 "punctuation" => GetPunctuationCorrected(token),
+                "property name" => GetPropertyNameCorrected(token),
                 _ => null,
             };
 
@@ -32,6 +34,7 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             {
                 "delimiter" => "delimiter",
                 "keyword" => "keyword",
+                "identifier" => "identifier",
                 "punctuation" => GetPunctuationColorAs(token),
                 _ => null,
             };
@@ -82,6 +85,23 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 
             if (token.IsRangeOperator() || token.IsSliceOperator())
                 return "operator";
+
+            return null;
+        }
+
+        private static string? GetPropertyNameCorrected(NavToken token)
+        {
+            /*
+             *  Roslyn will incorrectly classify a type qualifier in a property declaration
+             *  as a property name if it shares the same name as a Type. Check each property
+             *  name classification with a declaration ancestor for a property declaration parent.
+             */
+
+            bool hasPropertyDeclAncestor = token.AncestorKinds.HasAncestor(SyntaxKind.PropertyDeclaration);
+            bool propertyDeclIsParent = token.AncestorKinds.GetParent() == SyntaxKind.PropertyDeclaration;
+
+            if (hasPropertyDeclAncestor && !propertyDeclIsParent)
+                return "identifier";
 
             return null;
         }

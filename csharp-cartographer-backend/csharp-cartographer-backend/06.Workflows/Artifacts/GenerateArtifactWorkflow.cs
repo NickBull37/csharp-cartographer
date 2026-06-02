@@ -1,8 +1,8 @@
 ﻿using csharp_cartographer_backend._01.Configuration.Configs;
 using csharp_cartographer_backend._02.Utilities.ActionResponse;
-using csharp_cartographer_backend._02.Utilities.Logging;
 using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._03.Models.Files;
+using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 using csharp_cartographer_backend._05.Services.Charts;
 using csharp_cartographer_backend._05.Services.Files;
 using csharp_cartographer_backend._05.Services.Insights;
@@ -140,28 +140,99 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
         private void LogArtifactData(Artifact artifact)
         {
-            if (_config.ShouldLogArtifact)
-                _logger.LogInformation("Artifact: {@Artifact}", artifact);
-
             if (_config.ShouldLogSemanticData)
             {
-                var identifiers = artifact.NavTokens
-                    .Where(token => token.SemanticData is not null)
-                    .Select(token => new
+                var identifierTokens = artifact.NavTokens
+                    .Where(token => token.PrimaryKind is PrimaryKind.Identifier);
+
+                foreach (var token in identifierTokens)
+                {
+                    var tokenData = new
                     {
                         token.Index,
-                    });
+                        token.Text,
+                    };
 
-                var json = JsonSerializer.Serialize(identifiers, options);
-                _logger.LogInformation("{newline}{json}", Environment.NewLine, json);
-            }
+                    var locationData = new
+                    {
+                        token.SemanticData?.IsInUploadedFile,
+                        token.SemanticData?.IsInSourceCompilation,
+                        token.SemanticData?.IsInReferencedAssemblies,
+                        token.SemanticData?.ContainingNamespace,
+                        token.SemanticData?.ContainingAssembly,
+                    };
 
-            if (_config.ShouldLogSemanticData)
-            {
-                var identifiers = artifact.NavTokens
-                    .Where(token => token.SemanticData is not null);
+                    var symbolData = new
+                    {
+                        token.SemanticData?.IsAliasSymbol,
+                        token.SemanticData?.IsNamespaceSymbol,
+                        token.SemanticData?.IsTypeSymbol,
+                        token.SemanticData?.IsNamedTypeSymbol,
+                        token.SemanticData?.IsDeclaredSymbol,
+                        token.SemanticData?.IsOperation,
+                        token.SemanticData?.SymbolName,
+                        token.SemanticData?.SymbolKind,
+                        token.SemanticData?.ContainingType,
+                    };
 
-                CartographerLogger.LogTokens(identifiers);
+                    var typeData = new
+                    {
+                        token.SemanticData?.TypeKind,
+                        token.SemanticData?.ConvertedTypeKind,
+                        token.SemanticData?.IsTypeSymbol,
+                        token.SemanticData?.IsNamedTypeSymbol,
+                        token.SemanticData?.IsConvertedTypeSymbol,
+                    };
+
+                    var aliasData = new
+                    {
+                        token.SemanticData?.AliasName,
+                        token.SemanticData?.AliasTargetName,
+                    };
+
+                    var memberishData = new
+                    {
+                        token.SemanticData?.MemberType,
+                        token.SemanticData?.MemberTypeKind,
+                    };
+
+                    var symbolCharacteristics = new
+                    {
+                        token.SemanticData?.Accessibility,
+                        token.SemanticData?.IsAbstract,
+                        token.SemanticData?.IsAsync,
+                        token.SemanticData?.IsConst,
+                        token.SemanticData?.IsDiscard,
+                        token.SemanticData?.IsExtern,
+                        token.SemanticData?.IsForEachVar,
+                        token.SemanticData?.IsImplicitlyDeclared,
+                        token.SemanticData?.IsIndexer,
+                        token.SemanticData?.IsOptional,
+                        token.SemanticData?.IsOriginalDefinition,
+                        token.SemanticData?.IsOverride,
+                        token.SemanticData?.IsReadOnly,
+                        token.SemanticData?.IsSealed,
+                        token.SemanticData?.IsStatic,
+                        token.SemanticData?.IsRequired,
+                        token.SemanticData?.IsUsingVar,
+                        token.SemanticData?.IsVirtual,
+                        token.SemanticData?.IsVolatile,
+                        token.SemanticData?.IsWriteOnly,
+                        token.SemanticData?.IsExplicitlyNamedTupleElement,
+                    };
+
+                    var logMessage =
+                        $"{Environment.NewLine}================================ {token.Index} - {token.Text} ================================" +
+                        $"{Environment.NewLine}----------- Location Data -----------{Environment.NewLine}{JsonSerializer.Serialize(locationData, options)}" +
+                        $"{Environment.NewLine}----------- Symbol Data -----------{Environment.NewLine}{JsonSerializer.Serialize(symbolData, options)}" +
+                        $"{Environment.NewLine}----------- Type Data -----------{Environment.NewLine}{JsonSerializer.Serialize(typeData, options)}" +
+                        $"{Environment.NewLine}----------- Alias Data -----------{Environment.NewLine}{JsonSerializer.Serialize(aliasData, options)}" +
+                        $"{Environment.NewLine}----------- Member-ish Data -----------{Environment.NewLine}{JsonSerializer.Serialize(memberishData, options)}" +
+                        $"{Environment.NewLine}----------- Symbol Characteristics -----------{Environment.NewLine}{JsonSerializer.Serialize(symbolCharacteristics, options)}" +
+                        $"{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}";
+
+                    _logger.LogInformation("{LogMessage}", logMessage);
+                }
             }
 
             if (_config.ShouldLogUnidentifiedTokens)

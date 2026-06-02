@@ -1034,6 +1034,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.ConstructorInvocation;
 
             // --- Identifiers: namespaces, aliases, qualifiers ---
+            if (token.IsAliasQualifier())
+                return SemanticRole.AliasQualifier;
+
             if (token.IsNamespaceQualifier())
                 return SemanticRole.NamespaceQualifier;
 
@@ -1043,8 +1046,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsTypeAliasDeclarationIdentifier())
                 return SemanticRole.TypeAliasDeclaration;
 
-            if (token.IsAliasQualifier())
-                return SemanticRole.AliasQualifier;
+            if (token.IsImplicitInstanceQualifier())
+                return SemanticRole.ImplicitInstanceQualifier;
 
             if (token.IsInstanceQualifier())
                 return SemanticRole.InstanceQualifier;

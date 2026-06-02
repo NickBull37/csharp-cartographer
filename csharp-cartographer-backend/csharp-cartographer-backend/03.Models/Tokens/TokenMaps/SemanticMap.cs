@@ -274,6 +274,7 @@
         AliasQualifier,
         ContainingTypeMemberQualifer,
         ElementAccessQualifer,
+        ImplicitInstanceQualifier,
         InstanceQualifier,
         NamespaceQualifier,
 

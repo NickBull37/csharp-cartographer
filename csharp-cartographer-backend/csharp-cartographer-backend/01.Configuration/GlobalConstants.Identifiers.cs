@@ -36,6 +36,7 @@
             "TypeKind",
 
             // Structs
+            "AncestorNodeKinds",
             "Boolean",
             "CancellationToken",
             "DateOnly",
@@ -94,6 +95,7 @@
         /// ------  Common Structs  ------ ///
         public static readonly HashSet<string> CommonStructs = new(StringComparer.Ordinal)
         {
+            "AncestorNodeKinds",
             "Boolean",
             "CancellationToken",
             "DateOnly",

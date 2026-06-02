@@ -14,6 +14,48 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 : ancestorKinds;
         }
 
+        public bool HasAncestor(SyntaxKind kind) => Ancestors.Contains(kind);
+
+        public SyntaxKind? GetParent()
+        {
+            if (Ancestors.Length == 0)
+                return null;
+
+            return Ancestors[0];
+        }
+
+        public bool HasParent(SyntaxKind kind)
+        {
+            if (Ancestors.Length == 0)
+                return false;
+
+            return Ancestors[0] == kind;
+        }
+
+        public SyntaxKind? GetGrandParent()
+        {
+            if (Ancestors.Length <= 1)
+                return null;
+
+            return Ancestors[1];
+        }
+
+        public bool GrandParentIs(SyntaxKind kind)
+        {
+            if (Ancestors.Length <= 1)
+                return false;
+
+            return Ancestors[1] == kind;
+        }
+
+        public SyntaxKind? GetGreatGrandParent()
+        {
+            if (Ancestors.Length <= 2)
+                return null;
+
+            return Ancestors[2];
+        }
+
         public SyntaxKind? GetLastAncestor()
         {
             if (Ancestors.Length == 0)
@@ -61,7 +103,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public static implicit operator AncestorNodeKinds(ImmutableArray<SyntaxKind> ancestorKinds) =>
             new(ancestorKinds);
 
-        public bool HasAny(SyntaxKind kind) =>
-            Ancestors.Contains(kind);
+
     }
 }
