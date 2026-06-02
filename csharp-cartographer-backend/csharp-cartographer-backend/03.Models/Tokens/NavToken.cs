@@ -6,16 +6,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 using System.Text.Json.Serialization;
-using TestFJKD;
-
-namespace TestFJKD
-{
-    public enum TestEnum
-    {
-        ValueOne,
-        ValueTwo
-    }
-}
 
 namespace csharp_cartographer_backend._03.Models.Tokens
 {
@@ -24,8 +14,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
     /// </summary>
     public class NavToken
     {
-
-
         private const string EventName = "event name";
         private const string FieldName = "field name";
         private const string Identifier = "identifier";
@@ -37,8 +25,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         private const string Keyword = "keyword";
         private const string KeywordControl = "keyword - control";
         private const string KeywordOperator = "keyword - operator";
-
-        public TestEnum TestEnum { get; set; }
 
         /// <summary>The unique identifier for a NavToken.</summary>
         public Guid ID { get; set; }
@@ -116,8 +102,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         /// <param name="index">The index of the token in the list.</param>
         public NavToken(SyntaxToken roslynToken, int index)
         {
-            TestEnum = TestEnum.ValueTwo;
-
             ID = Guid.NewGuid();
             Index = index;
             Text = roslynToken.Text;

@@ -18,7 +18,7 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 const FileNameLabel = styled(Typography)(() => ({
     fontSize: '14px',
     color: colors.gray95,
-    textTransform: 'uppercase',
+    //textTransform: 'uppercase',
     letterSpacing: '0.035em',
     fontFamily: 'Segoe UI, Segoe UI Variable Text, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, sans-serif',
     fontWeight: '600'
@@ -181,10 +181,6 @@ const InsightsSidebarContent = ({
         setSelectedTokens([]);
     }
 
-    // Use Effects
-
-    // API Calls
-
     return (
         <ContentContainer>
             <Stack>
@@ -199,12 +195,12 @@ const InsightsSidebarContent = ({
                             py: '10px',
                         }}
                     >
-                        <FileNameLabel>
-                            {artifactInsight.label}
-                        </FileNameLabel>
                         <InsightLabel>
                             Insight
                         </InsightLabel>
+                        <FileNameLabel>
+                            {artifactInsight?.label}
+                        </FileNameLabel>
                     </Box>
                     <Box
                         sx={{
@@ -213,13 +209,13 @@ const InsightsSidebarContent = ({
                         }}
                     >
                         <InsightDescription>
-                            {artifactInsight.description}
+                            {artifactInsight?.description}
                         </InsightDescription>
                     </Box>
                 </Box>
 
                 <div>
-                    {artifactInsight.notes.map((note, index) => (
+                    {artifactInsight?.notes.map((note, index) => (
                         <Accordion
                             key={note.id}
                             expanded={expanded === note.id}

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from "axios";
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Box, Button, Stack, Typography } from '@mui/material';
@@ -61,12 +62,33 @@ const ViewDemoBtn = styled(Button)(() => ({
 const DemoOptionSelection = () => {
 
     // State Variables
-    const [selectedFile, setSelectedFile] = useState("NavToken.cs");
+    //const [selectedFile, setSelectedFile] = useState("NavToken.cs");
+    const [selectedDemo, setSelectedDemo] = useState(null);
+    const [demoFiles, setDemoFiles] = useState([]);
 
     // Event Handlers
-    const handleFileClick = (value) => {
-        setSelectedFile(value);
+    const handleDemoFileClick = (fileName) => {
+        setSelectedDemo(demoFiles.find(file => file.name === fileName));
     };
+
+    // Use Effects
+    useEffect(() => {
+        GetDemoFiles();
+    }, []);
+
+    // Api Calls
+    async function GetDemoFiles() {
+        try {
+            const response = await axios.get("https://localhost:44300/Demo/get-demo-files");
+
+            if (response.status === 200) {
+                setDemoFiles(response.data);
+                setSelectedDemo(response.data[0]);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <PageContainer>
@@ -77,6 +99,20 @@ const DemoOptionSelection = () => {
                         alignItems={'center'}
                     >
                         <Stack
+                            gap={4.5}
+                        >
+                            {demoFiles.map((file) => (
+                                <BtnText
+                                    onClick={() => handleDemoFileClick(file.name)}
+                                    sx={{
+                                        color: selectedDemo?.name === file.name ? colors.code : '#fff'
+                                    }}
+                                >
+                                    [{file.name}]
+                                </BtnText>
+                            ))}
+                        </Stack>
+                        {/* <Stack
                             gap={4.5}
                         >
                             <BtnText
@@ -159,7 +195,7 @@ const DemoOptionSelection = () => {
                             >
                                 [OperatorDemo.cs]
                             </BtnText>
-                        </Stack>
+                        </Stack> */}
                     </Stack>
 
                     <Box>
@@ -167,7 +203,40 @@ const DemoOptionSelection = () => {
                         <BorderBoxRight />
                     </Box>
 
-                    {selectedFile === "NavToken.cs"
+                    <Stack
+                        width={'40%'}
+                        gap={3}
+                        sx={{
+                            px: 8
+                        }}
+                    >
+                        <InfoText
+                            className='color-code'
+                            textAlign={"center"}
+                            sx={{
+                                fontSize: '1.65rem'
+                            }}
+                        >
+                            {selectedDemo?.type}
+                        </InfoText>
+                        <Stack
+                            display={'flex'}
+                            gap={4}
+                            sx={{
+                                bgcolor: colors.gray25,
+                                padding: 2,
+                                borderRadius: '5px'
+                            }}
+                        >
+                            {selectedDemo?.insights.map((insight) => (
+                                <InfoText>
+                                    {insight}
+                                </InfoText>
+                            ))}
+                        </Stack>
+                    </Stack>
+
+                    {/* {selectedFile === "NavToken.cs"
                         ? (
                             <Stack
                                 width={'40%'}
@@ -555,7 +624,7 @@ const DemoOptionSelection = () => {
                         : (
                             <></>
                         )
-                    }
+                    } */}
 
                     <Box>
                         <BorderBoxLeft />
@@ -592,7 +661,7 @@ const DemoOptionSelection = () => {
                                 Try generating a brand new artifact by uploading your own C# code <a className='color-code' href="/upload">here</a>. 
                             </Typography>
                             <Link
-                                to={`/cartographer-demo?file=${encodeURIComponent(selectedFile)}`}
+                                to={`/cartographer-demo?file=${encodeURIComponent(selectedDemo?.name)}`}
                                 style={{ textDecoration: 'none' }}
                             >
                                 <ViewDemoBtn

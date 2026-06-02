@@ -15,10 +15,10 @@ namespace csharp_cartographer_backend._08.Controllers.Insights
             _workflow = workflow;
         }
 
-        /// <summary>Gets the insights for an artifact.</summary>
+        /// <summary>Gets specified artifact's insight.</summary>
         [HttpGet]
-        [Route("get-insights")]
-        public async Task<IActionResult> GetInsights([FromQuery] Guid artifactID, CancellationToken cancellationToken)
+        [Route("get-insight")]
+        public async Task<IActionResult> GetInsight([FromQuery] Guid artifactID, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -52,7 +52,7 @@ namespace csharp_cartographer_backend._08.Controllers.Insights
         /// <summary>Deletes an insight off an artifact.</summary>
         [HttpPost]
         [Route("delete-insight")]
-        public async Task<IActionResult> DeleteInsight([FromQuery] Guid insightID, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteInsight([FromQuery] Guid artifactID, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

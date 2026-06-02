@@ -1,0 +1,108 @@
+{
+  "NavToken.cs": {
+    "Name": "NavToken.cs",
+    "Type": "Model Definition",
+    "Insights": [
+      "A model definition represents the data structure for an object. It typically contains properties that define the data fields and sometimes includes methods for data manipulation or validation.",
+      "It typically contains properties that define the data fields and sometimes includes methods for data manipulation or validation.",
+      "Model classes are often used in frameworks like ASP.NET Core MVC or Entity Framework to define how data is stored, transmitted, or displayed."
+    ],
+    "Description": "",
+    "RelativePath": "03.Models\\Tokens\\NavToken.cs"
+  },
+  "GenerateArtifactWorkflow.cs": {
+    "Name": "GenerateArtifactWorkflow.cs",
+    "Type": "Workflow Class",
+    "Insights": [
+      "A workflow class is responsible for orchestrating and coordinating a sequence of steps or tasks that make up a business process.",
+      "It defines the flow of execution, including the logic for handling various conditions, decisions, and transitions between tasks.",
+      "Workflows are often used in systems that manage complex business processes, ensuring that actions occur in the correct order and under the right conditions."
+    ],
+    "Description": "",
+    "RelativePath": "06.Workflows\\Artifacts\\GenerateArtifactWorkflow.cs"
+  },
+  "SyntaxHighlighter.cs": {
+    "Name": "SyntaxHighlighter.cs",
+    "Type": "Service Class",
+    "Insights": [
+      "A service is a class that contains business logic or operations to process data, interact with external systems (e.g., APIs or databases), or perform complex computations.",
+      "Services typically serves as a middle layer between the controllers and data models, encapsulating the application's core functionality.",
+      "In frameworks like ASP.NET Core, service classes are often registered for dependency injection and provide reusable methods for different parts of the application."
+    ],
+    "Description": "",
+    "RelativePath": "05.Services\\SyntaxHighlighting\\SyntaxHighlighter.cs"
+  },
+  "ArtifactRepository.cs": {
+    "Name": "ArtifactRepository.cs",
+    "Type": "DataAccess Class",
+    "Insights": [
+      "A data access class is responsible for interacting with the database or other data storage systems to perform create, read, update, & delete (CRUD) operations.",
+      "This keeps data access logic separate from business logic and UI layers, promoting maintainability and testability.",
+      "This class is often referred to as a repository when used with the Repository Pattern."
+    ],
+    "Description": "",
+    "RelativePath": "04.DataAccess\\Artifacts\\ArtifactRepository.cs"
+  },
+  "ArtifactController.cs": {
+    "Name": "ArtifactController.cs",
+    "Type": "API Controller",
+    "Insights": [
+      "An API controller is a specialized class in ASP.NET Core that handles HTTP requests and responses in a Web API.",
+      "They are designed to expose endpoints that provide or consume data, typically in JSON or XML format.",
+      "They perform actions like creating, reading, updating, and deleting (CRUD) resources, and they are commonly used for building RESTful web services."
+    ],
+    "Description": "",
+    "RelativePath": "08.Controllers\\Artifacts\\ArtifactController.cs"
+  },
+  "StringHelpers.cs": {
+    "Name": "StringHelpers.cs",
+    "Type": "Extension/Helper Class",
+    "Insights": [
+      "An extension/helper class is a construct used to provide additional functionality or utility methods that can be applied to existing classes or objects.",
+      "When utilized properly, extension classes are designed to be reusable across all areas of an application.",
+      "Helper methods are often declared as static, meaning they can be called directly without creating an instance of the helper class."
+    ],
+    "Description": "",
+    "RelativePath": "02.Utilities\\Helpers\\StringHelpers.cs"
+  },
+  "ChatGptProvider.cs": {
+    "Name": "ChatGptProvider.cs",
+    "Type": "External Client",
+    "Insights": [
+      "An external client is a class that encapsulates communication with an external system or service, such as a web API, messaging system, or third-party service.",
+      "This class is responsible for handling the details of interaction with the external system, such as building & sending requests and processing their responses.",
+      "These classes abstract communication protocols like Http or TCP, ensuring that the consuming code doesn't need to manage these details."
+    ],
+    "Description": "",
+    "RelativePath": "07.Clients\\ChatGpt\\ChatGptClient.cs"
+  },
+  "GenerateArtifactDto.cs": {
+    "Name": "GenerateArtifactDto.cs",
+    "Type": "Data Transfer Object (DTO)",
+    "Insights": [
+      "A Data Transfer Object is a simple object designed to carry data between layers or components of an application.",
+      "Unlike domain models, DTOs typically do not contain business logic and are solely focused on encapsulating and serializing data for transfer.",
+      "They often represent a subset or a projection of the underlying data to avoid overfetching or exposing sensitive internal fields."
+    ],
+    "Description": "",
+    "RelativePath": "08.Controllers\\Artifacts\\Dtos\\GenerateArtifactDto.cs"
+  },
+  "SyntaxHighlighterTests.cs": {
+    "Name": "SyntaxHighlighterTests.cs",
+    "Type": "UnitTest Class",
+    "Insights": [
+      "A unit test class..."
+    ],
+    "Description": "",
+    "RelativePath": "csharp-cartographer-backend.tests\\05.Services\\SyntaxHighlighting\\SyntaxHighlighterTests.cs"
+  },
+  "OperatorDemo.cs": {
+    "Name": "OperatorDemo.cs",
+    "Type": "Demo Class",
+    "Insights": [
+      "This is a demo file for testing..."
+    ],
+    "Description": "",
+    "RelativePath": "01.Configuration\\TestFiles\\OperatorDemo.cs"
+  }
+}

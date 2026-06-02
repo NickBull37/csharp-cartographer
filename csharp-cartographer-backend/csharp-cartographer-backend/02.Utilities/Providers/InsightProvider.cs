@@ -13,6 +13,11 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
 
     public static partial class InsightProvider
     {
+        private static readonly JsonSerializerOptions JsonOptions = new()
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
         private static readonly Lazy<IReadOnlyDictionary<string, CreateInsightDto>> Insights
             = new(LoadInsights);
 
@@ -21,7 +26,7 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
                 ? insight
                 : null;
 
-        private static IReadOnlyDictionary<string, CreateInsightDto> LoadInsights()
+        private static Dictionary<string, CreateInsightDto> LoadInsights()
         {
             var assembly = typeof(InsightProvider).Assembly;
 
@@ -36,11 +41,6 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
 
             var merged = new Dictionary<string, CreateInsightDto>(StringComparer.OrdinalIgnoreCase);
 
-            var jsonOptions = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-
             foreach (var resourceName in resourceNames)
             {
                 using var stream = assembly.GetManifestResourceStream(resourceName)
@@ -49,7 +49,7 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
                 using var reader = new StreamReader(stream);
                 var json = reader.ReadToEnd();
 
-                var dictionary = JsonSerializer.Deserialize<Dictionary<string, CreateInsightDto>>(json, jsonOptions)
+                var dictionary = JsonSerializer.Deserialize<Dictionary<string, CreateInsightDto>>(json, JsonOptions)
                     ?? new Dictionary<string, CreateInsightDto>(StringComparer.OrdinalIgnoreCase);
 
                 foreach (var (key, insight) in dictionary)

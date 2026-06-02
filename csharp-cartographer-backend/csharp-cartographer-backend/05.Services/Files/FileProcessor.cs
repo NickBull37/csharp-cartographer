@@ -24,7 +24,6 @@ namespace csharp_cartographer_backend._05.Services.Files
             ["OperatorDemo.cs"] = @"01.Configuration\TestFiles\OperatorDemo.cs",
             ["SyntaxHighlighterTests.cs"] = @"csharp-cartographer-backend.tests\05.Services\SyntaxHighlighting\SyntaxHighlighterTests.cs"
         };
-
         private readonly Dictionary<string, string> _solutionDemoFiles = new()
         {
             ["SyntaxHighlighterTests.cs"] = @"csharp-cartographer-backend.tests\05.Services\SyntaxHighlighting\SyntaxHighlighterTests.cs"
@@ -37,7 +36,7 @@ namespace csharp_cartographer_backend._05.Services.Files
             return CreateFileData(
                 fileName: Path.GetFileName(filePath),
                 sourceCode: File.ReadAllText(filePath),
-                projectName: "DemoCodeProject"
+                projectName: "CSharpCartographer"
             );
         }
 

@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-namespace csharp_cartographer_backend._05.Services.Tokens.Maps
+namespace csharp_cartographer_backend._02.Utilities.Providers
 {
     public sealed record DefinitionEntry(string Definition);
 

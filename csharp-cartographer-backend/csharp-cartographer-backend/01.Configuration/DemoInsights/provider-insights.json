@@ -3,27 +3,27 @@
     "ArtifactID": "11111111-1111-1111-1111-111111111111",
     "Label": "External Client",
     "Description": "This client class was built to send HTTP requests to an external API and receive an analysis from a 3rd party AI. It supports cancellation and handles a variety of exceptions.",
-    "Highlights": [ 31, 32, 33, 56, 57, 59, 60, 61, 62, 63, 64, 65, 78, 79, 81, 82, 83, 84 ],
+    "Highlights": [ 125, 126, 252, 253, 254, 255, 256, 257, 258, 273, 274, 275, 276, 277, 278, 279, 294, 295, 296, 297, 298, 299, 302 ],
     "NoteDtos": [
       {
         "Label": "Try Block",
-        "Text": "All code that could throw an exception is wrapped in a try-catch block to prevent unhandled exceptions from reaching the user and to provide an opportunity to log errors for those excpetions.",
-        "Highlights": [ 125, 126, 241 ]
+        "Text": "All code that has the potential to throw an exception is wrapped in a try-catch block to prevent unhandled exceptions from reaching the user and to provide an opportunity to log errors for those excpetions.",
+        "Highlights": [ 125, 126, 252 ]
       },
       {
         "Label": "Http Exceptions",
-        "Text": "This block will catch any exceptions thrown by the PostAsync or EnsureSuccessStatusCode calls. The important data to capture here is the error code, exception message, and the request object.",
-        "Highlights": [ 242, 243, 244, 245, 246, 247, 263 ]
+        "Text": "This block will catch any exceptions thrown by the PostAsync or EnsureSuccessStatusCode calls. The important data to capture here is the request object to see what the data looked like at the time of the call.",
+        "Highlights": [ 253, 254, 255, 256, 257, 258, 273 ]
       },
       {
         "Label": "Json Exceptions",
-        "Text": "This block will catch any exceptions thrown when attempting to deserialize the http response. The important data to capture here is the response object to compare to the object it was being deserializatied into.",
-        "Highlights": [ 264, 265, 266, 267, 268, 269, 285 ]
+        "Text": "This block will catch any exceptions thrown when attempting to deserialize the http response. The important data to capture here is the response object to compare to the type it was being deserializatied into.",
+        "Highlights": [ 274, 275, 276, 277, 278, 279, 294 ]
       },
       {
         "Label": "Canceled Exceptions",
-        "Text": "This block will catch any request cancellations that occur while waiting for a response. Since there is nothing to log and the request in progress is not needed, these exceptions are re-thrown immediately.",
-        "Highlights": [ 286, 287, 288, 289, 290, 293 ]
+        "Text": "This block will catch any request cancellations that occur while the code inside the try block is executing. These exceptions are re-thrown immediately to avoid unnecessary error logging.",
+        "Highlights": [ 295, 296, 297, 298, 299, 302 ]
       }
     ]
   }

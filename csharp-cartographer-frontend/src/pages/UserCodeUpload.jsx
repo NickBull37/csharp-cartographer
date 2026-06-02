@@ -92,7 +92,7 @@ const UserCodeUpload = ({setArtifact}) => {
         setGenerateFileBtnEnabled(!!fileName);
     }, [fileName]);
 
-    // API Calls
+    // Api Calls
     async function GenerateArtifact() {
         try {
             setIsGenerating(true);

@@ -21,6 +21,7 @@
     <Content Remove="01.Configuration\Definitions\modifier-definitions.json" />
     <Content Remove="01.Configuration\Definitions\operator-definitions.json" />
     <Content Remove="01.Configuration\Definitions\semantic-definitions.json" />
+    <Content Remove="01.Configuration\DemoFileData\demo-file-data.json" />
     <Content Remove="01.Configuration\DemoInsights\controller-insights.json" />
     <Content Remove="01.Configuration\DemoInsights\dto-insights.json" />
     <Content Remove="01.Configuration\DemoInsights\helper-insights.json" />
@@ -39,6 +40,7 @@
     <EmbeddedResource Include="01.Configuration\Definitions\modifier-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\operator-definitions.json" />
     <EmbeddedResource Include="01.Configuration\Definitions\semantic-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\DemoFileData\demo-file-data.json" />
     <EmbeddedResource Include="01.Configuration\DemoInsights\controller-insights.json" />
     <EmbeddedResource Include="01.Configuration\DemoInsights\dto-insights.json" />
     <EmbeddedResource Include="01.Configuration\DemoInsights\helper-insights.json" />
