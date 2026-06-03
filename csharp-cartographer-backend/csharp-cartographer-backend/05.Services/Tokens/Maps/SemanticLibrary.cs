@@ -33,31 +33,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static string GetFocusedLabel(NavToken token)
         {
-            return token.PrimaryKind switch
-            {
-                PrimaryKind.Identifier => token.IsGenericType()
-                    ? "GenericType"
-                    : token.PrimaryKind.ToString(),
-                _ => token.PrimaryKind.ToString(),
-            };
+            return token.IsIdentifier() && token.IsGenericType()
+                ? "Generic Type"
+                : token.PrimaryKind.ToString();
         }
 
-        private static MapText? GetRoleDefinition(SemanticRole? role)
+        private static MapText GetRoleDefinition(SemanticRole role)
         {
-            if (role is null)
-                return null;
+            if (role is SemanticRole.Unknown)
+                return MapText.Undefined();
 
-            /*
-             * The SemanticRole is used as the definition key by default. 
-             * Delimiters are the exception since they have much more overlap
-             * than keywords, operators, etc. Use the label on the SemanticRole
-             * as the key for Delimiters.
-             */
-
-            var key = KeyMaker.GetKey((SemanticRole)role);
-
-            if (key is null)
-                return null;
+            var key = KeyMaker.GetKey(role);
 
             return DefinitionProvider.GetMapText(key) ?? MapText.Undefined();
         }

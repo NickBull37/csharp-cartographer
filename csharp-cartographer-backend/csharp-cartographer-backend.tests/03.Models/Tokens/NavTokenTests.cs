@@ -41,7 +41,7 @@ namespace csharp_cartographer_backend.tests._03.Models.Tokens
 
         private async Task<List<NavToken>> GenerateNavTokens(string code)
         {
-            var fileData = _fileProcessor.ReadInCodeSnippetData(code);
+            var fileData = _fileProcessor.GetCodeSnippetFileData(code);
             return await _navTokenGenerator.GenerateNavTokens(fileData, CancellationToken.None);
         }
     }

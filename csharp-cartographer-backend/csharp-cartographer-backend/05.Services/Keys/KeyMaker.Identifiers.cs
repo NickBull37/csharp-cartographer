@@ -45,9 +45,9 @@ namespace csharp_cartographer_backend._05.Services.Keys
         {
             bool isDeclarationRole = DeclarationRoles.Contains(token.SemanticRole);
             bool isPotentialReferenceRole = token.Classifications.Final
-                is "field name"
-                or "event name"
+                is "event name"
                 or "event field name"
+                or "field name"
                 or "local name"
                 or "parameter name"
                 or "property name";

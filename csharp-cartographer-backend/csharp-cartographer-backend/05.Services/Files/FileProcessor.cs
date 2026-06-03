@@ -13,7 +13,7 @@ namespace csharp_cartographer_backend._05.Services.Files
         private const string CodeSnippetProjectName = "CodeSnippetProject";
         private const string CodeSnippetFileName = "CodeSnippet";
 
-        public FileData ReadInDemoFileData(string fileName)
+        public FileData GetDemoFileData(string fileName)
         {
             var filePath = DemoOptionProvider.GetDemoFilePath(fileName);
             var sourceCode = File.ReadAllText(filePath);
@@ -25,7 +25,7 @@ namespace csharp_cartographer_backend._05.Services.Files
             );
         }
 
-        public FileData ReadInUploadedFileData(GenerateArtifactDto requestDto)
+        public FileData GetUploadedFileData(GenerateArtifactDto requestDto)
         {
             return CreateFileData(
                 fileName: requestDto.FileName,
@@ -34,7 +34,7 @@ namespace csharp_cartographer_backend._05.Services.Files
             );
         }
 
-        public FileData ReadInCodeSnippetData(string snippet)
+        public FileData GetCodeSnippetFileData(string snippet)
         {
             return CreateFileData(
                 fileName: CodeSnippetFileName,

@@ -1,14 +1,25 @@
 {
-  "NavToken.cs": {
-    "Name": "NavToken.cs",
-    "Type": "Model Definition",
+  "ArtifactController.cs": {
+    "Name": "ArtifactController.cs",
+    "Type": "API Controller",
     "Insights": [
-      "A model definition represents the data structure for an object. It typically contains properties that define the data fields and sometimes includes methods for data manipulation or validation.",
-      "It typically contains properties that define the data fields and sometimes includes methods for data manipulation or validation.",
-      "Model classes are often used in frameworks like ASP.NET Core MVC or Entity Framework to define how data is stored, transmitted, or displayed."
+      "An API controller is a specialized class in ASP.NET Core that handles HTTP requests and responses in a Web API.",
+      "They are designed to expose endpoints that provide or consume data, typically in JSON or XML format.",
+      "They perform actions like creating, reading, updating, and deleting (CRUD) resources, and they are commonly used for building RESTful web services."
     ],
     "Description": "",
-    "RelativePath": "csharp-cartographer-backend\\03.Models\\Tokens\\NavToken.cs"
+    "RelativePath": "csharp-cartographer-backend\\08.Controllers\\Artifacts\\ArtifactController.cs"
+  },
+  "GenerateArtifactDto.cs": {
+    "Name": "GenerateArtifactDto.cs",
+    "Type": "Data Transfer Object (DTO)",
+    "Insights": [
+      "A Data Transfer Object is a simple object designed to carry data between layers or components of an application.",
+      "Unlike domain models, DTOs typically do not contain business logic and are solely focused on encapsulating and serializing data for transfer.",
+      "They often represent a subset or a projection of the underlying data to avoid overfetching or exposing sensitive internal fields."
+    ],
+    "Description": "",
+    "RelativePath": "csharp-cartographer-backend\\08.Controllers\\Artifacts\\Dtos\\GenerateArtifactDto.cs"
   },
   "GenerateArtifactWorkflow.cs": {
     "Name": "GenerateArtifactWorkflow.cs",
@@ -20,6 +31,94 @@
     ],
     "Description": "",
     "RelativePath": "csharp-cartographer-backend\\06.Workflows\\Artifacts\\GenerateArtifactWorkflow.cs"
+  },
+  "FileProcessor.cs": {
+    "Name": "FileProcessor.cs",
+    "Type": "Service Class",
+    "Insights": [
+      "",
+      "",
+      ""
+    ],
+    "Description": "",
+    "RelativePath": "csharp-cartographer-backend\\05.Services\\Files\\FileProcessor.cs"
+  },
+  "NavTokenGenerator.cs": {
+    "Name": "NavTokenGenerator.cs",
+    "Type": "Service Class",
+    "Insights": [
+      "",
+      "",
+      ""
+    ],
+    "Description": "",
+    "RelativePath": "csharp-cartographer-backend\\05.Services\\Tokens\\NavTokenGenerator.cs"
+  },
+  "NavToken.cs": {
+    "Name": "NavToken.cs",
+    "Type": "Model Definition",
+    "Insights": [
+      "A model definition represents the data structure for an object. It typically contains properties that define the data fields and sometimes includes methods for data manipulation or validation.",
+      "It typically contains properties that define the data fields and sometimes includes methods for data manipulation or validation.",
+      "Model classes are often used in frameworks like ASP.NET Core MVC or Entity Framework to define how data is stored, transmitted, or displayed."
+    ],
+    "Description": "",
+    "RelativePath": "csharp-cartographer-backend\\03.Models\\Tokens\\NavToken.cs"
+  },
+  "SemanticMap.cs": {
+    "Name": "SemanticMap.cs",
+    "Type": "Model Definition",
+    "Insights": [
+      "",
+      "",
+      ""
+    ],
+    "Description": "",
+    "RelativePath": "csharp-cartographer-backend\\03.Models\\Tokens\\TokenMaps\\SemanticMap.cs"
+  },
+  "TokenMapper.cs": {
+    "Name": "TokenMapper.cs",
+    "Type": "Service Class",
+    "Insights": [
+      "",
+      "",
+      ""
+    ],
+    "Description": "",
+    "RelativePath": "csharp-cartographer-backend\\05.Services\\Tokens\\Maps\\TokenMapper.cs"
+  },
+  "SemanticLibrary.cs": {
+    "Name": "SemanticLibrary.cs",
+    "Type": "Service Class",
+    "Insights": [
+      "",
+      "",
+      ""
+    ],
+    "Description": "",
+    "RelativePath": "csharp-cartographer-backend\\05.Services\\Tokens\\Maps\\SemanticLibrary.cs"
+  },
+  "DefinitionProvider.cs": {
+    "Name": "DefinitionProvider.cs",
+    "Type": "Utility Class",
+    "Insights": [
+      "",
+      "",
+      ""
+    ],
+    "Description": "",
+    "RelativePath": "csharp-cartographer-backend\\02.Utilities\\Providers\\DefinitionProvider.cs"
+  },
+  "TokenChartGenerator.cs": {
+    "Name": "TokenChartGenerator.cs",
+    "Type": "Service Class",
+    "Insights": [
+      "",
+      "",
+      ""
+    ],
+    "Description": "",
+    "RelativePath": "csharp-cartographer-backend\\05.Services\\Charts\\TokenChartGenerator.cs"
   },
   "SyntaxHighlighter.cs": {
     "Name": "SyntaxHighlighter.cs",
@@ -43,17 +142,6 @@
     "Description": "",
     "RelativePath": "csharp-cartographer-backend\\04.DataAccess\\Artifacts\\ArtifactRepository.cs"
   },
-  "ArtifactController.cs": {
-    "Name": "ArtifactController.cs",
-    "Type": "API Controller",
-    "Insights": [
-      "An API controller is a specialized class in ASP.NET Core that handles HTTP requests and responses in a Web API.",
-      "They are designed to expose endpoints that provide or consume data, typically in JSON or XML format.",
-      "They perform actions like creating, reading, updating, and deleting (CRUD) resources, and they are commonly used for building RESTful web services."
-    ],
-    "Description": "",
-    "RelativePath": "csharp-cartographer-backend\\08.Controllers\\Artifacts\\ArtifactController.cs"
-  },
   "StringHelpers.cs": {
     "Name": "StringHelpers.cs",
     "Type": "Extension/Helper Class",
@@ -75,17 +163,6 @@
     ],
     "Description": "",
     "RelativePath": "csharp-cartographer-backend\\07.Clients\\ChatGpt\\ChatGptClient.cs"
-  },
-  "GenerateArtifactDto.cs": {
-    "Name": "GenerateArtifactDto.cs",
-    "Type": "Data Transfer Object (DTO)",
-    "Insights": [
-      "A Data Transfer Object is a simple object designed to carry data between layers or components of an application.",
-      "Unlike domain models, DTOs typically do not contain business logic and are solely focused on encapsulating and serializing data for transfer.",
-      "They often represent a subset or a projection of the underlying data to avoid overfetching or exposing sensitive internal fields."
-    ],
-    "Description": "",
-    "RelativePath": "csharp-cartographer-backend\\08.Controllers\\Artifacts\\Dtos\\GenerateArtifactDto.cs"
   },
   "SyntaxHighlighterTests.cs": {
     "Name": "SyntaxHighlighterTests.cs",

@@ -2,23 +2,13 @@
   "NavToken.cs": {
     "ArtifactID": "11111111-1111-1111-1111-111111111111",
     "Label": "Model Definition",
-    "Description": "",
+    "Description": "This is the definition for the NavToken domain model which contains properties for all the data collected during code analysis.",
     "Highlights": [ 31, 32, 33, 56, 57, 59, 60, 61, 62, 63, 64, 65, 78, 79, 81, 82, 83, 84 ],
     "Notes": [
       {
-        "Label": "",
-        "Text": "",
-        "Highlights": [ 31, 32, 33, 63, 64, 65 ]
-      },
-      {
-        "Label": "",
-        "Text": "",
-        "Highlights": [ 56, 57, 78, 79 ]
-      },
-      {
-        "Label": "",
-        "Text": "",
-        "Highlights": [ 59, 60, 61, 62, 81, 82, 83, 84 ]
+        "Label": "JsonIgnore Attributes",
+        "Text": "This attribute prevents a property from being included in the artifact generation http response. All properties with this attribute are only used on the backend and not displayed anywhere in the UI. Not including them in the response drastically cuts down the response size.",
+        "Highlights": [ 248, 249, 250, 260, 261, 262 ]
       }
     ]
   }

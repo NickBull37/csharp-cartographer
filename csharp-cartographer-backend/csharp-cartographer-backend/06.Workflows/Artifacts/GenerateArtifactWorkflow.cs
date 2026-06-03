@@ -52,7 +52,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
         public async Task<ActionResponse<Artifact>> GenerateDemoArtifact(string fileName, CancellationToken cancellationToken)
         {
-            FileData fileData = _fileProcessor.ReadInDemoFileData(fileName);
+            FileData fileData = _fileProcessor.GetDemoFileData(fileName);
 
             var actionResponse = await GenerateArtifact(fileData, cancellationToken);
 
@@ -67,7 +67,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
         public async Task<ActionResponse<Artifact>> GenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken)
         {
-            FileData fileData = _fileProcessor.ReadInUploadedFileData(requestDto);
+            FileData fileData = _fileProcessor.GetUploadedFileData(requestDto);
             return await GenerateArtifact(fileData, cancellationToken);
         }
 

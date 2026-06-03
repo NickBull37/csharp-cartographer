@@ -5,10 +5,10 @@ namespace csharp_cartographer_backend._05.Services.Files
 {
     public interface IFileProcessor
     {
-        FileData ReadInDemoFileData(string fileName);
+        FileData GetDemoFileData(string fileName);
 
-        FileData ReadInUploadedFileData(GenerateArtifactDto requestDto);
+        FileData GetUploadedFileData(GenerateArtifactDto requestDto);
 
-        FileData ReadInCodeSnippetData(string snippet);
+        FileData GetCodeSnippetFileData(string snippet);
     }
 }

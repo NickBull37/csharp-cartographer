@@ -572,7 +572,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static SemanticRole GetKeywordRole(in NavToken token)
         {
-            // blue keywords
             if (token.IsRegularKeyword())
             {
                 // --- Accessor keywords ---
@@ -596,9 +595,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsLocalVariableType())
                     return SemanticRole.LocalVariableType;
-
-                //if (token.IsLoopIteratorType())
-                //    return SemanticRole.LoopIteratorType;
 
                 if (token.IsDelegateReturnType())
                     return SemanticRole.DelegateReturnType;
@@ -691,7 +687,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     return SemanticRole.WithExpression;
             }
 
-            // purple keywords
             if (token.IsControlKeyword())
             {
                 // --- Conditional branching keywords ---
@@ -1298,7 +1293,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static void MapSpecialCaseSemanticRoles(List<NavToken> navTokens)
         {
-            MapQueryExpressionVariableRefs(navTokens);
+            //MapQueryExpressionVariableRefs(navTokens);
         }
 
         private static void MapQueryExpressionVariableRefs(List<NavToken> navTokens)
@@ -1313,7 +1308,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.Text is not "from" || parentKind != SyntaxKind.FromClause)
                     continue;
 
-                MapQueryExpression(navTokens, i);
+                //MapQueryExpression(navTokens, i);
             }
         }
 

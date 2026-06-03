@@ -386,17 +386,11 @@
 
         #region ------------ LITERALS ------------
 
-        //BooleanLiteral,
-        //CharacterLiteral,
-        //NullValue,
-        NumericFormatSpecifier,
-        //NumericLiteral,
-        //QuotedString,
-        //VerbatimString,
         InterpolatedStringStart,
         InterpolatedStringText,
         InterpolatedStringEnd,
         InterpolatedVerbatimStringStart,
+        NumericFormatSpecifier,
         #endregion
 
         #region ------------ MISC ------------
@@ -457,7 +451,6 @@
         GenericTypeArgument,
         LocalFunctionReturnType,
         LocalVariableType,
-        //LoopIteratorType,
         MethodReturnType,
         OutVariableType,
         ParameterType,
@@ -470,20 +463,12 @@
         TypeQualifier,
         #endregion
 
-        #region ------------ KEYWORD LITERALS ------------
-
-        #endregion
-
         #region ------------ KEYWORD OPERATORS ------------
 
         DefaultOperator,
         NameOfOperator,
         SizeOfOperator,
         TypeOfOperator,
-        #endregion
-
-        #region ------------ IDENTIFIER KEYWORDS ------------
-
         #endregion
     }
 
@@ -510,6 +495,7 @@
     {
         Constructor,
         ConversionOperator,
+        EnumMember,
         Event,
         Field,
         Indexer,
@@ -520,7 +506,6 @@
 
     public enum NonMemberSymbols
     {
-        EnumMember,
         Label,
         LocalVariable,
         Namespace,
@@ -590,18 +575,18 @@
 
         public string SRLabel { get; init; }
 
-        public string FDLabel { get; init; }
+        public string? FDLabel { get; init; }
 
         // TODO: deprecate MapText class
-        public MapText? RoleDefinition { get; set; }
+        public MapText RoleDefinition { get; init; }
 
-        public MapText? FocusedDefinition { get; set; }
+        public MapText? FocusedDefinition { get; init; }
 
         public SemanticMap(
             string kindLabel,
             string roleLabel,
-            string focusedLabel,
-            MapText? roleDefinition,
+            string? focusedLabel,
+            MapText roleDefinition,
             MapText? focusedDefinition)
         {
             PKLabel = kindLabel;

@@ -99,7 +99,8 @@ const DemoOptionSelection = () => {
                         alignItems={'center'}
                     >
                         <Stack
-                            gap={4.5}
+                            // gap={4.5}
+                            gap={2}
                         >
                             {demoFiles.map((file) => (
                                 <BtnText

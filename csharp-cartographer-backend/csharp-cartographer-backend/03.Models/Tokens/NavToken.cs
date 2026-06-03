@@ -156,6 +156,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             is SyntaxKind.OpenParenToken
             or SyntaxKind.CloseParenToken; // non-role
 
+        public bool IsOpenDelimiter() => Kind
+            is SyntaxKind.OpenBraceToken
+            or SyntaxKind.OpenBracketToken
+            or SyntaxKind.OpenParenToken
+            or SyntaxKind.LessThanToken; // non-role
+
+        public bool IsCloseDelimiter() => Kind
+            is SyntaxKind.CloseBraceToken
+            or SyntaxKind.CloseBracketToken
+            or SyntaxKind.CloseParenToken
+            or SyntaxKind.GreaterThanToken; // non-role
+
         public bool IsAccessorListDelimiter()
         {
             return HasAncestorAt(0, SyntaxKind.AccessorList);

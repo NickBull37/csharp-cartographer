@@ -21,8 +21,15 @@ namespace csharp_cartographer_backend._05.Services.Keys
         /// <summary>
         /// Gets the SemanticRole definition key.
         /// </summary>
-        public static string? GetKey(SemanticRole role)
+        public static string GetKey(SemanticRole role)
         {
+            /*
+             * The SemanticRole is used as the definition key by default. 
+             * Delimiters are the exception since they have much more overlap
+             * than keywords, operators, etc. Use the label on the SemanticRole
+             * as the key for Delimiters.
+             */
+
             return role.GetLabel() ?? role.ToString();
         }
 

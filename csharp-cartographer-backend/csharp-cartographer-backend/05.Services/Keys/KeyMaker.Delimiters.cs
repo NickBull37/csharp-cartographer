@@ -11,18 +11,24 @@ namespace csharp_cartographer_backend._05.Services.Keys
          *    DL:{token.SemanticRole}:Close
          */
 
-        private static DefinitionKey? GetDelimiterKey(NavToken token)
+        private static DefinitionKey GetDelimiterKey(NavToken token)
         {
-            var direction = token.Text switch
-            {
-                "(" or "{" or "[" or "<" => "Open",
-                ")" or "}" or "]" or ">" => "Close",
-                _ => null
-            };
+            string? direction = null;
 
-            return direction is not null
-                ? new DefinitionKey(DelimiterKind, token.SemanticRole.ToString(), [direction])
-                : null;
+            if (token.IsOpenDelimiter())
+                direction = "Open";
+
+            if (token.IsCloseDelimiter())
+                direction = "Close";
+
+            if (direction is null)
+                throw new InvalidDataException();
+
+            return new DefinitionKey(
+                DelimiterKind,
+                token.SemanticRole.ToString(),
+                [direction]
+            );
         }
     }
 }
