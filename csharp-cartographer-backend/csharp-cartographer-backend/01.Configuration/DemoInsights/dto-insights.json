@@ -4,7 +4,7 @@
     "Label": "Data Transfer Object",
     "Description": "This dto was designed to be immutable once received to avoid any unintentional changes and includes validation attributes used in model binding to ensure required values are present.",
     "Highlights": [ 31, 32, 33, 56, 57, 59, 60, 61, 62, 63, 64, 65, 78, 79, 81, 82, 83, 84 ],
-    "NoteDtos": [
+    "Notes": [
       {
         "Label": "Required Attributes",
         "Text": "The [Required] attribute ensures the property cannot be null, an empty string, or a string of only white-space characters. It will throw a validation exception and displays an error message if validation fails.",

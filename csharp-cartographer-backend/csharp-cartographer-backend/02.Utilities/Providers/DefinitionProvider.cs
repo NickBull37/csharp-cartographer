@@ -11,14 +11,19 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
         [GeneratedRegex(@"\{c:(?<classes>[^}]+)\}(?<text>.*?)\{\/c\}", RegexOptions.Singleline)]
         private static partial Regex StyledSpanRegex();
 
-        private const string LineBreakPlaceholder = "<break/>";
-        private const string HovExtPlaceholder = "{HovExt}";
-        private const string JumpExtPlaceholder = "{JumpExt}";
-        private const string RefExtPlaceholder = "{RefExt}";
+        private const string LineBreakInsert = "<break/>";
 
-        private const string HoverExtension = "<break/>Hover your cusor over the {c:color-yellow bold}method{/c} name to see addition details like what the method will return or what types the provided arguments need to be.";
-        private const string JumpToDefinitionExtension = "<break/>Put your cursor inside the identifier name in your IDE and hit {c:keyword}F12{/c} to jump to the identifier's definition.";
-        private const string ReferenceExtension = "<break/>Look for a {c:underline}references{/c} link above the declaration in your IDE to see everywhere it's currently being used.";
+        private static readonly Dictionary<string, string> ExtensionReplacements = new()
+        {
+            {"{HovExt}", "<break/>Hover your cusor over the {c:color-yellow bold}method{/c} name to see addition details like what the method will return or what types the provided arguments need to be." },
+            {"{JumpExt}", "<break/>Put your cursor inside the identifier name in your IDE and hit {c:keyword}F12{/c} to jump to the identifier's definition."},
+            {"{RefExt}", "<break/>Look for a {c:underline}references{/c} link above the declaration in your IDE to see everywhere it's currently being used."}
+        };
+
+        private static readonly JsonSerializerOptions JsonOptions = new()
+        {
+            PropertyNameCaseInsensitive = true
+        };
 
         private static readonly Lazy<IReadOnlyDictionary<string, MapText>> Definitions
             = new(LoadDefinitions);
@@ -28,7 +33,7 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
                 ? mapText
                 : null;
 
-        private static IReadOnlyDictionary<string, MapText> LoadDefinitions()
+        private static Dictionary<string, MapText> LoadDefinitions()
         {
             var assembly = typeof(DefinitionProvider).Assembly;
 
@@ -43,11 +48,6 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
 
             var merged = new Dictionary<string, MapText>(StringComparer.OrdinalIgnoreCase);
 
-            var jsonOptions = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-
             foreach (var resourceName in resourceNames)
             {
                 using var stream = assembly.GetManifestResourceStream(resourceName)
@@ -56,7 +56,7 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
                 using var reader = new StreamReader(stream);
                 var json = reader.ReadToEnd();
 
-                var dictionary = JsonSerializer.Deserialize<Dictionary<string, DefinitionEntry>>(json, jsonOptions)
+                var dictionary = JsonSerializer.Deserialize<Dictionary<string, DefinitionEntry>>(json, JsonOptions)
                     ?? new Dictionary<string, DefinitionEntry>(StringComparer.OrdinalIgnoreCase);
 
                 foreach (var (key, entry) in dictionary)
@@ -74,10 +74,10 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
 
         private static MapText ParseMarkupToMapText(string markup)
         {
-            if (string.IsNullOrEmpty(markup))
+            if (string.IsNullOrWhiteSpace(markup))
                 return new();
 
-            markup = ReplaceExtPlaceholders(markup);
+            markup = InsertExtensions(markup);
             List<TextSegment> segments = [];
 
             int index = 0;
@@ -126,38 +126,29 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
             };
         }
 
-        private static string ReplaceExtPlaceholders(string markup)
+        private static string InsertExtensions(string markup)
         {
-            if (string.IsNullOrEmpty(markup))
+            if (string.IsNullOrWhiteSpace(markup))
                 return markup;
 
-            markup = markup.Replace(
-                HovExtPlaceholder,
-                HoverExtension,
-                StringComparison.OrdinalIgnoreCase
-            );
-
-            markup = markup.Replace(
-                JumpExtPlaceholder,
-                JumpToDefinitionExtension,
-                StringComparison.OrdinalIgnoreCase
-            );
-
-            markup = markup.Replace(
-                RefExtPlaceholder,
-                ReferenceExtension,
-                StringComparison.OrdinalIgnoreCase
-            );
+            foreach (var entry in ExtensionReplacements)
+            {
+                markup = markup.Replace(
+                    entry.Key,
+                    entry.Value,
+                    StringComparison.OrdinalIgnoreCase
+                );
+            }
 
             return markup;
         }
 
         private static void AddSegment(List<TextSegment> segments, string text, string[] classes)
         {
-            if (string.IsNullOrEmpty(text))
+            if (string.IsNullOrWhiteSpace(text))
                 return;
 
-            var parts = text.Split(LineBreakPlaceholder, StringSplitOptions.None);
+            var parts = text.Split(LineBreakInsert, StringSplitOptions.None);
 
             for (int i = 0; i < parts.Length; i++)
             {

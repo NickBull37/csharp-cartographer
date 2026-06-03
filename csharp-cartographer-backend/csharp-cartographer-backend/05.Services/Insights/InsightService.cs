@@ -5,20 +5,13 @@ namespace csharp_cartographer_backend._05.Services.Insights
 {
     public class InsightService : IInsightService
     {
-        public InsightService()
-        {
-        }
-
         public Insight? GetDemoFileInsight(string fileName)
         {
-            var embeddedInsight = InsightProvider.GetInsight(fileName);
+            var embInsight = InsightProvider.GetEmbeddedInsight(fileName);
 
-            if (embeddedInsight is null)
-            {
-                return null;
-            }
-
-            return new Insight(embeddedInsight);
+            return embInsight is not null
+                ? new Insight(embInsight)
+                : null;
         }
     }
 }

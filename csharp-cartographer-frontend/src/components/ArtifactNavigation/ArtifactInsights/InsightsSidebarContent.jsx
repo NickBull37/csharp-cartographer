@@ -196,7 +196,7 @@ const InsightsSidebarContent = ({
                         }}
                     >
                         <InsightLabel>
-                            Insight
+                            Insights
                         </InsightLabel>
                         <FileNameLabel>
                             {artifactInsight?.label}

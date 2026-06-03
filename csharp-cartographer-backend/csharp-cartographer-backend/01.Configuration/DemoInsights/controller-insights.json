@@ -4,7 +4,7 @@
     "Label": "API Controller",
     "Description": "This controller handles incoming artifact generation requests for both demo and user-uploaded files. It performs basic request validation, handles 400 and 500 level errors accordingly, and supports cancellation.",
     "Highlights": [ 31, 32, 33, 36, 37, 38, 56, 57, 59, 60, 61, 62, 63, 64, 65, 78, 79, 81, 82, 83, 84 ],
-    "NoteDtos": [
+    "Notes": [
       {
         "Label": "Query Parameter Validation",
         "Text": "When using [ApiController], values passed as query parameters are validated during model binding. Invalid or missing values will produce an automatic 400 BadRequest. Manual validation is still needed to catch empty strings.",

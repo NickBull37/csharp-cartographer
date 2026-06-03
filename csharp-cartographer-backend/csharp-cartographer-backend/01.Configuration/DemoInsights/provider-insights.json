@@ -4,7 +4,7 @@
     "Label": "External Client",
     "Description": "This client class was built to send HTTP requests to an external API and receive an analysis from a 3rd party AI. It supports cancellation and handles a variety of exceptions.",
     "Highlights": [ 125, 126, 252, 253, 254, 255, 256, 257, 258, 273, 274, 275, 276, 277, 278, 279, 294, 295, 296, 297, 298, 299, 302 ],
-    "NoteDtos": [
+    "Notes": [
       {
         "Label": "Try Block",
         "Text": "All code that has the potential to throw an exception is wrapped in a try-catch block to prevent unhandled exceptions from reaching the user and to provide an opportunity to log errors for those excpetions.",
