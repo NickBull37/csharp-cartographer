@@ -2,7 +2,7 @@
 
 namespace csharp_cartographer_backend._02.Utilities.Providers
 {
-    public sealed class DemoFile
+    public sealed class DemoOption
     {
         public required string Name { get; init; }
         public required string Type { get; init; }
@@ -11,23 +11,34 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
         public required string RelativePath { get; init; }
     }
 
-    public class DemoFileProvider
+    public class DemoOptionProvider
     {
         private const string EmbeddedJsonFile = "demo-file-data.json";
+        private static readonly string _solutionRoot = Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName;
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
             PropertyNameCaseInsensitive = true
         };
 
-        private static readonly Lazy<IReadOnlyDictionary<string, DemoFile>> DemoFiles
-            = new(LoadDemoFiles);
+        private static readonly Lazy<IReadOnlyDictionary<string, DemoOption>> DemoOptions
+            = new(LoadDemoOptions);
 
-        public static IReadOnlyCollection<DemoFile> GetDemoFiles()
-            => DemoFiles.Value.Values.ToArray();
+        public static IReadOnlyCollection<DemoOption> GetDemoOptions()
+            => DemoOptions.Value.Values.ToArray();
 
-        private static Dictionary<string, DemoFile> LoadDemoFiles()
+        public static string GetDemoFilePath(string fileName)
         {
-            var assembly = typeof(DemoFileProvider).Assembly;
+            var relativePath = DemoOptions.Value.Values
+                .Where(option => option.Name == fileName)
+                .Select(option => option.RelativePath)
+                .Single();
+
+            return Path.Combine(_solutionRoot, relativePath);
+        }
+
+        private static Dictionary<string, DemoOption> LoadDemoOptions()
+        {
+            var assembly = typeof(DemoOptionProvider).Assembly;
 
             var resourceName = assembly
                 .GetManifestResourceNames()
@@ -42,8 +53,8 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
             using var reader = new StreamReader(stream);
             var json = reader.ReadToEnd();
 
-            return JsonSerializer.Deserialize<Dictionary<string, DemoFile>>(json, JsonOptions)
-                ?? new Dictionary<string, DemoFile>(StringComparer.OrdinalIgnoreCase);
+            return JsonSerializer.Deserialize<Dictionary<string, DemoOption>>(json, JsonOptions)
+                ?? new Dictionary<string, DemoOption>(StringComparer.OrdinalIgnoreCase);
         }
     }
 }
