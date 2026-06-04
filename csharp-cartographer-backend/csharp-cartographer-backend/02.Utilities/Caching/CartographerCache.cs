@@ -1,11 +1,11 @@
-﻿using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
+﻿using csharp_cartographer_backend._03.Models.Shared;
 using System.Collections.Concurrent;
 
 namespace csharp_cartographer_backend._02.Utilities.Caching
 {
     public class CartographerCache : ICartographerCache
     {
-        private record CacheEntry(MapText MapText, DateTime CreatedDateUtc);
+        private record CacheEntry(StyledText StyledText, DateTime CreatedDateUtc);
         private readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(10);
         private readonly ConcurrentDictionary<string, SemaphoreSlim> CacheLocks = new();
         private readonly ConcurrentDictionary<string, CacheEntry> Cache = new();
@@ -14,11 +14,11 @@ namespace csharp_cartographer_backend._02.Utilities.Caching
         {
         }
 
-        public MapText? TryGetCacheEntry(string key)
+        public StyledText? TryGetCacheEntry(string key)
         {
             if (Cache.TryGetValue(key, out var entry) && NotExpired(entry))
             {
-                return entry.MapText;
+                return entry.StyledText;
             }
 
             return null;
@@ -34,7 +34,7 @@ namespace csharp_cartographer_backend._02.Utilities.Caching
             return await @lock.WaitAsync(TimeSpan.FromSeconds(5));
         }
 
-        public void SaveCacheEntry(string key, MapText entry)
+        public void SaveCacheEntry(string key, StyledText entry)
         {
             Cache.AddOrUpdate(key,
                 _ => new CacheEntry(entry, DateTime.UtcNow),

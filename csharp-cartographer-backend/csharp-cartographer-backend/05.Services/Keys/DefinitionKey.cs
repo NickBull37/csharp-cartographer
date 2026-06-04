@@ -6,7 +6,7 @@
 
         public string Subject { get; }
 
-        public IReadOnlyList<string> Qualifiers { get; }
+        public IReadOnlyList<string> Qualifiers { get; } = [];
 
         public DefinitionKey(
             string category,

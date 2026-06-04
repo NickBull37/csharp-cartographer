@@ -1,4 +1,4 @@
-﻿using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
+﻿using csharp_cartographer_backend._03.Models.Shared;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -25,15 +25,15 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
             PropertyNameCaseInsensitive = true
         };
 
-        private static readonly Lazy<IReadOnlyDictionary<string, MapText>> Definitions
+        private static readonly Lazy<IReadOnlyDictionary<string, StyledText>> Definitions
             = new(LoadDefinitions);
 
-        public static MapText? GetMapText(string key)
-            => Definitions.Value.TryGetValue(key, out var mapText)
-                ? mapText
+        public static StyledText? GetStyledText(string key)
+            => Definitions.Value.TryGetValue(key, out var styledText)
+                ? styledText
                 : null;
 
-        private static Dictionary<string, MapText> LoadDefinitions()
+        private static Dictionary<string, StyledText> LoadDefinitions()
         {
             var assembly = typeof(DefinitionProvider).Assembly;
 
@@ -46,7 +46,7 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
                 throw new InvalidOperationException(
                     "No embedded *-definitions.json files found. Ensure Build Action = Embedded Resource.");
 
-            var merged = new Dictionary<string, MapText>(StringComparer.OrdinalIgnoreCase);
+            var merged = new Dictionary<string, StyledText>(StringComparer.OrdinalIgnoreCase);
 
             foreach (var resourceName in resourceNames)
             {
@@ -64,20 +64,20 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
                     if (merged.ContainsKey(key))
                         throw new InvalidOperationException($"Duplicate definition key '{key}' in '{resourceName}'.");
 
-                    var mapText = ParseMarkupToMapText(entry.Definition);
-                    merged.Add(key, mapText);
+                    var styledText = ParseMarkupToStyledText(entry.Definition);
+                    merged.Add(key, styledText);
                 }
             }
 
             return merged;
         }
 
-        private static MapText ParseMarkupToMapText(string markup)
+        private static StyledText ParseMarkupToStyledText(string markup)
         {
             if (string.IsNullOrWhiteSpace(markup))
-                return new();
+                return StyledText.NotFound();
 
-            markup = InsertExtensions(markup);
+            InsertExtensions(markup);
             List<TextSegment> segments = [];
 
             int index = 0;
@@ -120,16 +120,13 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
                 );
             }
 
-            return new MapText
-            {
-                Segments = segments
-            };
+            return new StyledText(segments);
         }
 
-        private static string InsertExtensions(string markup)
+        private static void InsertExtensions(string markup)
         {
             if (string.IsNullOrWhiteSpace(markup))
-                return markup;
+                return;
 
             foreach (var entry in ExtensionReplacements)
             {
@@ -139,8 +136,6 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
                     StringComparison.OrdinalIgnoreCase
                 );
             }
-
-            return markup;
         }
 
         private static void AddSegment(List<TextSegment> segments, string text, string[] classes)
@@ -154,21 +149,19 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
             {
                 if (parts[i].Length > 0)
                 {
-                    segments.Add(new TextSegment
+                    var segment = new TextSegment()
                     {
                         Text = parts[i],
                         Classes = classes
-                    });
+                    };
+
+                    segments.Add(segment);
                 }
 
                 // insert break between parts
                 if (i < parts.Length - 1)
                 {
-                    segments.Add(new TextSegment
-                    {
-                        Text = "\r\n\r\n",
-                        Classes = ["line-break"]
-                    });
+                    segments.Add(TextSegment.LineBreak());
                 }
             }
         }

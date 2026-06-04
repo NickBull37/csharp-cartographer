@@ -1,4 +1,6 @@
-﻿namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
+﻿using csharp_cartographer_backend._03.Models.Shared;
+
+namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 {
     /// <summary>
     /// Describes the general syntax category the token falls under.
@@ -577,17 +579,16 @@
 
         public string? FDLabel { get; init; }
 
-        // TODO: deprecate MapText class
-        public MapText RoleDefinition { get; init; }
+        public StyledText RoleDefinition { get; init; }
 
-        public MapText? FocusedDefinition { get; init; }
+        public StyledText? FocusedDefinition { get; init; }
 
         public SemanticMap(
             string kindLabel,
             string roleLabel,
             string? focusedLabel,
-            MapText roleDefinition,
-            MapText? focusedDefinition)
+            StyledText roleDefinition,
+            StyledText? focusedDefinition)
         {
             PKLabel = kindLabel;
             SRLabel = roleLabel;

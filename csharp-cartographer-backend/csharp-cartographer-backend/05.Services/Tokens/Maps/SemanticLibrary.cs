@@ -1,5 +1,6 @@
 ﻿using csharp_cartographer_backend._02.Utilities.Helpers;
 using csharp_cartographer_backend._02.Utilities.Providers;
+using csharp_cartographer_backend._03.Models.Shared;
 using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 using csharp_cartographer_backend._05.Services.Keys;
@@ -38,24 +39,24 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 : token.PrimaryKind.ToString();
         }
 
-        private static MapText GetRoleDefinition(SemanticRole role)
+        private static StyledText GetRoleDefinition(SemanticRole role)
         {
             if (role is SemanticRole.Unknown)
-                return MapText.Undefined();
+                return StyledText.NotFound();
 
             var key = KeyMaker.GetKey(role);
 
-            return DefinitionProvider.GetMapText(key) ?? MapText.Undefined();
+            return DefinitionProvider.GetStyledText(key) ?? StyledText.NotFound();
         }
 
-        private static MapText? GetFocusedDefinition(NavToken token)
+        private static StyledText? GetFocusedDefinition(NavToken token)
         {
             var key = KeyMaker.GetKey(token);
 
             if (key is null)
                 return null;
 
-            return DefinitionProvider.GetMapText(key) ?? null;
+            return DefinitionProvider.GetStyledText(key) ?? null;
         }
     }
 }
