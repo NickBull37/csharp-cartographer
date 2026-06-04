@@ -13,32 +13,36 @@ namespace csharp_cartographer_backend._05.Services.Keys
          *  are covered by Keywords.
          */
 
-        private static DefinitionKey? GetLiteralKey(NavToken token)
+        /// Literal Key: 
+        /// [kindabrv]:[extension]:[modifier]
+        /// LT:{string ext}
+
+        private static string? GetLiteralKey(NavToken token)
         {
             if (token.IsCharacterLiteral())
-                return new DefinitionKey(LiteralKind, "CharacterLiteral", []);
+                return Key(LT, "CharacterLiteral");
 
             if (token.IsQuotedString())
-                return new DefinitionKey(LiteralKind, "QuotedString", []);
+                return Key(LT, "QuotedString");
 
             if (token.IsVerbatimString())
-                return new DefinitionKey(LiteralKind, "VerbatimString", []);
+                return Key(LT, "VerbatimString");
 
             if (token.IsInterpolatedVerbatimString())
-                return new DefinitionKey(LiteralKind, "InterpolatedVerbatimString", []);
+                return Key(LT, "InterpolatedVerbatimString");
 
             if (token.IsInterpolatedString())
-                return new DefinitionKey(LiteralKind, "InterpolatedString", []);
+                return Key(LT, "InterpolatedString");
 
             if (token.IsNumericLiteral())
             {
                 if (token.IsDecimalValue())
-                    return new DefinitionKey(LiteralKind, "DecimalLiteral", []);
+                    return Key(LT, "DecimalLiteral");
 
                 if (token.IsFloatingPointValue())
-                    return new DefinitionKey(LiteralKind, "FloatingPointLiteral", []);
+                    return Key(LT, "FloatingPointLiteral");
 
-                return new DefinitionKey(LiteralKind, "NumericLiteral", []);
+                return Key(LT, "NumericLiteral");
             }
 
             return null;

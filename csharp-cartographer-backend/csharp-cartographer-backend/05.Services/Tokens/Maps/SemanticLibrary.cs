@@ -44,14 +44,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (role is SemanticRole.Unknown)
                 return StyledText.NotFound();
 
-            var key = KeyMaker.GetKey(role);
+            var key = KeyMaker.GetRoleKey(role);
 
             return DefinitionProvider.GetStyledText(key) ?? StyledText.NotFound();
         }
 
         private static StyledText? GetFocusedDefinition(NavToken token)
         {
-            var key = KeyMaker.GetKey(token);
+            var key = KeyMaker.GetFocusedKey(token);
 
             if (key is null)
                 return null;

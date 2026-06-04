@@ -6,22 +6,20 @@ namespace csharp_cartographer_backend._05.Services.Keys
 {
     public static partial class KeyMaker
     {
-        /*
-         * Default Key Structure: [Kind Abrv]:[distinguishing ext]:[optional extensions]
-         */
+        /// Key Structure: [kindabrv]:[extension]:[modifier]
 
-        private const string DelimiterKind = "DL";
-        private const string IdentifierKind = "ID";
-        private const string KeywordKind = "KW";
-        private const string KeywordOperatorKind = "KWOP";
-        private const string LiteralKind = "LT";
-        private const string OperatorKind = "OP";
-        private const string PunctuationKind = "PN";
+        private const string DL = "DL";
+        private const string ID = "ID";
+        private const string KW = "KW";
+        private const string KWOP = "KWOP";
+        private const string LT = "LT";
+        private const string OP = "OP";
+        private const string PN = "PN";
 
         /// <summary>
         /// Gets the SemanticRole definition key.
         /// </summary>
-        public static string GetKey(SemanticRole role)
+        public static string GetRoleKey(SemanticRole role)
         {
             /*
              * The SemanticRole is used as the definition key by default. 
@@ -36,7 +34,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
         /// <summary>
         /// Gets the focused definition key.
         /// </summary>
-        public static string? GetKey(NavToken token)
+        public static string? GetFocusedKey(NavToken token)
         {
             var key = token.PrimaryKind switch
             {
@@ -51,5 +49,11 @@ namespace csharp_cartographer_backend._05.Services.Keys
 
             return key?.ToString();
         }
+
+        private static string Key(string kindAbrv, string extension)
+            => $"{kindAbrv}:{extension}";
+
+        private static string Key(string kindAbrv, string extension, string modifier)
+            => $"{kindAbrv}:{extension}:{modifier}";
     }
 }

@@ -14,13 +14,17 @@ namespace csharp_cartographer_backend._05.Services.Keys
          *  context-specific definition.
          */
 
-        private static DefinitionKey GetKeywordKey(NavToken token)
+        /// Keyword Key: 
+        /// [kindabrv]:[extension]:[modifier]
+        /// KW:{token.Text}:{token.SemanticRole?}
+
+        private static string GetKeywordKey(NavToken token)
         {
             if (token.IsVarPatternKeyword())
-                return new DefinitionKey(KeywordKind, token.Text, ["PatternMatching"]);
+                return Key(KW, token.Text, "PatternMatching");
 
             if (token.IsDefaultLiteral())
-                return new DefinitionKey(KeywordKind, token.Text, ["Literal"]);
+                return Key(KW, token.Text, "Literal");
 
             bool requiresRoleExt = token.Text
                 is "case"
@@ -31,8 +35,8 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 or "where";
 
             return requiresRoleExt
-                ? new DefinitionKey(KeywordKind, token.Text, [token.SemanticRole.ToString()])
-                : new DefinitionKey(KeywordKind, token.Text, []);
+                ? Key(KW, token.Text, token.SemanticRole.ToString())
+                : Key(KW, token.Text);
         }
     }
 }

@@ -4,31 +4,15 @@ namespace csharp_cartographer_backend._05.Services.Keys
 {
     public static partial class KeyMaker
     {
-        /*
-         * DEFAULT KEY
-         *  
-         *    DL:{token.SemanticRole}:Open
-         *    DL:{token.SemanticRole}:Close
-         */
+        /// Delimiter Key: 
+        /// [kindabrv]:[extension]:[modifier]
+        /// DL:{token.SemanticRole}:Open
 
-        private static DefinitionKey GetDelimiterKey(NavToken token)
+        private static string GetDelimiterKey(NavToken token)
         {
-            string? direction = null;
-
-            if (token.IsOpenDelimiter())
-                direction = "Open";
-
-            if (token.IsCloseDelimiter())
-                direction = "Close";
-
-            if (direction is null)
-                throw new InvalidDataException();
-
-            return new DefinitionKey(
-                DelimiterKind,
-                token.SemanticRole.ToString(),
-                [direction]
-            );
+            return token.IsOpenDelimiter()
+                ? Key(DL, token.SemanticRole.ToString(), "Open")
+                : Key(DL, token.SemanticRole.ToString(), "Close");
         }
     }
 }

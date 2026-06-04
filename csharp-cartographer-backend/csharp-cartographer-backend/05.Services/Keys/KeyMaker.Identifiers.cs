@@ -21,6 +21,17 @@ namespace csharp_cartographer_backend._05.Services.Keys
          *  a little more information when possible.
          */
 
+        /// Identifier Key: 
+        /// 
+        /// default
+        /// [kindabrv]:[extension]:[modifier]
+        /// ID:{token.SemanticRole}
+        /// 
+        /// special case
+        /// ID:{token.SemanticRole}
+        /// ID:GenericType
+        /// ID:{identifier reference}
+
         private static List<SemanticRole> DeclarationRoles =
         [
             SemanticRole.FieldDeclaration,
@@ -29,35 +40,20 @@ namespace csharp_cartographer_backend._05.Services.Keys
             SemanticRole.Parameter
         ];
 
-        private static DefinitionKey? GetIdentifierKey(NavToken token)
+        private static string? GetIdentifierKey(NavToken token)
         {
             if (token.IsGenericType())
-                return new DefinitionKey(IdentifierKind, "GenericType", []);
+                return Key(ID, "GenericType");
 
-            var key = GetIdentifierReferenceKey(token);
-            if (key is not null)
-                return key;
+            if (ShouldUseReferenceExtension(token))
+                return GetIdentifierReferenceKey(token);
 
-            return new DefinitionKey(IdentifierKind, token.SemanticRole.ToString(), []);
+            return Key(ID, token.SemanticRole.ToString());
         }
 
-        private static DefinitionKey? GetIdentifierReferenceKey(NavToken token)
+        private static string? GetIdentifierReferenceKey(NavToken token)
         {
-            bool isDeclarationRole = DeclarationRoles.Contains(token.SemanticRole);
-            bool isPotentialReferenceRole = token.Classifications.Final
-                is "event name"
-                or "event field name"
-                or "field name"
-                or "local name"
-                or "parameter name"
-                or "property name";
-
-            if (isDeclarationRole || !isPotentialReferenceRole)
-            {
-                return null;
-            }
-
-            var refExtension = token.Classifications.Final switch
+            return token.Classifications.Final switch
             {
                 "event name" => null,
                 "event field name" => null,
@@ -69,11 +65,20 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 "property name" => "PropertyReference",
                 _ => null,
             };
+        }
 
-            if (refExtension is null)
-                return null;
+        private static bool ShouldUseReferenceExtension(NavToken token)
+        {
+            bool isDeclarationRole = DeclarationRoles.Contains(token.SemanticRole);
+            bool isDefinedInFile = token.Classifications.Final
+                is "event name"
+                or "event field name"
+                or "field name"
+                or "local name"
+                or "parameter name"
+                or "property name";
 
-            return new DefinitionKey(IdentifierKind, refExtension, []);
+            return !isDeclarationRole && isDefinedInFile;
         }
     }
 }

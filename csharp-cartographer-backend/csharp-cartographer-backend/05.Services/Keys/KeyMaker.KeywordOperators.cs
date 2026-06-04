@@ -8,13 +8,13 @@ namespace csharp_cartographer_backend._05.Services.Keys
          *  Default Key: KWOP:{token.Text}
          */
 
-        private static DefinitionKey GetKeywordOperatorKey(NavToken token)
+        /// Keyword Operator Key: 
+        /// [kindabrv]:[extension]:[modifier]
+        /// KW:{token.Text}
+
+        private static string GetKeywordOperatorKey(NavToken token)
         {
-            return new DefinitionKey(
-                KeywordOperatorKind,
-                token.Text,
-                []
-            );
+            return Key(KWOP, token.Text);
         }
     }
 }

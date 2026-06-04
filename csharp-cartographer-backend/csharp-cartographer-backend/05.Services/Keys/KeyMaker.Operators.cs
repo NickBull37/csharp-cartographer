@@ -16,82 +16,87 @@ namespace csharp_cartographer_backend._05.Services.Keys
          *      OP:[full syntax string]
          */
 
-        private static DefinitionKey? GetOperatorKey(NavToken token)
+        /// Operator Key: 
+        /// [kindabrv]:[extension]:(modifier)
+        /// OP:{token.Text}
+
+        private static string? GetOperatorKey(NavToken token)
         {
             // (*)(.) look like operators but aren't
             if (token.IsPointerTypeIndicator() || token.IsQualifiedNameSeparator())
                 return null;
 
             // (?.) split into multiple tokens, requires full operator syntax
-            if (token.SemanticRole
-                is SemanticRole.NullConditionalDot
-                or SemanticRole.NullConditionalQuestion)
-            {
-                return new DefinitionKey(OperatorKind, "?.", []);
-            }
+            if (IsNullConditional(token))
+                return Key(OP, "?.");
 
             // (c?t:f) split into multiple tokens, requires full operator syntax
-            if (token.SemanticRole
-                is SemanticRole.TernaryQuestion
-                or SemanticRole.TernaryColon)
-            {
-                return new DefinitionKey(OperatorKind, "c?t:f", []);
-            }
+            if (IsTernary(token))
+                return Key(OP, "c?t:f");
 
             // (+)(-)(!)(^)(*)(&)(..)(=>) overlaps with other operators, requires full name
-            string? operatorName = GetOperatorNameExtension(token);
-            if (operatorName is not null)
-            {
-                return new DefinitionKey(OperatorKind, token.Text, [operatorName]);
-            }
+            if (TryGetOperatorNameExtension(token, out var operatorName))
+                return Key(OP, token.Text, operatorName);
 
             // default key
-            return new DefinitionKey(OperatorKind, token.Text, []);
+            return Key(OP, token.Text);
         }
 
-        private static string? GetOperatorNameExtension(NavToken token)
+        private static bool TryGetOperatorNameExtension(NavToken token, out string? extension)
         {
+            extension = null;
+
             // (+)(-) unary plus / unary minus
             if (token.IsUnaryPlusOperator())
-                return "UnaryPlus";
+                extension = "UnaryPlus";
             if (token.IsUnaryMinusOperator())
-                return "UnaryMinus";
+                extension = "UnaryMinus";
 
             // (!) logical NOT / null forgiving
             if (token.IsLogicalNotOperator())
-                return "LogicalNot";
+                extension = "LogicalNot";
             if (token.IsNullForgivingOperator())
-                return "NullForgiving";
+                extension = "NullForgiving";
 
             // (^) index / bitwise xor
             if (token.IsIndexFromEndOperator())
-                return "Index";
+                extension = "Index";
             if (token.IsBitwiseXorOperator())
-                return "BitwiseXor";
+                extension = "BitwiseXor";
 
             // (*) multiplication / dereference
             if (token.IsMultiplicationOperator())
-                return "Multiplication";
+                extension = "Multiplication";
             if (token.IsDereferenceOperator())
-                return "Dereference";
+                extension = "Dereference";
 
             // (&) address-of / bitwise and
             if (token.IsAddressOfOperator())
-                return "AddressOf";
+                extension = "AddressOf";
             if (token.IsBitwiseAndOperator())
-                return "BitwiseAnd";
+                extension = "BitwiseAnd";
 
             // (..) range / slice
             if (token.IsRangeOperator())
-                return "Range";
+                extension = "Range";
             if (token.IsSliceOperator())
-                return "Slice";
+                extension = "Slice";
 
             // (=>) lambda / expression body arrow
             if (token.IsLambdaOperator())
-                return "Lambda";
+                extension = "Lambda";
 
-            return null;
+            return !string.IsNullOrEmpty(extension);
         }
+
+        private static bool IsNullConditional(NavToken token)
+            => token.SemanticRole
+                is SemanticRole.NullConditionalDot
+                or SemanticRole.NullConditionalQuestion;
+
+        private static bool IsTernary(NavToken token)
+            => token.SemanticRole
+                is SemanticRole.TernaryQuestion
+                or SemanticRole.TernaryColon;
     }
 }
