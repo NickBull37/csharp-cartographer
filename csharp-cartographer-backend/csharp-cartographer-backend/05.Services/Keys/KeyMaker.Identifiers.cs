@@ -57,18 +57,23 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 return null;
             }
 
-            return token.Classifications.Final switch
+            var refExtension = token.Classifications.Final switch
             {
                 "event name" => null,
                 "event field name" => null,
-                "field name" => new DefinitionKey(IdentifierKind, "FieldReference", []),
-                "local name" => new DefinitionKey(IdentifierKind, "LocalVariableReference", []),
+                "field name" => "FieldReference",
+                "local name" => "LocalVariableReference",
                 "parameter name" => token.IsLambdaParameterReference()
-                                        ? new DefinitionKey(IdentifierKind, "LambdaParameterReference", [])
-                                        : new DefinitionKey(IdentifierKind, "ParameterReference", []),
-                "property name" => new DefinitionKey(IdentifierKind, "PropertyReference", []),
+                                        ? "LambdaParameterReference"
+                                        : "ParameterReference",
+                "property name" => "PropertyReference",
                 _ => null,
             };
+
+            if (refExtension is null)
+                return null;
+
+            return new DefinitionKey(IdentifierKind, refExtension, []);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
 
         private static DefinitionKey? GetPunctuationKey(NavToken token)
         {
-            return new DefinitionKey(KeywordKind, token.Text, []);
+            return new DefinitionKey(PunctuationKind, token.Text, []);
         }
     }
 }

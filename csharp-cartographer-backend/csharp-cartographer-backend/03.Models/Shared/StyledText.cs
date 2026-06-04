@@ -11,7 +11,7 @@
 
         public static StyledText NotFound()
         {
-            return new StyledText([TextSegment.NotFound()]);
+            return new([TextSegment.NotFound()]);
         }
     }
 
@@ -27,7 +27,7 @@
 
         public static TextSegment LineBreak()
         {
-            return new TextSegment
+            return new()
             {
                 Text = "\r\n\r\n",
                 Classes = ["line-break"]
@@ -36,7 +36,7 @@
 
         public static TextSegment NotFound()
         {
-            return new TextSegment
+            return new()
             {
                 Text = "Could not find definition.",
                 Classes = []

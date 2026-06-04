@@ -39,13 +39,4 @@
             return builder.ToString();
         }
     }
-
-    public sealed record DefinitionKeyShort(
-        string Category,
-        string Subject,
-        IReadOnlyList<string> Qualifiers)
-    {
-        public override string ToString()
-            => string.Join(":", new[] { Category, Subject }.Concat(Qualifiers));
-    }
 }
