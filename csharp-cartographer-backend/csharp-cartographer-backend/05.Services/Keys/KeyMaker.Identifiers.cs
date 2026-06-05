@@ -21,17 +21,6 @@ namespace csharp_cartographer_backend._05.Services.Keys
          *  a little more information when possible.
          */
 
-        /// Identifier Key: 
-        /// 
-        /// default
-        /// [kindabrv]:[extension]:[modifier]
-        /// ID:{token.SemanticRole}
-        /// 
-        /// special case
-        /// ID:{token.SemanticRole}
-        /// ID:GenericType
-        /// ID:{identifier reference}
-
         private static List<SemanticRole> DeclarationRoles =
         [
             SemanticRole.FieldDeclaration,
@@ -51,22 +40,6 @@ namespace csharp_cartographer_backend._05.Services.Keys
             return Key(ID, token.SemanticRole.ToString());
         }
 
-        private static string? GetIdentifierReferenceKey(NavToken token)
-        {
-            return token.Classifications.Final switch
-            {
-                "event name" => null,
-                "event field name" => null,
-                "field name" => "FieldReference",
-                "local name" => "LocalVariableReference",
-                "parameter name" => token.IsLambdaParameterReference()
-                                        ? "LambdaParameterReference"
-                                        : "ParameterReference",
-                "property name" => "PropertyReference",
-                _ => null,
-            };
-        }
-
         private static bool ShouldUseReferenceExtension(NavToken token)
         {
             bool isDeclarationRole = DeclarationRoles.Contains(token.SemanticRole);
@@ -79,6 +52,32 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 or "property name";
 
             return !isDeclarationRole && isDefinedInFile;
+        }
+
+        private static string? GetIdentifierReferenceKey(NavToken token)
+        {
+            var extension = token.Classifications.Final switch
+            {
+                "event name" => null,
+                "event field name" => null,
+                "field name" => "FieldReference",
+                "local name" => token.IsOutVariableDeclaration()
+                                    ? "OutVariableReference"
+                                    : "LocalVariableReference",
+                "parameter name" => token.IsLambdaParameterReference()
+                                        ? "LambdaParameterReference"
+                                        : "ParameterReference",
+                "property name" => "PropertyReference",
+                _ => null,
+            };
+
+            if (extension is null)
+            {
+                // log error
+                return null;
+            }
+
+            return Key(ID, extension);
         }
     }
 }

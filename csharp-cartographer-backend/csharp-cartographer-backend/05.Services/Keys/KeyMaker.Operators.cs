@@ -1,24 +1,11 @@
 ﻿using csharp_cartographer_backend._03.Models.Tokens;
-using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 
 namespace csharp_cartographer_backend._05.Services.Keys
 {
     public static partial class KeyMaker
     {
-        /*
-         *  DEFAULT KEY: OP:{token.Text}
-         * 
-         *  SPECIAL KEYS:
-         *  Add specific operator name for operators that fall into multiple categories.
-         *      OP:{token.Text}:[operator name]
-         *  
-         *  Use full operator syntax when roslyn splits an operator into multiple tokens.
-         *      OP:[full syntax string]
-         */
-
-        /// Operator Key: 
-        /// [kindabrv]:[extension]:(modifier)
-        /// OP:{token.Text}
+        /// key structure: kindabrv:extension:modifier?
+        /// operator key:  OP:{token.Text}
 
         private static string? GetOperatorKey(NavToken token)
         {
@@ -27,11 +14,11 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 return null;
 
             // (?.) split into multiple tokens, requires full operator syntax
-            if (IsNullConditional(token))
+            if (token.IsNullConditionalOperator())
                 return Key(OP, "?.");
 
             // (c?t:f) split into multiple tokens, requires full operator syntax
-            if (IsTernary(token))
+            if (token.IsTernaryOperator())
                 return Key(OP, "c?t:f");
 
             // (+)(-)(!)(^)(*)(&)(..)(=>) overlaps with other operators, requires full name
@@ -42,9 +29,9 @@ namespace csharp_cartographer_backend._05.Services.Keys
             return Key(OP, token.Text);
         }
 
-        private static bool TryGetOperatorNameExtension(NavToken token, out string? extension)
+        private static bool TryGetOperatorNameExtension(NavToken token, out string extension)
         {
-            extension = null;
+            extension = string.Empty;
 
             // (+)(-) unary plus / unary minus
             if (token.IsUnaryPlusOperator())
@@ -88,15 +75,5 @@ namespace csharp_cartographer_backend._05.Services.Keys
 
             return !string.IsNullOrEmpty(extension);
         }
-
-        private static bool IsNullConditional(NavToken token)
-            => token.SemanticRole
-                is SemanticRole.NullConditionalDot
-                or SemanticRole.NullConditionalQuestion;
-
-        private static bool IsTernary(NavToken token)
-            => token.SemanticRole
-                is SemanticRole.TernaryQuestion
-                or SemanticRole.TernaryColon;
     }
 }

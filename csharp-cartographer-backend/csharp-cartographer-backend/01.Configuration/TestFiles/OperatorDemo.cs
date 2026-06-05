@@ -384,6 +384,27 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                 };
         }
 
+        private static readonly List<string> Teststring = new()
+        {
+            "{HovExt}",
+            "{JumpExt}",
+            "{RefExt}",
+        };
+
+        private static readonly List<string> ETest = new()
+        {
+            {"{HovExt}"},
+            {"{JumpExt}"},
+            {"{RefExt}"},
+        };
+
+        private static readonly Dictionary<string, string> ExtTest = new()
+        {
+            {"{HovExt}", "<break/>"},
+            {"{JumpExt}", "<break/>"},
+            {"{RefExt}", "<break/>"}
+        };
+
         private static string? GetText() =>
             DateTime.Now.Second % 2 == 0 ? "hello world" : null;
 

@@ -17,7 +17,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
         private const string PN = "PN";
 
         /// <summary>
-        /// Gets the SemanticRole definition key.
+        /// Gets the key used to find the SemanticRole definition.
         /// </summary>
         public static string GetRoleKey(SemanticRole role)
         {
@@ -32,11 +32,11 @@ namespace csharp_cartographer_backend._05.Services.Keys
         }
 
         /// <summary>
-        /// Gets the focused definition key.
+        /// Gets the key used to find the focused definition.
         /// </summary>
         public static string? GetFocusedKey(NavToken token)
         {
-            var key = token.PrimaryKind switch
+            return token.PrimaryKind switch
             {
                 PrimaryKind.Delimiter => GetDelimiterKey(token),
                 PrimaryKind.Operator => GetOperatorKey(token),
@@ -46,14 +46,12 @@ namespace csharp_cartographer_backend._05.Services.Keys
                 PrimaryKind.KeywordOperator => GetKeywordOperatorKey(token),
                 _ => null,
             };
-
-            return key?.ToString();
         }
 
         private static string Key(string kindAbrv, string extension)
             => $"{kindAbrv}:{extension}";
 
-        private static string Key(string kindAbrv, string extension, string modifier)
-            => $"{kindAbrv}:{extension}:{modifier}";
+        private static string Key(string kindAbrv, string extension1, string extension2)
+            => $"{kindAbrv}:{extension1}:{extension2}";
     }
 }
