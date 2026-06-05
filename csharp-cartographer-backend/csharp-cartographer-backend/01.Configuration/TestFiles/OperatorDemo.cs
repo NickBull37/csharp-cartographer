@@ -384,6 +384,8 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                 };
         }
 
+        List<int> list = new List<int> { 1, 2, 3 };
+
         private static readonly List<string> Teststring = new()
         {
             "{HovExt}",
@@ -391,12 +393,16 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             "{RefExt}",
         };
 
+        List<int> list2 = new List<int> { { 1 }, { 2 }, { 3 } };
+
         private static readonly List<string> ETest = new()
         {
             {"{HovExt}"},
             {"{JumpExt}"},
             {"{RefExt}"},
         };
+
+        Dictionary<int, int> list3 = new Dictionary<int, int> { { 1, 1 }, { 2, 2 }, { 3, 3 } };
 
         private static readonly Dictionary<string, string> ExtTest = new()
         {

@@ -172,6 +172,44 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             Console.WriteLine(dictionary["One"]);
             Console.WriteLine(nameValueCollection["Key1"]);
             Console.WriteLine(concurrentDictionary["C1"]);
+
+
+            // =========================
+            // Test collections
+            // =========================
+
+            int[] aaaa = [10, 20, 30, 40, 50];
+            List<int> zzzz = [1, 2, 3];
+            List<bool> bbb = [true, true, false];
+
+            List<int> listxx = new List<int> { 1, 2, 3 };
+
+            List<string> teststring = new()
+            {
+                "{HovExt}",
+                "{JumpExt}",
+                "{RefExt}",
+            };
+
+            List<int> list2 = new List<int> { { 1 }, { 2 }, { 3 } };
+
+            List<string> eTest = new()
+            {
+                {"{HovExt}"},
+                {"{JumpExt}"},
+                {"{RefExt}"},
+            };
+
+            var list3 = new Dictionary<int, int> { { 1, 1 }, { 2, 2 }, { 3, 3 } };
+
+            Dictionary<string, string> extTest = new()
+            {
+                {"{HovExt}", "<break/>"},
+                {"{JumpExt}", "<break/>"},
+                {"{RefExt}", "<break/>"}
+            };
+
+            Dictionary<int, bool> list4 = new() { { 1, true }, { 2, true }, { 3, false } };
         }
     }
 

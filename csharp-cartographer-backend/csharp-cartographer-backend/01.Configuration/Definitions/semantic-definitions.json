@@ -8,9 +8,6 @@
   "AnonymousObjectCreationExpressionBoundary": {
     "Definition": "Marks the boundaries of an anonymous object creation expression."
   },
-  "ArrayInitializationBoundary": {
-    "Definition": "Marks the boundaries where the elements of an array are defined."
-  },
   "ArrayType": {
     "Definition": "Part of the array type syntax."
   },
@@ -59,9 +56,6 @@
   "CollectionExpressionBoundary": {
     "Definition": "Marks the boundaries of a collection expression."
   },
-  "CollectionInitializerExpressionBoundary": {
-    "Definition": "Marks the boundaries of a collection initializer expression."
-  },
   "DeconstructionBoundary": {
     "Definition": "Marks the boundaries of a deconstruction variable list."
   },
@@ -106,9 +100,6 @@
   },
   "NamespaceBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}namespace{/c} declaration."
-  },
-  "ObjectInitializerBoundary": {
-    "Definition": "Marks the boundaries of where an object’s properties or fields are assigned during creation."
   },
   "ParameterListBoundary": {
     "Definition": "Marks the boundaries of the parameter list defined for a method or constructor."
@@ -176,9 +167,6 @@
   "WhileLoopConditionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-purple keyword}while{/c} loop condition."
   },
-  "WithInitializerExpressionBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-blue keyword}with{/c} expression's initializer block."
-  },
   "Arithmetic": {
     "Definition": "Arithmetic operators perform basic math operations such as addition, subtraction, multiplication, and division."
   },
@@ -227,14 +215,11 @@
   "BaseTypeSeparator": {
     "Definition": "Separates a type from its base class or implemented interfaces."
   },
-  "CollectionElementSeparator": {
-    "Definition": "Separates elements within a collection expression."
+  "Collection Element Separator": {
+    "Definition": "Separates elements within a collection."
   },
-  "CollectionExpressionElementSeparator": {
-    "Definition": "Separates elements within a collection expression."
-  },
-  "CollectionInitializerElementSeparator": {
-    "Definition": "Separates elements within a collection initializer expression."
+  "ComplexElementSeparator": {
+    "Definition": "Separates the key and value within a key-value element such as {c:color-green code}Dictionary{/c} or {c:color-green code}KeyValuePair{/c}."
   },
   "DeconstructionVariableSeparator": {
     "Definition": "Separates variables within a deconstruction expression."
@@ -704,6 +689,12 @@
   "CollectionElement": {
     "Definition": "A value or expression supplied as an element within a collection expression or initializer."
   },
+  "CollectionElementKey": {
+    "Definition": "This value identifies an entry inside a key-value collection, such as a {c:color-green code}Dictionary{/c}. This key can be used later to find the value associated with it."
+  },
+  "CollectionElementValue": {
+    "Definition": "This value is the data stored inside a key-value collection entry. In a {c:color-green code}Dictionary{/c}, this is the value returned when the matching key is looked up."
+  },
   "CollectionLength": {
     "Definition": "A value that specifies the number of elements in a newly created collection or span."
   },
@@ -826,6 +817,12 @@
   },
   "Type": {
     "Definition": "The name of a type imported by the using directive."
+  },
+  "ExpressionBoundary": {
+    "Definition": ""
+  },
+  "InitializerBoundary": {
+    "Definition": "Marks the boundaries of an {c:bold}initializer expression{/c}.<break/>Initializer expressions can be identified by curly braces {c:code}{ }{/c} used during object creation."
   },
   "": {
     "Definition": ""

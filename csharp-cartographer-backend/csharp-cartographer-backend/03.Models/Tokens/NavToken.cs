@@ -86,7 +86,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         /// <summary>The SyntaxKind(s) of the token's ancestor nodes.</summary>
         [JsonIgnore]
-        public AncestorNodeKinds AncestorKinds { get; set; }
+        public AncestorNodeKinds Ancestors { get; set; }
 
         /// <summary>The token's semantic data.</summary>
         [JsonIgnore]
@@ -109,18 +109,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             TrailingTrivia = GetTrailingTrivia(roslynToken);
             Span = roslynToken.Span;
             RoslynToken = roslynToken;
-            AncestorKinds = GetAncestorKinds(roslynToken);
+            Ancestors = GetAncestorKinds(roslynToken);
         }
 
         private bool HasAncestor(SyntaxKind kind)
         {
-            return AncestorKinds.Ancestors.Contains(kind);
+            return Ancestors.Ancestors.Contains(kind);
         }
 
         private bool HasAncestorAt(int index, SyntaxKind kind)
         {
-            return index < AncestorKinds.Ancestors.Length
-                && AncestorKinds.Ancestors[index] == kind;
+            return index < Ancestors.Ancestors.Length
+                && Ancestors.Ancestors[index] == kind;
         }
 
         private bool HasAnyAncestorAt(int index, SyntaxKind[] kinds)
@@ -177,11 +177,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression);
         }
 
-        public bool IsArrayInitializationDelimiter()
-        {
-            return HasAncestorAt(0, SyntaxKind.ArrayInitializerExpression);
-        }
-
         public bool IsArrayTypeDelimiter()
         {
             return HasAncestorAt(0, SyntaxKind.ArrayRankSpecifier)
@@ -208,14 +203,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return HasAncestorAt(0, SyntaxKind.CatchFilterClause);
         }
 
-        public bool IsCollectionInitializerExpressionDelimiter()
-        {
-            return HasAncestorAt(0, SyntaxKind.CollectionInitializerExpression);
-        }
-
         public bool IsCollectionExpressionDelimiter()
         {
-            return HasAncestorAt(0, SyntaxKind.CollectionExpression);
+            return Ancestors.Match([SyntaxKind.CollectionExpression]);
+
+            //return Ancestors.HasParent(SyntaxKind.CollectionExpression);
         }
 
         public bool IsDeconstructionDelimiter()
@@ -276,11 +268,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return HasAncestorAt(0, SyntaxKind.NamespaceDeclaration);
         }
 
-        public bool IsObjectInitializerDelimiter()
-        {
-            return HasAncestorAt(0, SyntaxKind.ObjectInitializerExpression);
-        }
-
         public bool IsParenthesizedExpressionDelimiter()
         {
             return HasAncestorAt(0, SyntaxKind.ParenthesizedExpression);
@@ -332,12 +319,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsUsingResourceDeclarationDelimiter()
         {
             return HasAncestorAt(0, SyntaxKind.UsingStatement);
-        }
-
-        public bool IsWithInitializerExpressionDelimiter()
-        {
-            return HasAncestorAt(0, SyntaxKind.WithInitializerExpression)
-                && HasAncestorAt(1, SyntaxKind.WithExpression);
         }
 
         /*
@@ -592,6 +573,38 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         /*
          *  -----------------------------------------------------------------------
+         *      Initializer Delimiters
+         *  -----------------------------------------------------------------------
+         */
+
+        public bool IsCollectionElementInitializerDelimiter()
+        {
+            return Ancestors.HasParent(SyntaxKind.ComplexElementInitializerExpression);
+        }
+
+        public bool IsCollectionInitializerDelimiter()
+        {
+            return Ancestors.HasParent(SyntaxKind.CollectionInitializerExpression);
+        }
+
+        public bool IsArrayInitializationDelimiter()
+        {
+            return Ancestors.HasParent(SyntaxKind.ArrayInitializerExpression);
+        }
+
+        public bool IsObjectInitializerDelimiter()
+        {
+            return Ancestors.HasParent(SyntaxKind.ObjectInitializerExpression);
+        }
+
+        public bool IsWithInitializerExpressionDelimiter()
+        {
+            return Ancestors.HasParent(SyntaxKind.WithInitializerExpression)
+                && Ancestors.HasGrandParent(SyntaxKind.WithExpression);
+        }
+
+        /*
+         *  -----------------------------------------------------------------------
          *      Pattern Matching Delimiters
          *  -----------------------------------------------------------------------
          */
@@ -813,7 +826,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsAliasQualifier()
         {
             return SemanticData?.IsAliasSymbol == true
-                && AncestorKinds.GetLastAncestor() != SyntaxKind.UsingDirective;
+                && Ancestors.GetLastAncestor() != SyntaxKind.UsingDirective;
         }
 
         public bool IsContainingTypeMemberQualifer()
@@ -850,7 +863,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             //       defined in the file (see NavToken.cs: SemanticRole)
 
             bool validClass = Classifications.Final == PropertyName;
-            bool validParent = !AncestorKinds.HasParent(SyntaxKind.PropertyDeclaration);
+            bool validParent = !Ancestors.HasParent(SyntaxKind.PropertyDeclaration);
             bool validPrev = PrevToken?.Kind is not SyntaxKind.DotToken;
             bool validNext = NextToken?.Kind is SyntaxKind.DotToken or SyntaxKind.QuestionToken;
 
@@ -900,7 +913,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 is SymbolKind.Namespace
                 or SymbolKind.ErrorType; // default to namespace alias if target symbol can't be identified
 
-            bool validAncestor = AncestorKinds.GetLastAncestor() == SyntaxKind.UsingDirective;
+            bool validAncestor = Ancestors.GetLastAncestor() == SyntaxKind.UsingDirective;
 
             return validTarget && validAncestor && SemanticData.IsAliasSymbol;
         }
@@ -930,7 +943,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return false;
 
             // alias declarations only appear in using statements, other instances are alias references
-            if (AncestorKinds.GetLastAncestor() != SyntaxKind.UsingDirective)
+            if (Ancestors.GetLastAncestor() != SyntaxKind.UsingDirective)
                 return false;
 
             //          ⌄
@@ -947,7 +960,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             bool validNext = NextToken?.Kind == SyntaxKind.DotToken;
             bool validClassification = Classifications.Final is NamespaceName or Identifier;
             bool validAncestor = HasAncestor(SyntaxKind.QualifiedName)
-                && AncestorKinds.GetLastAncestor() != SyntaxKind.UsingDirective;
+                && Ancestors.GetLastAncestor() != SyntaxKind.UsingDirective;
             bool validSemanticData = SemanticData?.SymbolKind == SymbolKind.Namespace
                 && SemanticData?.IsAliasSymbol == false;
 
@@ -966,7 +979,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             bool validKind = Kind == SyntaxKind.IdentifierToken;
             bool validClassification = Classifications.Final == NamespaceName;
-            bool validAncestors = AncestorKinds.Ancestors
+            bool validAncestors = Ancestors.Ancestors
                 .Where(kind => kind != SyntaxKind.QualifiedName)
                 .Distinct()
                 .ToHashSet()
@@ -984,7 +997,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             {
                 bool validClass = Classifications.Final is NamespaceName or Identifier;
                 bool validSemanticData = SemanticData?.SymbolKind == SymbolKind.Namespace;
-                bool validAncestor = AncestorKinds.GetLastAncestor() == SyntaxKind.UsingDirective;
+                bool validAncestor = Ancestors.GetLastAncestor() == SyntaxKind.UsingDirective;
 
                 return IsIdentifier()
                     && validClass
@@ -996,8 +1009,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             bool IsUnIdentifiableNamespace()
             {
                 bool validSymbol = SemanticData?.IsTypeSymbol != true;
-                bool validAncestor = AncestorKinds.HasAncestor(SyntaxKind.QualifiedName)
-                    && AncestorKinds.GetLastAncestor() == SyntaxKind.UsingDirective;
+                bool validAncestor = Ancestors.HasAncestor(SyntaxKind.QualifiedName)
+                    && Ancestors.GetLastAncestor() == SyntaxKind.UsingDirective;
 
                 return IsIdentifier()
                     && validSymbol
@@ -1286,8 +1299,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 bool validPrevPrev = PrevToken?.PrevToken?.SemanticRole
                     is not SemanticRole.AliasQualifier
                     and not SemanticRole.NamespaceQualifier;
-                bool validAncestors = AncestorKinds.GetGrandParent() is SyntaxKind.SimpleMemberAccessExpression or SyntaxKind.QualifiedName
-                    && AncestorKinds.GetLastAncestor() is not SyntaxKind.UsingDirective;
+                bool validAncestors = Ancestors.GetGrandParent() is SyntaxKind.SimpleMemberAccessExpression or SyntaxKind.QualifiedName
+                    && Ancestors.GetLastAncestor() is not SyntaxKind.UsingDirective;
 
                 return IsIdentifier()
                     && validPrev
@@ -1345,7 +1358,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsTypeIdentifier()
         {
             bool validSymbol = SemanticData?.IsTypeSymbol == true;
-            bool validAncestor = AncestorKinds.GetLastAncestor() == SyntaxKind.UsingDirective;
+            bool validAncestor = Ancestors.GetLastAncestor() == SyntaxKind.UsingDirective;
 
             return IsIdentifier()
                 && validSymbol
@@ -1377,7 +1390,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 SyntaxKind.DescendingOrdering,
             ];
 
-            foreach (var kind in AncestorKinds.Ancestors)
+            foreach (var kind in Ancestors.Ancestors)
             {
                 if (kinds.Contains(kind))
                     return true;
@@ -1460,6 +1473,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #endregion
 
         #region Keyword Checks
+        public bool IsKeyword() => IsRegularKeyword() || IsControlKeyword();
+
         public bool IsRegularKeyword() => Classifications.Final == Keyword;
 
         public bool IsControlKeyword() => Classifications.Final == KeywordControl;
@@ -1518,7 +1533,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.NamespaceKeyword
                 or SyntaxKind.UsingKeyword;
 
-            bool validParent = AncestorKinds.GetParent()
+            bool validParent = Ancestors.GetParent()
                 is SyntaxKind.ExternAliasDirective
                 or SyntaxKind.IdentifierName
                 or SyntaxKind.NamespaceDeclaration
@@ -1535,7 +1550,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 is SyntaxKind.AwaitKeyword
                 or SyntaxKind.LockKeyword;
 
-            bool validParent = AncestorKinds.GetParent()
+            bool validParent = Ancestors.GetParent()
                 is SyntaxKind.AwaitExpression
                 or SyntaxKind.LockStatement;
 
@@ -1665,7 +1680,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.GotoKeyword
                 or SyntaxKind.ReturnKeyword;
 
-            var validParent = AncestorKinds.GetParent()
+            var validParent = Ancestors.GetParent()
                 is SyntaxKind.BreakStatement
                 or SyntaxKind.ContinueStatement
                 or SyntaxKind.GotoStatement
@@ -1981,7 +1996,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsDefaultLiteral()
         {
             return Kind == SyntaxKind.DefaultKeyword
-                && AncestorKinds.HasParent(SyntaxKind.DefaultLiteralExpression);
+                && Ancestors.HasParent(SyntaxKind.DefaultLiteralExpression);
         }
 
         public bool IsPredefinedType()
@@ -2007,7 +2022,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsVarPatternKeyword()
         {
             return Kind == SyntaxKind.VarKeyword
-                && AncestorKinds.HasParent(SyntaxKind.VarPattern);
+                && Ancestors.HasParent(SyntaxKind.VarPattern);
         }
         #endregion
 
@@ -2139,7 +2154,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.PlusPlusToken
                 or SyntaxKind.MinusMinusToken;
 
-            var validParent = AncestorKinds.GetParent()
+            var validParent = Ancestors.GetParent()
                 is SyntaxKind.AddExpression
                 or SyntaxKind.SubtractExpression
                 or SyntaxKind.MultiplyExpression
@@ -2185,7 +2200,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.CaretToken
                 or SyntaxKind.TildeToken;
 
-            var validParent = AncestorKinds.GetParent()
+            var validParent = Ancestors.GetParent()
                 is SyntaxKind.BitwiseAndExpression
                 or SyntaxKind.BitwiseOrExpression
                 or SyntaxKind.ExclusiveOrExpression
@@ -2210,7 +2225,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.AmpersandAmpersandToken
                 or SyntaxKind.BarBarToken;
 
-            var validParent = AncestorKinds.GetParent()
+            var validParent = Ancestors.GetParent()
                 is SyntaxKind.LogicalNotExpression
                 or SyntaxKind.LogicalAndExpression
                 or SyntaxKind.LogicalOrExpression;
@@ -2228,7 +2243,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.LessThanEqualsToken
                 or SyntaxKind.GreaterThanEqualsToken;
 
-            var validParent = AncestorKinds.GetParent()
+            var validParent = Ancestors.GetParent()
                 is SyntaxKind.LessThanExpression
                 or SyntaxKind.GreaterThanExpression
                 or SyntaxKind.LessThanOrEqualExpression
@@ -2246,7 +2261,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 is SyntaxKind.EqualsEqualsToken
                 or SyntaxKind.ExclamationEqualsToken;
 
-            var validParent = AncestorKinds.GetParent()
+            var validParent = Ancestors.GetParent()
                 is SyntaxKind.EqualsExpression
                 or SyntaxKind.NotEqualsExpression;
 
@@ -2258,7 +2273,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             /// =>
 
             return Kind == SyntaxKind.EqualsGreaterThanToken
-                && AncestorKinds.HasParent(SyntaxKind.ArrowExpressionClause);
+                && Ancestors.HasParent(SyntaxKind.ArrowExpressionClause);
         }
 
         public bool IsIndexFromEndOperator()
@@ -2266,7 +2281,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             /// ^
 
             return Kind == SyntaxKind.CaretToken
-                && AncestorKinds.HasParent(SyntaxKind.IndexExpression);
+                && Ancestors.HasParent(SyntaxKind.IndexExpression);
         }
 
         public bool IsIndirectionOperator()
@@ -2278,7 +2293,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.AsteriskToken
                 or SyntaxKind.MinusGreaterThanToken;
 
-            var validParent = AncestorKinds.GetParent()
+            var validParent = Ancestors.GetParent()
                 is SyntaxKind.AddressOfExpression
                 or SyntaxKind.PointerIndirectionExpression
                 or SyntaxKind.PointerMemberAccessExpression;
@@ -2292,7 +2307,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             var validKind = Kind == SyntaxKind.EqualsGreaterThanToken;
 
-            var validParent = AncestorKinds.GetParent()
+            var validParent = Ancestors.GetParent()
                 is SyntaxKind.SimpleLambdaExpression
                 or SyntaxKind.ParenthesizedLambdaExpression;
 
@@ -2304,7 +2319,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             /// .
 
             return Kind == SyntaxKind.DotToken
-                && AncestorKinds.HasParent(SyntaxKind.SimpleMemberAccessExpression);
+                && Ancestors.HasParent(SyntaxKind.SimpleMemberAccessExpression);
         }
 
         public bool IsNamespaceAliasOperator()
@@ -2312,7 +2327,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             /// ::
 
             return Kind == SyntaxKind.ColonColonToken
-                && AncestorKinds.HasParent(SyntaxKind.AliasQualifiedName);
+                && Ancestors.HasParent(SyntaxKind.AliasQualifiedName);
         }
 
         public bool IsNullCoalescingAssignmentOperator()
@@ -2320,7 +2335,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             /// ??=
 
             return Kind == SyntaxKind.QuestionQuestionEqualsToken
-                && AncestorKinds.HasParent(SyntaxKind.CoalesceAssignmentExpression);
+                && Ancestors.HasParent(SyntaxKind.CoalesceAssignmentExpression);
         }
 
         public bool IsNullCoalescingOperator()
@@ -2328,7 +2343,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             /// ??
 
             return Kind == SyntaxKind.QuestionQuestionToken
-                && AncestorKinds.HasParent(SyntaxKind.CoalesceExpression);
+                && Ancestors.HasParent(SyntaxKind.CoalesceExpression);
         }
 
         public bool IsNullForgivingOperator()
@@ -2336,7 +2351,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             /// !
 
             return Kind == SyntaxKind.ExclamationToken
-                && AncestorKinds.HasParent(SyntaxKind.SuppressNullableWarningExpression);
+                && Ancestors.HasParent(SyntaxKind.SuppressNullableWarningExpression);
         }
 
         public bool IsPatternMatchArrow()
@@ -2344,7 +2359,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             /// =>
 
             return Kind == SyntaxKind.EqualsGreaterThanToken
-                && AncestorKinds.HasParent(SyntaxKind.SwitchExpressionArm);
+                && Ancestors.HasParent(SyntaxKind.SwitchExpressionArm);
         }
 
         public bool IsRangeSliceOperator()
@@ -2363,7 +2378,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.GreaterThanGreaterThanToken
                 or SyntaxKind.GreaterThanGreaterThanGreaterThanToken;
 
-            var validParent = AncestorKinds.GetParent()
+            var validParent = Ancestors.GetParent()
                 is SyntaxKind.LeftShiftExpression
                 or SyntaxKind.RightShiftExpression
                 or SyntaxKind.UnsignedRightShiftExpression;
@@ -2375,49 +2390,49 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsAddressOfOperator()
         {
             return Kind == SyntaxKind.AmpersandToken
-                && AncestorKinds.HasParent(SyntaxKind.AddressOfExpression);
+                && Ancestors.HasParent(SyntaxKind.AddressOfExpression);
         }
 
         public bool IsBitwiseAndOperator()
         {
             return Kind == SyntaxKind.AmpersandToken
-                && AncestorKinds.HasParent(SyntaxKind.BitwiseAndExpression);
+                && Ancestors.HasParent(SyntaxKind.BitwiseAndExpression);
         }
 
         public bool IsBitwiseXorOperator()
         {
             return Kind == SyntaxKind.CaretToken
-                && AncestorKinds.HasParent(SyntaxKind.ExclusiveOrExpression);
+                && Ancestors.HasParent(SyntaxKind.ExclusiveOrExpression);
         }
 
         public bool IsDereferenceOperator()
         {
             return Kind == SyntaxKind.AsteriskToken
-                && AncestorKinds.HasParent(SyntaxKind.PointerIndirectionExpression);
+                && Ancestors.HasParent(SyntaxKind.PointerIndirectionExpression);
         }
 
         public bool IsLogicalNotOperator()
         {
             return Kind == SyntaxKind.ExclamationToken
-                && AncestorKinds.HasParent(SyntaxKind.LogicalNotExpression);
+                && Ancestors.HasParent(SyntaxKind.LogicalNotExpression);
         }
 
         public bool IsMultiplicationOperator()
         {
             return Kind == SyntaxKind.AsteriskToken
-                && AncestorKinds.HasParent(SyntaxKind.MultiplyExpression);
+                && Ancestors.HasParent(SyntaxKind.MultiplyExpression);
         }
 
         public bool IsRangeOperator()
         {
             return Kind == SyntaxKind.DotDotToken
-                && AncestorKinds.HasParent(SyntaxKind.RangeExpression);
+                && Ancestors.HasParent(SyntaxKind.RangeExpression);
         }
 
         public bool IsSliceOperator()
         {
             return Kind == SyntaxKind.DotDotToken
-                && AncestorKinds.HasParent(SyntaxKind.SlicePattern);
+                && Ancestors.HasParent(SyntaxKind.SlicePattern);
         }
 
         public bool IsShortCircuitOperator()
@@ -2434,13 +2449,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsUnaryMinusOperator()
         {
             return Kind == SyntaxKind.MinusToken
-                && AncestorKinds.HasParent(SyntaxKind.UnaryMinusExpression);
+                && Ancestors.HasParent(SyntaxKind.UnaryMinusExpression);
         }
 
         public bool IsUnaryPlusOperator()
         {
             return Kind == SyntaxKind.PlusToken
-                && AncestorKinds.HasParent(SyntaxKind.UnaryPlusExpression);
+                && Ancestors.HasParent(SyntaxKind.UnaryPlusExpression);
         }
 
         /*
@@ -2453,25 +2468,25 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsNullConditionalOperatorDot()
         {
             return Kind == SyntaxKind.DotToken
-                && AncestorKinds.HasParent(SyntaxKind.MemberBindingExpression);
+                && Ancestors.HasParent(SyntaxKind.MemberBindingExpression);
         }
 
         public bool IsNullConditionalOperatorQuestion()
         {
             return Kind == SyntaxKind.QuestionToken
-                && AncestorKinds.HasParent(SyntaxKind.ConditionalAccessExpression);
+                && Ancestors.HasParent(SyntaxKind.ConditionalAccessExpression);
         }
 
         public bool IsTernaryOperatorColon()
         {
             return Kind == SyntaxKind.ColonToken
-                && AncestorKinds.HasParent(SyntaxKind.ConditionalExpression);
+                && Ancestors.HasParent(SyntaxKind.ConditionalExpression);
         }
 
         public bool IsTernaryOperatorQuestion()
         {
             return Kind == SyntaxKind.QuestionToken
-                && AncestorKinds.HasParent(SyntaxKind.ConditionalExpression);
+                && Ancestors.HasParent(SyntaxKind.ConditionalExpression);
         }
 
         /// ------------------- Non-roles ---------------------
@@ -2573,7 +2588,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsCollectionInitializerElementSeparator()
         {
             return Kind == SyntaxKind.CommaToken
-                && HasAncestorAt(0, SyntaxKind.CollectionInitializerExpression);
+                && Ancestors.HasParent(SyntaxKind.CollectionInitializerExpression);
+        }
+
+        public bool IsComplexElementSeparator()
+        {
+            return Kind == SyntaxKind.CommaToken
+                && Ancestors.HasParent(SyntaxKind.ComplexElementInitializerExpression);
         }
 
         public bool IsConstraintSeparator()
@@ -2831,10 +2852,94 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsCollectionElement()
         {
+            bool validKind = IsKeyword() || IsLiteral() || IsIdentifier();
+            bool validSyntax = IsArrayInitializerSyntax()
+                || IsCollectionExpressionSyntax()
+                || IsCollectionInitializerSyntax()
+                || IsComplexCollectionInitializerSyntax();
+
+            return validKind && validSyntax;
+
+            /// int[] nums = { 10, 20, 30, 40, 50 };
+            /// int[] nums = new[] { 10, 20, 30, 40, 50 };
+            /// int[] nums = new int[] { 10, 20, 30, 40, 50 };
+            bool IsArrayInitializerSyntax()
+            {
+                return Ancestors.HasGrandParent(SyntaxKind.ArrayInitializerExpression)
+                    && Ancestors.GetGreatGrandParent()
+                        is SyntaxKind.EqualsValueClause
+                        or SyntaxKind.ArrayCreationExpression
+                        or SyntaxKind.ImplicitArrayCreationExpression;
+            }
+
+            /// int[] nums = [10, 20, 30, 40, 50];
+            bool IsCollectionExpressionSyntax()
+            {
+                return Ancestors.HasGrandParent(SyntaxKind.ExpressionElement)
+                    && Ancestors.HasGreatGrandParent(SyntaxKind.CollectionExpression);
+            }
+
+            /// var list = new() { 1, 2, 3 };
+            /// var list = new List<int> { 1, 2, 3 };
+            /// var list = new List<int> { { 1 }, { 2 }, { 3 } };
+            bool IsCollectionInitializerSyntax()
+            {
+                return Ancestors.HasGrandParent(SyntaxKind.CollectionInitializerExpression)
+                    && Ancestors.GetGreatGrandParent()
+                        is SyntaxKind.ObjectCreationExpression
+                        or SyntaxKind.ImplicitObjectCreationExpression
+                        or SyntaxKind.CollectionInitializerExpression;
+            }
+
+            /// var list = new List<int> { { 1 }, { 2 }, { 3 } };
+            bool IsComplexCollectionInitializerSyntax()
+            {
+                bool validNeighbors = PrevToken?.Kind != SyntaxKind.CommaToken
+                    && NextToken?.Kind != SyntaxKind.CommaToken;
+
+                return validNeighbors
+                    && Ancestors.HasGrandParent(SyntaxKind.ComplexElementInitializerExpression)
+                    && Ancestors.HasGreatGrandParent(SyntaxKind.CollectionInitializerExpression);
+            }
+        }
+
+        public bool IsCollectionElementKey()
+        {
+            /// var list = new Dictionary<int, int> { { 1, 1 }, { 2, 2 }, { 3, 3 } };
+
+            bool validNext = NextToken?.Kind == SyntaxKind.CommaToken;
+
+            return validNext
+                && Ancestors.HasGrandParent(SyntaxKind.ComplexElementInitializerExpression)
+                && Ancestors.HasGreatGrandParent(SyntaxKind.CollectionInitializerExpression);
+        }
+
+        public bool IsCollectionElementValue()
+        {
+            /// var list = new Dictionary<int, int> { { 1, 1 }, { 2, 2 }, { 3, 3 } };
+
+            bool validPrev = PrevToken?.Kind == SyntaxKind.CommaToken;
+
+            return validPrev
+                && Ancestors.HasGrandParent(SyntaxKind.ComplexElementInitializerExpression)
+                && Ancestors.HasGreatGrandParent(SyntaxKind.CollectionInitializerExpression);
+        }
+
+        public bool IsCollectionElementOld()
+        {
             // covers collection expression (old)
             // var list = new List<int> { 1, 2, 3 };
             if (HasAncestorAt(1, SyntaxKind.CollectionInitializerExpression)
                 && HasAncestorAt(2, SyntaxKind.ObjectCreationExpression))
+            {
+                return true;
+            }
+
+            // covers stupid collection expression (old)
+            // var list = new List<int> { { 1 }, { 2 }, { 3 } };
+            if (HasAncestorAt(1, SyntaxKind.ComplexElementInitializerExpression)
+                && HasAncestorAt(2, SyntaxKind.CollectionInitializerExpression)
+                && HasAncestorAt(3, SyntaxKind.ObjectCreationExpression))
             {
                 return true;
             }
@@ -2860,7 +2965,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             // int[] nums = new[] { 10, 20, 30, 40, 50 };
             // int[] nums = new int[] { 10, 20, 30, 40, 50 };
             bool hasValidParent = HasAncestorAt(1, SyntaxKind.ArrayInitializerExpression);
-
             bool hasArrayCreationAncestor = HasAncestorAt(2, SyntaxKind.EqualsValueClause)
                 || HasAncestorAt(2, SyntaxKind.ArrayCreationExpression)
                 || HasAncestorAt(2, SyntaxKind.ImplicitArrayCreationExpression);
@@ -3449,8 +3553,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (IsTupleElementName() || IsTupleElementType())
                 return false;
 
-            var parent = AncestorKinds.GetParent();
-            var grandParent = AncestorKinds.GetGrandParent();
+            var parent = Ancestors.GetParent();
+            var grandParent = Ancestors.GetGrandParent();
 
             if (parent is SyntaxKind.Parameter or SyntaxKind.TypeParameter or SyntaxKind.YieldReturnStatement)
                 return false;
@@ -3595,11 +3699,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 bool validNext = NextToken?.Kind == SyntaxKind.DotToken;
                 bool validSemanticData = SemanticData?.SymbolKind != SymbolKind.Namespace;
                 bool validClassification = Classifications.Final != PropertyName;
-                bool validAncestors = AncestorKinds.GetParent() is SyntaxKind.IdentifierName or SyntaxKind.PredefinedType
-                    && AncestorKinds.GetGrandParent() is SyntaxKind.QualifiedName
-                    && AncestorKinds.GetLastAncestor() is not SyntaxKind.UsingDirective;
+                bool validAncestors = Ancestors.GetParent() is SyntaxKind.IdentifierName or SyntaxKind.PredefinedType
+                    && Ancestors.GetGrandParent() is SyntaxKind.QualifiedName
+                    && Ancestors.GetLastAncestor() is not SyntaxKind.UsingDirective;
 
-                bool validGrandParent = AncestorKinds.GrandParentIs(SyntaxKind.QualifiedName);
+                bool validGrandParent = Ancestors.HasGrandParent(SyntaxKind.QualifiedName);
 
                 return validNext
                     && validAncestors
@@ -3629,7 +3733,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsGenericType()
         {
             return !IsMethodInvocation()
-                && AncestorKinds.HasParent(SyntaxKind.GenericName);
+                && Ancestors.HasParent(SyntaxKind.GenericName);
         }
         #endregion
 

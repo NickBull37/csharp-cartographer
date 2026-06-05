@@ -237,8 +237,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsClassDelimiter())
                     return SemanticRole.ClassBoundary;
 
-                if (token.IsCollectionInitializerExpressionDelimiter())
-                    return SemanticRole.CollectionInitializerExpressionBoundary;
+                if (token.IsCollectionElementInitializerDelimiter())
+                    return SemanticRole.CollectionElementInitializerBoundary;
+
+                if (token.IsCollectionInitializerDelimiter())
+                    return SemanticRole.CollectionInitializerBoundary;
 
                 if (token.IsConstructorDelimiter())
                     return SemanticRole.ConstructorBoundary;
@@ -392,6 +395,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsCollectionInitializerElementSeparator())
                     return SemanticRole.CollectionInitializerElementSeparator;
+
+                if (token.IsComplexElementSeparator())
+                    return SemanticRole.ComplexElementSeparator;
 
                 if (token.IsConstraintSeparator())
                     return SemanticRole.ConstraintSeparator;
@@ -782,6 +788,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Collections
             if (token.IsCollectionElement())
                 return SemanticRole.CollectionElement;
+
+            if (token.IsCollectionElementKey())
+                return SemanticRole.CollectionElementKey;
+
+            if (token.IsCollectionElementValue())
+                return SemanticRole.CollectionElementValue;
 
             if (token.IsCollectionLength())
                 return SemanticRole.CollectionLength;
@@ -1303,7 +1315,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             for (int i = 0; i < navTokens.Count; i++)
             {
                 var token = navTokens[i];
-                var parentKind = token.AncestorKinds.Ancestors[0];
+                var parentKind = token.Ancestors.Ancestors[0];
 
                 if (token.Text is not "from" || parentKind != SyntaxKind.FromClause)
                     continue;

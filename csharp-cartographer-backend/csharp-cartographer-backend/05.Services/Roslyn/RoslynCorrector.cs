@@ -97,8 +97,8 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
              *  name classification with a declaration ancestor for a property declaration parent.
              */
 
-            bool hasPropertyDeclAncestor = token.AncestorKinds.HasAncestor(SyntaxKind.PropertyDeclaration);
-            bool propertyDeclIsParent = token.AncestorKinds.GetParent() == SyntaxKind.PropertyDeclaration;
+            bool hasPropertyDeclAncestor = token.Ancestors.HasAncestor(SyntaxKind.PropertyDeclaration);
+            bool propertyDeclIsParent = token.Ancestors.GetParent() == SyntaxKind.PropertyDeclaration;
 
             if (hasPropertyDeclAncestor && !propertyDeclIsParent)
                 return "identifier";

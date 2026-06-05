@@ -14,6 +14,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 : ancestorKinds;
         }
 
+        public bool Match(IEnumerable<SyntaxKind> kinds)
+        {
+            if (kinds is null || !kinds.Any())
+                throw new ArgumentException("Arguemnt kinds cannot be null or empty.");
+
+            return kinds == Ancestors.Take(kinds.Count());
+        }
+
         public bool HasAncestor(SyntaxKind kind) => Ancestors.Contains(kind);
 
         public SyntaxKind? GetParent()
@@ -40,7 +48,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Ancestors[1];
         }
 
-        public bool GrandParentIs(SyntaxKind kind)
+        public bool HasGrandParent(SyntaxKind kind)
         {
             if (Ancestors.Length <= 1)
                 return false;
@@ -54,6 +62,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 return null;
 
             return Ancestors[2];
+        }
+
+        public bool HasGreatGrandParent(SyntaxKind kind)
+        {
+            if (Ancestors.Length <= 2)
+                return false;
+
+            return Ancestors[2] == kind;
         }
 
         public SyntaxKind? GetLastAncestor()
@@ -93,6 +109,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public static bool operator ==(AncestorNodeKinds left, AncestorNodeKinds right) =>
             left.Equals(right);
+
+        // Testing operators
 
         public static bool operator !=(AncestorNodeKinds left, AncestorNodeKinds right) =>
             !left.Equals(right);

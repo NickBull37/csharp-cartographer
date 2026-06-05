@@ -13,9 +13,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         // these declaration kinds will always appear at the "parent" level
         public static bool IsDeclarationIdentifierForEntity(SyntaxKind entityKind, NavToken token)
         {
-            var parentKind = token.AncestorKinds.Ancestors[Parent];
-            var grandParentKind = token.AncestorKinds.Ancestors[GrandParent];
-            var greatGrandParentKind = token.AncestorKinds.Ancestors[GreatGrandParent];
+            var parentKind = token.Ancestors.Ancestors[Parent];
+            var grandParentKind = token.Ancestors.Ancestors[GrandParent];
+            var greatGrandParentKind = token.Ancestors.Ancestors[GreatGrandParent];
 
             List<SyntaxKind> parentLevelKinds =
             [
@@ -60,7 +60,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         #region Fields
         public static bool IsFieldDeclarationIdentifier(NavToken token)
         {
-            if (token.AncestorKinds.Ancestors[GreatGrandParent] == SyntaxKind.FieldDeclaration)
+            if (token.Ancestors.Ancestors[GreatGrandParent] == SyntaxKind.FieldDeclaration)
             {
                 return true;
             }
@@ -70,8 +70,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens
         public static bool IsFieldDataTypeIdentifier(NavToken token)
         {
             // field declaration kind will be 3rd level if non-nullable, 4th level if nullable
-            if (token.AncestorKinds.Ancestors[GreatGrandParent] == SyntaxKind.FieldDeclaration ||
-                token.AncestorKinds.Ancestors[GreatGreatGrandParent] == SyntaxKind.FieldDeclaration)
+            if (token.Ancestors.Ancestors[GreatGrandParent] == SyntaxKind.FieldDeclaration ||
+                token.Ancestors.Ancestors[GreatGreatGrandParent] == SyntaxKind.FieldDeclaration)
             {
                 return true;
             }
@@ -81,7 +81,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 
         public static bool IsGenericDataTypeIdentifier(NavToken token)
         {
-            if (token.AncestorKinds.Ancestors[Parent] == SyntaxKind.GenericName)
+            if (token.Ancestors.Ancestors[Parent] == SyntaxKind.GenericName)
             {
                 return true;
             }
@@ -90,7 +90,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 
         public static bool IsNullableDataTypeIdentifier(NavToken token)
         {
-            if (token.AncestorKinds.Ancestors[GrandParent] == SyntaxKind.NullableType)
+            if (token.Ancestors.Ancestors[GrandParent] == SyntaxKind.NullableType)
             {
                 return true;
             }
@@ -116,13 +116,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens
                 SyntaxKind.LocalDeclarationStatement,
             ];
 
-            var grandParentKind = token.AncestorKinds.Ancestors[GrandParent];
+            var grandParentKind = token.Ancestors.Ancestors[GrandParent];
             if (declarationKinds.Contains(grandParentKind))
             {
                 return grandParentKind;
             }
 
-            var greatGrandParentKind = token.AncestorKinds.Ancestors[GreatGrandParent];
+            var greatGrandParentKind = token.Ancestors.Ancestors[GreatGrandParent];
             if (declarationKinds.Contains(greatGrandParentKind))
             {
                 return greatGrandParentKind;

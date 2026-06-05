@@ -34,20 +34,21 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         AccessorListBoundary,
         AnonymousObjectCreationExpressionBoundary,
-        ArrayInitializationBoundary,
+        //ArrayInitializationBoundary,
         ArrayType,
         AttributeListBoundary,
         CastTypeBoundary,
         CatchArgumentBoundary,
         CatchFilterBoundary,
-        CollectionInitializerExpressionBoundary,
+        //CollectionElementInitializerBoundary,
         CollectionExpressionBoundary,
+        //CollectionInitializerBoundary,
         DeconstructionBoundary,
         DefaultExpressionBoundary,
         ImplicitArrayCreation,
         InterpolatedValueBoundary,
         NamespaceBoundary,
-        ObjectInitializerBoundary,
+        //ObjectInitializerBoundary,
         ParenthesizedExpressionBoundary,
         ParenthesizedPatternBoundary,
         PropertyPatternBoundary,
@@ -56,7 +57,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         TupleTypeBoundary,
         TypeOfExpressionBoundary,
         UsingResourceDeclarationBoundary,
-        WithInitializerExpressionBoundary,
+        //WithInitializerExpressionBoundary,
 
         // Arg/Param Lists
         ArgumentListBoundary,
@@ -112,6 +113,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         FixedStatementControlBoundary,
         [Label("StatementControlBoundary")]
         LockStatementControlBoundary,
+
+        // Initializers
+        [Label("InitializerBoundary")]
+        ArrayInitializationBoundary,
+        [Label("InitializerBoundary")]
+        CollectionElementInitializerBoundary,
+        [Label("InitializerBoundary")]
+        CollectionInitializerBoundary,
+        [Label("InitializerBoundary")]
+        ObjectInitializerBoundary,
+        [Label("InitializerBoundary")]
+        WithInitializerExpressionBoundary,
 
         // Pattern Matching
         [Label("PatternBoundary")]
@@ -189,8 +202,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         ArrayLengthSeparator,
         AttributeArgumentSeparator,
         BaseTypeSeparator,
+        [Label("Collection Element Separator")]
         CollectionExpressionElementSeparator,
+        [Label("Collection Element Separator")]
         CollectionInitializerElementSeparator,
+        ComplexElementSeparator,
         ConstraintSeparator,
         DeconstructionVariableSeparator,
         EnumMemberSeparator,
@@ -403,6 +419,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         AttributeArgument,
         CastTarget,
         CollectionElement,
+        CollectionElementKey,
+        CollectionElementValue,
         CollectionLength,
         IndexValue,
         InterpolatedValue,
