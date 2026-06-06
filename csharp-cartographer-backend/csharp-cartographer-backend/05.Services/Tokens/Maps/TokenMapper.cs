@@ -687,10 +687,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 // --- Type system keywords ---
                 if (token.IsTypeSystemKeyword())
                     return SemanticRole.TypeSystem;
-
-                // --- With expression keyword ---
-                if (token.IsWithExpressionKeyword())
-                    return SemanticRole.WithExpression;
             }
 
             if (token.IsControlKeyword())
@@ -1001,6 +997,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsStructDeclaration())
                 return SemanticRole.StructDeclaration;
+
+            if (token.IsUsingResourceDeclaration())
+                return SemanticRole.UsingResourceDeclaration;
 
             // --- Identifiers: data types ---
             if (token.IsEventFieldType())

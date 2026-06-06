@@ -85,5 +85,8 @@
   },
   "ID:GenericType": {
     "Definition": "A type that must be supplied a {c:bold}generic type argument{/c}. The generic type argument passed in will replace the {c:bold}generic type parameter{/c} in the type definition."
+  },
+  "ID:UsingResourceDeclaration": {
+    "Definition": "A resource that will be marked for disposal when execution leaves the scope in which the resource was declared."
   }
 }

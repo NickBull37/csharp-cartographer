@@ -34,21 +34,17 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         AccessorListBoundary,
         AnonymousObjectCreationExpressionBoundary,
-        //ArrayInitializationBoundary,
         ArrayType,
         AttributeListBoundary,
         CastTypeBoundary,
         CatchArgumentBoundary,
         CatchFilterBoundary,
-        //CollectionElementInitializerBoundary,
         CollectionExpressionBoundary,
-        //CollectionInitializerBoundary,
         DeconstructionBoundary,
         DefaultExpressionBoundary,
         ImplicitArrayCreation,
         InterpolatedValueBoundary,
         NamespaceBoundary,
-        //ObjectInitializerBoundary,
         ParenthesizedExpressionBoundary,
         ParenthesizedPatternBoundary,
         PropertyPatternBoundary,
@@ -57,7 +53,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         TupleTypeBoundary,
         TypeOfExpressionBoundary,
         UsingResourceDeclarationBoundary,
-        //WithInitializerExpressionBoundary,
 
         // Arg/Param Lists
         ArgumentListBoundary,
@@ -254,7 +249,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         TypeModifier,
         TypeSystem,
         UsingDirectiveModifier,
-        WithExpression,
 
         // purple
         JumpStatement,
@@ -312,6 +306,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         LocalVariableDeclaration,
         [Label("Local Declaration")]
         LoopIteratorDeclaration,
+        [Label("Local Declaration")]
+        UsingResourceDeclaration,
 
         // Member Declarations
         [Label("Member Declaration")]

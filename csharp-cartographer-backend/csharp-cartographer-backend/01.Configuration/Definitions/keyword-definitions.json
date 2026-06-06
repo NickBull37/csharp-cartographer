@@ -366,7 +366,7 @@
     "Definition": "The {c:color-purple keyword}while{/c} keyword starts a loop that runs as long as a condition is true. The condition is checked before each iteration."
   },
   "KW:with": {
-    "Definition": "The {c:color-blue keyword}with{/c} keyword creates a copy of an object with selected values changed. It is commonly used with records."
+    "Definition": "The {c:color-blue keyword}with{/c} keyword creates a new object by copying an existing instance and applying specified member changes. This non-destructive instantiation leaves the original object unchanged."
   },
   "KW:yield": {
     "Definition": "The {c:color-purple keyword}yield{/c} keyword returns values one at a time from a method. It allows lazy iteration over a sequence."

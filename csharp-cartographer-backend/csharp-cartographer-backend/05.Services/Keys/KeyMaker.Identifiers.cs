@@ -34,6 +34,9 @@ namespace csharp_cartographer_backend._05.Services.Keys
             if (token.IsGenericType())
                 return Key(ID, "GenericType");
 
+            if (token.IsUsingResourceDeclaration())
+                return Key(ID, "UsingResourceDeclaration");
+
             if (ShouldUseReferenceExtension(token))
                 return GetIdentifierReferenceKey(token);
 

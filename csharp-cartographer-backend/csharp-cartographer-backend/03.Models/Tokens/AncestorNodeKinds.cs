@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Immutable;
 
 namespace csharp_cartographer_backend._03.Models.Tokens
@@ -14,12 +14,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 : ancestorKinds;
         }
 
-        public bool Match(IEnumerable<SyntaxKind> kinds)
+        public bool HasAncestorAt(int index, SyntaxKind kind)
         {
-            if (kinds is null || !kinds.Any())
-                throw new ArgumentException("Arguemnt kinds cannot be null or empty.");
-
-            return kinds == Ancestors.Take(kinds.Count());
+            return index < Ancestors.Length
+                && Ancestors[index] == kind;
         }
 
         public bool HasAncestor(SyntaxKind kind) => Ancestors.Contains(kind);
@@ -32,14 +30,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Ancestors[0];
         }
 
-        public bool HasParent(SyntaxKind kind)
-        {
-            if (Ancestors.Length == 0)
-                return false;
-
-            return Ancestors[0] == kind;
-        }
-
         public SyntaxKind? GetGrandParent()
         {
             if (Ancestors.Length <= 1)
@@ -48,28 +38,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Ancestors[1];
         }
 
-        public bool HasGrandParent(SyntaxKind kind)
-        {
-            if (Ancestors.Length <= 1)
-                return false;
-
-            return Ancestors[1] == kind;
-        }
-
         public SyntaxKind? GetGreatGrandParent()
         {
             if (Ancestors.Length <= 2)
                 return null;
 
             return Ancestors[2];
-        }
-
-        public bool HasGreatGrandParent(SyntaxKind kind)
-        {
-            if (Ancestors.Length <= 2)
-                return false;
-
-            return Ancestors[2] == kind;
         }
 
         public SyntaxKind? GetLastAncestor()
