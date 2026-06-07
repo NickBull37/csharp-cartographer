@@ -30,40 +30,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             _config = config.Value;
         }
 
-        /*
-        *  Syntax Highlighting Steps
-        *  
-        *  1. Color Manually (highly reliable)
-        *  
-        *     There is no way to distinguish classes, enums, & structs when they are defined
-        *     outside of the uploaded file. Use hardcoded lists of common structs and enums
-        *     to handle the most common scenarios. Skip any roles that could also share a name
-        *     but should never be colored as a type.
-        *  
-        *  2. Color by Roslyn Classification (highly reliable)
-        *  
-        *     The roslyn classification property is generated specifically for syntax highlighting.
-        *     Use it whenever its available (only tokens defined in the uploaded file).
-        *     
-        *  3. Color by Roslyn SemanticData (unreliable)
-        *  
-        *     Additional semantic data is gathered for identifier tokens. But which tokens actually
-        *     receive data and what that data says is inconsistent. Mostly it just helps to highlight
-        *     a small handful of externally defined identifiers from referenced assembiles.
-        *     
-        *     The roslyn semantic data is also subject to change and could break in the future. This
-        *     highlighting step can be toggled by the appsetting SemanticDataHighlightingEnabled.
-        *  
-        *  4. Color by SemanticRole (not fully reliable until unit tests are in place)
-        *  
-        *     A semantic role should be generated for every token by this point. Use this role to 
-        *     highlight remaining tokens. This method will not be able to distinguish externally
-        *     defined classes, enums, structs, etc. In those cases, a best guess is used.
-        *  
-        *  5. Color unidentified tokens red.
-        *  
-        */
-
         public void AddSyntaxHighlightingToNavTokens(List<NavToken> navTokens)
         {
             foreach (var token in navTokens)

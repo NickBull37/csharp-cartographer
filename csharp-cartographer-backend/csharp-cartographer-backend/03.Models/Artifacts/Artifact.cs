@@ -19,7 +19,8 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
         public Artifact(
             string fileName,
             List<NavToken> navTokens,
-            ArtifactTimes timings)
+            ArtifactTimes timings,
+            Insight? insight)
         {
             ArtifactType = GetArtifactType(fileName);
             TokenCount = navTokens.Count;
@@ -27,6 +28,7 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
             FileName = fileName;
             NavTokens = navTokens;
             Timings = timings;
+            Insight = insight;
         }
 
         private static string GetArtifactType(string fileName)

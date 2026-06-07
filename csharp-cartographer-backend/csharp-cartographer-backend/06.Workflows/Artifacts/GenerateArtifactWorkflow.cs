@@ -2,6 +2,7 @@
 using csharp_cartographer_backend._02.Utilities.Logging;
 using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._03.Models.Files;
+using csharp_cartographer_backend._03.Models.Insights;
 using csharp_cartographer_backend._05.Services.Charts;
 using csharp_cartographer_backend._05.Services.Files;
 using csharp_cartographer_backend._05.Services.Insights;
@@ -47,16 +48,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         public async Task<ActionResponse<Artifact>> GenerateDemoArtifact(string fileName, CancellationToken cancellationToken)
         {
             FileData fileData = _fileProcessor.GetDemoFileData(fileName);
-
-            var actionResponse = await GenerateArtifact(fileData, cancellationToken);
-
-            var insight = _insightService.GetDemoFileInsight(fileName);
-            if (insight is not null)
-            {
-                actionResponse.Content.Insight = insight;
-            }
-
-            return actionResponse;
+            return await GenerateArtifact(fileData, cancellationToken);
         }
 
         public async Task<ActionResponse<Artifact>> GenerateUserArtifact(GenerateArtifactDto requestDto, CancellationToken cancellationToken)
@@ -67,22 +59,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
 
         private async Task<ActionResponse<Artifact>> GenerateArtifact(FileData fileData, CancellationToken cancellationToken)
         {
-            /*
-             *   Steps to generate an artifact:
-             * 
-             *   0. Read in source code from user uploaded file & generate FileData.
-             *   1. Start stopwatch and set first checkpoint.
-             *   2. Generate a list of nav tokens from the source file.
-             *   3. Generate a token chart for each token and its ancestors.
-             *   4. Add semantic details to each token and it's map.
-             *   5. Add syntax highlighting for each token.
-             *   6. Stop stopwatch and capture total elapsed time.
-             *   7. Build artifact timings.
-             *   8. Build artifact.
-             *   *  Log artifact data (optional)
-             *   9. Return artifact.
-             */
-
             try
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
@@ -111,10 +87,15 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
                     totalTime
                 );
 
+                Insight? insight = null;
+                if (fileData.IsDemo)
+                    insight = _insightService.GetDemoFileInsight(fileData.FileName);
+
                 var artifact = new Artifact(
                     fileData.FileName,
                     navTokens,
-                    timings
+                    timings,
+                    insight
                 );
 
                 _cartographerLogger.LogArtifactData(artifact);

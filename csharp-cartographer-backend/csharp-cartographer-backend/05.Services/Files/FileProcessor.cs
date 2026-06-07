@@ -54,7 +54,12 @@ namespace csharp_cartographer_backend._05.Services.Files
                 SourceText.From(sourceCode)
             );
 
-            return new FileData(fileName, sourceCode, document);
+            return new FileData(
+                fileName,
+                sourceCode,
+                document,
+                projectName == DemoProjectName
+            );
         }
 
         private static ProjectInfo CreateProjectInfo(string projectName)

@@ -10,11 +10,14 @@ namespace csharp_cartographer_backend._03.Models.Files
 
         public Document Document { get; init; }
 
-        public FileData(string fileName, string content, Document document)
+        public bool IsDemo { get; init; }
+
+        public FileData(string fileName, string content, Document document, bool isDemo)
         {
             FileName = fileName;
             Content = content;
             Document = document;
+            IsDemo = isDemo;
         }
     }
 }

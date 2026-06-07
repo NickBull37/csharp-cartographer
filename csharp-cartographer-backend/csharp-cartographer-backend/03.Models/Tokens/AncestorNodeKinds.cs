@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Immutable;
 
@@ -7,11 +8,32 @@ namespace csharp_cartographer_backend._03.Models.Tokens
     {
         public ImmutableArray<SyntaxKind> Ancestors { get; }
 
-        public AncestorNodeKinds(ImmutableArray<SyntaxKind> ancestorKinds)
+        //public AncestorNodeKinds(ImmutableArray<SyntaxKind> ancestorKinds)
+        //{
+        //    Ancestors = ancestorKinds.IsDefault
+        //        ? ImmutableArray<SyntaxKind>.Empty
+        //        : ancestorKinds;
+        //}
+
+        public AncestorNodeKinds(SyntaxToken roslynToken)
         {
-            Ancestors = ancestorKinds.IsDefault
+            var builder = ImmutableArray.CreateBuilder<SyntaxKind>();
+            SyntaxNode? currentNode = roslynToken.Parent;
+
+            while (currentNode is not null)
+            {
+                if (!currentNode.IsKind(SyntaxKind.CompilationUnit))
+                {
+                    builder.Add(currentNode.Kind());
+                }
+                currentNode = currentNode.Parent;
+            }
+
+            var array = builder.ToImmutable();
+
+            Ancestors = array.IsDefault
                 ? ImmutableArray<SyntaxKind>.Empty
-                : ancestorKinds;
+                : array;
         }
 
         public bool HasAncestorAt(int index, SyntaxKind kind) =>
@@ -64,7 +86,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public static explicit operator SyntaxKind[](AncestorNodeKinds value) =>
             value.Ancestors.ToArray();
 
-        public static implicit operator AncestorNodeKinds(ImmutableArray<SyntaxKind> ancestorKinds) =>
-            new(ancestorKinds);
+        public static implicit operator AncestorNodeKinds(SyntaxToken roslynToken) =>
+            new(roslynToken);
     }
 }
