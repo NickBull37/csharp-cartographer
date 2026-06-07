@@ -30,7 +30,9 @@ namespace csharp_cartographer_backend._05.Services.Charts
 
             foreach (var token in navTokens)
             {
-                token.Charts.Add(CreateTokenChart(token));
+                List<TokenChart> charts = [];
+
+                charts.Add(CreateTokenChart(token));
 
                 var ancestorNodes = GetAncestorNodes(token.RoslynToken)
                     .Where(node => !KindsToSkip.Contains(node.Kind()))
@@ -43,25 +45,25 @@ namespace csharp_cartographer_backend._05.Services.Charts
 
                     if (cachedAncestors.TryGetValue(ancestorNode, out var cachedChart))
                     {
-                        token.Charts.Add(cachedChart);
+                        charts.Add(cachedChart);
                     }
                     else
                     {
-                        token.Charts.Add(CreateAncestorNodeChart(ancestorNode, tokenIndexBySpan));
+                        charts.Add(CreateAncestorNodeChart(ancestorNode, tokenIndexBySpan));
                     }
                 }
 
-                UpdateAncestorCache(ancestorNodes, token.Charts, cachedAncestors);
+                token.Charts = charts;
+                UpdateAncestorCache(ancestorNodes, charts, cachedAncestors);
             }
-
-            // TODO: trim single token ancestors
         }
 
         private static TokenChart CreateTokenChart(NavToken token)
         {
             return new TokenChart(
                 token.Kind.ToString(),
-                new HighlightRange(token.Index, token.Index));
+                new HighlightRange(token.Index, token.Index)
+            );
         }
 
         private static TokenChart CreateAncestorNodeChart(
@@ -70,7 +72,8 @@ namespace csharp_cartographer_backend._05.Services.Charts
         {
             return new TokenChart(
                 node.Kind().ToString(),
-                TryGetNodeHighlightRange(node, tokenIndexBySpan));
+                TryGetNodeHighlightRange(node, tokenIndexBySpan)
+            );
         }
 
         private static HighlightRange? TryGetNodeHighlightRange(

@@ -44,7 +44,7 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
                 .OrderBy(match => match);
 
             var original = classifications.FirstOrDefault(classification => classification != "static symbol") ?? "unknown";
-            var (corrected, colorAs) = RoslynCorrector.GetCorrectedClassifications(navToken, original);
+            var (corrected, colorAs) = RoslynCorrector.GetClassifications(navToken, original);
 
             navToken.Classifications = new Classifications(classifications, original, colorAs, corrected);
         }

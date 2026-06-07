@@ -135,7 +135,6 @@ namespace csharp_cartographer_backend._02.Utilities.Logging
                     token.Text,
                     token.Classifications.Original,
                     token.Classifications.Corrected,
-                    token.Classifications.Final,
                     token.HighlightColor,
                     token.PrimaryKind,
                     token.SemanticRole,

@@ -47,7 +47,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
         private static bool ShouldUseReferenceExtension(NavToken token)
         {
             bool isDeclarationRole = DeclarationRoles.Contains(token.SemanticRole);
-            bool isDefinedInFile = token.Classifications.Final
+            bool isDefinedInFile = token.Classifications.Corrected
                 is "event name"
                 or "event field name"
                 or "field name"
@@ -60,7 +60,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
 
         private static string? GetIdentifierReferenceKey(NavToken token)
         {
-            var extension = token.Classifications.Final switch
+            var extension = token.Classifications.Corrected switch
             {
                 "event name" => null,
                 "event field name" => null,

@@ -36,7 +36,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
              *   corrected for various edge cases.
              */
 
-            switch (token.Classifications.Final)
+            switch (token.Classifications.Corrected)
             {
                 case "delimiter":
                     return PrimaryKind.Delimiter;

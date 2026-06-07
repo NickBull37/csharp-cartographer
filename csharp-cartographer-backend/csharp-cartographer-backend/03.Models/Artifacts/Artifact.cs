@@ -52,7 +52,7 @@ namespace csharp_cartographer_backend._03.Models.Artifacts
             int count = 0;
             foreach (var token in navTokens)
             {
-                count += token.Charts.Count;
+                count += token.Charts.Count();
             }
             return count;
         }

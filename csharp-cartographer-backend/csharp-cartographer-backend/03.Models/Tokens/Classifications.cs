@@ -6,18 +6,17 @@
         public string Original { get; set; } = string.Empty;
         public string ColorAs { get; set; } = string.Empty;
         public string Corrected { get; set; } = string.Empty;
-        public string Final => Corrected;
 
         public Classifications(
             IEnumerable<string> originalSet,
-            string roslyn,
+            string original,
             string? colorAs,
             string? corrected)
         {
             OriginalSet = originalSet;
-            Original = roslyn;
-            ColorAs = colorAs ?? roslyn;
-            Corrected = corrected ?? roslyn;
+            Original = original;
+            ColorAs = colorAs ?? original;
+            Corrected = corrected ?? original;
         }
     }
 }

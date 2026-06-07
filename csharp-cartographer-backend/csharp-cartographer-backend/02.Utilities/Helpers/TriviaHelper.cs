@@ -5,7 +5,7 @@ namespace csharp_cartographer_backend._02.Utilities.Helpers
 {
     public class TriviaHelper
     {
-        public static List<string> GetLeadingTrivia(SyntaxToken roslynToken)
+        public static IEnumerable<string> GetLeadingTrivia(SyntaxToken roslynToken)
         {
             if (!roslynToken.HasLeadingTrivia)
                 return [];
@@ -38,7 +38,7 @@ namespace csharp_cartographer_backend._02.Utilities.Helpers
             return triviaToAdd;
         }
 
-        public static List<string> GetTrailingTrivia(SyntaxToken roslynToken)
+        public static IEnumerable<string> GetTrailingTrivia(SyntaxToken roslynToken)
         {
             if (!roslynToken.HasTrailingTrivia)
                 return [];
@@ -74,7 +74,7 @@ namespace csharp_cartographer_backend._02.Utilities.Helpers
                 return trivia.ToString();
         }
 
-        private static List<string> GetLeadingSingleLineDocumentationCommentTrivia(SyntaxTrivia trivia)
+        private static IEnumerable<string> GetLeadingSingleLineDocumentationCommentTrivia(SyntaxTrivia trivia)
         {
             List<string> triviaToAdd = [];
             var triviaString = "///" + trivia.ToString();
@@ -112,7 +112,7 @@ namespace csharp_cartographer_backend._02.Utilities.Helpers
             return triviaToAdd;
         }
 
-        private static List<string> GetLeadingMultilineCommentTrivia(SyntaxTrivia trivia)
+        private static IEnumerable<string> GetLeadingMultilineCommentTrivia(SyntaxTrivia trivia)
         {
             List<string> triviaToAdd = [];
             var triviaString = trivia.ToString();
@@ -141,7 +141,7 @@ namespace csharp_cartographer_backend._02.Utilities.Helpers
             return triviaToAdd;
         }
 
-        private static List<string> GetLeadingRegionDirectiveTrivia(SyntaxTrivia trivia)
+        private static IEnumerable<string> GetLeadingRegionDirectiveTrivia(SyntaxTrivia trivia)
         {
             return [trivia.ToString(), SyntaxFactory.EndOfLine("\r\n").ToString()];
         }

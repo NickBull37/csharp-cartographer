@@ -5,44 +5,28 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
 {
     public static class RoslynCorrector
     {
-        public static (string? corrected, string? colorAs) GetCorrectedClassifications(NavToken token, string? roslyn)
+        public static (string? corrected, string? colorAs) GetClassifications(NavToken token, string? roslynClass)
         {
-            var corrected = GetCorrected(token, roslyn);
-            var colorAs = GetColorAs(token, corrected);
+            var corrected = GetCorrected(token, roslynClass);
+            var colorAs = GetColorAs(token, roslynClass);
 
             return (corrected, colorAs);
         }
 
         private static string? GetCorrected(NavToken token, string? roslynClass)
         {
-            var corrected = roslynClass switch
+            return roslynClass switch
             {
-                "keyword" => GetKeywordCorrected(token),
-                "identifier" => GetIdentifierCorrected(token),
-                "operator" => GetOperatorCorrected(token),
-                "punctuation" => GetPunctuationCorrected(token),
-                "property name" => GetPropertyNameCorrected(token),
+                "keyword" => GetKeywordCorrection(token),
+                "identifier" => GetIdentifierCorrection(token),
+                "operator" => GetOperatorCorrection(token),
+                "punctuation" => GetPunctuationCorrection(token),
+                "property name" => GetPropertyNameCorrection(token),
                 _ => null,
             };
-
-            return corrected;
         }
 
-        private static string? GetColorAs(NavToken token, string? corrected)
-        {
-            var colorAs = corrected switch
-            {
-                "delimiter" => "delimiter",
-                "keyword" => "keyword",
-                "identifier" => "identifier",
-                "punctuation" => GetPunctuationColorAs(token),
-                _ => null,
-            };
-
-            return colorAs;
-        }
-
-        private static string? GetKeywordCorrected(NavToken token)
+        private static string? GetKeywordCorrection(NavToken token)
         {
             if (token.IsArgsIdentifierKeyword())
                 return "identifier - keyword";
@@ -53,7 +37,7 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             return null;
         }
 
-        private static string? GetIdentifierCorrected(NavToken token)
+        private static string? GetIdentifierCorrection(NavToken token)
         {
             bool isNintKeyword = token.Text is "nint" && token.SemanticData?.SymbolName == "IntPtr";
             bool isNuintKeyword = token.Text is "nuint" && token.SemanticData?.SymbolName == "UIntPtr";
@@ -64,7 +48,7 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             return null;
         }
 
-        private static string? GetOperatorCorrected(NavToken token)
+        private static string? GetOperatorCorrection(NavToken token)
         {
             if (token.IsNullableTypeMarker())
                 return "punctuation";
@@ -78,7 +62,7 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             return null;
         }
 
-        private static string? GetPunctuationCorrected(NavToken token)
+        private static string? GetPunctuationCorrection(NavToken token)
         {
             if (token.IsDelimiter())
                 return "delimiter";
@@ -89,7 +73,7 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             return null;
         }
 
-        private static string? GetPropertyNameCorrected(NavToken token)
+        private static string? GetPropertyNameCorrection(NavToken token)
         {
             /*
              *  Roslyn will incorrectly classify a type qualifier in a property declaration
@@ -106,10 +90,25 @@ namespace csharp_cartographer_backend._05.Services.Roslyn
             return null;
         }
 
-        private static string? GetPunctuationColorAs(NavToken token)
+        private static string? GetColorAs(NavToken token, string? roslynClass)
         {
-            if (token.IsNullableTypeMarker())
-                return "operator";
+            if (roslynClass == "property name")
+            {
+                bool hasPropertyDeclAncestor = token.Ancestors.HasAncestor(SyntaxKind.PropertyDeclaration);
+                bool propertyDeclIsParent = token.Ancestors.GetParent() == SyntaxKind.PropertyDeclaration;
+
+                if (hasPropertyDeclAncestor && !propertyDeclIsParent)
+                    return "identifier";
+            }
+
+            if (roslynClass == "identifier")
+            {
+                bool isNintKeyword = token.Text is "nint" && token.SemanticData?.SymbolName == "IntPtr";
+                bool isNuintKeyword = token.Text is "nuint" && token.SemanticData?.SymbolName == "UIntPtr";
+
+                if (isNintKeyword || isNuintKeyword)
+                    return "keyword";
+            }
 
             return null;
         }
