@@ -28,8 +28,10 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
         private static readonly Lazy<IReadOnlyDictionary<string, EmbeddedInsight>> Insights
             = new(LoadInsights);
 
-        public static EmbeddedInsight? GetEmbeddedInsight(string fileName)
-            => Insights.Value.TryGetValue(fileName, out var insight)
+        public static void LoadAllInsights() => _ = Insights.Value;
+
+        public static EmbeddedInsight? GetEmbeddedInsight(string fileName) =>
+            Insights.Value.TryGetValue(fileName, out var insight)
                 ? insight
                 : null;
 

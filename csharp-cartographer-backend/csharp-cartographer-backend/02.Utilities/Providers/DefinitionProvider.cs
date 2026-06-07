@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace csharp_cartographer_backend._02.Utilities.Providers
 {
-    public sealed record DefinitionEntry(string Definition);
+    public sealed record DefinitionMarkup(string Definition);
 
     public static partial class DefinitionProvider
     {
@@ -28,8 +28,11 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
         private static readonly Lazy<IReadOnlyDictionary<string, StyledText>> Definitions
             = new(LoadDefinitions);
 
-        public static StyledText? GetStyledText(string key)
-            => Definitions.Value.TryGetValue(key, out var styledText)
+        public static void LoadAllDefinitions() =>
+            _ = Definitions.Value;
+
+        public static StyledText? GetStyledText(string key) =>
+            Definitions.Value.TryGetValue(key, out var styledText)
                 ? styledText
                 : null;
 
@@ -56,15 +59,15 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
                 using var reader = new StreamReader(stream);
                 var json = reader.ReadToEnd();
 
-                var dictionary = JsonSerializer.Deserialize<Dictionary<string, DefinitionEntry>>(json, JsonOptions)
-                    ?? new Dictionary<string, DefinitionEntry>(StringComparer.OrdinalIgnoreCase);
+                var kvpMarkup = JsonSerializer.Deserialize<Dictionary<string, DefinitionMarkup>>(json, JsonOptions)
+                    ?? new Dictionary<string, DefinitionMarkup>(StringComparer.OrdinalIgnoreCase);
 
-                foreach (var (key, entry) in dictionary)
+                foreach (var (key, markup) in kvpMarkup)
                 {
                     if (merged.ContainsKey(key))
                         throw new InvalidOperationException($"Duplicate definition key '{key}' in '{resourceName}'.");
 
-                    var styledText = ParseMarkupToStyledText(entry.Definition);
+                    var styledText = ParseMarkupToStyledText(markup.Definition);
                     merged.Add(key, styledText);
                 }
             }
@@ -77,10 +80,11 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
             if (string.IsNullOrWhiteSpace(markup))
                 return StyledText.NotFound();
 
-            InsertExtensions(markup);
-            List<TextSegment> segments = [];
+            markup = InsertExtensions(markup);
 
+            List<TextSegment> segments = [];
             int index = 0;
+
             foreach (Match match in StyledSpanRegex().Matches(markup))
             {
                 // try adding plain text segment
@@ -123,19 +127,21 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
             return new StyledText(segments);
         }
 
-        private static void InsertExtensions(string markup)
+        private static string InsertExtensions(string markup)
         {
             if (string.IsNullOrWhiteSpace(markup))
-                return;
+                return markup;
 
-            foreach (var entry in ExtensionReplacements)
+            foreach (var kvpExtension in ExtensionReplacements)
             {
                 markup = markup.Replace(
-                    entry.Key,
-                    entry.Value,
+                    kvpExtension.Key,
+                    kvpExtension.Value,
                     StringComparison.OrdinalIgnoreCase
                 );
             }
+
+            return markup;
         }
 
         private static void AddSegment(List<TextSegment> segments, string text, string[] classes)

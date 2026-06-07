@@ -1,245 +1,149 @@
-﻿using csharp_cartographer_backend._03.Models.Artifacts;
-using csharp_cartographer_backend._03.Models.Tokens;
+﻿using csharp_cartographer_backend._01.Configuration.Configs;
+using csharp_cartographer_backend._03.Models.Artifacts;
+using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace csharp_cartographer_backend._02.Utilities.Logging
 {
-    public enum LogType
+    public interface ICartographerLogger
     {
-        ArtifactLog,
-        ExceptionLog,
-        TextLog,
-        TokenLog,
+        void LogArtifactData(Artifact artifact);
     }
 
-    public static class CartographerLogger
+    public class CartographerLogger : ICartographerLogger
     {
-        private static readonly string projectRoot = Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.FullName;
-        private static readonly string _artifactLogPath = @"02.Utilities\Logging\Logs\ArtifactLog.txt";
-        private static readonly string _exceptionLogPath = @"02.Utilities\Logging\Logs\ExceptionLog.txt";
-        private static readonly string _textLogPath = @"02.Utilities\Logging\Logs\TextLog.txt";
-        private static readonly string _tokenLogPath = @"02.Utilities\Logging\Logs\TokenLog.txt";
+        private readonly ILogger<CartographerLogger> _logger;
+        private readonly CartographerConfig _config;
 
-        public static void LogArtifact(Artifact artifact)
+        private readonly JsonSerializerOptions options = new()
         {
-            ClearLogFile(LogType.ArtifactLog);
+            WriteIndented = true
+        };
 
-            LogMessage(" ", _artifactLogPath);
-            LogMessage($"==============================  {artifact.FileName}  ==============================", _artifactLogPath);
-            LogMessage(" ", _artifactLogPath);
-            //LogMessage("-------------------------- Misc data --------------------------");
-            LogMessage($"CreatedDate: {artifact.CreatedDate}", _artifactLogPath);
-            LogMessage($"Language: {artifact.Language}", _artifactLogPath);
-            LogMessage($"ArtifactType: {artifact.ArtifactType}", _artifactLogPath);
-            LogMessage($"NumTokensAnalyzed: {artifact.TokenCount}", _artifactLogPath);
-            //LogMessage("------------------------- Token data -------------------------");
-            LogMessage($"NumAncestorsMapped: {artifact.AncestorCount}", _artifactLogPath);
+        public CartographerLogger(ILogger<CartographerLogger> logger, IOptions<CartographerConfig> config)
+        {
+            _logger = logger;
+            _config = config.Value;
         }
 
-        public static void LogException(Exception ex)
+        public void LogArtifactData(Artifact artifact)
         {
-            ClearLogFile(LogType.ExceptionLog);
+            if (_config.ShouldLogSemanticData)
+                LogSemanticData(artifact);
 
-            LogMessage(" ", _exceptionLogPath);
-            LogMessage($"==============================  {ex.GetType()}  ==============================", _exceptionLogPath);
-            LogMessage(" ", _exceptionLogPath);
-            LogMessage($"Message: {ex.Message}", _exceptionLogPath);
-            LogMessage($"Source: {ex.Source}", _exceptionLogPath);
-            LogMessage($"StackTrace: {ex.StackTrace}", _exceptionLogPath);
+            if (_config.ShouldLogUnidentifiedTokens)
+                LogUnidentifiedTokens(artifact);
         }
 
-        public static void LogTokens(IEnumerable<NavToken> tokens)
+        private void LogSemanticData(Artifact artifact)
         {
-            ClearLogFile(LogType.TokenLog);
+            var identifiers = artifact.NavTokens
+                .Where(token => token.PrimaryKind is PrimaryKind.Identifier);
 
-            foreach (var token in tokens)
+            foreach (var token in identifiers)
             {
-                LogToken(token);
+                var locationData = new
+                {
+                    token.SemanticData?.IsInUploadedFile,
+                    token.SemanticData?.IsInSourceCompilation,
+                    token.SemanticData?.IsInReferencedAssemblies,
+                    token.SemanticData?.ContainingNamespace,
+                    token.SemanticData?.ContainingAssembly,
+                };
+
+                var symbolData = new
+                {
+                    token.SemanticData?.IsAliasSymbol,
+                    token.SemanticData?.IsNamespaceSymbol,
+                    token.SemanticData?.IsTypeSymbol,
+                    token.SemanticData?.IsNamedTypeSymbol,
+                    token.SemanticData?.IsDeclaredSymbol,
+                    token.SemanticData?.IsOperation,
+                    token.SemanticData?.SymbolName,
+                    token.SemanticData?.SymbolKind,
+                    token.SemanticData?.ContainingType,
+                };
+
+                var typeData = new
+                {
+                    token.SemanticData?.TypeKind,
+                    token.SemanticData?.ConvertedTypeKind,
+                    token.SemanticData?.IsTypeSymbol,
+                    token.SemanticData?.IsNamedTypeSymbol,
+                    token.SemanticData?.IsConvertedTypeSymbol,
+                };
+
+                var aliasData = new
+                {
+                    token.SemanticData?.AliasName,
+                    token.SemanticData?.AliasTargetName,
+                };
+
+                var memberishData = new
+                {
+                    token.SemanticData?.MemberType,
+                    token.SemanticData?.MemberTypeKind,
+                };
+
+                var symbolCharacteristics = new
+                {
+                    token.SemanticData?.Accessibility,
+                    token.SemanticData?.IsAbstract,
+                    token.SemanticData?.IsAsync,
+                    token.SemanticData?.IsConst,
+                    token.SemanticData?.IsDiscard,
+                    token.SemanticData?.IsExtern,
+                    token.SemanticData?.IsForEachVar,
+                    token.SemanticData?.IsImplicitlyDeclared,
+                    token.SemanticData?.IsIndexer,
+                    token.SemanticData?.IsOptional,
+                    token.SemanticData?.IsOriginalDefinition,
+                    token.SemanticData?.IsOverride,
+                    token.SemanticData?.IsReadOnly,
+                    token.SemanticData?.IsSealed,
+                    token.SemanticData?.IsStatic,
+                    token.SemanticData?.IsRequired,
+                    token.SemanticData?.IsUsingVar,
+                    token.SemanticData?.IsVirtual,
+                    token.SemanticData?.IsVolatile,
+                    token.SemanticData?.IsWriteOnly,
+                    token.SemanticData?.IsExplicitlyNamedTupleElement,
+                };
+
+                var logMessage =
+                    $"{Environment.NewLine}================================ {token.Index} - {token.Text} ================================" +
+                    $"{Environment.NewLine}----------- Location Data -----------{Environment.NewLine}{JsonSerializer.Serialize(locationData, options)}" +
+                    $"{Environment.NewLine}----------- Symbol Data -----------{Environment.NewLine}{JsonSerializer.Serialize(symbolData, options)}" +
+                    $"{Environment.NewLine}----------- Type Data -----------{Environment.NewLine}{JsonSerializer.Serialize(typeData, options)}" +
+                    $"{Environment.NewLine}----------- Alias Data -----------{Environment.NewLine}{JsonSerializer.Serialize(aliasData, options)}" +
+                    $"{Environment.NewLine}----------- Member-ish Data -----------{Environment.NewLine}{JsonSerializer.Serialize(memberishData, options)}" +
+                    $"{Environment.NewLine}----------- Symbol Characteristics -----------{Environment.NewLine}{JsonSerializer.Serialize(symbolCharacteristics, options)}" +
+                    $"{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}";
+
+                _logger.LogInformation("{LogMessage}", logMessage);
             }
         }
 
-        public static void LogText(string? text)
+        private void LogUnidentifiedTokens(Artifact artifact)
         {
-            if (text is null)
-            {
-                return;
-            }
+            var tokens = artifact.NavTokens
+                .Where(token => token.HighlightColor == "color-red")
+                .Select(token => new
+                {
+                    token.Index,
+                    token.Text,
+                    token.Classifications.Original,
+                    token.Classifications.Corrected,
+                    token.Classifications.Final,
+                    token.HighlightColor,
+                    token.PrimaryKind,
+                    token.SemanticRole,
+                    token.Kind,
+                });
 
-            using StreamWriter writer = new(Path.Combine(projectRoot, _textLogPath), true);
-            writer.WriteLine($"{text}");
-        }
-
-        public static void ClearLogFile(LogType logType)
-        {
-            string? logPath = logType switch
-            {
-                LogType.ArtifactLog => _artifactLogPath,
-                LogType.ExceptionLog => _exceptionLogPath,
-                LogType.TextLog => _textLogPath,
-                LogType.TokenLog => _tokenLogPath,
-                _ => null
-            };
-
-            if (logPath is null)
-            {
-                return;
-            }
-
-            using StreamWriter streamWriter = new(Path.Combine(projectRoot, logPath), false);
-            streamWriter.Write("");
-        }
-
-        private static void LogToken(NavToken token)
-        {
-            LogMessage(" ", _tokenLogPath);
-            LogMessage($"==============================  {token.Index}  |  {token.Text}  ==============================", _tokenLogPath);
-            LogMessage(" ", _tokenLogPath);
-            LogMessage("---------------------- Misc data ----------------------", _tokenLogPath);
-            LogMessage($"Index: {token.Index}", _tokenLogPath);
-            LogMessage($"HighlightColor: {token.HighlightColor ?? "..."}", _tokenLogPath);
-            LogMessage("---------------------- Token data ----------------------", _tokenLogPath);
-            LogMessage($"Text: {token.Text ?? "..."}", _tokenLogPath);
-            LogMessage($"Kind: {token.Kind}", _tokenLogPath);
-            //LogMessage("---------------------- Syntax data ----------------------", _tokenLogPath);
-            //LogMessage($"ParentNodeKind: {token.ParentNodeKind ?? "..."}", _tokenLogPath);
-            //LogMessage($"GrandParentNodeKind: {token.GrandParentNodeKind ?? "..."}", _tokenLogPath);
-            //LogMessage($"GreatGrandParentNodeKind: {token.GreatGrandParentNodeKind ?? "..."}", _tokenLogPath);
-            //LogMessage($"GreatGreatGrandParentNodeKind: {token.GreatGreatGrandParentNodeKind ?? "..."}", _tokenLogPath);
-            //LogMessage($"OldestAncestorKind: {token.AncestorKinds.Ancestors.LastOrDefault().ToString() ?? "..."}", _tokenLogPath);
-
-            var s = token.SemanticData;
-            if (s is null)
-            {
-                LogMessage("=====================================================================================", _tokenLogPath);
-                LogMessage(" ", _tokenLogPath);
-                LogMessage(" ", _tokenLogPath);
-                LogMessage(" ", _tokenLogPath);
-                LogMessage(" ", _tokenLogPath);
-                return;
-            }
-
-            LogMessage("---------------------- Location data ----------------------", _tokenLogPath);
-            LogMessage($"IsInUploadedFile: {s.IsInUploadedFile}", _tokenLogPath);
-            LogMessage($"IsInSourceCompilation: {s.IsInSourceCompilation}", _tokenLogPath);
-            LogMessage($"IsInReferencedAssemblies: {s.IsInReferencedAssemblies}", _tokenLogPath);
-
-            LogMessage("---------------------- Semantic data ----------------------", _tokenLogPath);
-
-            // --- Symbol data ---
-            LogMessage($"SymbolName: {(!string.IsNullOrEmpty(s.SymbolName) ? s.SymbolName : "...")}", _tokenLogPath);
-            LogMessage($"SymbolKind: {s.SymbolKind.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"ContainingType: {s.ContainingType?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"ContainingNamespace: {(string.IsNullOrEmpty(s.ContainingNamespace) ? s.ContainingNamespace : "...")}", _tokenLogPath);
-            LogMessage($"ContainingAssembly: {s.ContainingAssembly?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsDeclaredSymbol: {s.IsDeclaredSymbol}", _tokenLogPath);
-            LogMessage($"IsAliasTargetSymbol: {s.IsAliasTargetSymbol}", _tokenLogPath);
-            LogMessage($"IsOperation: {s.IsOperation}", _tokenLogPath);
-            LogMessage($"IsTypeSymbol: {s.IsTypeSymbol}", _tokenLogPath);
-
-            // --- Declarations ---
-            var dSym = s.DeclaredSymbol;
-            if (dSym is not null)
-            {
-                LogMessage("----------- Declared symbol -----------", _tokenLogPath);
-                LogMessage($"DeclaredSymbolName: {dSym.Name ?? "..."}", _tokenLogPath);
-                LogMessage($"DeclaredSymbolKind: {dSym.Kind.ToString() ?? "..."}", _tokenLogPath);
-            }
-
-            // --- Alias ---
-            var aSym = s.AliasTargetSymbol;
-            if (aSym is not null)
-            {
-                LogMessage("----------- Alias symbol -----------", _tokenLogPath);
-                LogMessage($"IsAlias: {s.IsAliasSymbol.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"AliasName: {s.AliasName ?? "..."}", _tokenLogPath);
-                LogMessage($"AliasTargetKind: {s.AliasTargetSymbol?.Kind.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"AliasTargetDisplayString: {s.AliasTargetName ?? "..."}", _tokenLogPath);
-            }
-
-            // --- Symbol types --- (expected for refs, not declarations)
-            var tSym = s.TypeSymbol;
-            if (tSym is not null)
-            {
-                LogMessage("----------- Symbol type -----------", _tokenLogPath);
-                LogMessage($"IsFieldSymbol: {s.IsFieldSymbol.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"IsPropertySymbol: {s.IsPropertySymbol.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"IsLocalSymbol: {s.IsLocalSymbol.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"IsParameterSymbol: {s.IsParameterSymbol.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"IsMethodSymbol: {s.IsMethodSymbol.ToString() ?? "..."}", _tokenLogPath);
-            }
-
-            // --- Member-ish details ---
-            LogMessage("----------- Member-ish details -----------", _tokenLogPath);
-            LogMessage($"MemberType: {(!string.IsNullOrEmpty(s.MemberType) ? s.MemberType : "...")}", _tokenLogPath);
-            LogMessage($"MemberTypeKind: {s.MemberTypeKind.ToString() ?? "..."}", _tokenLogPath);
-
-            // --- Symbol characteristics ---
-            LogMessage("----------- Symbol characteristics -----------", _tokenLogPath);
-            LogMessage($"Accessibility: {s.Accessibility?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsAbstract: {s.IsAbstract?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsAsync: {s.IsAsync?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsConst: {s.IsConst?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsDefinition: {s.IsOriginalDefinition?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsDiscard: {s.IsDiscard?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsExtern: {s.IsExtern?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsForEachVar: {s.IsForEachVar?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsImplicitlyDeclared: {s.IsImplicitlyDeclared?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsIndexer: {s.IsIndexer?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsOptional: {s.IsOptional?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsOriginalDefinition: {s.IsOriginalDefinition?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsOverride: {s.IsOverride?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsReadOnly: {s.IsReadOnly?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsSealed: {s.IsSealed?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsStatic: {s.IsStatic?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsRequired: {s.IsRequired?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsUsingVar: {s.IsUsingVar?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsVirtual: {s.IsVirtual?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsVolatile: {s.IsVolatile?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsWriteOnly: {s.IsWriteOnly?.ToString() ?? "..."}", _tokenLogPath);
-            LogMessage($"IsExplicitlyNamedTupleElement: {s.IsExplicitlyNamedTupleElement?.ToString() ?? "..."}", _tokenLogPath);
-
-            // --- Method only characteristics ---
-            if (s.IsMethodSymbol)
-            {
-                LogMessage("----------- Methods only -----------", _tokenLogPath);
-                LogMessage($"MethodKind: {s.MethodKind?.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"MethodSignature: {s.MethodSignature ?? "..."}", _tokenLogPath);
-                //LogMessage($"MethodSignatureFullyQualified: {s.MethodSignatureFullyQualified ?? "..."}", _tokenLogPath);
-                LogMessage($"IsGenericMethod: {s.IsGenericMethod?.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"IsExtensionMethod: {s.IsExtensionMethod?.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"IsReadOnly: {s.IsReadOnly.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"ReturnType: {s.ReturnType?.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"BaseType: {s.ReturnType?.BaseType?.ToString() ?? "..."}", _tokenLogPath);
-            }
-
-            if (s.TypeSymbol is not null)
-            {
-                // --- TypeInfo (original + converted) ---
-                LogMessage("----------- TypeInfo -----------", _tokenLogPath);
-                LogMessage($"TypeKind: {s.TypeKind?.ToString() ?? "..."}", _tokenLogPath);
-            }
-
-            if (s.Operation is not null)
-            {
-                // --- Operations (expected for refs) ---
-                // OperationKind: FieldReference
-                // OperationResultType: IGenerateArtifactWorkflow
-                // OperationResultTypeFullyQualified: IGenerateArtifactWorkflow
-                LogMessage("----------- Operations -----------", _tokenLogPath);
-                LogMessage($"OperationKind: {s.OperationKind.ToString() ?? "..."}", _tokenLogPath);
-                LogMessage($"OperationResultType: {s.OperationResultType ?? "..."}", _tokenLogPath);
-            }
-
-            LogMessage("=====================================================================================", _tokenLogPath);
-            LogMessage(" ", _tokenLogPath);
-            LogMessage(" ", _tokenLogPath);
-            LogMessage(" ", _tokenLogPath);
-            LogMessage(" ", _tokenLogPath);
-        }
-
-        private static void LogMessage(string message, string logPath)
-        {
-            using StreamWriter writer = new(Path.Combine(projectRoot, logPath), true);
-            writer.WriteLine($"{message}");
+            var json = JsonSerializer.Serialize(tokens, options);
+            _logger.LogInformation("{newline}{json}", Environment.NewLine, json);
         }
     }
 }

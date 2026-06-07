@@ -57,7 +57,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         // Arg/Param Lists
         ArgumentListBoundary,
         AttributeArgumentListBoundary,
-        BracketedArgumentListBoundary,
+        CollectionIndexArgumentBoundary,
         ParameterListBoundary,
         TypeArgumentListBoundary,
         TypeParameterListBoundary,
@@ -109,24 +109,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         [Label("StatementControlBoundary")]
         LockStatementControlBoundary,
 
-        // Initializers
-        [Label("InitializerBoundary")]
-        ArrayInitializationBoundary,
-        [Label("InitializerBoundary")]
-        CollectionElementInitializerBoundary,
-        [Label("InitializerBoundary")]
-        CollectionInitializerBoundary,
-        [Label("InitializerBoundary")]
-        ObjectInitializerBoundary,
-        [Label("InitializerBoundary")]
-        WithInitializerExpressionBoundary,
-
-        // Pattern Matching
-        [Label("PatternBoundary")]
-        ListPatternBoundary,
-        [Label("PatternBoundary")]
-        PositionalPatternBoundary,
-
         // Definitions
         [Label("DefinitionBoundary")]
         ClassBoundary,
@@ -146,6 +128,24 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         RecordStructBoundary,
         [Label("DefinitionBoundary")]
         StructBoundary,
+
+        // Initializers
+        [Label("InitializerBoundary")]
+        ArrayInitializationBoundary,
+        [Label("InitializerBoundary")]
+        CollectionElementInitializerBoundary,
+        [Label("InitializerBoundary")]
+        CollectionInitializerBoundary,
+        [Label("InitializerBoundary")]
+        ObjectInitializerBoundary,
+        [Label("InitializerBoundary")]
+        WithInitializerExpressionBoundary,
+
+        // Pattern Matching
+        [Label("PatternBoundary")]
+        ListPatternBoundary,
+        [Label("PatternBoundary")]
+        PositionalPatternBoundary,
         #endregion
 
         #region ------------ OPERATORS ------------
@@ -197,10 +197,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         ArrayLengthSeparator,
         AttributeArgumentSeparator,
         BaseTypeSeparator,
-        [Label("Collection Element Separator")]
-        CollectionExpressionElementSeparator,
-        [Label("Collection Element Separator")]
-        CollectionInitializerElementSeparator,
+        CollectionElementSeparator,
         ComplexElementSeparator,
         ConstraintSeparator,
         DeconstructionVariableSeparator,
@@ -285,7 +282,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         // Qualifiers
         AliasQualifier,
         ContainingTypeMemberQualifer,
-        ElementAccessQualifer,
+        ElementAccessQualifer, // => remove this, use instance or implicit instance
         ImplicitInstanceQualifier,
         InstanceQualifier,
         NamespaceQualifier,
@@ -486,6 +483,42 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         SizeOfOperator,
         TypeOfOperator,
         #endregion
+    }
+
+    public enum SemanticRoleNew
+    {
+        Unknown,
+
+        // Delimiters
+        ConditionBoundary,
+        ContextBlockBoundary,
+        LoopControlBoundary,
+        StatementControlBoundary,
+        InitializerBoundary,
+        PatternBoundary,
+        DefinitionBoundary,
+
+        // Operators
+        NullConditional,
+        Ternary,
+
+        // Punctuation
+        CollectionElementSeparator,
+
+        // Identifiers
+        LocalDeclaration,
+        MemberDeclaration,
+        ParameterDeclaration,
+        TypeDeclaration,
+
+        // Misc
+        LoopIteratorType,
+    }
+
+    public enum FocusedRole
+    {
+        Unknown,
+
     }
 
     public enum SecondaryRole

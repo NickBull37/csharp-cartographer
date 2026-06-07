@@ -1,4 +1,6 @@
 using csharp_cartographer_backend._01.Configuration.Configs;
+using csharp_cartographer_backend._02.Utilities.Logging;
+using csharp_cartographer_backend._02.Utilities.Providers;
 using csharp_cartographer_backend._04.DataAccess.Insights;
 using csharp_cartographer_backend._05.Services.AiAnalysis;
 using csharp_cartographer_backend._05.Services.Charts;
@@ -49,6 +51,7 @@ builder.Services.Configure<FormOptions>(options =>
 
 // configure DI for csharp-cartographer services
 builder.Services.AddScoped<IAiAnalysisService, AiAnalysisService>();
+builder.Services.AddScoped<ICartographerLogger, CartographerLogger>();
 builder.Services.AddScoped<IFileProcessor, FileProcessor>();
 builder.Services.AddScoped<IInsightService, InsightService>();
 builder.Services.AddScoped<INavTokenGenerator, NavTokenGenerator>();
@@ -72,6 +75,11 @@ builder.Services.AddScoped<ICreateInsightWorkflow, CreateInsightWorkflow>();
 builder.Services.AddScoped<IInsightRepository, InsightRepository>();
 
 var app = builder.Build();
+
+// pre-load & parse embedded json files
+DefinitionProvider.LoadAllDefinitions();
+DemoOptionProvider.LoadAllDemoOptions();
+InsightProvider.LoadAllInsights();
 
 app.UseCors(policy => policy
     .AllowAnyHeader()

@@ -20,9 +20,6 @@
   "AttributeArgumentListBoundary": {
     "Definition": "Marks the boundaries of the argument list passed to an attribute."
   },
-  "BracketedArgumentListBoundary": {
-    "Definition": "Marks the boundaries of an argument list used to access elements of an array."
-  },
   "CastTypeBoundary": {
     "Definition": "Marks the boundaries of the type used when converting a value to another type."
   },
@@ -37,6 +34,9 @@
   },
   "CheckedStatementBlockBoundary": {
     "Definition": "Marks the boundaries of a checked statement block."
+  },
+  "CollectionIndexArgumentBoundary": {
+    "Definition": "Marks the boundaries of the expression that evaluates to an index used to access an element of a collection."
   },
   "ConditionBoundary": {
     "Definition": "Marks the boundaries of a value or expression to be evaluated."
@@ -215,7 +215,7 @@
   "BaseTypeSeparator": {
     "Definition": "Separates a type from its base class or implemented interfaces."
   },
-  "Collection Element Separator": {
+  "CollectionElementSeparator": {
     "Definition": "Separates elements within a collection."
   },
   "ComplexElementSeparator": {
@@ -380,9 +380,6 @@
   "DeconstructionVariable": {
     "Definition": "The identifier for a new {c:bold}local variable{/c} that will receive a value when the assigned value is deconstructed."
   },
-
-
-
   "FixedPointerDeclaration": {
     "Definition": "The name of the pointer variable declared by a {c:color-blue keyword}fixed{/c} statement. This variable points to the pinned data for the duration of the fixed block."
   },
@@ -392,11 +389,9 @@
   "ForEachLoopIteratorDeclaration": {
     "Definition": "The loop variable declared in a {c:color-purple keyword}foreach{/c} loop that represents the current item. On each iteration, it holds the next element from the collection being processed."
   },
-
   "LoopIteratorDeclaration": {
     "Definition": "The variable declared in a {c:color-purple keyword}for{/c} or {c:color-purple keyword}foreach{/c} that gets updated for each iteration of the loop. This iterator variable is only accessible from within the scope of the loop statement."
   },
-
   "OutVariableDeclaration": {
     "Definition": "A new variable introduced by the {c:color-blue keyword}out{/c} argument modifier. The variable receives the value assigned by the called method and becomes available after the invocation."
   },
@@ -406,7 +401,6 @@
   "Parameter": {
     "Definition": "A variable defined in the {c:bold}signature{/c} of a method or constructor that receives a value from wherever it's called. The value passed in from the caller is referred to as an {c:bold}argument{/c}."
   },
-
   "ConstructorInvocation": {
     "Definition": "This identifier refers to a constructor being invoked in an object creation expression. It shares a name with the type whose constructor is being called to create the new object instance."
   },

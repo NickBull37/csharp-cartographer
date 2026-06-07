@@ -122,6 +122,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return TryGetMiscRole(token);
         }
 
+        private static FocusedRole GetFocusedRole(in NavToken token)
+        {
+            var semanticRole = FocusedRole.Unknown;
+
+            return semanticRole;
+        }
+
         private static SecondaryRole? TryGetSecondaryRole(in NavToken token)
         {
             if (token.SemanticRole == SemanticRole.InstanceQualifier)
@@ -339,8 +346,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsAttributeListDelimiter())
                     return SemanticRole.AttributeListBoundary;
 
-                if (token.IsBracketedArgumentListDelimiter())
-                    return SemanticRole.BracketedArgumentListBoundary;
+                if (token.IsCollectionIndexArgumentDelimiter())
+                    return SemanticRole.CollectionIndexArgumentBoundary;
 
                 if (token.IsCollectionExpressionDelimiter())
                     return SemanticRole.CollectionExpressionBoundary;
@@ -390,11 +397,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsBaseTypeSeparator())
                     return SemanticRole.BaseTypeSeparator;
 
-                if (token.IsCollectionExpressionElementSeparator())
-                    return SemanticRole.CollectionExpressionElementSeparator;
-
-                if (token.IsCollectionInitializerElementSeparator())
-                    return SemanticRole.CollectionInitializerElementSeparator;
+                if (token.IsCollectionElementSeparator())
+                    return SemanticRole.CollectionElementSeparator;
 
                 if (token.IsComplexElementSeparator())
                     return SemanticRole.ComplexElementSeparator;

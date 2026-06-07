@@ -62,6 +62,7 @@
             "Double",
             "Guid",
             "HashCode",
+            "ImmutableArray",
             "Index",
             "Int32",
             "Int64",

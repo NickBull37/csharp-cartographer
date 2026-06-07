@@ -65,6 +65,17 @@
     "Description": "",
     "RelativePath": "csharp-cartographer-backend\\03.Models\\Tokens\\NavToken.cs"
   },
+  "AncestorNodeKinds.cs": {
+    "Name": "AncestorNodeKinds.cs",
+    "Type": "Struct Model",
+    "Insights": [
+      "",
+      "",
+      ""
+    ],
+    "Description": "",
+    "RelativePath": "csharp-cartographer-backend\\03.Models\\Tokens\\AncestorNodeKinds.cs"
+  },
   "SemanticMap.cs": {
     "Name": "SemanticMap.cs",
     "Type": "Model Definition",

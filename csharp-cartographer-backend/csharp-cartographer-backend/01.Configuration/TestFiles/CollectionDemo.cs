@@ -37,6 +37,10 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             BitArray bits = new BitArray(8);
             bits.Set(0, true);
 
+            Dictionary<string, int?> demo = new();
+            demo.Add("0", null);
+            demo.Add("", default);
+
             // Interfaces (non-generic)
             ICollection nonGenericCollection = arrayList;
             IList nonGenericList = arrayList;

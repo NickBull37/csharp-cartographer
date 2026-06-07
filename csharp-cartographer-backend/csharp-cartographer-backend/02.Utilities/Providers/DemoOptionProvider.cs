@@ -23,8 +23,10 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
         private static readonly Lazy<IReadOnlyDictionary<string, DemoOption>> DemoOptions
             = new(LoadDemoOptions);
 
-        public static IReadOnlyCollection<DemoOption> GetDemoOptions()
-            => DemoOptions.Value.Values.ToArray();
+        public static void LoadAllDemoOptions() => _ = DemoOptions.Value;
+
+        public static IReadOnlyCollection<DemoOption> GetDemoOptions() =>
+            DemoOptions.Value.Values.ToArray();
 
         public static string GetDemoFilePath(string fileName)
         {

@@ -39,11 +39,12 @@ namespace csharp_cartographer_backend._05.Services.Keys
             return token.PrimaryKind switch
             {
                 PrimaryKind.Delimiter => GetDelimiterKey(token),
-                PrimaryKind.Operator => GetOperatorKey(token),
                 PrimaryKind.Identifier => GetIdentifierKey(token),
-                PrimaryKind.Literal => GetLiteralKey(token),
                 PrimaryKind.Keyword => GetKeywordKey(token),
                 PrimaryKind.KeywordOperator => GetKeywordOperatorKey(token),
+                PrimaryKind.Literal => GetLiteralKey(token),
+                PrimaryKind.Operator => GetOperatorKey(token),
+                PrimaryKind.Punctuation => GetPunctuationKey(token),
                 _ => null,
             };
         }

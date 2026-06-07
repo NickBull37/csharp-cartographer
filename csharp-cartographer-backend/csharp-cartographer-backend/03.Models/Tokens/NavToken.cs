@@ -65,6 +65,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         [JsonIgnore]
         public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
 
+        /// <summary>The focused role of the token in its given context.</summary>
+        [JsonIgnore]
+        public FocusedRole FocusedRole { get; set; } = FocusedRole.Unknown;
+
         /// <summary>The secondary role of the token in its given context.</summary>
         [JsonIgnore]
         public SemanticRole? SecondaryRole { get; set; }
@@ -324,7 +328,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Ancestors.HasAncestorAt(0, SyntaxKind.AttributeArgumentList);
         }
 
-        public bool IsBracketedArgumentListDelimiter()
+        public bool IsCollectionIndexArgumentDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.BracketedArgumentList);
         }
@@ -2610,16 +2614,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Ancestors.HasAncestorAt(0, SyntaxKind.BaseList);
         }
 
-        public bool IsCollectionExpressionElementSeparator()
+        public bool IsCollectionElementSeparator()
         {
             return Kind == SyntaxKind.CommaToken
-                && Ancestors.HasAncestorAt(0, SyntaxKind.CollectionExpression);
-        }
-
-        public bool IsCollectionInitializerElementSeparator()
-        {
-            return Kind == SyntaxKind.CommaToken
-                && Ancestors.HasAncestorAt(0, SyntaxKind.CollectionInitializerExpression);
+                && Ancestors.GetParent()
+                    is SyntaxKind.CollectionExpression
+                    or SyntaxKind.CollectionInitializerExpression;
         }
 
         public bool IsComplexElementSeparator()
@@ -2805,12 +2805,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (IsIndexValue() || IsDefaultOperand() || IsNameOfOperand() || IsSizeOfOperand() || IsTypeOfOperand())
                 return false;
 
-            // single token identifiers, numeric literals, string literals
+            // single token identifiers, literals
             bool validParent = Ancestors.GetParent()
                 is SyntaxKind.IdentifierName
                 or SyntaxKind.NumericLiteralExpression
                 or SyntaxKind.StringLiteralExpression
-                or SyntaxKind.CharacterLiteralExpression;
+                or SyntaxKind.CharacterLiteralExpression
+                or SyntaxKind.TrueLiteralExpression
+                or SyntaxKind.FalseLiteralExpression
+                or SyntaxKind.NullLiteralExpression
+                or SyntaxKind.DefaultLiteralExpression;
 
             bool validGrandParent = Ancestors.HasAncestorAt(1, SyntaxKind.Argument);
             bool validGreatGrandParent = !Ancestors.HasAncestorAt(2, SyntaxKind.TupleExpression);
@@ -3781,31 +3785,51 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (!roslynToken.HasLeadingTrivia)
                 return [];
 
-            List<string> leadingTriviaStrings = [];
+            List<string> triviaStrings = [];
 
             foreach (var trivia in roslynToken.LeadingTrivia)
             {
                 if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
                 {
-                    leadingTriviaStrings.AddRange(GetLeadingSingleLineDocumentationCommentTrivia(trivia.ToString()));
+                    triviaStrings.AddRange(GetLeadingSingleLineDocumentationCommentTrivia(trivia.ToString()));
                     continue;
                 }
                 else if (trivia.IsKind(SyntaxKind.MultiLineCommentTrivia))
                 {
-                    leadingTriviaStrings.AddRange(GetLeadingMultilineCommentTrivia(trivia.ToString()));
+                    triviaStrings.AddRange(GetLeadingMultilineCommentTrivia(trivia.ToString()));
                     continue;
                 }
 
-                leadingTriviaStrings.Add(trivia.ToString());
+                triviaStrings.Add(GetLeadingEndOfLineTrivia(trivia));
 
                 if (trivia.IsKind(SyntaxKind.RegionDirectiveTrivia)
                     || trivia.IsKind(SyntaxKind.EndRegionDirectiveTrivia))
                 {
-                    leadingTriviaStrings.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
+                    triviaStrings.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
                 }
             }
 
-            return leadingTriviaStrings;
+            return triviaStrings;
+        }
+
+        /// <summary> </summary>
+        /// <param name="trivia"></param>
+        /// <returns>A leading end of line trivia string.</returns>
+        private static string GetLeadingEndOfLineTrivia(SyntaxTrivia trivia)
+        {
+            /*
+             *  Normal EndOfLineTrivia spans have a length of 2. For some reason, some
+             *  files will generate EndOfLineTrivia with a length of 1... which turns
+             *  every blank line in the file into a single space. Insert blank line
+             *  manually and skip trivia from token.
+             *  
+             *  see AncestorNodeKinds.cs
+             */
+
+            if (trivia.IsKind(SyntaxKind.EndOfLineTrivia) && trivia.FullSpan.Length == 1)
+                return SyntaxFactory.EndOfLine("\r\n").ToString();
+            else
+                return trivia.ToString();
         }
 
         /// <summary>Splits a SingleLineDocumentationCommentTrivia trivia into multiple strings.</summary>
@@ -3887,18 +3911,18 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (!roslynToken.HasTrailingTrivia)
                 return [];
 
-            List<string> trailingTriviaStrings = [];
+            List<string> triviaStrings = [];
             foreach (var trivia in roslynToken.TrailingTrivia)
             {
                 // handle trailing trivia that contains "\n" instead of "\r\n"
                 if (trivia.IsKind(SyntaxKind.EndOfLineTrivia))
                 {
-                    trailingTriviaStrings.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
+                    triviaStrings.Add(SyntaxFactory.EndOfLine("\r\n").ToString());
                     continue;
                 }
-                trailingTriviaStrings.Add(trivia.ToString());
+                triviaStrings.Add(trivia.ToString());
             }
-            return trailingTriviaStrings;
+            return triviaStrings;
         }
 
         /// <summary>Returns the SyntaxKind of the ancestor nodes in a struct.</summary>

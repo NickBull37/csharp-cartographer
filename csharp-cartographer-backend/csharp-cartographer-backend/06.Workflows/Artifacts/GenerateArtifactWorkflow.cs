@@ -1,8 +1,7 @@
-﻿using csharp_cartographer_backend._01.Configuration.Configs;
-using csharp_cartographer_backend._02.Utilities.ActionResponse;
+﻿using csharp_cartographer_backend._02.Utilities.ActionResponse;
+using csharp_cartographer_backend._02.Utilities.Logging;
 using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._03.Models.Files;
-using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 using csharp_cartographer_backend._05.Services.Charts;
 using csharp_cartographer_backend._05.Services.Files;
 using csharp_cartographer_backend._05.Services.Insights;
@@ -10,15 +9,13 @@ using csharp_cartographer_backend._05.Services.SyntaxHighlighting;
 using csharp_cartographer_backend._05.Services.Tokens;
 using csharp_cartographer_backend._05.Services.Tokens.Maps;
 using csharp_cartographer_backend._08.Controllers.Artifacts.Dtos;
-using Microsoft.CodeAnalysis;
-using Microsoft.Extensions.Options;
 using System.Diagnostics;
-using System.Text.Json;
 
 namespace csharp_cartographer_backend._06.Workflows.Artifacts
 {
     public class GenerateArtifactWorkflow : IGenerateArtifactWorkflow
     {
+        private readonly ICartographerLogger _cartographerLogger;
         private readonly IFileProcessor _fileProcessor;
         private readonly IInsightService _insightService;
         private readonly INavTokenGenerator _navTokenGenerator;
@@ -26,20 +23,18 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
         private readonly ITokenChartGenerator _tokenChartGenerator;
         private readonly ITokenMapper _tokenMapper;
         private readonly ILogger<GenerateArtifactWorkflow> _logger;
-        private readonly CartographerConfig _config;
-
-        private readonly JsonSerializerOptions options = new() { WriteIndented = true };
 
         public GenerateArtifactWorkflow(
+            ICartographerLogger cartographerLogger,
             IFileProcessor fileProcessor,
             IInsightService insightService,
             INavTokenGenerator navTokenGenerator,
             ISyntaxHighlighter syntaxHighlighter,
             ITokenChartGenerator tokenChartGenerator,
             ITokenMapper tokenMapper,
-            ILogger<GenerateArtifactWorkflow> logger,
-            IOptions<CartographerConfig> config)
+            ILogger<GenerateArtifactWorkflow> logger)
         {
+            _cartographerLogger = cartographerLogger;
             _fileProcessor = fileProcessor;
             _insightService = insightService;
             _navTokenGenerator = navTokenGenerator;
@@ -47,7 +42,6 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             _tokenChartGenerator = tokenChartGenerator;
             _tokenMapper = tokenMapper;
             _logger = logger;
-            _config = config.Value;
         }
 
         public async Task<ActionResponse<Artifact>> GenerateDemoArtifact(string fileName, CancellationToken cancellationToken)
@@ -123,7 +117,7 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
                     timings
                 );
 
-                LogArtifactData(artifact);
+                _cartographerLogger.LogArtifactData(artifact);
 
                 return ActionResponse<Artifact>.Success(artifact);
             }
@@ -133,127 +127,8 @@ namespace csharp_cartographer_backend._06.Workflows.Artifacts
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred.");
+                _logger.LogError(ex, "An exception occurred during artifact generation.");
                 return ActionResponse<Artifact>.Failure("An exception occurred during artifact generation.");
-            }
-        }
-
-        private void LogArtifactData(Artifact artifact)
-        {
-            if (_config.ShouldLogSemanticData)
-            {
-                var identifierTokens = artifact.NavTokens
-                    .Where(token => token.PrimaryKind is PrimaryKind.Identifier);
-
-                foreach (var token in identifierTokens)
-                {
-                    var tokenData = new
-                    {
-                        token.Index,
-                        token.Text,
-                    };
-
-                    var locationData = new
-                    {
-                        token.SemanticData?.IsInUploadedFile,
-                        token.SemanticData?.IsInSourceCompilation,
-                        token.SemanticData?.IsInReferencedAssemblies,
-                        token.SemanticData?.ContainingNamespace,
-                        token.SemanticData?.ContainingAssembly,
-                    };
-
-                    var symbolData = new
-                    {
-                        token.SemanticData?.IsAliasSymbol,
-                        token.SemanticData?.IsNamespaceSymbol,
-                        token.SemanticData?.IsTypeSymbol,
-                        token.SemanticData?.IsNamedTypeSymbol,
-                        token.SemanticData?.IsDeclaredSymbol,
-                        token.SemanticData?.IsOperation,
-                        token.SemanticData?.SymbolName,
-                        token.SemanticData?.SymbolKind,
-                        token.SemanticData?.ContainingType,
-                    };
-
-                    var typeData = new
-                    {
-                        token.SemanticData?.TypeKind,
-                        token.SemanticData?.ConvertedTypeKind,
-                        token.SemanticData?.IsTypeSymbol,
-                        token.SemanticData?.IsNamedTypeSymbol,
-                        token.SemanticData?.IsConvertedTypeSymbol,
-                    };
-
-                    var aliasData = new
-                    {
-                        token.SemanticData?.AliasName,
-                        token.SemanticData?.AliasTargetName,
-                    };
-
-                    var memberishData = new
-                    {
-                        token.SemanticData?.MemberType,
-                        token.SemanticData?.MemberTypeKind,
-                    };
-
-                    var symbolCharacteristics = new
-                    {
-                        token.SemanticData?.Accessibility,
-                        token.SemanticData?.IsAbstract,
-                        token.SemanticData?.IsAsync,
-                        token.SemanticData?.IsConst,
-                        token.SemanticData?.IsDiscard,
-                        token.SemanticData?.IsExtern,
-                        token.SemanticData?.IsForEachVar,
-                        token.SemanticData?.IsImplicitlyDeclared,
-                        token.SemanticData?.IsIndexer,
-                        token.SemanticData?.IsOptional,
-                        token.SemanticData?.IsOriginalDefinition,
-                        token.SemanticData?.IsOverride,
-                        token.SemanticData?.IsReadOnly,
-                        token.SemanticData?.IsSealed,
-                        token.SemanticData?.IsStatic,
-                        token.SemanticData?.IsRequired,
-                        token.SemanticData?.IsUsingVar,
-                        token.SemanticData?.IsVirtual,
-                        token.SemanticData?.IsVolatile,
-                        token.SemanticData?.IsWriteOnly,
-                        token.SemanticData?.IsExplicitlyNamedTupleElement,
-                    };
-
-                    var logMessage =
-                        $"{Environment.NewLine}================================ {token.Index} - {token.Text} ================================" +
-                        $"{Environment.NewLine}----------- Location Data -----------{Environment.NewLine}{JsonSerializer.Serialize(locationData, options)}" +
-                        $"{Environment.NewLine}----------- Symbol Data -----------{Environment.NewLine}{JsonSerializer.Serialize(symbolData, options)}" +
-                        $"{Environment.NewLine}----------- Type Data -----------{Environment.NewLine}{JsonSerializer.Serialize(typeData, options)}" +
-                        $"{Environment.NewLine}----------- Alias Data -----------{Environment.NewLine}{JsonSerializer.Serialize(aliasData, options)}" +
-                        $"{Environment.NewLine}----------- Member-ish Data -----------{Environment.NewLine}{JsonSerializer.Serialize(memberishData, options)}" +
-                        $"{Environment.NewLine}----------- Symbol Characteristics -----------{Environment.NewLine}{JsonSerializer.Serialize(symbolCharacteristics, options)}" +
-                        $"{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}";
-
-                    _logger.LogInformation("{LogMessage}", logMessage);
-                }
-            }
-
-            if (_config.ShouldLogUnidentifiedTokens)
-            {
-                var tokens = artifact.NavTokens
-                    .Where(token => token.HighlightColor == "color-red")
-                    .Select(token => new
-                    {
-                        token.Index,
-                        token.Text,
-                        token.Classifications.Original,
-                        token.Classifications.Corrected,
-                        token.Classifications.Final,
-                        token.HighlightColor,
-                        token.PrimaryKind,
-                        token.SemanticRole,
-                        token.Kind,
-                    });
-
-                var json = JsonSerializer.Serialize(tokens, options);
-                _logger.LogInformation("{newline}{json}", Environment.NewLine, json);
             }
         }
 

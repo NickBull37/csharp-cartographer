@@ -34,6 +34,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static string GetFocusedLabel(NavToken token)
         {
+            if (token.IsDelimiter())
+            {
+
+            }
+
             return token.IsIdentifier() && token.IsGenericType()
                 ? "Generic Type"
                 : token.PrimaryKind.ToString();

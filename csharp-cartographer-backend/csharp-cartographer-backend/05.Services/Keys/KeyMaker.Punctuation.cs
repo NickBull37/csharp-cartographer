@@ -10,7 +10,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
 
         private static string GetPunctuationKey(NavToken token)
         {
-            return Key(PN, token.Text);
+            return Key(PN, token.SemanticRole.ToString(), token.Text);
         }
     }
 }

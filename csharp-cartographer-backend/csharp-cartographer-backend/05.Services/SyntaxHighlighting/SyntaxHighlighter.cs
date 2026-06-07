@@ -116,6 +116,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             [
                 SemanticRole.ArrayDataType,
                 SemanticRole.ConstructorInvocation,
+                SemanticRole.GenericTypeArgument,
                 SemanticRole.LocalVariableType,
                 SemanticRole.MethodReturnType,
                 SemanticRole.ParameterType,

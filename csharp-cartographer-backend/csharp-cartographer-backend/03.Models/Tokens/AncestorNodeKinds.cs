@@ -14,53 +14,27 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 : ancestorKinds;
         }
 
-        public bool HasAncestorAt(int index, SyntaxKind kind)
-        {
-            return index < Ancestors.Length
-                && Ancestors[index] == kind;
-        }
+        public bool HasAncestorAt(int index, SyntaxKind kind) =>
+            index < Ancestors.Length && Ancestors[index] == kind;
 
-        public bool HasAncestor(SyntaxKind kind) => Ancestors.Contains(kind);
+        public bool HasAncestor(SyntaxKind kind) =>
+            Ancestors.Contains(kind);
 
-        public SyntaxKind? GetParent()
-        {
-            if (Ancestors.Length == 0)
-                return null;
+        public SyntaxKind? GetParent() => Ancestors.Length > 0
+            ? Ancestors[0]
+            : null;
 
-            return Ancestors[0];
-        }
+        public SyntaxKind? GetGrandParent() => Ancestors.Length > 1
+            ? Ancestors[1]
+            : null;
 
-        public SyntaxKind? GetGrandParent()
-        {
-            if (Ancestors.Length <= 1)
-                return null;
+        public SyntaxKind? GetGreatGrandParent() => Ancestors.Length > 2
+            ? Ancestors[2]
+            : null;
 
-            return Ancestors[1];
-        }
-
-        public SyntaxKind? GetGreatGrandParent()
-        {
-            if (Ancestors.Length <= 2)
-                return null;
-
-            return Ancestors[2];
-        }
-
-        public SyntaxKind? GetLastAncestor()
-        {
-            if (Ancestors.Length == 0)
-                return null;
-
-            return Ancestors[^1];
-        }
-
-        public SyntaxKind? GetSecondToLastAncestor()
-        {
-            if (Ancestors.Length < 2)
-                return null;
-
-            return Ancestors[^2];
-        }
+        public SyntaxKind? GetLastAncestor() => Ancestors.Length > 0
+            ? Ancestors[^1]
+            : null;
 
         public bool Equals(AncestorNodeKinds other) =>
             Ancestors.SequenceEqual(other.Ancestors);
@@ -84,8 +58,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public static bool operator ==(AncestorNodeKinds left, AncestorNodeKinds right) =>
             left.Equals(right);
 
-        // Testing operators
-
         public static bool operator !=(AncestorNodeKinds left, AncestorNodeKinds right) =>
             !left.Equals(right);
 
@@ -94,7 +66,5 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public static implicit operator AncestorNodeKinds(ImmutableArray<SyntaxKind> ancestorKinds) =>
             new(ancestorKinds);
-
-
     }
 }
