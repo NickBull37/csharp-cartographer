@@ -64,5 +64,14 @@
   },
   "DL:StructBoundary:Close": {
     "Definition": "The end of a {c:color-blue keyword}struct{/c} definition."
+  },
+  "DL:[]": {
+    "Definition": "{c:code}[]{/c} - the syntax for a {c:bold}standard{/c} one dimensional array."
+  },
+  "DL:[][]": {
+    "Definition": "{c:code}[][]{/c} - the syntax for a {c:bold}jagged{/c} array which allows each inner array to have its own length."
+  },
+  "DL:[,]": {
+    "Definition": "{c:code}[,]{/c} - the syntax for a {c:bold}rectangular{/c} (two dimensional) array where each inner array contains the same number of elements."
   }
 }

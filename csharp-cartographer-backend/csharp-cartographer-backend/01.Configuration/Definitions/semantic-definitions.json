@@ -8,8 +8,8 @@
   "AnonymousObjectCreationExpressionBoundary": {
     "Definition": "Marks the boundaries of an anonymous object creation expression."
   },
-  "ArrayType": {
-    "Definition": "Part of the array type syntax."
+  "ArrayTypeFragment": {
+    "Definition": "A fragment of the array type syntax."
   },
   "ArgumentListBoundary": {
     "Definition": "Marks the boundaries of the argument list passed into a method or constructor call."
@@ -452,8 +452,8 @@
   "NumericFormatSpecifier": {
     "Definition": "A format pattern used inside an interpolated string that defines how a numeric value should be converted to text."
   },
-  "ArrayDataType": {
-    "Definition": "The data type supported by the array."
+  "ArrayBaseType": {
+    "Definition": "The data type supported by the array. The base type and array-type indicators [] make up the full data type."
   },
   "BaseType": {
     "Definition": "A base type specifies a type that another type inherits from or implements. It defines a parent relationship in the type hierarchy."
@@ -735,7 +735,7 @@
     "Definition": "The underlying type in a pointer type declaration, indicating the type of value the pointer can reference."
   },
   "PointerTypeIndicator": {
-    "Definition": "The * token in a type declaration that indicates the type is a pointer."
+    "Definition": "The {c:code}*{/c} tells the compiler that the following identifier will store a pointer to the preceeding type instead of the value of the type itself."
   },
   "AddressOfOperand": {
     "Definition": "The variable or location whose address is obtained by the address-of operator (&)."

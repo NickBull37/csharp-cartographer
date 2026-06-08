@@ -34,7 +34,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 
         AccessorListBoundary,
         AnonymousObjectCreationExpressionBoundary,
-        ArrayType,
+        ArrayTypeFragment,
         AttributeListBoundary,
         CastTypeBoundary,
         CatchArgumentBoundary,
@@ -452,7 +452,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
         VarPattern,
 
         // Types
-        ArrayDataType,
+        ArrayBaseType,
         CastType,
         DeconstructionVariableType,
         DelegateReturnType,

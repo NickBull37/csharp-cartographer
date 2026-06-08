@@ -854,6 +854,21 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
         public unsafe struct ItemWrapper
         {
             public Item* Pointer;
+
+            public void TestPointer(Item* paramPointer)
+            {
+                Item* localPointer = null;
+
+                int[] data = [1, 2, 3];
+
+                Item[] data2 = [];
+
+                Item[]? data3 = [];
+
+                Item[][] jaggedData = [];
+
+                Item[][]? jaggedData2 = [];
+            }
         }
 
         public class Item
@@ -861,8 +876,7 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             public int Id { get; set; }
             public int Value { get; set; }
             public string Category { get; set; } = "";
-
-            unsafe public Item* Pointer;
+            unsafe public Item* Pointer { get; set; }
         }
 
         public class Label

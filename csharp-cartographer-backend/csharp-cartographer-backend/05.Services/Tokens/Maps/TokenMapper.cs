@@ -340,8 +340,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsBracket())
             {
-                if (token.IsArrayTypeDelimiter())
-                    return SemanticRole.ArrayType;
+                if (token.IsArrayTypeFragmentDelimiter())
+                    return SemanticRole.ArrayTypeFragment;
 
                 if (token.IsAttributeListDelimiter())
                     return SemanticRole.AttributeListBoundary;
@@ -799,8 +799,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 return SemanticRole.CollectionLength;
 
             // Data types
-            if (token.IsArrayDataType())
-                return SemanticRole.ArrayDataType;
+            if (token.IsArrayBaseType())
+                return SemanticRole.ArrayBaseType;
 
             if (token.IsForLoopIteratorType())
                 return SemanticRole.ForLoopIteratorType;

@@ -8,13 +8,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
     {
         public ImmutableArray<SyntaxKind> Ancestors { get; }
 
-        //public AncestorNodeKinds(ImmutableArray<SyntaxKind> ancestorKinds)
-        //{
-        //    Ancestors = ancestorKinds.IsDefault
-        //        ? ImmutableArray<SyntaxKind>.Empty
-        //        : ancestorKinds;
-        //}
-
         public AncestorNodeKinds(SyntaxToken roslynToken)
         {
             var builder = ImmutableArray.CreateBuilder<SyntaxKind>();

@@ -143,7 +143,7 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
             ReadOnlyCollection<int> readOnlyCollectionWrapper = new ReadOnlyCollection<int>(list);
             ReadOnlyDictionary<string, int> readOnlyDictionary =
-            new ReadOnlyDictionary<string, int>(dictionary);
+                new ReadOnlyDictionary<string, int>(dictionary);
 
             MyKeyedCollection keyedCollection = new MyKeyedCollection();
             keyedCollection.Add("ItemA");

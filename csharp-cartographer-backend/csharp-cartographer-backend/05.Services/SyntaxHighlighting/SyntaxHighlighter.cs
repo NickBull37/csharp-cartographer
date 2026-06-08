@@ -80,7 +80,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
             List<SemanticRole> validRoles =
             [
-                SemanticRole.ArrayDataType,
+                SemanticRole.ArrayBaseType,
                 SemanticRole.ConstructorInvocation,
                 SemanticRole.GenericTypeArgument,
                 SemanticRole.LocalVariableType,

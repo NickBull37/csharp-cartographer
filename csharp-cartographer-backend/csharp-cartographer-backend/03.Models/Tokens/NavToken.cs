@@ -13,7 +13,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
     /// </summary>
     public class NavToken
     {
-        /// Classification constants
+        // Classification constants
         private const string EventName = "event name";
         private const string FieldName = "field name";
         private const string Identifier = "identifier";
@@ -167,7 +167,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Ancestors.HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression);
         }
 
-        public bool IsArrayTypeDelimiter()
+        public bool IsArrayTypeFragmentDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.ArrayRankSpecifier)
                 && Ancestors.HasAncestorAt(1, SyntaxKind.ArrayType);
@@ -310,6 +310,81 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsUsingResourceDeclarationDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.UsingStatement);
+        }
+
+        /// ------------------- Non-roles ---------------------
+        public bool IsArrayTypeFragment()
+        {
+            return IsDelimiter()
+                && Ancestors.HasAncestorAt(0, SyntaxKind.ArrayRankSpecifier)
+                && Ancestors.HasAncestorAt(1, SyntaxKind.ArrayType);
+        }
+
+        public bool IsStandardArrayTypeFragment()
+        {
+            /// int[] data = [1, 2, 3];
+
+            if (Kind == SyntaxKind.OpenBracketToken)
+            {
+                return NextToken?.Kind == SyntaxKind.CloseBracketToken
+                    && NextToken?.NextToken?.Kind != SyntaxKind.OpenBracketToken
+                    && PrevToken?.Kind != SyntaxKind.CloseBracketToken;
+            }
+
+            if (Kind == SyntaxKind.CloseBracketToken)
+            {
+                return PrevToken?.Kind == SyntaxKind.OpenBracketToken
+                    && NextToken?.Kind != SyntaxKind.OpenBracketToken
+                    && PrevToken?.PrevToken?.Kind != SyntaxKind.CloseBracketToken;
+            }
+
+            return false;
+        }
+
+        public bool IsJaggedArrayTypeFragment()
+        {
+            /// int[][] jagged = new int[][];
+
+            if (Kind == SyntaxKind.OpenBracketToken)
+            {
+                // first
+                if (PrevToken?.Kind != SyntaxKind.CloseBracketToken)
+                {
+                    return NextToken?.Kind == SyntaxKind.CloseBracketToken
+                        && NextToken?.NextToken?.Kind == SyntaxKind.OpenBracketToken;
+                }
+
+                // second
+                if (PrevToken?.Kind == SyntaxKind.CloseBracketToken)
+                {
+                    return NextToken?.Kind == SyntaxKind.CloseBracketToken
+                        && PrevToken?.PrevToken?.Kind == SyntaxKind.OpenBracketToken;
+                }
+            }
+
+            if (Kind == SyntaxKind.CloseBracketToken)
+            {
+                return (PrevToken?.Kind == SyntaxKind.OpenBracketToken
+                            && NextToken?.Kind == SyntaxKind.OpenBracketToken)
+                    || (PrevToken?.Kind == SyntaxKind.OpenBracketToken
+                            && PrevToken?.PrevToken?.Kind == SyntaxKind.CloseBracketToken);
+            }
+
+            return false;
+        }
+
+        public bool IsRectangularArrayTypeFragment()
+        {
+            /// int[,] grid = new int[3, 4];
+            /// int[,,] cube = new int[x, y, z];
+
+            if (Kind == SyntaxKind.OpenBracketToken)
+                return NextToken?.Kind == SyntaxKind.CommaToken;
+
+            if (Kind == SyntaxKind.CloseBracketToken)
+                return PrevToken?.Kind == SyntaxKind.CommaToken;
+
+            return false;
         }
 
         /*
@@ -1294,7 +1369,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsTargetMember()
         {
-            return IsTargetMember() || IsConditionalAccessTargetMember();
+            return IsTargetMember()
+                || IsConditionalAccessTargetMember()
+                || IsPointerTargetMember();
 
             bool IsTargetMember()
             {
@@ -1324,6 +1401,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     && validPrevPrev
                     && validParent
                     && validGrandParent;
+            }
+
+            bool IsPointerTargetMember()
+            {
+                return PrevToken?.Kind == SyntaxKind.MinusGreaterThanToken
+                    && Ancestors.HasAncestorAt(1, SyntaxKind.PointerMemberAccessExpression);
             }
         }
 
@@ -3316,7 +3399,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
          */
 
         /// --------------------- Roles -----------------------
-        public bool IsArrayDataType()
+        public bool IsArrayBaseType()
         {
             return Ancestors.HasAncestorAt(1, SyntaxKind.ArrayType);
         }
@@ -3362,8 +3445,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsFieldType()
         {
-            return Ancestors.HasAncestorAt(2, SyntaxKind.FieldDeclaration)
-                || Ancestors.HasAncestorAt(3, SyntaxKind.FieldDeclaration);
+            bool isFieldDecl =
+                Ancestors.HasAncestorAt(2, SyntaxKind.FieldDeclaration) ||
+                Ancestors.HasAncestorAt(3, SyntaxKind.FieldDeclaration);
+
+            return isFieldDecl && !IsPointerBaseType();
         }
 
         public bool IsForLoopIteratorType()
@@ -3476,14 +3562,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (NextToken?.Text == "[")
                 return false;
 
-            // skip pointers since pointer types are made of multiple tokens
-            if (NextToken?.Text == "*")
-                return false;
-
-            return Ancestors.HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
+            bool validAncestors = Ancestors.HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement)
                 || Ancestors.HasAncestorAt(2, SyntaxKind.UsingStatement)
                 || Ancestors.HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement)
                 || Ancestors.HasAncestorAt(3, SyntaxKind.UsingStatement);
+
+            return !IsPointerBaseType()
+                && validAncestors;
         }
 
         public bool IsMethodReturnType()
@@ -3533,8 +3618,13 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsParameterType()
         {
-            return Ancestors.HasAncestorAt(1, SyntaxKind.Parameter)
-                || Ancestors.HasAncestorAt(2, SyntaxKind.Parameter);
+            bool isParamDecl =
+                Ancestors.HasAncestorAt(1, SyntaxKind.Parameter) ||
+                Ancestors.HasAncestorAt(2, SyntaxKind.Parameter);
+
+            return isParamDecl
+                && !IsPointerBaseType()
+                && !IsArrayBaseType();
         }
 
         public bool IsPointerBaseType()
@@ -3545,8 +3635,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public bool IsPropertyType()
         {
-            return Ancestors.HasAncestorAt(1, SyntaxKind.PropertyDeclaration)
-                || Ancestors.HasAncestorAt(2, SyntaxKind.PropertyDeclaration);
+            bool isPropDecl =
+                Ancestors.HasAncestorAt(1, SyntaxKind.PropertyDeclaration) ||
+                Ancestors.HasAncestorAt(2, SyntaxKind.PropertyDeclaration);
+
+            return isPropDecl && !IsPointerBaseType();
         }
 
         public bool IsTupleElement()

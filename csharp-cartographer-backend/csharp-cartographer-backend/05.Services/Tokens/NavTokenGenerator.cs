@@ -3,6 +3,7 @@ using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._05.Services.Roslyn;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Classification;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
 namespace csharp_cartographer_backend._05.Services.Tokens
@@ -10,6 +11,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens
     public class NavTokenGenerator : INavTokenGenerator
     {
         private readonly IRoslynAnalyzer _roslynAnalyzer;
+
+        private static readonly HashSet<SyntaxKind> KindsToSkip =
+        [
+            SyntaxKind.OmittedArraySizeExpressionToken,
+        ];
 
         public NavTokenGenerator(IRoslynAnalyzer roslynAnalyzer)
         {
@@ -30,6 +36,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens
 
             foreach (var syntaxToken in syntaxTokens)
             {
+                if (KindsToSkip.Contains(syntaxToken.Kind()))
+                    continue;
+
                 var navToken = new NavToken(syntaxToken, index);
                 navTokens.Add(navToken);
 
