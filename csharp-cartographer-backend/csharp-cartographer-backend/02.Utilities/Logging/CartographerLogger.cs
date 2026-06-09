@@ -1,6 +1,6 @@
 ﻿using csharp_cartographer_backend._01.Configuration.Configs;
+using csharp_cartographer_backend._01.Configuration.Enums;
 using csharp_cartographer_backend._03.Models.Artifacts;
-using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 

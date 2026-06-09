@@ -1,5 +1,5 @@
-﻿using csharp_cartographer_backend._03.Models.Tokens;
-using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
+﻿using csharp_cartographer_backend._01.Configuration.Enums;
+using csharp_cartographer_backend._03.Models.Tokens;
 
 namespace csharp_cartographer_backend._05.Services.Keys
 {
