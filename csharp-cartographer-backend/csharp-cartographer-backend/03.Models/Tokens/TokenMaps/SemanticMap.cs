@@ -4,11 +4,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
 {
     public sealed record SemanticMap
     {
-        public string PKLabel { get; init; }
+        public string KindLabel { get; init; }
 
-        public string SRLabel { get; init; }
+        public string RoleLabel { get; init; }
 
-        public string? FDLabel { get; init; }
+        public string? FocusedLabel { get; init; }
 
         public StyledText RoleDefinition { get; init; }
 
@@ -21,9 +21,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens.TokenMaps
             StyledText roleDefinition,
             StyledText? focusedDefinition)
         {
-            PKLabel = kindLabel;
-            SRLabel = roleLabel;
-            FDLabel = focusedLabel;
+            KindLabel = kindLabel;
+            RoleLabel = roleLabel;
+            FocusedLabel = focusedLabel;
             RoleDefinition = roleDefinition;
             FocusedDefinition = focusedDefinition;
         }

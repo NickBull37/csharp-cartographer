@@ -5,9 +5,6 @@
   "AddAccessorBlockBoundary": {
     "Definition": "Marks the boundaries of an {c:color-blue keyword}event{/c} {c:color-blue keyword}add{/c} accessor method."
   },
-  "AnonymousObjectCreationExpressionBoundary": {
-    "Definition": "Marks the boundaries of an anonymous object creation expression."
-  },
   "ArrayTypeFragment": {
     "Definition": "A fragment of the array type syntax."
   },
@@ -29,14 +26,8 @@
   "CatchBlockBoundary": {
     "Definition": "Marks the boundaries of code that executes after an exception is caught."
   },
-  "CatchFilterBoundary": {
-    "Definition": "Marks the boundaries of the condition that determines whether a {c:color-purple keyword}catch{/c} block should handle an exception."
-  },
   "CheckedStatementBlockBoundary": {
     "Definition": "Marks the boundaries of a checked statement block."
-  },
-  "CollectionIndexArgumentBoundary": {
-    "Definition": "Marks the boundaries of the expression that evaluates to an index used to access an element of a collection."
   },
   "ConditionBoundary": {
     "Definition": "Marks the boundaries of a value or expression to be evaluated."
@@ -62,23 +53,14 @@
   "DefaultExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}default{/c} expression."
   },
-  "DefinitionBoundary": {
-    "Definition": "Marks the boundaries of a type or member definition."
+  "DeclarationBoundary": {
+    "Definition": "Marks the boundaries of a type, member, or namespace declaration."
+  },
+  "DoWhileLoopBlockBoundary": {
+    "Definition": "Marks the boundaries of the code that runs repeatedly in a {c:color-purple keyword}do while{/c} loop."
   },
   "ElseBlockBoundary": {
     "Definition": "Marks the boundaries of the code that runs when an {c:color-purple keyword}if{/c} statement condition is false."
-  },
-  "ForEachBlockBoundary": {
-    "Definition": "Marks the boundaries of the code that runs for each item in a collection."
-  },
-  "ForEachControlBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-purple keyword}foreach{/c} control region."
-  },
-  "ForLoopBlockBoundary": {
-    "Definition": "Marks the boundaries of the code that runs repeatedly in a {c:color-purple keyword}for{/c} loop."
-  },
-  "ForLoopControlBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-purple keyword}for{/c} loop control region."
   },
   "IfBlockBoundary": {
     "Definition": "Marks the boundaries of the code that runs when an {c:color-purple keyword}if{/c} statement condition is true."
@@ -86,20 +68,23 @@
   "IfConditionBoundary": {
     "Definition": "Marks the boundaries of the condition that determines whether the code inside an {c:color-purple keyword}if{/c} statement is executed or not."
   },
+  "IndexArgumentListBoundary": {
+    "Definition": "Marks the boundaries of the value(s) or expression(s) that evaluate to an index used to access an element of the preceeding collection."
+  },
   "ImplicitArrayCreation": {
     "Definition": "Marks the boundaries of an array being created without explicitly specifying its type. The compilier can infer the type in the array creation syntax because it's specified elsewhere in the declaration."
   },
-  "InterpolatedValueBoundary": {
+  "InterpolationBoundary": {
     "Definition": "Marks the boundaries of a value or expression embedded inside an interpolated string."
   },
   "LambdaExpressionBlockBoundary": {
     "Definition": "Marks the boundaries of a lambda expression block."
   },
+  "LoopBlockBoundary": {
+    "Definition": "Marks the boundaries of the code that will be executed for each iteration of the loop."
+  },
   "LoopControlBoundary": {
     "Definition": "Marks the boundaries of the logic that determines how many times a loop will execute."
-  },
-  "NamespaceBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-blue keyword}namespace{/c} declaration."
   },
   "ParameterListBoundary": {
     "Definition": "Marks the boundaries of the parameter list defined for a method or constructor."
@@ -125,14 +110,8 @@
   "SizeOfExpressionBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}sizeof{/c} expression."
   },
-  "SwitchExpressionBlockBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} expression."
-  },
-  "SwitchStatementBlockBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} statement."
-  },
-  "SwitchStatementConditionBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} statement condition."
+  "SwitchBlockBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} statement or expression."
   },
   "TryBlockBoundary": {
     "Definition": "Marks the boundaries of the code that may throw an exception."
@@ -155,17 +134,8 @@
   "UnheckedStatementBlockBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}unchecked{/c} statement block."
   },
-  "UsingResourceDeclarationBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-blue keyword}using{/c} statement resource declaration."
-  },
   "UsingStatementBlockBoundary": {
     "Definition": "Marks the boundaries of a {c:color-blue keyword}using{/c} statement block."
-  },
-  "WhileLoopBlockBoundary": {
-    "Definition": "Marks the boundaries of the code that runs repeatedly in a {c:color-purple keyword}while{/c} loop."
-  },
-  "WhileLoopConditionBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-purple keyword}while{/c} loop condition."
   },
   "Arithmetic": {
     "Definition": "Arithmetic operators perform basic math operations such as addition, subtraction, multiplication, and division."

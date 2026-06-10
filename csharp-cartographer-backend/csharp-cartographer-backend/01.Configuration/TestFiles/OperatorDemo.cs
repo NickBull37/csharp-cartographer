@@ -221,6 +221,31 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
             int cols = 5;
             int[][] matrix = new int[rows][];     // rows → CollectionLength
             matrix[0] = new int[cols];            // cols → CollectionLength
+            matrix[1] = [5, 1];
+            int matrixVal = matrix[1][0];
+
+            int[,] grid2 = new int[3, 5];
+            int value2 = grid[1, 4];
+
+            int[] nonImplicit = new int[] { };
+            var implicitArray = new[] { new { Id = 1 } };
+
+            var implicitJagged = new[]
+            {
+                new[] { new { Id = 1 }, new { Id = 2 } },
+                new[] { new { Id = 3 } }
+            };
+            int[][] jagged2 =
+            [
+                [1, 2, 3],
+                [4, 5, 6]
+            ];
+
+            var implicitRectangular = new[,]
+            {
+                { new { Id = 1 }, new { Id = 2 } },
+                { new { Id = 3 }, new { Id = 4 } }
+            };
 
             // use the field with operators
             _counter += sum;
@@ -231,6 +256,17 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                 TestInt = 5
             };
             string stringX = test.TestInt.ToString();
+
+            do
+            {
+                Console.WriteLine($"Count is {count}");
+                count++;
+            }
+            while (count < 5);
+
+            var xxx = new { Id = 2 };
+
+            var zzzz = new List<int> { 1, 2, 3 };
         }
     }
 
@@ -430,16 +466,6 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
             return (value, value.ToString()!.Length);
         }
-
-        static string Classify(object value) =>
-            value switch
-            {
-                int or long or short => "Integer number",
-                float or double or decimal => "Floating-point number",
-                string or char => "Text",
-                null => "Null",
-                _ => "Other"
-            };
     }
 
     public class Cache<TKey, TValue>
@@ -559,13 +585,36 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
     {
         private readonly IGenerateArtifactWorkflow? _generateArtifactWorkflow;
 
-        private readonly IEnumerable<NavToken> Tokens = [];
+        private IEnumerable<NavToken> Tokens = [];
 
         private readonly IEnumerable<NavToken>? TestTokens = [];
 
         private readonly IEnumerable<NavToken?> DemoTokens = [];
 
         private readonly IEnumerable<NavToken?>? FakeTokens = [];
+
+        public int Age
+        {
+            get => 5;
+
+            set
+            {
+                Tokens = [];
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return "";
+            }
+
+            init
+            {
+                Name = value;
+            }
+        }
     }
 
     public class Test3
@@ -574,6 +623,15 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
         public void DoSomething()
         {
+            static string Classify(object value) =>
+                value switch
+                {
+                    int or long or short => "Integer number",
+                    float or double or decimal => "Floating-point number",
+                    string or char => "Text",
+                    null => "Null",
+                    _ => "Other"
+                };
 
             object input = new Person("Alice", 30);
 

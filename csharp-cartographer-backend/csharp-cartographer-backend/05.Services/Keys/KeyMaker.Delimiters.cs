@@ -10,7 +10,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
 
         private static string? GetDelimiterKey(NavToken token)
         {
-            if (token.IsArrayTypeFragment())
+            if (token.IsArrayTypeFragmentDelimiter() || token.IsImplicitArrayTypeFragmentDelimiter())
                 return GetArrayTypeKey(token);
 
             return token.IsOpenDelimiter()

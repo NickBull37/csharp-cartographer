@@ -163,11 +163,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Ancestors.HasAncestorAt(0, SyntaxKind.AccessorList);
         }
 
-        public bool IsAnonymousObjectCreationExpressionDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression);
-        }
-
         public bool IsArrayTypeFragmentDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.ArrayRankSpecifier)
@@ -187,11 +182,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsCatchArgumentDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.CatchDeclaration);
-        }
-
-        public bool IsCatchFilterDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.CatchFilterClause);
         }
 
         public bool IsCollectionExpressionDelimiter()
@@ -245,34 +235,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Ancestors.HasAncestorAt(0, SyntaxKind.DefaultExpression);
         }
 
-        public bool IsImplicitArrayCreationDelimiter()
+        public bool IsImplicitArrayTypeFragmentDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.ImplicitArrayCreationExpression);
         }
 
-        public bool IsInterpolatedValueDelimiter()
+        public bool IsInterpolationDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.Interpolation);
-        }
-
-        public bool IsNamespaceDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.NamespaceDeclaration);
         }
 
         public bool IsParenthesizedExpressionDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.ParenthesizedExpression);
-        }
-
-        public bool IsParenthesizedPatternDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.ParenthesizedPattern);
-        }
-
-        public bool IsPropertyPatternDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.PropertyPatternClause);
         }
 
         public bool IsSizeOfExpressionDelimiter()
@@ -308,19 +283,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Ancestors.HasAncestorAt(0, SyntaxKind.TypeOfExpression);
         }
 
-        public bool IsUsingResourceDeclarationDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.UsingStatement);
-        }
-
         /// ------------------- Non-roles ---------------------
-        public bool IsArrayTypeFragment()
-        {
-            return IsDelimiter()
-                && Ancestors.HasAncestorAt(0, SyntaxKind.ArrayRankSpecifier)
-                && Ancestors.HasAncestorAt(1, SyntaxKind.ArrayType);
-        }
-
         public bool IsStandardArrayTypeFragment()
         {
             /// int[] data = [1, 2, 3];
@@ -390,6 +353,52 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         /*
          *  -----------------------------------------------------------------------
+         *      Accessor Block Delimiters
+         *  -----------------------------------------------------------------------
+         */
+
+        public bool IsAccessorBlockDelimiter()
+        {
+            return IsAddAccessorBlockDelimiter()
+                || IsGetAccessorBlockDelimiter()
+                || IsInitAccessorBlockDelimiter()
+                || IsRemoveAccessorBlockDelimiter()
+                || IsSetAccessorBlockDelimiter();
+        }
+
+        /// ------------------- Roles ---------------------
+        public bool IsAddAccessorBlockDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
+                && Ancestors.HasAncestorAt(1, SyntaxKind.AddAccessorDeclaration);
+        }
+
+        public bool IsGetAccessorBlockDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
+                && Ancestors.HasAncestorAt(1, SyntaxKind.GetAccessorDeclaration);
+        }
+
+        public bool IsInitAccessorBlockDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
+                && Ancestors.HasAncestorAt(1, SyntaxKind.InitAccessorDeclaration);
+        }
+
+        public bool IsRemoveAccessorBlockDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
+                && Ancestors.HasAncestorAt(1, SyntaxKind.RemoveAccessorDeclaration);
+        }
+
+        public bool IsSetAccessorBlockDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
+                && Ancestors.HasAncestorAt(1, SyntaxKind.SetAccessorDeclaration);
+        }
+
+        /*
+         *  -----------------------------------------------------------------------
          *      Argument / Parameter Lists Delimiters
          *  -----------------------------------------------------------------------
          */
@@ -404,7 +413,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Ancestors.HasAncestorAt(0, SyntaxKind.AttributeArgumentList);
         }
 
-        public bool IsCollectionIndexArgumentDelimiter()
+        public bool IsIndexArgumentListDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.BracketedArgumentList);
         }
@@ -430,30 +439,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
          *  -----------------------------------------------------------------------
          */
 
-        public bool IsBlockBoundary()
+        public bool IsBlockDelimiter()
         {
-            return IsAddAccessorBlockDelimiter()
-                || IsCatchBlockDelimiter()
+            return IsCatchBlockDelimiter()
                 || IsElseBlockDelimiter()
-                || IsForEachBlockDelimiter()
-                || IsForLoopBlockDelimiter()
                 || IsIfBlockDelimiter()
                 || IsLambdaExpressionBlockDelimiter()
-                || IsRemoveAccessorBlockDelimiter()
-                || IsSetAccessorBlockDelimiter()
-                || IsSwitchExpressionBlockDelimiter()
-                || IsSwitchStatementBlockDelimiter()
-                || IsTryBlockDelimiter()
-                || IsWhileLoopBlockDelimiter();
+                || IsTryBlockDelimiter();
         }
 
         /// ------------------- Roles ---------------------
-        public bool IsAddAccessorBlockDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
-                && Ancestors.HasAncestorAt(1, SyntaxKind.AddAccessorDeclaration);
-        }
-
         public bool IsCatchBlockDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
@@ -464,18 +459,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
                 && Ancestors.HasAncestorAt(1, SyntaxKind.ElseClause);
-        }
-
-        public bool IsForEachBlockDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
-                && (Ancestors.HasAncestorAt(1, SyntaxKind.ForEachStatement) || Ancestors.HasAncestorAt(1, SyntaxKind.ForEachVariableStatement));
-        }
-
-        public bool IsForLoopBlockDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
-                && Ancestors.HasAncestorAt(1, SyntaxKind.ForStatement);
         }
 
         public bool IsIfBlockDelimiter()
@@ -490,38 +473,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && (Ancestors.HasAncestorAt(1, SyntaxKind.SimpleLambdaExpression) || Ancestors.HasAncestorAt(1, SyntaxKind.ParenthesizedLambdaExpression));
         }
 
-        public bool IsRemoveAccessorBlockDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
-                && Ancestors.HasAncestorAt(1, SyntaxKind.RemoveAccessorDeclaration);
-        }
-
-        public bool IsSetAccessorBlockDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
-                && Ancestors.HasAncestorAt(1, SyntaxKind.SetAccessorDeclaration);
-        }
-
-        public bool IsSwitchExpressionBlockDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.SwitchExpression);
-        }
-
-        public bool IsSwitchStatementBlockDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.SwitchStatement);
-        }
-
         public bool IsTryBlockDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
                 && Ancestors.HasAncestorAt(1, SyntaxKind.TryStatement);
-        }
-
-        public bool IsWhileLoopBlockDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
-                && Ancestors.HasAncestorAt(1, SyntaxKind.WhileStatement);
         }
 
         /*
@@ -530,14 +485,26 @@ namespace csharp_cartographer_backend._03.Models.Tokens
          *  -----------------------------------------------------------------------
          */
 
-        public bool IsConditionBoundary()
+        public bool IsConditionDelimiter()
         {
-            return IsIfConditionDelimiter()
+            return IsCatchFilterClauseConditionDelimiter()
+                || IsDoWhileConditionDelimiter()
+                || IsIfConditionDelimiter()
                 || IsSwitchStatementConditionDelimiter()
                 || IsWhileLoopConditionDelimiter();
         }
 
         /// ------------------- Roles ---------------------
+        public bool IsCatchFilterClauseConditionDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.CatchFilterClause);
+        }
+
+        public bool IsDoWhileConditionDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.DoStatement);
+        }
+
         public bool IsIfConditionDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.IfStatement);
@@ -559,7 +526,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
          *  -----------------------------------------------------------------------
          */
 
-        public bool IsContextBlockBoundary()
+        public bool IsContextBlockDelimiter()
         {
             return IsCheckedStatementBlockDelimiter()
                 || IsFixedBlockDelimiter()
@@ -642,74 +609,26 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return Ancestors.HasAncestorAt(0, SyntaxKind.LockStatement);
         }
 
-        /*
-         *  -----------------------------------------------------------------------
-         *      Initializer Delimiters
-         *  -----------------------------------------------------------------------
-         */
-
-        public bool IsCollectionElementInitializerDelimiter()
+        public bool IsUsingStatementControlDelimiter()
         {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.ComplexElementInitializerExpression);
-        }
-
-        public bool IsCollectionInitializerDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.CollectionInitializerExpression);
-        }
-
-        public bool IsArrayInitializationDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.ArrayInitializerExpression);
-        }
-
-        public bool IsObjectInitializerDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.ObjectInitializerExpression);
-        }
-
-        public bool IsWithInitializerExpressionDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.WithInitializerExpression)
-                && Ancestors.HasAncestorAt(1, SyntaxKind.WithExpression);
+            return Ancestors.HasAncestorAt(0, SyntaxKind.UsingStatement);
         }
 
         /*
          *  -----------------------------------------------------------------------
-         *      Pattern Matching Delimiters
+         *      Declaration Delimiters
          *  -----------------------------------------------------------------------
          */
 
-        public bool IsPatternMatchingBoundary()
-        {
-            return IsListPatternDelimiter()
-                || IsPositionalPatternDelimiter();
-        }
-
-        /// ------------------- Roles ---------------------
-        public bool IsListPatternDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.ListPattern);
-        }
-
-        public bool IsPositionalPatternDelimiter()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.PositionalPatternClause);
-        }
-
-        /*
-         *  -----------------------------------------------------------------------
-         *      Type Definitions Delimiters
-         *  -----------------------------------------------------------------------
-         */
-
-        public bool IsDefinitionBoundary()
+        public bool IsDefinitionDelimiter()
         {
             return IsClassDelimiter()
                 || IsConstructorDelimiter()
                 || IsEnumDelimiter()
                 || IsInterfaceDelimiter()
+                || IsLocalFunctionDelimiter()
                 || IsMethodDelimiter()
+                || IsNamespaceDelimiter()
                 || IsRecordDelimiter()
                 || IsRecordStructDelimiter()
                 || IsStructDelimiter();
@@ -749,6 +668,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Ancestors.HasAncestorAt(1, SyntaxKind.MethodDeclaration);
         }
 
+        public bool IsNamespaceDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.NamespaceDeclaration);
+        }
+
         public bool IsRecordDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.RecordDeclaration);
@@ -762,6 +686,151 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsStructDelimiter()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.StructDeclaration);
+        }
+
+        /*
+         *  -----------------------------------------------------------------------
+         *      Initializer Delimiters
+         *  -----------------------------------------------------------------------
+         */
+
+        public bool IsInitializerDelimiter()
+        {
+            return IsAnonymousObjectInitializerDelimiter()
+                || IsArrayInitializerDelimiter()
+                || IsCollectionElementInitializerDelimiter()
+                || IsCollectionInitializerDelimiter()
+                || IsObjectInitializerDelimiter()
+                || IsWithInitializerExpressionDelimiter();
+        }
+
+        /// ------------------- Roles ---------------------
+        public bool IsAnonymousObjectInitializerDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.AnonymousObjectCreationExpression);
+        }
+
+        public bool IsArrayInitializerDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.ArrayInitializerExpression);
+        }
+
+        public bool IsCollectionElementInitializerDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.ComplexElementInitializerExpression);
+        }
+
+        public bool IsCollectionInitializerDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.CollectionInitializerExpression);
+        }
+
+        public bool IsObjectInitializerDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.ObjectInitializerExpression);
+        }
+
+        public bool IsWithInitializerExpressionDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.WithInitializerExpression)
+                && Ancestors.HasAncestorAt(1, SyntaxKind.WithExpression);
+        }
+
+        /*
+         *  -----------------------------------------------------------------------
+         *      Loop Block Delimiters
+         *  -----------------------------------------------------------------------
+         */
+
+        public bool IsLoopBlockDelimiter()
+        {
+            return IsDoWhileLoopBlockDelimiter()
+                || IsForEachLoopBlockDelimiter()
+                || IsForLoopBlockDelimiter()
+                || IsWhileLoopBlockDelimiter();
+        }
+
+        /// ------------------- Roles ---------------------
+        public bool IsDoWhileLoopBlockDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
+                && Ancestors.HasAncestorAt(1, SyntaxKind.DoStatement);
+        }
+
+        public bool IsForEachLoopBlockDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
+                && (Ancestors.HasAncestorAt(1, SyntaxKind.ForEachStatement) || Ancestors.HasAncestorAt(1, SyntaxKind.ForEachVariableStatement));
+        }
+
+        public bool IsForLoopBlockDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
+                && Ancestors.HasAncestorAt(1, SyntaxKind.ForStatement);
+        }
+
+        public bool IsWhileLoopBlockDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.Block)
+                && Ancestors.HasAncestorAt(1, SyntaxKind.WhileStatement);
+        }
+
+        /*
+         *  -----------------------------------------------------------------------
+         *      Pattern Matching Delimiters
+         *  -----------------------------------------------------------------------
+         */
+
+        public bool IsPatternMatchingDelimiter()
+        {
+            return IsListPatternDelimiter()
+                || IsParenthesizedPatternDelimiter()
+                || IsPositionalPatternDelimiter()
+                || IsPropertyPatternDelimiter();
+        }
+
+        /// ------------------- Roles ---------------------
+        public bool IsListPatternDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.ListPattern);
+        }
+
+        public bool IsParenthesizedPatternDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.ParenthesizedPattern);
+        }
+
+        public bool IsPositionalPatternDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.PositionalPatternClause);
+        }
+
+        public bool IsPropertyPatternDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.PropertyPatternClause);
+        }
+
+        /*
+         *  -----------------------------------------------------------------------
+         *      Switch Block Delimiters
+         *  -----------------------------------------------------------------------
+         */
+
+        public bool IsSwitchBlockDelimiter()
+        {
+            return IsSwitchExpressionBlockDelimiter()
+                || IsSwitchStatementBlockDelimiter();
+        }
+
+        /// ------------------- Roles ---------------------
+        public bool IsSwitchExpressionBlockDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.SwitchExpression);
+        }
+
+        public bool IsSwitchStatementBlockDelimiter()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.SwitchStatement);
         }
         #endregion
 
@@ -2615,9 +2684,20 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsArrayRankIndicator()
         {
             return Kind == SyntaxKind.CommaToken
-                && Ancestors.HasAncestorAt(0, SyntaxKind.ArrayRankSpecifier)
-                && Ancestors.HasAncestorAt(1, SyntaxKind.ArrayType)
-                && Ancestors.HasAncestorAt(2, SyntaxKind.VariableDeclaration);
+                && (IsExplictArrayType() || IsImplicitArrayType());
+
+            /// int[,] grid = new int[3, 5];
+            bool IsExplictArrayType()
+            {
+                return Ancestors.HasAncestorAt(0, SyntaxKind.ArrayRankSpecifier)
+                    && Ancestors.HasAncestorAt(1, SyntaxKind.ArrayType);
+            }
+
+            /// var grid = new[,] { { new { Id = 1 } }, { new { Id = 3 } } };
+            bool IsImplicitArrayType()
+            {
+                return Ancestors.HasAncestorAt(0, SyntaxKind.ImplicitArrayCreationExpression);
+            }
         }
 
         public bool IsNullableTypeMarker()
@@ -2651,7 +2731,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsArgumentSeparator()
         {
             return Kind == SyntaxKind.CommaToken
-                && Ancestors.HasAncestorAt(0, SyntaxKind.ArgumentList);
+                && Ancestors.GetParent()
+                    is SyntaxKind.ArgumentList
+                    or SyntaxKind.BracketedArgumentList;
         }
 
         public bool IsArrayInitializerElementSeparator()

@@ -144,7 +144,6 @@ const TokenSidebarContent = ({
     const [tokenChartExpanded, setTokenChartExpanded] = useState(true);
 
     const srLabelClass = `sr-label ${fadedClassMap[highlightColor] || 'faded-white'}`;
-    // const srLabelClass = `sr-label`;
 
     // Event Handlers
     const handleNextTokenClick = () => {
@@ -452,10 +451,10 @@ const TokenSidebarContent = ({
                                                     }}
                                                 >
                                                     <SemanticRoleLabel className='pk-label'>
-                                                        {activeToken.map.srLabel}
+                                                        {activeToken.map.roleLabel}
                                                     </SemanticRoleLabel>
                                                     <ClassificationLabel className={srLabelClass}>
-                                                        {activeToken.map.pkLabel}
+                                                        {activeToken.map.kindLabel}
                                                     </ClassificationLabel>
                                                 </Box>
                                                 <Box
@@ -553,7 +552,7 @@ const TokenSidebarContent = ({
                                                             }}
                                                         >
                                                             {/* Definition */}
-                                                            {activeToken.map.fdLabel}
+                                                            {activeToken.map.focusedLabel}
                                                         </Typography>
                                                     </Box>
                                                     <MapTagFocusedDefText>

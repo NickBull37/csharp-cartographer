@@ -12,51 +12,52 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         #region ------------ DELIMITERS ------------
 
         AccessorListBoundary,
-        AnonymousObjectCreationExpressionBoundary,
-        ArrayTypeFragment,
         AttributeListBoundary,
         CastTypeBoundary,
         CatchArgumentBoundary,
-        CatchFilterBoundary,
         CollectionExpressionBoundary,
         DeconstructionBoundary,
-        DefaultExpressionBoundary,
-        ImplicitArrayCreation,
-        InterpolatedValueBoundary,
-        NamespaceBoundary,
+        InterpolationBoundary,
         ParenthesizedExpressionBoundary,
-        ParenthesizedPatternBoundary,
-        PropertyPatternBoundary,
-        SizeOfExpressionBoundary,
         TupleExpressionBoundary,
         TupleTypeBoundary,
-        TypeOfExpressionBoundary,
-        UsingResourceDeclarationBoundary,
+
+        // Array types
+        ArrayTypeFragment,
+        ImplicitArrayTypeFragment,
+
+        // Accessor Blocks
+        [Label("AccessorBlockBoundary")]
+        AddAccessorBlockBoundary,
+        [Label("AccessorBlockBoundary")]
+        GetAccessorBlockBoundary,
+        [Label("AccessorBlockBoundary")]
+        InitAccessorBlockBoundary,
+        [Label("AccessorBlockBoundary")]
+        RemoveAccessorBlockBoundary,
+        [Label("AccessorBlockBoundary")]
+        SetAccessorBlockBoundary,
 
         // Arg/Param Lists
         ArgumentListBoundary,
         AttributeArgumentListBoundary,
-        CollectionIndexArgumentBoundary,
+        IndexArgumentListBoundary,
         ParameterListBoundary,
         TypeArgumentListBoundary,
         TypeParameterListBoundary,
 
         // Blocks
-        AddAccessorBlockBoundary,
         CatchBlockBoundary,
         ElseBlockBoundary,
-        ForEachBlockBoundary,
-        ForLoopBlockBoundary,
         IfBlockBoundary,
         LambdaExpressionBlockBoundary,
-        RemoveAccessorBlockBoundary,
-        SetAccessorBlockBoundary,
-        SwitchExpressionBlockBoundary,
-        SwitchStatementBlockBoundary,
         TryBlockBoundary,
-        WhileLoopBlockBoundary,
 
         // Condition
+        [Label("ConditionBoundary")]
+        CatchFilterClauseConditionBoundary,
+        [Label("ConditionBoundary")]
+        DoWhileConditionBoundary,
         [Label("ConditionBoundary")]
         IfConditionBoundary,
         [Label("ConditionBoundary")]
@@ -78,39 +79,38 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         [Label("ContextBlockBoundary")]
         UsingStatementBlockBoundary,
 
-        // Control
-        [Label("LoopControlBoundary")]
-        ForEachControlBoundary,
-        [Label("LoopControlBoundary")]
-        ForLoopControlBoundary,
-        [Label("StatementControlBoundary")]
-        FixedStatementControlBoundary,
-        [Label("StatementControlBoundary")]
-        LockStatementControlBoundary,
-
-        // Definitions
-        [Label("DefinitionBoundary")]
+        // Declarations
+        [Label("DeclarationBoundary")]
         ClassBoundary,
-        [Label("DefinitionBoundary")]
+        [Label("DeclarationBoundary")]
         ConstructorBoundary,
-        [Label("DefinitionBoundary")]
+        [Label("DeclarationBoundary")]
         EnumBoundary,
-        [Label("DefinitionBoundary")]
+        [Label("DeclarationBoundary")]
         InterfaceBoundary,
-        [Label("DefinitionBoundary")]
+        [Label("DeclarationBoundary")]
         LocalFunctionBoundary,
-        [Label("DefinitionBoundary")]
+        [Label("DeclarationBoundary")]
         MethodBoundary,
-        [Label("DefinitionBoundary")]
+        [Label("DeclarationBoundary")]
+        NamespaceBoundary,
+        [Label("DeclarationBoundary")]
         RecordBoundary,
-        [Label("DefinitionBoundary")]
+        [Label("DeclarationBoundary")]
         RecordStructBoundary,
-        [Label("DefinitionBoundary")]
+        [Label("DeclarationBoundary")]
         StructBoundary,
+
+        // Expressions
+        DefaultExpressionBoundary,
+        SizeOfExpressionBoundary,
+        TypeOfExpressionBoundary,
 
         // Initializers
         [Label("InitializerBoundary")]
-        ArrayInitializationBoundary,
+        AnonymousObjectInitializerBoundary,
+        [Label("InitializerBoundary")]
+        ArrayInitializerBoundary,
         [Label("InitializerBoundary")]
         CollectionElementInitializerBoundary,
         [Label("InitializerBoundary")]
@@ -120,11 +120,45 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         [Label("InitializerBoundary")]
         WithInitializerExpressionBoundary,
 
+        // Loop Control
+        [Label("LoopControlBoundary")]
+        ForEachControlBoundary,
+        [Label("LoopControlBoundary")]
+        ForLoopControlBoundary,
+
+        // Loop Blocks
+        [Label("LoopBlockBoundary")]
+        DoWhileLoopBlockBoundary,
+        [Label("LoopBlockBoundary")]
+        ForEachLoopBlockBoundary,
+        [Label("LoopBlockBoundary")]
+        ForLoopBlockBoundary,
+        [Label("LoopBlockBoundary")]
+        WhileLoopBlockBoundary,
+
         // Pattern Matching
         [Label("PatternBoundary")]
         ListPatternBoundary,
         [Label("PatternBoundary")]
+        ParenthesizedPatternBoundary,
+        [Label("PatternBoundary")]
         PositionalPatternBoundary,
+        [Label("PatternBoundary")]
+        PropertyPatternBoundary,
+
+        // Statement Control
+        [Label("StatementControlBoundary")]
+        FixedStatementControlBoundary,
+        [Label("StatementControlBoundary")]
+        LockStatementControlBoundary,
+        [Label("StatementControlBoundary")]
+        UsingStatementControlBoundary,
+
+        // Switch Blocks
+        [Label("SwitchBlockBoundary")]
+        SwitchExpressionBlockBoundary,
+        [Label("SwitchBlockBoundary")]
+        SwitchStatementBlockBoundary,
         #endregion
 
         #region ------------ OPERATORS ------------

@@ -25,6 +25,7 @@ namespace csharp_cartographer_backend._01.Configuration.DemoFiles
             _ = array is [1, ..];                  // list pattern
             _ = array is [1, .. var rest];         // list pattern
             _ = obj is var x;                      // var pattern (always matches)
+            if (obj is (int match)) { }            // parenthesized pattern
 
             string[] words = ["hello", "world"];
 

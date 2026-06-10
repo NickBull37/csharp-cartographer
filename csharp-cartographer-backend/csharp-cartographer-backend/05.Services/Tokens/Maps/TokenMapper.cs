@@ -1,6 +1,5 @@
 ﻿using csharp_cartographer_backend._01.Configuration.Enums;
 using csharp_cartographer_backend._03.Models.Tokens;
-using csharp_cartographer_backend._03.Models.Tokens.TokenMaps;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace csharp_cartographer_backend._05.Services.Tokens.Maps
@@ -123,30 +122,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return TryGetMiscRole(token);
         }
 
-        private static FocusedRole GetFocusedRole(in NavToken token)
-        {
-            var semanticRole = FocusedRole.Unknown;
-
-            return semanticRole;
-        }
-
-        private static SecondaryRole? TryGetSecondaryRole(in NavToken token)
-        {
-            if (token.SemanticRole == SemanticRole.InstanceQualifier)
-            {
-                if (token.IsTargetMember())
-                    return SecondaryRole.TargetMember;
-
-                if (token.IsTargetMemberConditionalAccess())
-                    return SecondaryRole.ConditionalAccessTarget;
-
-                if (token.IsNullForgivingOperand())
-                    return SecondaryRole.NullForgivingOperand;
-            }
-
-            return null;
-        }
-
         #region Semantic Roles
         private static SemanticRole GetDelimiterRole(in NavToken token)
         {
@@ -164,14 +139,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsCatchArgumentDelimiter())
                     return SemanticRole.CatchArgumentBoundary;
 
-                if (token.IsCatchFilterDelimiter())
-                    return SemanticRole.CatchFilterBoundary;
+                if (token.IsCatchFilterClauseConditionDelimiter())
+                    return SemanticRole.CatchFilterClauseConditionBoundary;
 
                 if (token.IsDeconstructionDelimiter())
                     return SemanticRole.DeconstructionBoundary;
 
                 if (token.IsDefaultExpressionDelimiter())
                     return SemanticRole.DefaultExpressionBoundary;
+
+                if (token.IsDoWhileConditionDelimiter())
+                    return SemanticRole.DoWhileConditionBoundary;
 
                 if (token.IsFixedStatementControlDelimiter())
                     return SemanticRole.FixedStatementControlBoundary;
@@ -215,8 +193,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsTypeOfExpressionDelimiter())
                     return SemanticRole.TypeOfExpressionBoundary;
 
-                if (token.IsUsingResourceDeclarationDelimiter())
-                    return SemanticRole.UsingResourceDeclarationBoundary;
+                if (token.IsUsingStatementControlDelimiter())
+                    return SemanticRole.UsingStatementControlBoundary;
 
                 if (token.IsWhileLoopConditionDelimiter())
                     return SemanticRole.WhileLoopConditionBoundary;
@@ -230,11 +208,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsAddAccessorBlockDelimiter())
                     return SemanticRole.AddAccessorBlockBoundary;
 
-                if (token.IsAnonymousObjectCreationExpressionDelimiter())
-                    return SemanticRole.AnonymousObjectCreationExpressionBoundary;
+                if (token.IsAnonymousObjectInitializerDelimiter())
+                    return SemanticRole.AnonymousObjectInitializerBoundary;
 
-                if (token.IsArrayInitializationDelimiter())
-                    return SemanticRole.ArrayInitializationBoundary;
+                if (token.IsArrayInitializerDelimiter())
+                    return SemanticRole.ArrayInitializerBoundary;
 
                 if (token.IsCatchBlockDelimiter())
                     return SemanticRole.CatchBlockBoundary;
@@ -254,6 +232,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsConstructorDelimiter())
                     return SemanticRole.ConstructorBoundary;
 
+                if (token.IsDoWhileLoopBlockDelimiter())
+                    return SemanticRole.DoWhileLoopBlockBoundary;
+
                 if (token.IsElseBlockDelimiter())
                     return SemanticRole.ElseBlockBoundary;
 
@@ -263,20 +244,26 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsFixedBlockDelimiter())
                     return SemanticRole.FixedStatementBlockBoundary;
 
-                if (token.IsForEachBlockDelimiter())
-                    return SemanticRole.ForEachBlockBoundary;
+                if (token.IsForEachLoopBlockDelimiter())
+                    return SemanticRole.ForEachLoopBlockBoundary;
 
                 if (token.IsForLoopBlockDelimiter())
                     return SemanticRole.ForLoopBlockBoundary;
 
+                if (token.IsGetAccessorBlockDelimiter())
+                    return SemanticRole.GetAccessorBlockBoundary;
+
                 if (token.IsIfBlockDelimiter())
                     return SemanticRole.IfBlockBoundary;
+
+                if (token.IsInitAccessorBlockDelimiter())
+                    return SemanticRole.InitAccessorBlockBoundary;
 
                 if (token.IsInterfaceDelimiter())
                     return SemanticRole.InterfaceBoundary;
 
-                if (token.IsInterpolatedValueDelimiter())
-                    return SemanticRole.InterpolatedValueBoundary;
+                if (token.IsInterpolationDelimiter())
+                    return SemanticRole.InterpolationBoundary;
 
                 if (token.IsLambdaExpressionBlockDelimiter())
                     return SemanticRole.LambdaExpressionBlockBoundary;
@@ -347,14 +334,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsAttributeListDelimiter())
                     return SemanticRole.AttributeListBoundary;
 
-                if (token.IsCollectionIndexArgumentDelimiter())
-                    return SemanticRole.CollectionIndexArgumentBoundary;
-
                 if (token.IsCollectionExpressionDelimiter())
                     return SemanticRole.CollectionExpressionBoundary;
 
-                if (token.IsImplicitArrayCreationDelimiter())
-                    return SemanticRole.ImplicitArrayCreation;
+                if (token.IsImplicitArrayTypeFragmentDelimiter())
+                    return SemanticRole.ImplicitArrayTypeFragment;
+
+                if (token.IsIndexArgumentListDelimiter())
+                    return SemanticRole.IndexArgumentListBoundary;
 
                 if (token.IsListPatternDelimiter())
                     return SemanticRole.ListPatternBoundary;
