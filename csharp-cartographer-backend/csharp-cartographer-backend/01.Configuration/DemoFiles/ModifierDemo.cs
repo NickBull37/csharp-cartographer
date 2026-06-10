@@ -305,15 +305,4 @@ namespace csharp_cartographer_backend._01.Configuration.DemoFiles
             ParameterModifierDemo.ScopedInParam(in x);
         }
     }
-
-    //public class TestExtensions
-    //{
-    //    extension()
-    //    {
-    //        public int WordCount()
-    //        {
-
-    //        }
-    //    }
-    //}
 }

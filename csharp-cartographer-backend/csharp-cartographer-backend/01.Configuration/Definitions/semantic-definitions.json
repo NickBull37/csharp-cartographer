@@ -473,9 +473,6 @@
   "MethodReturnType": {
     "Definition": "This part of the method signature defines what data will be returned when the method is finished executing."
   },
-  "OutVariableType": {
-    "Definition": "The data type of the output variable."
-  },
   "ParameterType": {
     "Definition": "A parameter data type defines what kind of value can be passed into a method or constructor. It ensures the argument matches the expected type."
   },
@@ -669,7 +666,10 @@
     "Definition": "The {c:keyword}..{/c} operator targets a range of elements in a collection to match or capture."
   },
   "InstanceQualifier": {
-    "Definition": "The identifier of the the instance object."
+    "Definition": "The identifier of an object instance being used to access an element of that instance."
+  },
+  "CollectionInstanceQualifer": {
+    "Definition": "The identifier of a collection being used to access an element inside the collection."
   },
   "TargetMember": {
     "Definition": "The member name token that identifies the property, field, method, or event being accessed on an instance or type."

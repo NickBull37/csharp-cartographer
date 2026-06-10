@@ -490,6 +490,8 @@ const TokenSidebarContent = ({
                                                             ? 'keyword-definition green-box'
                                                         : highlightColor === 'color-yellow'
                                                             ? 'keyword-definition yellow-box'
+                                                        : highlightColor === 'color-jade'
+                                                            ? 'keyword-definition jade-box'
                                                         : ''
                                                     }
                                                 >
@@ -519,6 +521,8 @@ const TokenSidebarContent = ({
                                                                         ? 'green-icon-text'
                                                                     : highlightColor === 'color-yellow'
                                                                         ? 'yellow-icon-text'
+                                                                    : highlightColor === 'color-jade'
+                                                                        ? 'jade-icon-text'
                                                                     : ''
                                                             }
                                                             sx={{
@@ -543,6 +547,8 @@ const TokenSidebarContent = ({
                                                                         ? 'green-icon-text'
                                                                     : highlightColor === 'color-yellow'
                                                                         ? 'yellow-icon-text'
+                                                                    : highlightColor === 'color-jade'
+                                                                        ? 'jade-icon-text'
                                                                     : ''
                                                             }
                                                             sx={{

@@ -278,36 +278,34 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         Attribute,
         BaseType,
         CatchExceptionType,
-        CatchExceptionVariable,
-        ConditionValue,
         EventFieldType,
         EventPropertyType,
-        ForEachLoopCollection,
         GenericTypeParameter,
-        LockTarget,
-        NullCoalescingAssignmentRecipient,
         ParameterLabel,
-        TernaryCondition,
         TupleElementName,
         Type,
+
+        // always local if single token
+        ConditionValue,
+        ForEachLoopCollection,
+        LockTarget,
+        TernaryCondition,
         WithExpressionSource,
 
         // Qualifiers
         AliasQualifier,
-        ContainingTypeMemberQualifer,
-        ElementAccessQualifer, // => remove this, use instance or implicit instance
+        CollectionInstanceQualifer,
         ImplicitInstanceQualifier,
         InstanceQualifier,
         NamespaceQualifier,
-
-        // Declarations
-        OutVariableDeclaration,
 
         // Alias Declarations
         NamespaceAliasDeclaration,
         TypeAliasDeclaration,
 
         // Local Declarations
+        [Label("Local Declaration")]
+        CatchExceptionVariable,
         [Label("Local Declaration")]
         DeconstructionVariable,
         [Label("Local Declaration")]
@@ -317,9 +315,13 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         [Label("Local Declaration")]
         LoopIteratorDeclaration,
         [Label("Local Declaration")]
+        OutVariableDeclaration, // add focused def
+        [Label("Local Declaration")]
         UsingResourceDeclaration,
 
         // Member Declarations
+        [Label("Member Declaration")]
+        ConstantDeclaration,
         [Label("Member Declaration")]
         ConstructorDeclaration,
         [Label("Member Declaration")]
@@ -363,15 +365,14 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         [Label("Type Declaration")]
         StructDeclaration,
 
-        // Invocations & access
+        // Invocations // TODO: group as Invocation
         ConstructorInvocation,
-        EventSubscription,
-        EventUnsubscription,
-        FieldAccess, // 
         GenericMethodInvocation,
-        IndexerAccess, //
         MethodInvocation,
-        PropertyAccess, //
+
+        // Invocations & access
+        //EventSubscription,
+        //EventUnsubscription,
         TargetMember,
 
         // Query expressions
@@ -389,23 +390,6 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         JoinRangeVariableReference,
         LetVariableReference,
         RangeVariableReference,
-
-        // References
-        ClassReference,
-        ConstantReference,
-        DelegateReference,
-        EnumReference,
-        EnumMemberReference,
-        EventReference,
-        FieldReference,
-        InterfaceReference,
-        LocalVariableReference,
-        ParameterReference,
-        PropertyReference,
-        PropertyOrEnumMemberReference,
-        RecordReference,
-        RecordStructReference,
-        StructReference,
         #endregion
 
         #region ------------ LITERALS ------------
@@ -464,6 +448,10 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         TypePattern,
         VarPattern,
 
+        // Qualifiers
+        LiteralQualifier,
+        TypeQualifier,
+
         // Types
         ArrayBaseType,
         CastType,
@@ -478,7 +466,6 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         LocalFunctionReturnType,
         LocalVariableType,
         MethodReturnType,
-        OutVariableType,
         ParameterType,
         PointerBaseType,
         PropertyType,
@@ -486,7 +473,6 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         TupleElementType,
         TypeConstraint,
         TypeParameterConstraint,
-        TypeQualifier,
         #endregion
 
         #region ------------ KEYWORD OPERATORS ------------

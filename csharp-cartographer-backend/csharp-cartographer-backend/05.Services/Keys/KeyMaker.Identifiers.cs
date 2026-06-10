@@ -23,11 +23,13 @@ namespace csharp_cartographer_backend._05.Services.Keys
 
         private static List<SemanticRole> DeclarationRoles =
         [
+            SemanticRole.ConstantDeclaration,
             SemanticRole.FieldDeclaration,
             SemanticRole.LambdaParameter,
             SemanticRole.LocalVariableDeclaration,
             SemanticRole.LoopIteratorDeclaration,
-            SemanticRole.Parameter
+            SemanticRole.Parameter,
+            SemanticRole.ParameterLabel, // not a declaration but still invalid
         ];
 
         private static string? GetIdentifierKey(NavToken token)
@@ -48,7 +50,8 @@ namespace csharp_cartographer_backend._05.Services.Keys
         {
             bool isDeclarationRole = DeclarationRoles.Contains(token.SemanticRole);
             bool isDefinedInFile = token.Classifications.Corrected
-                is "event name"
+                is "constant name"
+                or "event name"
                 or "event field name"
                 or "field name"
                 or "local name"
@@ -62,6 +65,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
         {
             var extension = token.Classifications.Corrected switch
             {
+                "constant name" => "ConstantReference",
                 "event name" => null,
                 "event field name" => null,
                 "field name" => "FieldReference",

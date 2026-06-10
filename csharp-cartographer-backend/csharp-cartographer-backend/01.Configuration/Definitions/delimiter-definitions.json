@@ -1,45 +1,51 @@
 {
   "DL:ClassBoundary:Open": {
-    "Definition": "The beginning of a {c:color-blue keyword}class{/c} definition."
+    "Definition": "The start of a {c:color-blue keyword}class{/c} declaration."
   },
   "DL:ClassBoundary:Close": {
-    "Definition": "The end of a {c:color-blue keyword}class{/c} definition."
+    "Definition": "The end of a {c:color-blue keyword}class{/c} declaration."
   },
   "DL:ConstructorBoundary:Open": {
-    "Definition": "The beginning of a {c:bold}constructor{/c} definition."
+    "Definition": "The start of a {c:bold}constructor{/c} declaration."
   },
   "DL:ConstructorBoundary:Close": {
-    "Definition": "The end of a {c:bold}constructor{/c} definition."
+    "Definition": "The end of a {c:bold}constructor{/c} declaration."
   },
   "DL:EnumBoundary:Open": {
-    "Definition": "The beginning of an {c:color-blue keyword}enum{/c} definition."
+    "Definition": "The start of an {c:color-blue keyword}enum{/c} declaration."
   },
   "DL:EnumBoundary:Close": {
-    "Definition": "The end of an {c:color-blue keyword}enum{/c} definition."
+    "Definition": "The end of an {c:color-blue keyword}enum{/c} declaration."
   },
   "DL:InterfaceBoundary:Open": {
-    "Definition": "The beginning of an {c:color-blue keyword}interface{/c} definition."
+    "Definition": "The start of an {c:color-blue keyword}interface{/c} declaration."
   },
   "DL:InterfaceBoundary:Close": {
-    "Definition": "The end of an {c:color-blue keyword}interface{/c} definition."
+    "Definition": "The end of an {c:color-blue keyword}interface{/c} declaration."
   },
   "DL:ListPatternBoundary:Open": {
-    "Definition": "The opening of the {c:bold}list pattern{/c} clause."
+    "Definition": "The start of the {c:bold}list pattern{/c} clause."
   },
   "DL:ListPatternBoundary:Close": {
     "Definition": "The end of the {c:bold}list pattern{/c} clause."
   },
   "DL:LocalFunctionBoundary:Open": {
-    "Definition": "The beginning of the {c:bold}local function{/c} definition."
+    "Definition": "The start of the {c:bold}local function{/c} declaration."
   },
   "DL:LocalFunctionBoundary:Close": {
-    "Definition": "The end of the {c:bold}local function{/c} definition."
+    "Definition": "The end of the {c:bold}local function{/c} declaration."
   },
   "DL:MethodBoundary:Open": {
-    "Definition": "The beginning of the {c:bold}method{/c} definition."
+    "Definition": "The start of the {c:color-yellow bold}method{/c} declaration."
   },
   "DL:MethodBoundary:Close": {
-    "Definition": "The end of the {c:bold}method{/c} definition."
+    "Definition": "The end of the {c:color-yellow bold}method{/c} declaration."
+  },
+  "DL:NamespaceBoundary:Open": {
+    "Definition": "The start of the {c:color-blue keyword}namespace{/c} declaration."
+  },
+  "DL:NamespaceBoundary:Close": {
+    "Definition": "The end of the {c:color-blue keyword}namespace{/c} declaration."
   },
   "DL:PositionalPatternBoundary:Open": {
     "Definition": "The opening of the {c:bold}positional pattern{/c} clause."
@@ -54,22 +60,22 @@
     "Definition": "The end of the {c:bold}property pattern{/c} clause."
   },
   "DL:RecordBoundary:Open": {
-    "Definition": "The beginning of a {c:color-blue keyword}record{/c} definition."
+    "Definition": "The start of a {c:color-blue keyword}record{/c} declaration."
   },
   "DL:RecordBoundary:Close": {
-    "Definition": "The end of a {c:color-blue keyword}record{/c} definition."
+    "Definition": "The end of a {c:color-blue keyword}record{/c} declaration."
   },
   "DL:RecordStructBoundary:Open": {
-    "Definition": "The beginning of a {c:color-blue keyword}record{/c} {c:color-blue keyword}struct{/c} definition."
+    "Definition": "The start of a {c:color-blue keyword}record{/c} {c:color-blue keyword}struct{/c} declaration."
   },
   "DL:RecordStructBoundary:Close": {
-    "Definition": "The end of a {c:color-blue keyword}record{/c} {c:color-blue keyword}struct{/c} definition."
+    "Definition": "The end of a {c:color-blue keyword}record{/c} {c:color-blue keyword}struct{/c} declaration."
   },
   "DL:StructBoundary:Open": {
-    "Definition": "The beginning of a {c:color-blue keyword}struct{/c} definition."
+    "Definition": "The start of a {c:color-blue keyword}struct{/c} declaration."
   },
   "DL:StructBoundary:Close": {
-    "Definition": "The end of a {c:color-blue keyword}struct{/c} definition."
+    "Definition": "The end of a {c:color-blue keyword}struct{/c} declaration."
   },
   "DL:[]": {
     "Definition": "{c:code}[]{/c} - the syntax for a {c:bold}standard{/c} one dimensional array."

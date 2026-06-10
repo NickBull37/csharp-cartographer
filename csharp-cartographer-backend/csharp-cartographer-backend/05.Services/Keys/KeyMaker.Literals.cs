@@ -28,22 +28,20 @@ namespace csharp_cartographer_backend._05.Services.Keys
             if (token.IsVerbatimString())
                 return Key(LT, "VerbatimString");
 
-            if (token.IsInterpolatedVerbatimString())
-                return Key(LT, "InterpolatedVerbatimString");
-
             if (token.IsInterpolatedString())
                 return Key(LT, "InterpolatedString");
 
+            if (token.IsInterpolatedVerbatimString())
+                return Key(LT, "InterpolatedVerbatimString");
+
+            if (token.IsDecimalValue())
+                return Key(LT, "DecimalLiteral");
+
+            if (token.IsFloatingPointValue())
+                return Key(LT, "FloatingPointLiteral");
+
             if (token.IsNumericLiteral())
-            {
-                if (token.IsDecimalValue())
-                    return Key(LT, "DecimalLiteral");
-
-                if (token.IsFloatingPointValue())
-                    return Key(LT, "FloatingPointLiteral");
-
                 return Key(LT, "NumericLiteral");
-            }
 
             return null;
         }

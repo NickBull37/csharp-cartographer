@@ -5,6 +5,12 @@
   "ID:ClassDeclaration": {
     "Definition": "A {c:bold}class{/c} declaration defines a blueprint for creating objects that contain data and behavior. It groups related variables and methods into a single reusable unit.{RefExt}"
   },
+  "ID:ConstantDeclaration": {
+    "Definition": "A {c:bold}constant{/c} is a readonly field who's value will never change. They are useful when literal values are reused in multiple places."
+  },
+  "ID:ConstantReference": {
+    "Definition": "The name of a {c:color-white bold}constant{/c} field declared within the containing type."
+  },
   "ID:ConstructorDeclaration": {
     "Definition": "A {c:bold}constructor{/c} is a special method that runs when a new instance of an object is created. Defining input parameters is {c:bold}optional{/c} but can be helpful in setting up the object's initial state."
   },
@@ -64,6 +70,9 @@
   },
   "ID:ParameterReference": {
     "Definition": "The name of a {c:color-light-blue bold}parameter{/c} defined in the containing method or constructor {c:tt color-light-blue}signature{/c}."
+  },
+  "ID:ParameterLabel": {
+    "Definition": "The name of a {c:color-light-blue bold}parameter{/c} defined in the invoked method or constructor {c:tt color-light-blue}signature{/c}.<break/>Labels can improve readability when the name of the argument passed doesn't resemble the name of the corresponding parameter."
   },
   "ID:PropertyDeclaration": {
     "Definition": "A {c:bold}property{/c} declaration defines a member that provides controlled access to data on an object. Properties often include logic for getting or setting values."

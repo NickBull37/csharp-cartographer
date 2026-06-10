@@ -719,6 +719,26 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
+        private static SemanticRole GetKeywordOperatorRole(in NavToken token)
+        {
+            if (token.IsDefaultKeywordOperator())
+                return SemanticRole.DefaultOperator;
+
+            if (token.IsNameOfKeywordOperator())
+                return SemanticRole.NameOfOperator;
+
+            if (token.IsPatternMatchingKeyword())
+                return SemanticRole.PatternMatching;
+
+            if (token.IsSizeOfKeywordOperator())
+                return SemanticRole.SizeOfOperator;
+
+            if (token.IsTypeTestingKeywordOperator())
+                return SemanticRole.TypeTesting;
+
+            return SemanticRole.Unknown;
+        }
+
         private static SemanticRole TryGetLiteralRole(in NavToken token)
         {
             if (!token.IsInterpolatedString())
@@ -749,169 +769,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return SemanticRole.Unknown;
         }
 
-        private static SemanticRole TryGetMiscRole(in NavToken token)
-        {
-            // Anonymous object elements
-            if (token.IsAnonymousObjectElement())
-                return SemanticRole.AnonymousObjectElement;
-
-            // Arguments
-            if (token.IsArgument())
-                return SemanticRole.Argument;
-
-            if (token.IsAttributeArgument())
-                return SemanticRole.AttributeArgument;
-
-            // Assignment values
-            if (token.IsAssignmentValue())
-                return SemanticRole.AssignmentValue;
-
-            // Casting
-            if (token.IsCastTarget())
-                return SemanticRole.CastTarget;
-
-            if (token.IsCastType())
-                return SemanticRole.CastType;
-
-            // Collections
-            if (token.IsCollectionElement())
-                return SemanticRole.CollectionElement;
-
-            if (token.IsCollectionElementKey())
-                return SemanticRole.CollectionElementKey;
-
-            if (token.IsCollectionElementValue())
-                return SemanticRole.CollectionElementValue;
-
-            if (token.IsCollectionLength())
-                return SemanticRole.CollectionLength;
-
-            // Data types
-            if (token.IsArrayBaseType())
-                return SemanticRole.ArrayBaseType;
-
-            if (token.IsForLoopIteratorType())
-                return SemanticRole.ForLoopIteratorType;
-
-            if (token.IsForEachLoopIteratorType())
-                return SemanticRole.ForEachLoopIteratorType;
-
-            if (token.IsMethodReturnType())
-                return SemanticRole.MethodReturnType;
-
-            if (token.IsOutVariableType())
-                return SemanticRole.OutVariableType;
-
-            // Generic types
-            if (token.IsGenericTypeArgument())
-                return SemanticRole.GenericTypeArgument;
-
-            // Index values
-            if (token.IsIndexValue())
-                return SemanticRole.IndexValue;
-
-            if (token.IsInterpolatedValue())
-                return SemanticRole.InterpolatedValue;
-
-            // Operands
-            if (token.IsAddressOfOperand())
-                return SemanticRole.AddressOfOperand;
-
-            if (token.IsArithmeticOperand())
-                return SemanticRole.ArithmeticOperand;
-
-            if (token.IsBitwiseOperand())
-                return SemanticRole.BitwiseOperand;
-
-            if (token.IsComparisonOperand())
-                return SemanticRole.ComparisonOperand;
-
-            if (token.IsConcatenationOperand())
-                return SemanticRole.ConcatenationOperand;
-
-            if (token.IsDereferenceOperand())
-                return SemanticRole.DereferenceOperand;
-
-            if (token.IsLogicalOperand())
-                return SemanticRole.LogicalOperand;
-
-            if (token.IsNullCoalescingAssignmentValue())
-                return SemanticRole.NullCoalescingAssignmentValue;
-
-            if (token.IsNullCoalescingFallback())
-                return SemanticRole.NullCoalescingFallback;
-
-            if (token.IsNullCoalescingTarget())
-                return SemanticRole.NullCoalescingTarget;
-
-            if (token.IsShiftOperand())
-                return SemanticRole.ShiftOperand;
-
-            // Pattern matching
-            if (token.IsConstantPattern())
-                return SemanticRole.ConstantPattern;
-
-            if (token.IsPatternBindingVariable())
-                return SemanticRole.PatternBindingVariable;
-
-            if (token.IsPatternMatchTarget())
-                return SemanticRole.PatternMatchTarget;
-
-            if (token.IsPropertyPattern())
-                return SemanticRole.PropertyPattern;
-
-            if (token.IsRelationalPattern())
-                return SemanticRole.RelationalPattern;
-
-            if (token.IsVarPattern())
-                return SemanticRole.VarPattern;
-
-            // Pointers
-            if (token.IsPointerBaseType())
-                return SemanticRole.PointerBaseType;
-
-            // Qualifiers
-            if (token.IsTypeQualifier()) // must be checked before ElementAccess
-                return SemanticRole.TypeQualifier;
-
-            if (token.IsElementAccessQualifer())
-                return SemanticRole.ElementAccessQualifer;
-
-            // Return values
-            if (token.IsLocalFunctionReturnType())
-                return SemanticRole.LocalFunctionReturnType;
-
-            if (token.IsQueryReturnValue())
-                return SemanticRole.QueryReturnValue;
-
-            if (token.IsReturnValue())
-                return SemanticRole.ReturnValue;
-
-            // Switch roles
-            if (token.IsSwitchArmValue())
-                return SemanticRole.SwitchArmValue;
-
-            if (token.IsSwitchMatchTarget())
-                return SemanticRole.SwitchMatchTarget;
-
-            // Ternary values
-            if (token.IsTernaryFalseValue())
-                return SemanticRole.TernaryFalseValue;
-
-            if (token.IsTernaryTrueValue())
-                return SemanticRole.TernaryTrueValue;
-
-            // Tuple elements
-            if (token.IsTupleElement())
-                return SemanticRole.TupleElement;
-
-            // Type constraints
-            if (token.IsTypeConstraint())
-                return SemanticRole.TypeConstraint;
-
-            return SemanticRole.Unknown;
-        }
-
         private static SemanticRole TryGetIdentifierRole(in NavToken token)
         {
             if (!token.IsIdentifier())
@@ -923,6 +780,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsClassDeclaration())
                 return SemanticRole.ClassDeclaration;
+
+            if (token.IsConstantDeclaration())
+                return SemanticRole.ConstantDeclaration;
 
             if (token.IsConstructorDeclaration())
                 return SemanticRole.ConstructorDeclaration;
@@ -1034,6 +894,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // --- Identifiers: namespaces, aliases, qualifiers ---
             if (token.IsAliasQualifier())
                 return SemanticRole.AliasQualifier;
+
+            if (token.IsCollectionInstanceQualifer())
+                return SemanticRole.CollectionInstanceQualifer;
 
             if (token.IsNamespaceQualifier())
                 return SemanticRole.NamespaceQualifier;
@@ -1149,34 +1012,174 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsAssignmentRecipient())
                 return SemanticRole.AssignmentRecipient;
 
-            if (token.IsNullCoalescingAssignmentRecipient())
-                return SemanticRole.NullCoalescingAssignmentRecipient;
-
-            return SemanticRole.Unknown;
-        }
-
-        private static SemanticRole GetKeywordOperatorRole(in NavToken token)
-        {
-            if (token.IsDefaultKeywordOperator())
-                return SemanticRole.DefaultOperator;
-
-            if (token.IsNameOfKeywordOperator())
-                return SemanticRole.NameOfOperator;
-
-            if (token.IsPatternMatchingKeyword())
-                return SemanticRole.PatternMatching;
-
-            if (token.IsSizeOfKeywordOperator())
-                return SemanticRole.SizeOfOperator;
-
-            if (token.IsTypeTestingKeywordOperator())
-                return SemanticRole.TypeTesting;
-
             return SemanticRole.Unknown;
         }
 
         private static SemanticRole GetIdentifierKeywordRole(in NavToken token)
         {
+            return SemanticRole.Unknown;
+        }
+
+        private static SemanticRole TryGetMiscRole(in NavToken token)
+        {
+            // Anonymous object elements
+            if (token.IsAnonymousObjectElement())
+                return SemanticRole.AnonymousObjectElement;
+
+            // Arguments
+            if (token.IsArgument())
+                return SemanticRole.Argument;
+
+            if (token.IsAttributeArgument())
+                return SemanticRole.AttributeArgument;
+
+            // Assignment values
+            if (token.IsAssignmentValue())
+                return SemanticRole.AssignmentValue;
+
+            // Casting
+            if (token.IsCastTarget())
+                return SemanticRole.CastTarget;
+
+            if (token.IsCastType())
+                return SemanticRole.CastType;
+
+            // Collections
+            if (token.IsCollectionElement())
+                return SemanticRole.CollectionElement;
+
+            if (token.IsCollectionElementKey())
+                return SemanticRole.CollectionElementKey;
+
+            if (token.IsCollectionElementValue())
+                return SemanticRole.CollectionElementValue;
+
+            if (token.IsCollectionLength())
+                return SemanticRole.CollectionLength;
+
+            // Data types
+            if (token.IsArrayBaseType())
+                return SemanticRole.ArrayBaseType;
+
+            if (token.IsForLoopIteratorType())
+                return SemanticRole.ForLoopIteratorType;
+
+            if (token.IsForEachLoopIteratorType())
+                return SemanticRole.ForEachLoopIteratorType;
+
+            if (token.IsMethodReturnType())
+                return SemanticRole.MethodReturnType;
+
+            //if (token.IsOutVariableType())
+            //    return SemanticRole.OutVariableType;
+
+            // Generic types
+            if (token.IsGenericTypeArgument())
+                return SemanticRole.GenericTypeArgument;
+
+            // Index values
+            if (token.IsIndexValue())
+                return SemanticRole.IndexValue;
+
+            if (token.IsInterpolatedValue())
+                return SemanticRole.InterpolatedValue;
+
+            // Operands
+            if (token.IsAddressOfOperand())
+                return SemanticRole.AddressOfOperand;
+
+            if (token.IsArithmeticOperand())
+                return SemanticRole.ArithmeticOperand;
+
+            if (token.IsBitwiseOperand())
+                return SemanticRole.BitwiseOperand;
+
+            if (token.IsComparisonOperand())
+                return SemanticRole.ComparisonOperand;
+
+            if (token.IsConcatenationOperand())
+                return SemanticRole.ConcatenationOperand;
+
+            if (token.IsDereferenceOperand())
+                return SemanticRole.DereferenceOperand;
+
+            if (token.IsLogicalOperand())
+                return SemanticRole.LogicalOperand;
+
+            if (token.IsNullCoalescingAssignmentValue())
+                return SemanticRole.NullCoalescingAssignmentValue;
+
+            if (token.IsNullCoalescingFallback())
+                return SemanticRole.NullCoalescingFallback;
+
+            if (token.IsNullCoalescingTarget())
+                return SemanticRole.NullCoalescingTarget;
+
+            if (token.IsShiftOperand())
+                return SemanticRole.ShiftOperand;
+
+            // Pattern matching
+            if (token.IsConstantPattern())
+                return SemanticRole.ConstantPattern;
+
+            if (token.IsPatternBindingVariable())
+                return SemanticRole.PatternBindingVariable;
+
+            if (token.IsPatternMatchTarget())
+                return SemanticRole.PatternMatchTarget;
+
+            if (token.IsPropertyPattern())
+                return SemanticRole.PropertyPattern;
+
+            if (token.IsRelationalPattern())
+                return SemanticRole.RelationalPattern;
+
+            if (token.IsVarPattern())
+                return SemanticRole.VarPattern;
+
+            // Pointers
+            if (token.IsPointerBaseType())
+                return SemanticRole.PointerBaseType;
+
+            // Qualifiers
+            if (token.IsLiteralQualifier())
+                return SemanticRole.LiteralQualifier;
+
+            if (token.IsTypeQualifier())
+                return SemanticRole.TypeQualifier;
+
+            // Return values
+            if (token.IsLocalFunctionReturnType())
+                return SemanticRole.LocalFunctionReturnType;
+
+            if (token.IsQueryReturnValue())
+                return SemanticRole.QueryReturnValue;
+
+            if (token.IsReturnValue())
+                return SemanticRole.ReturnValue;
+
+            // Switch roles
+            if (token.IsSwitchArmValue())
+                return SemanticRole.SwitchArmValue;
+
+            if (token.IsSwitchMatchTarget())
+                return SemanticRole.SwitchMatchTarget;
+
+            // Ternary values
+            if (token.IsTernaryFalseValue())
+                return SemanticRole.TernaryFalseValue;
+
+            if (token.IsTernaryTrueValue())
+                return SemanticRole.TernaryTrueValue;
+
+            // Tuple elements
+            if (token.IsTupleElement())
+                return SemanticRole.TupleElement;
+
+            // Type constraints
+            if (token.IsTypeConstraint())
+                return SemanticRole.TypeConstraint;
+
             return SemanticRole.Unknown;
         }
         #endregion

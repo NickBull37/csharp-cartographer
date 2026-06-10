@@ -530,6 +530,10 @@ body {
     background-color: rgba(91, 91, 37, 0.1);
     border: 1px solid rgba(218, 218, 164, 0.4);
 }
+.jade-box{
+    background-color: rgba(99, 182, 114, 0.1);
+    border: 1px solid rgba(151, 206, 161, 0.4);
+}
 
 
 .blue-icon-text{
@@ -558,6 +562,9 @@ body {
 }
 .yellow-icon-text{
     color: #e9e9c9;
+}
+.jade-icon-text{
+    color: #cbe7d0;
 }
 
 

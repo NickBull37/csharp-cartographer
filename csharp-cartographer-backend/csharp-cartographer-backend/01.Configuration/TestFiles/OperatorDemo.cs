@@ -1,4 +1,5 @@
-﻿using csharp_cartographer_backend._02.Utilities.ActionResponse;
+﻿using csharp_cartographer_backend._01.Configuration.DemoFiles;
+using csharp_cartographer_backend._02.Utilities.ActionResponse;
 using csharp_cartographer_backend._03.Models.Artifacts;
 using csharp_cartographer_backend._03.Models.Tokens;
 using csharp_cartographer_backend._06.Workflows.Artifacts;
@@ -116,6 +117,16 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
 
             // misc: new, checked, unchecked, default, nameof, stackalloc
             var list = new List<int> { 1, 2, 3 };    // new
+
+            _ = "hello world".WordCount();
+            _ = 5.ToString();
+            _ = true.ToString();
+
+            _ = "hello world"?.WordCount();
+
+            _ = "hello world"!.WordCount();
+            _ = 5!.ToString();
+            _ = true!.ToString();
 
             checked
             {
