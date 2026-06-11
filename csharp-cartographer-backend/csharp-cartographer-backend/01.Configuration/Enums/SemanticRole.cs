@@ -278,30 +278,31 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         Attribute,
         BaseType,
         CatchExceptionType,
+        ConditionValue,
         EventFieldType,
         EventPropertyType,
+        ForEachLoopCollection,
         GenericTypeParameter,
+        LockTarget,
         ParameterLabel,
+        TargetMember,
+        TernaryCondition,
         TupleElementName,
         Type,
-
-        // always local if single token
-        ConditionValue,
-        ForEachLoopCollection,
-        LockTarget,
-        TernaryCondition,
         WithExpressionSource,
-
-        // Qualifiers
-        AliasQualifier,
-        CollectionInstanceQualifer,
-        ImplicitInstanceQualifier,
-        InstanceQualifier,
-        NamespaceQualifier,
 
         // Alias Declarations
         NamespaceAliasDeclaration,
         TypeAliasDeclaration,
+
+        // Events
+        //EventSubscription,
+        //EventUnsubscription,
+
+        // Invocations // TODO: group as Invocation
+        ConstructorInvocation,
+        GenericMethodInvocation,
+        MethodInvocation,
 
         // Local Declarations
         [Label("Local Declaration")]
@@ -339,7 +340,7 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         [Label("Member Declaration")]
         MethodDeclaration,
         [Label("Member Declaration")]
-        OperatorDeclaration,
+        OperatorDeclaration, // => remove?
         [Label("Member Declaration")]
         PropertyDeclaration,
 
@@ -348,6 +349,13 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         LambdaParameter,
         [Label("Parameter Declaration")]
         Parameter,
+
+        // Qualifiers
+        AliasQualifier,
+        CollectionInstanceQualifer,
+        ImplicitInstanceQualifier,
+        InstanceQualifier,
+        NamespaceQualifier,
 
         // Type Declarations
         [Label("Type Declaration")]
@@ -365,17 +373,7 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         [Label("Type Declaration")]
         StructDeclaration,
 
-        // Invocations // TODO: group as Invocation
-        ConstructorInvocation,
-        GenericMethodInvocation,
-        MethodInvocation,
-
-        // Invocations & access
-        //EventSubscription,
-        //EventUnsubscription,
-        TargetMember,
-
-        // Query expressions
+        // Query Expressions
         GroupContinuationRangeVariable,
         GroupElement,
         JoinIntoRangeVariable,

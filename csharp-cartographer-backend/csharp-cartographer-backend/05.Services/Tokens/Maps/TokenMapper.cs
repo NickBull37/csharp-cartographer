@@ -1070,9 +1070,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsMethodReturnType())
                 return SemanticRole.MethodReturnType;
 
-            //if (token.IsOutVariableType())
-            //    return SemanticRole.OutVariableType;
-
             // Generic types
             if (token.IsGenericTypeArgument())
                 return SemanticRole.GenericTypeArgument;

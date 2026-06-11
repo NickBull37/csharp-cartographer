@@ -194,12 +194,9 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             {
                 case SemanticRole.AttributeArgument:
                 case SemanticRole.EnumMemberDeclaration:
-                //case SemanticRole.EnumMemberReference:
                 case SemanticRole.FieldDeclaration:
-                //case SemanticRole.FieldReference:
                 case SemanticRole.NamespaceAliasDeclaration:
                 case SemanticRole.PropertyDeclaration:
-                //case SemanticRole.PropertyReference:
                 case SemanticRole.TargetMember:
                 case SemanticRole.TupleElementName:
                 // query expression vars
@@ -217,31 +214,23 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                     break;
                 case SemanticRole.Attribute:
                 case SemanticRole.ClassDeclaration:
-                //case SemanticRole.ClassReference:
                 case SemanticRole.CatchExceptionType:
                 case SemanticRole.RecordDeclaration:
-                //case SemanticRole.RecordReference:
                 case SemanticRole.Type:
                 case SemanticRole.TypeAliasDeclaration:
                     token.HighlightColor = Green;
                     break;
                 case SemanticRole.EnumDeclaration:
-                //case SemanticRole.EnumReference:
                 case SemanticRole.InterfaceDeclaration:
-                    //case SemanticRole.InterfaceReference:
                     token.HighlightColor = LightGreen;
                     break;
                 case SemanticRole.RecordStructDeclaration:
-                //case SemanticRole.RecordStructReference:
                 case SemanticRole.StructDeclaration:
-                    //case SemanticRole.StructReference:
                     token.HighlightColor = Jade;
                     break;
                 case SemanticRole.LocalVariableDeclaration:
-                //case SemanticRole.LocalVariableReference:
                 case SemanticRole.Parameter:
                 case SemanticRole.ParameterLabel:
-                    //case SemanticRole.ParameterReference:
                     token.HighlightColor = LightBlue;
                     break;
                 case SemanticRole.GenericMethodDeclaration:
@@ -293,7 +282,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         private static string GetNamespaceQualifierColor(NavToken token)
         {
-            return token.IsUsingDirectiveNamespaceQualifier() || token.IsNamespaceDeclarationQualifier()
+            return token.IsUsingDirectiveNamespace() || token.IsNamespaceDeclaration()
                 ? White
                 : Gray;
         }
