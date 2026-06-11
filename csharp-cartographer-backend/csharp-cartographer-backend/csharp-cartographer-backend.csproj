@@ -13,41 +13,42 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="01.Configuration\Definitions\delimiter-definitions.json" />
-    <Content Remove="01.Configuration\Definitions\identifier-definitions.json" />
-    <Content Remove="01.Configuration\Definitions\keyword-definitions.json" />
-    <Content Remove="01.Configuration\Definitions\keyword-operator-definitions.json" />
-    <Content Remove="01.Configuration\Definitions\literal-definitions.json" />
-    <Content Remove="01.Configuration\Definitions\modifier-definitions.json" />
-    <Content Remove="01.Configuration\Definitions\operator-definitions.json" />
-    <Content Remove="01.Configuration\Definitions\semantic-definitions.json" />
-    <Content Remove="01.Configuration\DemoFileData\demo-file-data.json" />
-    <Content Remove="01.Configuration\DemoInsights\controller-insights.json" />
-    <Content Remove="01.Configuration\DemoInsights\dto-insights.json" />
-    <Content Remove="01.Configuration\DemoInsights\helper-insights.json" />
-    <Content Remove="01.Configuration\DemoInsights\model-insights.json" />
-    <Content Remove="01.Configuration\DemoInsights\provider-insights.json" />
-    <Content Remove="01.Configuration\DemoInsights\service-insights.json" />
-    <Content Remove="01.Configuration\DemoInsights\workflow-insights.json" />
+    <Content Remove="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\delimiter-role-definitions.json" />
+    <Content Remove="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\identifier-role-definitions.json" />
+    <Content Remove="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\keyword-operator-role-definitions.json" />
+    <Content Remove="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\keyword-role-definitions.json" />
+    <Content Remove="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\literal-role-definitions.json" />
+    <Content Remove="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\misc-role-definitions.json" />
+    <Content Remove="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\operator-role-definitions.json" />
+    <Content Remove="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\punctuation-role-definitions.json" />
+    <Content Remove="01.Configuration\EmbeddedJson\demo-options.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="01.Configuration\Definitions\delimiter-definitions.json" />
-    <EmbeddedResource Include="01.Configuration\Definitions\identifier-definitions.json" />
-    <EmbeddedResource Include="01.Configuration\Definitions\keyword-definitions.json" />
-    <EmbeddedResource Include="01.Configuration\Definitions\keyword-operator-definitions.json" />
-    <EmbeddedResource Include="01.Configuration\Definitions\literal-definitions.json" />
-    <EmbeddedResource Include="01.Configuration\Definitions\modifier-definitions.json" />
-    <EmbeddedResource Include="01.Configuration\Definitions\operator-definitions.json" />
-    <EmbeddedResource Include="01.Configuration\Definitions\semantic-definitions.json" />
-    <EmbeddedResource Include="01.Configuration\DemoFileData\demo-file-data.json" />
-    <EmbeddedResource Include="01.Configuration\DemoInsights\controller-insights.json" />
-    <EmbeddedResource Include="01.Configuration\DemoInsights\dto-insights.json" />
-    <EmbeddedResource Include="01.Configuration\DemoInsights\helper-insights.json" />
-    <EmbeddedResource Include="01.Configuration\DemoInsights\model-insights.json" />
-    <EmbeddedResource Include="01.Configuration\DemoInsights\provider-insights.json" />
-    <EmbeddedResource Include="01.Configuration\DemoInsights\service-insights.json" />
-    <EmbeddedResource Include="01.Configuration\DemoInsights\workflow-insights.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\delimiter-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\identifier-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\keyword-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\keyword-operator-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\literal-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\modifier-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\operator-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\semantic-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\delimiter-role-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\identifier-role-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\keyword-operator-role-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\keyword-role-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\literal-role-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\misc-role-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\operator-role-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\Definitions\SemanticRoles\punctuation-role-definitions.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\demo-options.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\controller-insights.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\dto-insights.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\helper-insights.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\model-insights.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\provider-insights.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\service-insights.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\workflow-insights.json" />
   </ItemGroup>
 
   <ItemGroup>

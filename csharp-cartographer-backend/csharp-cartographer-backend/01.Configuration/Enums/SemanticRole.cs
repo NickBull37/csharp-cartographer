@@ -120,12 +120,6 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         [Label("InitializerBoundary")]
         WithInitializerExpressionBoundary,
 
-        // Loop Control
-        [Label("LoopControlBoundary")]
-        ForEachControlBoundary,
-        [Label("LoopControlBoundary")]
-        ForLoopControlBoundary,
-
         // Loop Blocks
         [Label("LoopBlockBoundary")]
         DoWhileLoopBlockBoundary,
@@ -135,6 +129,12 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         ForLoopBlockBoundary,
         [Label("LoopBlockBoundary")]
         WhileLoopBlockBoundary,
+
+        // Loop Control
+        [Label("LoopControlBoundary")]
+        ForEachControlBoundary,
+        [Label("LoopControlBoundary")]
+        ForLoopControlBoundary,
 
         // Pattern Matching
         [Label("PatternBoundary")]
@@ -178,18 +178,17 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         NullCoalescing,
         NullCoalescingAssignment,
         NullForgiving,
-        OperatorSymbol,
+        OperatorSymbol, // ?
         PatternMatchArrow,
         RangeSlice,
         Shift,
-        Ternary,
-        TypeTesting,
+        //Ternary,
 
         // multi-token
-        [Label("Null Conditional (1/2)")]
-        NullConditionalQuestion,
         [Label("Null Conditional (2/2)")]
         NullConditionalDot,
+        [Label("Null Conditional (1/2)")]
+        NullConditionalQuestion,
         [Label("Ternary (2/2)")]
         TernaryColon,
         [Label("Ternary (1/2)")]
@@ -261,10 +260,10 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         UsingDirectiveModifier,
 
         // purple
-        JumpStatement,
         ConditionalBranching,
-        ExceptionHandling,
         ControlFlow,
+        ExceptionHandling,
+        JumpStatement,
         LoopStatement,
 
         // blue | purple
@@ -381,13 +380,7 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         JoinSource,
         LetVariable,
         QuerySource,
-        QueryVariableReference,
         RangeVariable,
-        GroupContinuationRangeVariableReference,
-        JoinIntoRangeVariableReference,
-        JoinRangeVariableReference,
-        LetVariableReference,
-        RangeVariableReference,
         #endregion
 
         #region ------------ LITERALS ------------
@@ -479,6 +472,7 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         NameOfOperator,
         SizeOfOperator,
         TypeOfOperator,
+        TypeTesting,
         #endregion
     }
 }

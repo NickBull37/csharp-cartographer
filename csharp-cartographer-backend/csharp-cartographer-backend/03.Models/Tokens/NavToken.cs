@@ -66,6 +66,10 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         [JsonIgnore]
         public SemanticRole SemanticRole { get; set; } = SemanticRole.Unknown;
 
+        /// <summary>The group role of the token in its given context.</summary>
+        [JsonIgnore]
+        public GroupRole? GroupRole { get; set; }
+
         /// <summary>The focused role of the token in its given context.</summary>
         [JsonIgnore]
         public FocusedRole FocusedRole { get; set; } = FocusedRole.Unknown;

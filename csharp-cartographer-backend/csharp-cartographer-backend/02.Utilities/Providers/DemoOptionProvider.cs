@@ -13,7 +13,7 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
 
     public class DemoOptionProvider
     {
-        private const string EmbeddedJsonFile = "demo-file-data.json";
+        private const string EmbeddedJsonFile = "demo-options.json";
         private static readonly string _solutionRoot = Directory.GetParent(AppContext.BaseDirectory)!.Parent!.Parent!.Parent!.Parent!.FullName;
         private static readonly JsonSerializerOptions JsonOptions = new()
         {

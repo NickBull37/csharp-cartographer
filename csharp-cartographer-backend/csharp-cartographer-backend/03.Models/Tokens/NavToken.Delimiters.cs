@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
+﻿using csharp_cartographer_backend._01.Configuration.Enums;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace csharp_cartographer_backend._03.Models.Tokens
 {
@@ -45,93 +46,99 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         #region ------------------- Group Checks --------------------
         public bool IsAccessorBlockDelimiter()
         {
-            return IsAddAccessorBlockDelimiter()
-                || IsGetAccessorBlockDelimiter()
-                || IsInitAccessorBlockDelimiter()
-                || IsRemoveAccessorBlockDelimiter()
-                || IsSetAccessorBlockDelimiter();
-        }
-
-        public bool IsBlockDelimiter()
-        {
-            return IsCatchBlockDelimiter()
-                || IsElseBlockDelimiter()
-                || IsIfBlockDelimiter()
-                || IsLambdaExpressionBlockDelimiter()
-                || IsTryBlockDelimiter();
+            return SemanticRole
+                is SemanticRole.AddAccessorBlockBoundary
+                or SemanticRole.GetAccessorBlockBoundary
+                or SemanticRole.InitAccessorBlockBoundary
+                or SemanticRole.RemoveAccessorBlockBoundary
+                or SemanticRole.SetAccessorBlockBoundary;
         }
 
         public bool IsConditionDelimiter()
         {
-            return IsCatchFilterClauseConditionDelimiter()
-                || IsDoWhileConditionDelimiter()
-                || IsIfConditionDelimiter()
-                || IsSwitchStatementConditionDelimiter()
-                || IsWhileLoopConditionDelimiter();
+            return SemanticRole
+                is SemanticRole.CatchFilterClauseConditionBoundary
+                or SemanticRole.DoWhileConditionBoundary
+                or SemanticRole.IfConditionBoundary
+                or SemanticRole.SwitchStatementConditionBoundary
+                or SemanticRole.WhileLoopConditionBoundary;
         }
 
         public bool IsContextBlockDelimiter()
         {
-            return IsCheckedStatementBlockDelimiter()
-                || IsFixedBlockDelimiter()
-                || IsLockBlockDelimiter()
-                || IsUncheckedStatementBlockDelimiter()
-                || IsUnsafeBlockDelimiter()
-                || IsUsingStatementBlockDelimiter();
+            return SemanticRole
+                is SemanticRole.CheckedStatementBlockBoundary
+                or SemanticRole.FixedStatementBlockBoundary
+                or SemanticRole.LockStatementBlockBoundary
+                or SemanticRole.UncheckedStatementBlockBoundary
+                or SemanticRole.UnsafeStatementBlockBoundary
+                or SemanticRole.UsingStatementBlockBoundary;
         }
 
-        public bool IsControlBoundary()
+        public bool IsDeclarationDelimiter()
         {
-            return IsFixedStatementControlDelimiter()
-                || IsForLoopControlDelimiter()
-                || IsForEachControlDelimiter()
-                || IsLockStatementControlDelimiter();
-        }
-
-        public bool IsDefinitionDelimiter()
-        {
-            return IsClassDelimiter()
-                || IsConstructorDelimiter()
-                || IsEnumDelimiter()
-                || IsInterfaceDelimiter()
-                || IsLocalFunctionDelimiter()
-                || IsMethodDelimiter()
-                || IsNamespaceDelimiter()
-                || IsRecordDelimiter()
-                || IsRecordStructDelimiter()
-                || IsStructDelimiter();
+            return SemanticRole
+                is SemanticRole.ClassBoundary
+                or SemanticRole.ConstructorBoundary
+                or SemanticRole.EnumBoundary
+                or SemanticRole.InterfaceBoundary
+                or SemanticRole.LocalFunctionBoundary
+                or SemanticRole.MethodBoundary
+                or SemanticRole.NamespaceBoundary
+                or SemanticRole.RecordBoundary
+                or SemanticRole.RecordStructBoundary
+                or SemanticRole.StructBoundary;
         }
 
         public bool IsInitializerDelimiter()
         {
-            return IsAnonymousObjectInitializerDelimiter()
-                || IsArrayInitializerDelimiter()
-                || IsCollectionElementInitializerDelimiter()
-                || IsCollectionInitializerDelimiter()
-                || IsObjectInitializerDelimiter()
-                || IsWithInitializerExpressionDelimiter();
+            return SemanticRole
+                is SemanticRole.AnonymousObjectInitializerBoundary
+                or SemanticRole.ArrayInitializerBoundary
+                or SemanticRole.CollectionElementInitializerBoundary
+                or SemanticRole.CollectionInitializerBoundary
+                or SemanticRole.ObjectInitializerBoundary
+                or SemanticRole.WithInitializerExpressionBoundary;
         }
 
         public bool IsLoopBlockDelimiter()
         {
-            return IsDoWhileLoopBlockDelimiter()
-                || IsForEachLoopBlockDelimiter()
-                || IsForLoopBlockDelimiter()
-                || IsWhileLoopBlockDelimiter();
+            return SemanticRole
+                is SemanticRole.DoWhileLoopBlockBoundary
+                or SemanticRole.ForEachLoopBlockBoundary
+                or SemanticRole.ForLoopBlockBoundary
+                or SemanticRole.WhileLoopBlockBoundary;
+        }
+
+        public bool IsLoopControlDelimiter()
+        {
+            return SemanticRole
+                is SemanticRole.ForEachControlBoundary
+                or SemanticRole.ForLoopControlBoundary;
         }
 
         public bool IsPatternMatchingDelimiter()
         {
-            return IsListPatternDelimiter()
-                || IsParenthesizedPatternDelimiter()
-                || IsPositionalPatternDelimiter()
-                || IsPropertyPatternDelimiter();
+            return SemanticRole
+                is SemanticRole.ListPatternBoundary
+                or SemanticRole.ParenthesizedPatternBoundary
+                or SemanticRole.PositionalPatternBoundary
+                or SemanticRole.PropertyPatternBoundary;
+        }
+
+        public bool IsStatementControlDelimiter()
+        {
+            return SemanticRole
+                is SemanticRole.FixedStatementControlBoundary
+                or SemanticRole.LockStatementControlBoundary
+                or SemanticRole.UsingStatementControlBoundary;
         }
 
         public bool IsSwitchBlockDelimiter()
         {
-            return IsSwitchExpressionBlockDelimiter()
-                || IsSwitchStatementBlockDelimiter();
+            return SemanticRole
+                is SemanticRole.SwitchExpressionBlockBoundary
+                or SemanticRole.SwitchStatementBlockBoundary;
         }
         #endregion
 

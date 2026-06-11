@@ -1,5 +1,4 @@
 ﻿using csharp_cartographer_backend._01.Configuration.Enums;
-using csharp_cartographer_backend._02.Utilities.Helpers;
 using csharp_cartographer_backend._03.Models.Tokens;
 
 namespace csharp_cartographer_backend._05.Services.Keys
@@ -19,7 +18,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
         /// <summary>
         /// Gets the key used to find the SemanticRole definition.
         /// </summary>
-        public static string GetRoleKey(SemanticRole role)
+        public static string GetRoleKey(NavToken token)
         {
             /*
              * The SemanticRole is used as the definition key by default. 
@@ -28,7 +27,11 @@ namespace csharp_cartographer_backend._05.Services.Keys
              * as the key for Delimiters.
              */
 
-            return role.GetLabel() ?? role.ToString();
+            return token.GroupRole is not null
+                ? token.GroupRole.ToString()
+                : token.SemanticRole.ToString();
+
+            //return role.GetLabel() ?? role.ToString();
         }
 
         /// <summary>

@@ -1,0 +1,17 @@
+{
+  "InterpolatedStringStart": {
+    "Definition": "Marks the beginning of an interpolated string."
+  },
+  "InterpolatedStringText": {
+    "Definition": "The literal text inside of an interpolated string."
+  },
+  "InterpolatedStringEnd": {
+    "Definition": "Marks the end of an interpolated string."
+  },
+  "InterpolatedVerbatimStringStart": {
+    "Definition": "Marks the beginning of an interpolated verbatim string."
+  },
+  "NumericFormatSpecifier": {
+    "Definition": "A format pattern used inside an interpolated string that defines how a numeric value should be converted to text."
+  }
+}

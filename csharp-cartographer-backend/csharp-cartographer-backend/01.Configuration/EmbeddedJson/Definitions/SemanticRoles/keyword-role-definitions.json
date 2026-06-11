@@ -1,0 +1,84 @@
+{
+  "AccessModifier": {
+    "Definition": "Access modifiers control where code elements like classes, methods, and fields can be accessed from, helping enforce encapsulation and safe boundaries between parts of a program."
+  },
+  "Accessor": {
+    "Definition": "Accessors define how a property or indexer value is read or written. Common accessors include get and set."
+  },
+  "ArgumentModifier": {
+    "Definition": "Argument modifiers change how arguments are passed into methods. They control behaviors like passing by reference."
+  },
+  "CompilationScope": {
+    "Definition": "These keywords set up the overall structure and context of a file before any code runs. They control where code belongs, how names are organized, and which other code can be referenced."
+  },
+  "Constraint": {
+    "Definition": "Constraint keywords restrict which types can be used with generics. They help ensure generic code is used safely."
+  },
+  "DiscardPattern": {
+    "Definition": "The discard pattern {c:color-blue keyword bold}_{/c} matches any input value and is used as a {c:bold}catch-all{/c} option in pattern matching."
+  },
+  "DiscardValue": {
+    "Definition": "The discard symbol {c:color-blue keyword bold}_{/c} indicates that a produced value is {c:bold}intentionally ignored{/c} in an assignment or {c:color-blue keyword}out{/c} argument."
+  },
+  "Iterator": {
+    "Definition": "Iterator keywords enable a method to return values one at a time. They are commonly used to work with sequences."
+  },
+  "MemberDeclaration": {
+    "Definition": "Member declaration keywords define members such as fields, methods, or properties inside a type. They describe what a type contains."
+  },
+  "MemberModifier": {
+    "Definition": "Member modifiers change how a class member behaves or can be used. They add rules such as visibility or mutability."
+  },
+  "ObjectConstruction": {
+    "Definition": "Object construction keywords create new instances of types. They allocate and initialize objects in memory."
+  },
+  "ParameterModifier": {
+    "Definition": "Parameter modifiers change how arguments are passed into methods. They control behaviors like passing by reference."
+  },
+  "QueryExpression": {
+    "Definition": "Query expression keywords define queries over collections of data. They provide a readable way to filter and transform data."
+  },
+  "ResourceManagement": {
+    "Definition": "A keyword for controlling the lifetime of a resource, usually by ensuring setup and cleanup happen at the correct time. This commonly includes disposable resources that are automatically cleaned up when execution leaves a scope."
+  },
+  "SafetyContext": {
+    "Definition": "Safety context keywords control whether code is allowed to perform unsafe operations. They help protect memory and program stability."
+  },
+  "TypeDeclaration": {
+    "Definition": "Type declaration keywords define new types such as classes, structs, or interfaces. They are preceded by an optional list of modifiers and followed by an identifier for the new type."
+  },
+  "TypeModifier": {
+    "Definition": "A modifier that changes the capabilities, constraints, or usage rules of a type declaration, such as its inheritance behavior, storage characteristics, or visibility scope."
+  },
+  "TypeSystem": {
+    "Definition": "Type system keywords describe how types behave and interact. They define rules for assigning and converting values."
+  },
+  "UsingDirectiveModifier": {
+    "Definition": "A keyword that changes how a {c:color-blue keyword}using{/c} directive behaves, such as making it apply globally or importing the static members of a type."
+  },
+
+
+  "ConditionalBranching": {
+    "Definition": "Conditional branching keywords evaluate a condition to determine whether a block of code should be executed or not. The condition can be a single boolean-type identifier or an expression that evaluates to a boolean value."
+  },
+  "ControlFlow": {
+    "Definition": "Control flow keywords determine the order in which code executes. They control how execution moves through a program."
+  },
+  "ExceptionHandling": {
+    "Definition": "Exception handling keywords manage errors that occur while a program is running. They allow errors to be caught and handled safely."
+  },
+  "JumpStatement": {
+    "Definition": "Jump statements immediately move execution to another location in code. They are used to exit loops or methods early."
+  },
+  "LoopStatement": {
+    "Definition": "Loop statements repeat a block of code while a condition is met. They are used to process data multiple times."
+  },
+
+
+  "Concurrency": {
+    "Definition": "Concurrency keywords control how code runs across multiple threads or tasks. They help manage work that happens at the same time."
+  },
+  "PatternMatching": {
+    "Definition": "Pattern matching keywords check values against patterns. They allow code to react based on shape or type."
+  }
+}

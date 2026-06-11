@@ -1,0 +1,17 @@
+{
+  "DefaultOperator": {
+    "Definition": "The {c:color-blue keyword}default{/c} keyword operator produces the default value for a given type."
+  },
+  "NameOfOperator": {
+    "Definition": "A unary keyword operator that returns the identifier name of the specified type as a string."
+  },
+  "SizeOfOperator": {
+    "Definition": "A unary keyword operator that returns the compile-time size, in bytes, of a specified type."
+  },
+  "TypeOfOperator": {
+    "Definition": "A unary keyword operator that produces a {c:color-gray keyword}System.Type{/c} object representing a specified compile-time type."
+  },
+  "TypeTesting": {
+    "Definition": ""
+  }
+}

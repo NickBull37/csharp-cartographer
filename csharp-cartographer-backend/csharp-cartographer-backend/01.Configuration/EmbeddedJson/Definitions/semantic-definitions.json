@@ -1,0 +1,119 @@
+{
+  "DeconstructionVariable": {
+    "Definition": "The identifier for a new {c:bold}local variable{/c} that will receive a value when the assigned value is deconstructed."
+  },
+  "FixedPointerDeclaration": {
+    "Definition": "The name of the pointer variable declared by a {c:color-blue keyword}fixed{/c} statement. This variable points to the pinned data for the duration of the fixed block."
+  },
+  "ForLoopIteratorDeclaration": {
+    "Definition": "The loop iterator variable declared in a {c:color-purple keyword}for{/c} loop. It is typically used as a counter that changes each iteration to control how many times the loop runs."
+  },
+  "ForEachLoopIteratorDeclaration": {
+    "Definition": "The loop variable declared in a {c:color-purple keyword}foreach{/c} loop that represents the current item. On each iteration, it holds the next element from the collection being processed."
+  },
+  "LoopIteratorDeclaration": {
+    "Definition": "The variable declared in a {c:color-purple keyword}for{/c} or {c:color-purple keyword}foreach{/c} that gets updated for each iteration of the loop. This iterator variable is only accessible from within the scope of the loop statement."
+  },
+  "OutVariableDeclaration": {
+    "Definition": "A new variable introduced by the {c:color-blue keyword}out{/c} argument modifier. The variable receives the value assigned by the called method and becomes available after the invocation."
+  },
+  "LambdaParameter": {
+    "Definition": "A variable declared in a lambda expression. It represents the value passed in each time the inline function runs."
+  },
+  "Parameter": {
+    "Definition": "A variable defined in the {c:bold}signature{/c} of a method or constructor that receives a value from wherever it's called. The value passed in from the caller is referred to as an {c:bold}argument{/c}."
+  },
+  "FieldAccess": {
+    "Definition": "A field access reads or modifies the value stored in a field. It retrieves data that belongs to an object or type."
+  },
+  "EventSubscription": {
+    "Definition": "An event subscription registers code to run when an event occurs. It allows a method to listen for notifications."
+  },
+  "EventUnsubscription": {
+    "Definition": "An event unsubscription removes previously registered code from an event. This stops the code from receiving notifications."
+  },
+  "IndexerAccess": {
+    "Definition": "An indexer access retrieves or sets a value using index-based syntax, such as with brackets. It allows objects to be accessed like arrays."
+  },
+  "PropertyAccess": {
+    "Definition": "A property access reads or writes a value through a property. It uses the property’s getter or setter logic."
+  },
+  "BooleanLiteral": {
+    "Definition": "A boolean literal represents a true or false value. It is used in conditions and logical expressions."
+  },
+  "DefaultValue": {
+    "Definition": "A default value represents the default value of a type. It is often used to initialize variables or reset values."
+  },
+  "NullValue": {
+    "Definition": "A null value represents the absence of a value or object reference. It indicates that something does not point to any data."
+  },
+  "CatchExceptionVariable": {
+    "Definition": "This local variable is created to hold the exception caught by a {c:color-purple keyword}catch{/c} block. It's scope is limited to the boundaries of the {c:color-purple keyword}catch{/c} block."
+  },
+  "ForLoopIteratorType": {
+    "Definition": "The data type of the iterator variable declared in a {c:color-purple keyword}for{/c} loop. It determines what kind of values the loop counter can store and how it can be used."
+  },
+  "ForEachLoopIteratorType": {
+    "Definition": "The data type of the iterator variable declared in a {c:color-purple keyword}foreach{/c} loop. It specifies the type of each element that will be read from the collection during iteration."
+  },
+  "AliasDeclaration": {
+    "Definition": "An alias declaration creates an alternate name for a type or namespace. It provides a shorter or clearer name to use in code."
+  },
+  "ConditionalAccessTarget": {
+    "Definition": "The expression evaluated for null before a conditional member or element access. If it is null, the access is skipped and the overall expression returns null."
+  },
+  "NullCoalescingAssignmentRecipient": {
+    "Definition": "The variable will only be assigned a value if it is null."
+  },
+  "CaseLabelValue": {
+    "Definition": "A constant value used in a {c:color-purple keyword}switch{/c} {c:color-purple keyword}case{/c} label to match the switch expression."
+  },
+  "Null Conditional (1/2)": {
+    "Definition": "The nullable guard part of the null-conditional operator."
+  },
+  "Null Conditional (2/2)": {
+    "Definition": "The member access part of the null-conditional operator."
+  },
+  "Ternary (1/2)": {
+    "Definition": "Marks the expression that is returned when the ternary condition evaluates to {c:bold}true{/c}."
+  },
+  "Ternary (2/2)": {
+    "Definition": "Marks the expression that is returned when the ternary condition evaluates to {c:bold}false{/c}."
+  },
+  "ElementAccessQualifer": {
+    "Definition": "The collection being accessed with brackets to read or write one of its elements."
+  },
+  "ContainingTypeMemberQualifer": {
+    "Definition": "The name of a field or property defined in the containing type that is being used to qualify access to another member."
+  },
+  "ExpressionBoundary": {
+    "Definition": ""
+  },
+  "IfConditionBoundary": {
+    "Definition": "Marks the boundaries of the condition that determines whether the code inside an {c:color-purple keyword}if{/c} statement is executed or not."
+  },
+  "CheckedStatementBlockBoundary": {
+    "Definition": "Marks the boundaries of a checked statement block."
+  },
+  "DoWhileLoopBlockBoundary": {
+    "Definition": "Marks the boundaries of the code that runs repeatedly in a {c:color-purple keyword}do while{/c} loop."
+  },
+  "ParenthesizedPatternBoundary": {
+    "Definition": "Marks the boundaries of a parenthesized pattern."
+  },
+  "PropertyPatternBoundary": {
+    "Definition": "Marks the boundaries of a property pattern clause."
+  },
+  "RemoveAccessorBlockBoundary": {
+    "Definition": "Marks the boundaries of an {c:color-blue keyword}event{/c} {c:color-blue keyword}remove{/c} accessor method."
+  },
+  "SetAccessorBlockBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}set{/c} accessor method."
+  },
+  "UnheckedStatementBlockBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}unchecked{/c} statement block."
+  },
+  "UsingStatementBlockBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}using{/c} statement block."
+  }
+}

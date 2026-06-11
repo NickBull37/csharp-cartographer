@@ -7,12 +7,55 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 {
     public partial class NavToken
     {
-        #region ------------------- General Checks --------------------
         public bool IsIdentifier() => Kind is SyntaxKind.IdentifierToken;
-        #endregion
 
         #region ------------------- Group Checks --------------------
+        public bool IsLocalDeclarationIdentifier()
+        {
+            return SemanticRole
+                is SemanticRole.CatchExceptionVariable
+                or SemanticRole.DeconstructionVariable
+                or SemanticRole.FixedPointerDeclaration
+                or SemanticRole.LocalVariableDeclaration
+                or SemanticRole.LoopIteratorDeclaration
+                or SemanticRole.OutVariableDeclaration
+                or SemanticRole.UsingResourceDeclaration;
+        }
 
+        public bool IsMemberDeclarationIdentifier()
+        {
+            return SemanticRole
+                is SemanticRole.ConstantDeclaration
+                or SemanticRole.ConstructorDeclaration
+                or SemanticRole.EnumMemberDeclaration
+                or SemanticRole.EventFieldDeclaration
+                or SemanticRole.EventPropertyDeclaration
+                or SemanticRole.FieldDeclaration
+                or SemanticRole.GenericMethodDeclaration
+                or SemanticRole.LocalFunctionDeclaration
+                or SemanticRole.MethodDeclaration
+                or SemanticRole.OperatorDeclaration
+                or SemanticRole.PropertyDeclaration;
+        }
+
+        public bool IsParameterDeclarationIdentifier()
+        {
+            return SemanticRole
+                is SemanticRole.LambdaParameter
+                or SemanticRole.Parameter;
+        }
+
+        public bool IsTypeDeclarationIdentifier()
+        {
+            return SemanticRole
+                is SemanticRole.ClassDeclaration
+                or SemanticRole.DelegateDeclaration
+                or SemanticRole.EnumDeclaration
+                or SemanticRole.InterfaceDeclaration
+                or SemanticRole.RecordDeclaration
+                or SemanticRole.RecordStructDeclaration
+                or SemanticRole.StructDeclaration;
+        }
         #endregion
 
         #region ------------------- Role Checks --------------------

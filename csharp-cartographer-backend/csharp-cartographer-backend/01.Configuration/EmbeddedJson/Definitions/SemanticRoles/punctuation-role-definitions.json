@@ -1,0 +1,102 @@
+{
+  "ArrayRankIndicator": {
+    "Definition": "A comma in an array type declaration that indicates an additional dimension of a multidimensional array."
+  },
+  "NullableTypeMarker": {
+    "Definition": "Punctuation that indicates that a value type can also represent null."
+  },
+  "NullConditionalGuard": {
+    "Definition": "One of two pieces that make up the null-conditional operator."
+  },
+  "PointerTypeIndicator": {
+    "Definition": "The {c:code}*{/c} tells the compiler that the following identifier will store a pointer to the preceeding type instead of the value of the type itself."
+  },
+
+
+  "AnonymousObjectMemberDeclarationSeparator": {
+    "Definition": "Separates anonymous object member declarations."
+  },
+  "ArgumentSeparator": {
+    "Definition": "Separates multiple arguments passed to a method or constructor."
+  },
+  "ArrayInitializerElementSeparator": {
+    "Definition": "Separates elements within an array initializer expression."
+  },
+  "ArrayLengthSeparator": {
+    "Definition": "Separates the length values of multiple array dimensions."
+  },
+  "AttributeArgumentSeparator": {
+    "Definition": "Separates elements within an attribute argument list."
+  },
+  "BaseTypeSeparator": {
+    "Definition": "Separates a type from its base class or implemented interfaces."
+  },
+  "CollectionElementSeparator": {
+    "Definition": "Separates elements within a collection."
+  },
+  "ComplexElementSeparator": {
+    "Definition": "Separates the key and value within a key-value element such as {c:color-green code}Dictionary{/c} or {c:color-green code}KeyValuePair{/c}."
+  },
+  "DeconstructionVariableSeparator": {
+    "Definition": "Separates variables within a deconstruction expression."
+  },
+  "EnumMemberSeparator": {
+    "Definition": "Separates individual members within an enum."
+  },
+  "InterpolationFormatSeparator": {
+    "Definition": "Separates the interpolated value on the left from the specified format on the right."
+  },
+  "MemberPatternSeparator": {
+    "Definition": "Separates the member being inspected from the subpattern applied to that member."
+  },
+  "OrderByClauseSeparator": {
+    "Definition": "Separates elements within an {c:color-blue keyword}orderby{/c} clause."
+  },
+  "ParameterSeparator": {
+    "Definition": "Separates parameters in a method, constructor, or lambda declaration."
+  },
+  "PatternElementSeparator": {
+    "Definition": "Separates elements in a pattern matching clause."
+  },
+  "PropertyInitializationSeparator": {
+    "Definition": "Separates a property name from its assigned value during initialization."
+  },
+  "QualifiedNameSeparator": {
+    "Definition": "Separates parts of a fully qualified namespace or type name."
+  },
+  "SwitchArmSeparator": {
+    "Definition": "Separates a pattern or condition from the result in a switch expression."
+  },
+  "TupleElementSeparator": {
+    "Definition": "Separates individual values within a tuple."
+  },
+  "TypeArgumentSeparator": {
+    "Definition": "Separates multiple type arguments supplied to a generic type or method."
+  },
+  "TypeParameterConstraintClauseSeparator": {
+    "Definition": "Separates a generic type parameter from its constraints."
+  },
+  "TypeParameterSeparator": {
+    "Definition": "Separates multiple generic type parameters."
+  },
+  "VariableDeclaratorSeparator": {
+    "Definition": "Separates multiple variables declared in a single statement."
+  },
+
+
+  "CaseLabelTerminator": {
+    "Definition": "Punctuation that marks the end of a case label in a {c:color-purple keyword}switch{/c} statement."
+  },
+  "CasePatternLabelTerminator": {
+    "Definition": "Punctuation that marks the end of a case pattern label in a {c:color-purple keyword}switch{/c} statement."
+  },
+  "DefaultLabelTerminator": {
+    "Definition": "Punctuation that marks the end of the {c:color-purple keyword}default{/c} case label in a {c:color-purple keyword}switch{/c} statement."
+  },
+  "ParameterLabelTerminator": {
+    "Definition": "Punctuation that marks the end of a parameter label in a named argument."
+  },
+  "StatementTerminator": {
+    "Definition": "Marks the end of a statement."
+  }
+}

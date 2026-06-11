@@ -15,7 +15,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             var kindLabel = GetLabelOrSpacedString(token.PrimaryKind);
             var roleLabel = GetLabelOrSpacedString(token.SemanticRole);
             var focusedLabel = GetFocusedLabel(token);
-            var roleDefinition = GetRoleDefinition(token.SemanticRole);
+            var roleDefinition = GetRoleDefinition(token);
             var focusedDefinition = GetFocusedDefinition(token);
 
             return new SemanticMap(
@@ -35,22 +35,17 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static string GetFocusedLabel(NavToken token)
         {
-            if (token.IsDelimiter())
-            {
-
-            }
-
             return token.IsIdentifier() && token.IsGenericType()
                 ? "Generic Type"
                 : token.PrimaryKind.ToString();
         }
 
-        private static StyledText GetRoleDefinition(SemanticRole role)
+        private static StyledText GetRoleDefinition(NavToken token)
         {
-            if (role is SemanticRole.Unknown)
+            if (token.SemanticRole is SemanticRole.Unknown)
                 return StyledText.NotFound();
 
-            var key = KeyMaker.GetRoleKey(role);
+            var key = KeyMaker.GetRoleKey(token);
 
             return DefinitionProvider.GetStyledText(key) ?? StyledText.NotFound();
         }

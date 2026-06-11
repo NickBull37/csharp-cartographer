@@ -10,4 +10,26 @@
             Label = label;
         }
     }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class FragmentAttribute : Attribute
+    {
+        public bool IsFragment { get; }
+
+        public FragmentAttribute(bool isFragment)
+        {
+            IsFragment = isFragment;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class UseLabelAsKeyAttribute : Attribute
+    {
+        public bool UseLabelAsKey { get; } = false;
+
+        public UseLabelAsKeyAttribute(bool useLabelAsKey)
+        {
+            UseLabelAsKey = useLabelAsKey;
+        }
+    }
 }

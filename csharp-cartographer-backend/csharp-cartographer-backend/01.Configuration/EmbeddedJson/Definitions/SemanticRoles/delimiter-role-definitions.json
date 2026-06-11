@@ -1,0 +1,138 @@
+{
+  "AccessorListBoundary": {
+    "Definition": "Marks the boundaries of a property or indexer’s accessor methods, such as {c:color-blue keyword}get{/c} and {c:color-blue keyword}set{/c}."
+  },
+  "AttributeListBoundary": {
+    "Definition": "Marks the boundaries of the attribute list applied to a code element."
+  },
+  "CastTypeBoundary": {
+    "Definition": "Marks the boundaries of the type used when converting a value to another type."
+  },
+  "CatchArgumentBoundary": {
+    "Definition": "Marks the boundaries of the exception data provided when an exception is caught."
+  },
+  "CollectionExpressionBoundary": {
+    "Definition": "Marks the boundaries of a collection expression."
+  },
+  "DeconstructionBoundary": {
+    "Definition": "Marks the boundaries of a deconstruction variable list."
+  },
+  "InterpolationBoundary": {
+    "Definition": "Marks the boundaries of a value or expression embedded inside an interpolated string."
+  },
+  "ParenthesizedExpressionBoundary": {
+    "Definition": "Marks the boundaries of a parenthesized expression."
+  },
+  "TupleExpressionBoundary": {
+    "Definition": "Marks the boundaries of the elements that are grouped together to create a tuple."
+  },
+  "TupleTypeBoundary": {
+    "Definition": "Marks the boundaries of the elements that make up a tuple."
+  },
+
+
+  "ArrayTypeFragment": {
+    "Definition": "A fragment of the array type syntax."
+  },
+  "ImplicitArrayTypeFragment": {
+    "Definition": ""
+  },
+
+
+  "AccessorBlockBoundary": {
+    "Definition": "Marks the boundaries of an {c:color-blue keyword}event{/c} {c:color-blue keyword}add{/c} accessor method."
+  },
+
+
+  "ArgumentListBoundary": {
+    "Definition": "Marks the boundaries of the argument list passed into a method or constructor call."
+  },
+  "AttributeArgumentListBoundary": {
+    "Definition": "Marks the boundaries of the argument list passed to an attribute."
+  },
+  "IndexArgumentListBoundary": {
+    "Definition": "Marks the boundaries of the value(s) or expression(s) that evaluate to an index used to access an element of the preceeding collection."
+  },
+  "ParameterListBoundary": {
+    "Definition": "Marks the boundaries of the parameter list defined for a method or constructor."
+  },
+  "TypeArgumentListBoundary": {
+    "Definition": "Marks the boundaries of the type argument list supplied to a generic type or method."
+  },
+  "TypeParameterListBoundary": {
+    "Definition": "Marks the boundaries of the type parameter list declared by a type or method."
+  },
+
+
+  "CatchBlockBoundary": {
+    "Definition": "Marks the boundaries of code that executes after an exception is caught."
+  },
+  "ElseBlockBoundary": {
+    "Definition": "Marks the boundaries of the code that runs when an {c:color-purple keyword}if{/c} statement condition is false."
+  },
+  "IfBlockBoundary": {
+    "Definition": "Marks the boundaries of the code that runs when an {c:color-purple keyword}if{/c} statement condition is true."
+  },
+  "LambdaExpressionBlockBoundary": {
+    "Definition": "Marks the boundaries of a lambda expression block."
+  },
+  "TryBlockBoundary": {
+    "Definition": "Marks the boundaries of the code that may throw an exception."
+  },
+
+
+  "ConditionBoundary": {
+    "Definition": "Marks the boundaries of a value or expression to be evaluated."
+  },
+
+
+  "ContextBlockBoundary": {
+    "Definition": "Marks the boundaries of a code block that the compiler/runtime will treat differently because of the context."
+  },
+
+
+  "DeclarationBoundary": {
+    "Definition": "Marks the boundaries of a type, member, or namespace declaration."
+  },
+
+
+  "DefaultExpressionBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}default{/c} expression."
+  },
+  "SizeOfExpressionBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}sizeof{/c} expression."
+  },
+  "TypeOfExpressionBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-blue keyword}typeof{/c} expression."
+  },
+
+
+  "InitializerBoundary": {
+    "Definition": "Marks the boundaries of an {c:bold}initializer expression{/c}.<break/>Initializer expressions can be identified by curly braces {c:code}{ }{/c} used during object creation."
+  },
+
+
+  "LoopBlockBoundary": {
+    "Definition": "Marks the boundaries of the code that will be executed for each iteration of the loop."
+  },
+
+
+  "LoopControlBoundary": {
+    "Definition": "Marks the boundaries of the logic that determines how many times a loop will execute."
+  },
+
+
+  "PatternBoundary": {
+    "Definition": "Marks the boundaries of a pattern matching clause."
+  },
+
+
+  "StatementControlBoundary": {
+    "Definition": ""
+  },
+
+
+  "SwitchBlockBoundary": {
+    "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} statement or expression."
+  }
+}

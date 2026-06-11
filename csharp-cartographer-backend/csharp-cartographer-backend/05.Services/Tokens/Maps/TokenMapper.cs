@@ -25,6 +25,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             token.PrimaryKind = GetPrimaryKind(token);
             token.SemanticRole = GetSemanticRole(token);
+            token.GroupRole = GetGroupRole(token);
             token.Map = _semanticLibrary.GetSemanticMap(token);
         }
 
@@ -120,6 +121,16 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             // misc roles can apply to multiple PKs
             return TryGetMiscRole(token);
+        }
+
+        private static GroupRole? GetGroupRole(in NavToken token)
+        {
+            return token.PrimaryKind switch
+            {
+                PrimaryKind.Delimiter => GetDelimiterGroupRole(token),
+                PrimaryKind.Identifier => GetIdentifierGroupRole(token),
+                _ => null
+            };
         }
 
         #region Semantic Roles
@@ -1181,6 +1192,60 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         }
         #endregion
 
+        #region GroupRoles
+        private static GroupRole? GetDelimiterGroupRole(in NavToken token)
+        {
+            if (token.IsAccessorBlockDelimiter())
+                return GroupRole.AccessorBlockBoundary;
+
+            if (token.IsConditionDelimiter())
+                return GroupRole.ConditionBoundary;
+
+            if (token.IsContextBlockDelimiter())
+                return GroupRole.ContextBlockBoundary;
+
+            if (token.IsDeclarationDelimiter())
+                return GroupRole.DeclarationBoundary;
+
+            if (token.IsInitializerDelimiter())
+                return GroupRole.InitializerBoundary;
+
+            if (token.IsLoopBlockDelimiter())
+                return GroupRole.LoopBlockBoundary;
+
+            if (token.IsLoopControlDelimiter())
+                return GroupRole.LoopControlBoundary;
+
+            if (token.IsPatternMatchingDelimiter())
+                return GroupRole.PatternBoundary;
+
+            if (token.IsStatementControlDelimiter())
+                return GroupRole.StatementControlBoundary;
+
+            if (token.IsSwitchBlockDelimiter())
+                return GroupRole.SwitchBlockBoundary;
+
+            return null;
+        }
+
+        private static GroupRole? GetIdentifierGroupRole(in NavToken token)
+        {
+            if (token.IsLocalDeclarationIdentifier())
+                return GroupRole.LocalDeclaration;
+
+            if (token.IsMemberDeclarationIdentifier())
+                return GroupRole.MemberDeclaration;
+
+            if (token.IsParameterDeclarationIdentifier())
+                return GroupRole.ParameterDeclaration;
+
+            if (token.IsTypeDeclarationIdentifier())
+                return GroupRole.TypeDeclaration;
+
+            return null;
+        }
+        #endregion
+
         #region Special Case Tokens [Obsolete]
         private static SemanticRole GetSpecialCaseKeywordRole(NavToken token)
         {
@@ -1319,11 +1384,11 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         {
             var decToRefDict = new Dictionary<SemanticRole, SemanticRole>
             {
-                [SemanticRole.RangeVariable] = SemanticRole.RangeVariableReference,
-                [SemanticRole.LetVariable] = SemanticRole.LetVariableReference,
-                [SemanticRole.GroupContinuationRangeVariable] = SemanticRole.GroupContinuationRangeVariableReference,
-                [SemanticRole.JoinRangeVariable] = SemanticRole.JoinRangeVariableReference,
-                [SemanticRole.JoinIntoRangeVariable] = SemanticRole.JoinIntoRangeVariableReference
+                [SemanticRole.RangeVariable] = SemanticRole.RangeVariable,
+                [SemanticRole.LetVariable] = SemanticRole.RangeVariable,
+                [SemanticRole.GroupContinuationRangeVariable] = SemanticRole.RangeVariable,
+                [SemanticRole.JoinRangeVariable] = SemanticRole.RangeVariable,
+                [SemanticRole.JoinIntoRangeVariable] = SemanticRole.RangeVariable
             };
 
             var identifierToRefDict = new Dictionary<string, SemanticRole>(StringComparer.Ordinal);

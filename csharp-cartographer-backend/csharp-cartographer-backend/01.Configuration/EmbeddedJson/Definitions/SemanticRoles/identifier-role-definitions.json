@@ -1,0 +1,135 @@
+{
+  "AssignmentRecipient": {
+    "Definition": "The variable, field, or location that receives the value of an assignment."
+  },
+  "Attribute": {
+    "Definition": "Attributes add extra information (metadata) to code elements like classes, methods, or properties. Attributes are often used to control behavior or provide instructions to tools and frameworks."
+  },
+  "BaseType": {
+    "Definition": "A base type specifies a type that another type inherits from or implements. It defines a parent relationship in the type hierarchy."
+  },
+  "CatchExceptionType": {
+    "Definition": "An exception type represents the kind of error that can be thrown or caught. It identifies what went wrong during program execution."
+  },
+  "ConditionValue": {
+    "Definition": "A boolean value that will determine if the following code should be executed or skipped."
+  },
+  "EventFieldType": {
+    "Definition": "An event field type defines the delegate type used by an event. It determines the shape of the methods that can handle the event."
+  },
+  "EventPropertyType": {
+    "Definition": ""
+  },
+  "ForEachLoopCollection": {
+    "Definition": "The collection being iterated over in a {c:color-purple keyword}foreach{/c} loop. The loop retrieves the next element from this collection each iteration."
+  },
+  "GenericTypeParameter": {
+    "Definition": "This identifier is a placeholder that will be replaced by a generic type argument. This allows a generic class or method to have one implementation that works for multiple data types."
+  },
+  "LockTarget": {
+    "Definition": "The variable that a {c:color-blue keyword}lock{/c} statement uses to control access to the protected code block. Only one execution thread can hold the lock on this target at a time."
+  },
+  "ParameterLabel": {
+    "Definition": "A parameter label names an argument when calling a method. It improves readability by making it clear which parameter a value is assigned to."
+  },
+  "TargetMember": {
+    "Definition": "The member name token that identifies the property, field, method, or event being accessed on an instance or type."
+  },
+  "TernaryCondition": {
+    "Definition": "The boolean value that determines whether the {c:bold}true{/c} or {c:bold}false{/c} expression is returned."
+  },
+  "TupleElementName": {
+    "Definition": "A tuple element name gives a readable name to a value inside a tuple. It makes tuple values easier to understand and access."
+  },
+  "Type": {
+    "Definition": "The name of a type imported by the using directive."
+  },
+  "WithExpressionSource": {
+    "Definition": "The existing value that a {c:color-blue keyword}with{/c} expression copies before applying the specified changes. It provides the starting state for the new value."
+  },
+
+
+  "NamespaceAliasDeclaration": {
+    "Definition": "An alias name that represents a {c:color-blue keyword}namespace{/c}. It allows shorter or alternative naming when referencing types within that namespace."
+  },
+  "TypeAliasDeclaration": {
+    "Definition": "An alias name that represents a specific type. It provides an alternate name for a type, including generic or fully qualified types."
+  },
+
+
+  "ConstructorInvocation": {
+    "Definition": "This identifier refers to a constructor being invoked in an object creation expression. It shares a name with the type whose constructor is being called to create the new object instance."
+  },
+  "GenericMethodInvocation": {
+    "Definition": "A generic method invocation is the act of calling a generic method with specific type arguments, either written explicitly or inferred by the compiler."
+  },
+  "MethodInvocation": {
+    "Definition": "A method invocation is the act of calling a method to run its code. It may pass arguments and can return a value."
+  },
+
+
+  "Local Declaration": {
+    "Definition": "The identifier for a variable, constant, or local function inside a method, accessor, or block. This identifier can be referenced only within the enclosing scope in which it is defined."
+  },
+
+
+  "Member Declaration": {
+    "Definition": "The identifier for a type member (method, property, field, event, constructor, operator). Where this identifier can be referenced from is determined by the its {c:bold}access modifier{/c}."
+  },
+
+
+  "Parameter Declaration": {
+    "Definition": "The identifier for a value that needs to be passed to a method, constructor, or lambda function. This identifier can be referenced only within the body of the member or expression in which it is defined."
+  },
+
+
+  "AliasQualifier": {
+    "Definition": "An alias qualifier refers to an alias used to access a type or namespace. It helps distinguish which aliased name is being used."
+  },
+  "CollectionInstanceQualifer": {
+    "Definition": "The identifier of a collection being used to access an element inside the collection."
+  },
+  "ImplicitInstanceQualifier": {
+    "Definition": "The identifier of an object instance being used to access an element of that instance."
+  },
+  "InstanceQualifier": {
+    "Definition": "The identifier of an object instance being used to access an element of that instance."
+  },
+  "NamespaceQualifier": {
+    "Definition": "A segment of a fully qualified {c:color-blue keyword}namespace{/c}."
+  },
+
+
+  "Type Declaration": {
+    "Definition": "The identifier for a {c:color-blue keyword}class{/c}, {c:color-blue keyword}struct{/c}, {c:color-blue keyword}record{/c}, {c:color-blue keyword}enum{/c}, or {c:color-blue keyword}interface{/c}. The elements defined inside this type are the type members. This identifier can be used to access the members inside."
+  },
+
+
+  "GroupContinuationRangeVariable": {
+    "Definition": "A group continuation range variable represents a variable introduced after a group operation in a query. It allows the grouped results to be queried further."
+  },
+  "GroupElement": {
+    "Definition": "The value or that a {c:color-blue keyword}group{/c} clause places into each resulting group. Each item in the final group comes from this element expression."
+  },
+  "JoinIntoRangeVariable": {
+    "Definition": "A join-into range variable represents the result of a join operation in a query. It stores the grouped matches from the join."
+  },
+  "JoinRangeVariable": {
+    "Definition": "A join range variable represents a variable used during a join operation in a query. It holds values being compared between data sources."
+  },
+  "JoinSource": {
+    "Definition": "A join source represents the data source being joined in a query. It provides the values used for matching during the join."
+  },
+  "LetVariable": {
+    "Definition": "A let variable stores the result of an expression inside a query. It helps simplify complex expressions and reuse computed values."
+  },
+  "QuerySource": {
+    "Definition": "A query source represents the data being queried in a LINQ expression. It is the starting point for the query."
+  },
+  "QueryVariableReference": {
+    "Definition": "A query variable reference refers to a variable used within a query expression. It accesses values introduced earlier in the query."
+  },
+  "RangeVariable": {
+    "Definition": "A range variable represents a variable that ranges over elements in a data source. It is used to refer to each element in a query."
+  }
+}
