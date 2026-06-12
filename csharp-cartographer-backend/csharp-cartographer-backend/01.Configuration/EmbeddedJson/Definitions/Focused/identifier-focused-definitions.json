@@ -12,10 +12,10 @@
     "Definition": "The name of a {c:color-white bold}constant{/c} field declared within the containing type."
   },
   "ID:ConstructorDeclaration": {
-    "Definition": "A {c:bold}constructor{/c} is a special method that runs when a new instance of an object is created. Defining input parameters is {c:bold}optional{/c} but can be helpful in setting up the object's initial state."
+    "Definition": "A {c:bold}constructor{/c} is a special method that runs when a new instance of an object is created. Defining input parameters is {c:bold}optional{/c} but can be helpful in setting up the object's initial state.{RefExt}"
   },
   "ID:ConstructorInvocation": {
-    "Definition": "The name of a type {c:color-green bold}constructor{/c}.{JumpExt}"
+    "Definition": "The name of a type {c:bold}constructor{/c} being invoked in an object creation expression.{JumpExt}"
   },
   "ID:DelegateDeclaration": {
     "Definition": "A {c:bold}delegate{/c} declaration defines a type that represents a reference to a method. Delegates allow methods to be passed around and called later."
@@ -39,7 +39,10 @@
     "Definition": "The name of a {c:color-white bold}field{/c} declared within the containing type."
   },
   "ID:GenericMethodDeclaration": {
-    "Definition": "A {c:bold}generic method{/c} declaration defines a method with one or more type parameters so the same method can work with different data types."
+    "Definition": "A {c:bold}generic method{/c} declaration defines a method with one or more type parameters so the same method can work with different data types.{RefExt}"
+  },
+  "ID:GenericMethodInvocation": {
+    "Definition": "The name of a {c:bold}generic method{/c} being invoked in an invocation expression.{HovExt}"
   },
   "ID:InterfaceDeclaration": {
     "Definition": "The identifier of an {c:color-blue keyword}interface{/c} declaration. An implementation must be provided by any type that implements this interface. This allows different classes to share the same behavior without sharing implementation."
@@ -60,10 +63,10 @@
     "Definition": "The name of a {c:color-light-blue bold}local varaible{/c} declared above within the containing scope."
   },
   "ID:MethodDeclaration": {
-    "Definition": "A {c:bold}method{/c} declaration defines a block of code that performs an action or returns a value. Methods are called to run the code they contain."
+    "Definition": "A {c:bold}method{/c} declaration defines a block of code that performs an action or returns a value. Methods are called to run the code they contain.{RefExt}"
   },
   "ID:MethodInvocation": {
-    "Definition": "The name of a {c:color-yellow bold}method{/c} being invoked.{HovExt}"
+    "Definition": "The name of a {c:bold}method{/c} being invoked in an invocation expression.{HovExt}"
   },
   "ID:Parameter": {
     "Definition": "The name of a {c:color-light-blue bold}parameter{/c} that is accessible anywhere within the following method or constructor body."

@@ -5,8 +5,6 @@ namespace csharp_cartographer_backend._05.Services.Keys
 {
     public static partial class KeyMaker
     {
-        /// Key Structure: [kindabrv]:[extension]:[modifier]
-
         private const string DL = "DL";
         private const string ID = "ID";
         private const string KW = "KW";
@@ -20,22 +18,14 @@ namespace csharp_cartographer_backend._05.Services.Keys
         /// </summary>
         public static string GetRoleKey(NavToken token)
         {
-            /*
-             * The SemanticRole is used as the definition key by default. 
-             * Delimiters are the exception since they have much more overlap
-             * than keywords, operators, etc. Use the label on the SemanticRole
-             * as the key for Delimiters.
-             */
-
-            return token.GroupRole is not null
+            return token.GroupRole is not GroupRole.None
                 ? token.GroupRole.ToString()
                 : token.SemanticRole.ToString();
-
-            //return role.GetLabel() ?? role.ToString();
         }
 
         /// <summary>
         /// Gets the key used to find the focused definition.
+        /// key structure: [kindabrv]:[extension1]:[extension2?]
         /// </summary>
         public static string? GetFocusedKey(NavToken token)
         {

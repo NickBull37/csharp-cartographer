@@ -1,0 +1,50 @@
+{
+  "DL:ClassBoundary": {
+    "Definition": "The {position} of the {c:color-blue keyword}class{/c} declaration."
+  },
+  "DL:ConstructorBoundary": {
+    "Definition": "The {position} of the {c:bold}constructor{/c} declaration."
+  },
+  "DL:EnumBoundary": {
+    "Definition": "The {position} of the {c:color-blue keyword}enum{/c} declaration."
+  },
+  "DL:InterfaceBoundary": {
+    "Definition": "The {position} of the {c:color-blue keyword}interface{/c} declaration."
+  },
+  "DL:ListPatternBoundary": {
+    "Definition": "The {position} of the {c:bold}list pattern{/c} clause."
+  },
+  "DL:LocalFunctionBoundary": {
+    "Definition": "The {position} of the {c:bold}local function{/c} declaration."
+  },
+  "DL:MethodBoundary": {
+    "Definition": "The {position} of the {c:color-yellow bold}method{/c} declaration."
+  },
+  "DL:NamespaceBoundary": {
+    "Definition": "The {position} of the {c:color-blue keyword}namespace{/c} declaration."
+  },
+  "DL:PositionalPatternBoundary": {
+    "Definition": "The {position} of the {c:bold}positional pattern{/c} clause."
+  },
+  "DL:PropertyPatternBoundary": {
+    "Definition": "The {position} of the {c:bold}property pattern{/c} clause."
+  },
+  "DL:RecordBoundary": {
+    "Definition": "The {position} of the {c:color-blue keyword}record{/c} declaration."
+  },
+  "DL:RecordStructBoundary": {
+    "Definition": "The {position} of the {c:color-blue keyword}record{/c} {c:color-blue keyword}struct{/c} declaration."
+  },
+  "DL:StructBoundary": {
+    "Definition": "The {position} of the {c:color-blue keyword}struct{/c} declaration."
+  },
+  "DL:[]": {
+    "Definition": "{c:code}[]{/c} - the syntax for a {c:bold}standard{/c} one dimensional array."
+  },
+  "DL:[][]": {
+    "Definition": "{c:code}[][]{/c} - the syntax for a {c:bold}jagged{/c} array which allows each inner array to have its own length."
+  },
+  "DL:[,]": {
+    "Definition": "{c:code}[,]{/c} - the syntax for a {c:bold}rectangular{/c} (two dimensional) array where each inner array contains the same number of elements."
+  }
+}

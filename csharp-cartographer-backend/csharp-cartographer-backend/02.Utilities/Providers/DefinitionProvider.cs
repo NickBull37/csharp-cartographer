@@ -13,9 +13,11 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
 
         private const string LineBreakInsert = "<break/>";
 
+        private const string PositionPlaceholder = "{position}";
+
         private static readonly Dictionary<string, string> ExtensionReplacements = new()
         {
-            {"{HovExt}", "<break/>Hover your cusor over the {c:color-yellow bold}method{/c} name to see addition details like what the method will return or what types the provided arguments need to be." },
+            {"{HovExt}", "<break/>Hover your cusor over the identifier in your IDE to see addition details like {c:tt}return type{/c} or {c:tt}input parameters{/c}." },
             {"{JumpExt}", "<break/>Put your cursor inside the identifier name in your IDE and hit {c:keyword}F12{/c} to jump to the identifier's definition."},
             {"{RefExt}", "<break/>Look for a {c:underline}references{/c} link above the declaration in your IDE to see everywhere it's currently being used."}
         };
@@ -67,8 +69,15 @@ namespace csharp_cartographer_backend._02.Utilities.Providers
                     if (merged.ContainsKey(key))
                         throw new InvalidOperationException($"Duplicate definition key '{key}' in '{resourceName}'.");
 
-                    var styledText = ParseMarkupToStyledText(markup.Definition);
-                    merged.Add(key, styledText);
+                    if (markup.Definition.Contains(PositionPlaceholder))
+                    {
+                        merged.Add(key + ":Open", ParseMarkupToStyledText(markup.Definition.Replace(PositionPlaceholder, "start")));
+                        merged.Add(key + ":Close", ParseMarkupToStyledText(markup.Definition.Replace(PositionPlaceholder, "end")));
+                    }
+                    else
+                    {
+                        merged.Add(key, ParseMarkupToStyledText(markup.Definition));
+                    }
                 }
             }
 

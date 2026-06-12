@@ -265,7 +265,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return validKind && validParent;
         }
 
-        public bool IsMemberDeclarationKeyword()
+        public bool IsMemberDeclaratorKeyword()
         {
             /// event / operator
 
@@ -449,7 +449,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return validKind && validParent;
         }
 
-        public bool IsTypeDeclarationKeyword()
+        public bool IsTypeDeclaratorKeyword()
         {
             /// class / delegate / enum / extension / interface / operator / record / struct
 

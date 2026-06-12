@@ -247,14 +247,14 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         DiscardPattern,
         DiscardValue,
         Iterator,
-        MemberDeclaration,
+        MemberDeclarator,
         MemberModifier,
         ObjectConstruction,
         ParameterModifier,
         QueryExpression,
         ResourceManagement,
         SafetyContext,
-        TypeDeclaration,
+        TypeDeclarator,
         TypeModifier,
         TypeSystem,
         UsingDirectiveModifier,
@@ -299,8 +299,11 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         //EventUnsubscription,
 
         // Invocations // TODO: group as Invocation
+        [Label("Invocation")]
         ConstructorInvocation,
+        [Label("Invocation")]
         GenericMethodInvocation,
+        [Label("Invocation")]
         MethodInvocation,
 
         // Local Declarations

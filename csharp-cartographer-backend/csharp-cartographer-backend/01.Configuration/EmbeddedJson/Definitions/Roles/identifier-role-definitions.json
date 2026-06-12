@@ -57,28 +57,22 @@
   },
 
 
-  "ConstructorInvocation": {
-    "Definition": "This identifier refers to a constructor being invoked in an object creation expression. It shares a name with the type whose constructor is being called to create the new object instance."
-  },
-  "GenericMethodInvocation": {
-    "Definition": "A generic method invocation is the act of calling a generic method with specific type arguments, either written explicitly or inferred by the compiler."
-  },
-  "MethodInvocation": {
-    "Definition": "A method invocation is the act of calling a method to run its code. It may pass arguments and can return a value."
+  "Invocation": {
+    "Definition": "An identifier that when invoked, transfers the execution to the identifier's definition. Execution is transfered back when the invocation expression is completed."
   },
 
 
-  "Local Declaration": {
+  "LocalDeclaration": {
     "Definition": "The identifier for a variable, constant, or local function inside a method, accessor, or block. This identifier can be referenced only within the enclosing scope in which it is defined."
   },
 
 
-  "Member Declaration": {
+  "MemberDeclaration": {
     "Definition": "The identifier for a type member (method, property, field, event, constructor, operator). Where this identifier can be referenced from is determined by the its {c:bold}access modifier{/c}."
   },
 
 
-  "Parameter Declaration": {
+  "ParameterDeclaration": {
     "Definition": "The identifier for a value that needs to be passed to a method, constructor, or lambda function. This identifier can be referenced only within the body of the member or expression in which it is defined."
   },
 
@@ -100,7 +94,7 @@
   },
 
 
-  "Type Declaration": {
+  "TypeDeclaration": {
     "Definition": "The identifier for a {c:color-blue keyword}class{/c}, {c:color-blue keyword}struct{/c}, {c:color-blue keyword}record{/c}, {c:color-blue keyword}enum{/c}, or {c:color-blue keyword}interface{/c}. The elements defined inside this type are the type members. This identifier can be used to access the members inside."
   },
 

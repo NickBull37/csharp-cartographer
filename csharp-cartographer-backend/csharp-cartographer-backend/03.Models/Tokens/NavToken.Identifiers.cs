@@ -1,4 +1,5 @@
 ﻿using csharp_cartographer_backend._01.Configuration.Enums;
+using csharp_cartographer_backend._02.Utilities.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Immutable;
@@ -7,9 +8,28 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 {
     public partial class NavToken
     {
+        private static List<SemanticRole> DeclarationRoles =
+        [
+            SemanticRole.ConstantDeclaration,
+            SemanticRole.FieldDeclaration,
+            SemanticRole.LambdaParameter,
+            SemanticRole.LocalVariableDeclaration,
+            SemanticRole.LoopIteratorDeclaration,
+            SemanticRole.Parameter,
+            SemanticRole.ParameterLabel, // not a declaration but still invalid
+        ];
+
         public bool IsIdentifier() => Kind is SyntaxKind.IdentifierToken;
 
         #region ------------------- Group Checks --------------------
+        public bool IsInvocationIdentifier()
+        {
+            return SemanticRole
+                is SemanticRole.ConstructorInvocation
+                or SemanticRole.GenericMethodInvocation
+                or SemanticRole.MethodInvocation;
+        }
+
         public bool IsLocalDeclarationIdentifier()
         {
             return SemanticRole
@@ -815,6 +835,91 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             }
 
             return isLambdaParamRef;
+        }
+        #endregion
+
+        #region ------------------- Focused Label Checks --------------------
+        public bool TryGetDeclarationFocusedLabel(out string label)
+        {
+            label = null;
+
+            bool isDeclaration = GroupRole
+                is GroupRole.LocalDeclaration
+                or GroupRole.MemberDeclaration
+                or GroupRole.ParameterDeclaration
+                or GroupRole.TypeDeclaration;
+
+            if (!isDeclaration)
+            {
+                return false;
+            }
+
+            label = SemanticRole
+                .ToSpacedString()
+                .Replace("Declaration", string.Empty)
+                .Trim();
+
+            return true;
+        }
+
+        public bool TryGetInvocationFocusedLabel(out string label)
+        {
+            label = null;
+
+            if (GroupRole is not GroupRole.Invocation)
+                return false;
+
+            label = SemanticRole.ToSpacedString();
+
+            return true;
+        }
+
+        public bool TryGetParamLabelFocusedLabel(out string label)
+        {
+            label = null;
+
+            if (SemanticRole is not SemanticRole.ParameterLabel)
+                return false;
+
+            label = SemanticRole.ToSpacedString();
+
+            return true;
+        }
+
+        public bool TryGetReferenceFocusedLabel(out string label)
+        {
+            label = null;
+
+            bool isDeclarationRole = DeclarationRoles.Contains(SemanticRole);
+            bool isDefinedInFile = Classifications.Corrected
+                is "constant name"
+                or "event name"
+                or "event field name"
+                or "field name"
+                or "local name"
+                or "parameter name"
+                or "property name";
+
+            if (isDeclarationRole || !isDefinedInFile)
+                return false;
+
+            label = Classifications.Corrected switch
+            {
+                "constant name" => "Constant Reference",
+                "event name" => "Event Reference",
+                "event field name" => "Event Field Reference",
+                "field name" => "Field Reference",
+                "local name" => IsOutVariableDeclaration()
+                                    ? "Out Variable Reference"
+                                    : "Local Variable Reference",
+                "parameter name" => IsLambdaParameterReference()
+                                        ? "Lambda Parameter Reference"
+                                        : "Parameter Reference",
+                "property name" => "Property Reference",
+                _ => string.Empty,
+            };
+
+            return true;
         }
         #endregion
 

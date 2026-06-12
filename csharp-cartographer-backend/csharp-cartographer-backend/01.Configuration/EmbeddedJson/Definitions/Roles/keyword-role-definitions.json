@@ -23,8 +23,8 @@
   "Iterator": {
     "Definition": "Iterator keywords enable a method to return values one at a time. They are commonly used to work with sequences."
   },
-  "MemberDeclaration": {
-    "Definition": "Member declaration keywords define members such as fields, methods, or properties inside a type. They describe what a type contains."
+  "MemberDeclarator": {
+    "Definition": "Member declarator keywords define members such as fields, methods, or properties inside a type. They describe what a type contains."
   },
   "MemberModifier": {
     "Definition": "Member modifiers change how a class member behaves or can be used. They add rules such as visibility or mutability."
@@ -44,8 +44,8 @@
   "SafetyContext": {
     "Definition": "Safety context keywords control whether code is allowed to perform unsafe operations. They help protect memory and program stability."
   },
-  "TypeDeclaration": {
-    "Definition": "Type declaration keywords define new types such as classes, structs, or interfaces. They are preceded by an optional list of modifiers and followed by an identifier for the new type."
+  "TypeDeclarator": {
+    "Definition": "Type declarator keywords define new types such as classes, structs, or interfaces. They are preceded by an optional list of modifiers and followed by an identifier for the new type."
   },
   "TypeModifier": {
     "Definition": "A modifier that changes the capabilities, constraints, or usage rules of a type declaration, such as its inheritance behavior, storage characteristics, or visibility scope."

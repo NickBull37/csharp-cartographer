@@ -35,9 +35,22 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
         private static string GetFocusedLabel(NavToken token)
         {
-            return token.IsIdentifier() && token.IsGenericType()
-                ? "Generic Type"
-                : token.PrimaryKind.ToString();
+            if (token.IsIdentifier() && token.IsGenericType())
+                return "Generic Type";
+
+            if (token.TryGetDeclarationFocusedLabel(out var decLabel))
+                return decLabel;
+
+            if (token.TryGetInvocationFocusedLabel(out var invLabel))
+                return invLabel;
+
+            if (token.TryGetParamLabelFocusedLabel(out var plLabel))
+                return plLabel;
+
+            if (token.TryGetReferenceFocusedLabel(out var refLabel))
+                return refLabel;
+
+            return token.PrimaryKind.ToString();
         }
 
         private static StyledText GetRoleDefinition(NavToken token)

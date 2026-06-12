@@ -68,7 +68,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         /// <summary>The group role of the token in its given context.</summary>
         [JsonIgnore]
-        public GroupRole? GroupRole { get; set; }
+        public GroupRole GroupRole { get; set; } = GroupRole.None;
 
         /// <summary>The focused role of the token in its given context.</summary>
         [JsonIgnore]

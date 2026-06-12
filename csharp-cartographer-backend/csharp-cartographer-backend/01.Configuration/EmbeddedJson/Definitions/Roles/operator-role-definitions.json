@@ -60,9 +60,9 @@
     "Definition": "Shift operators move the bits of a numeric value left or right by a specified number of positions. They use the operators {c:color-teal keyword}<<{/c}, {c:color-teal keyword}>>{/c}, and {c:color-teal keyword}>>>{/c}."
   },
   "TernaryColon": {
-    "Definition": "Marks the expression that is returned when the ternary condition evaluates to {c:bold}false{/c}."
+    "Definition": "Prefixes the value or expression that is returned when the ternary condition evaluates to {c:bold}false{/c}."
   },
   "TernaryQuestion": {
-    "Definition": "Marks the expression that is returned when the ternary condition evaluates to {c:bold}true{/c}."
+    "Definition": "Prefixes the value or expression that is returned when the ternary condition evaluates to {c:bold}true{/c}."
   }
 }

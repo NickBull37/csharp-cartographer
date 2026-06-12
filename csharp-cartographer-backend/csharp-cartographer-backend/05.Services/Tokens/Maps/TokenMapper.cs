@@ -123,13 +123,13 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             return TryGetMiscRole(token);
         }
 
-        private static GroupRole? GetGroupRole(in NavToken token)
+        private static GroupRole GetGroupRole(in NavToken token)
         {
             return token.PrimaryKind switch
             {
                 PrimaryKind.Delimiter => GetDelimiterGroupRole(token),
                 PrimaryKind.Identifier => GetIdentifierGroupRole(token),
-                _ => null
+                _ => GroupRole.None
             };
         }
 
@@ -625,8 +625,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     return SemanticRole.DiscardPattern;
 
                 // --- Member keywords ---
-                if (token.IsMemberDeclarationKeyword())
-                    return SemanticRole.MemberDeclaration;
+                if (token.IsMemberDeclaratorKeyword())
+                    return SemanticRole.MemberDeclarator;
 
                 if (token.IsMemberModifierKeyword())
                     return SemanticRole.MemberModifier;
@@ -677,8 +677,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                     return SemanticRole.TypeOfOperand;
 
                 // --- Type keywords ---
-                if (token.IsTypeDeclarationKeyword())
-                    return SemanticRole.TypeDeclaration;
+                if (token.IsTypeDeclaratorKeyword())
+                    return SemanticRole.TypeDeclarator;
 
                 if (token.IsTypeModifierKeyword())
                     return SemanticRole.TypeModifier;
@@ -1193,7 +1193,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
         #endregion
 
         #region GroupRoles
-        private static GroupRole? GetDelimiterGroupRole(in NavToken token)
+        private static GroupRole GetDelimiterGroupRole(in NavToken token)
         {
             if (token.IsAccessorBlockDelimiter())
                 return GroupRole.AccessorBlockBoundary;
@@ -1225,11 +1225,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsSwitchBlockDelimiter())
                 return GroupRole.SwitchBlockBoundary;
 
-            return null;
+            return GroupRole.None;
         }
 
-        private static GroupRole? GetIdentifierGroupRole(in NavToken token)
+        private static GroupRole GetIdentifierGroupRole(in NavToken token)
         {
+            if (token.IsInvocationIdentifier())
+                return GroupRole.Invocation;
+
             if (token.IsLocalDeclarationIdentifier())
                 return GroupRole.LocalDeclaration;
 
@@ -1242,7 +1245,7 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsTypeDeclarationIdentifier())
                 return GroupRole.TypeDeclaration;
 
-            return null;
+            return GroupRole.None;
         }
         #endregion
 

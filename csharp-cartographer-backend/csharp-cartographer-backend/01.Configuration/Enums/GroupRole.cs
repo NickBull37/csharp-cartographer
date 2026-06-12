@@ -2,6 +2,8 @@
 {
     public enum GroupRole
     {
+        None,
+
         // Delimiter groups
         AccessorBlockBoundary,
         ConditionBoundary,
@@ -15,6 +17,7 @@
         SwitchBlockBoundary,
 
         // Identifier groups
+        Invocation,
         LocalDeclaration,
         MemberDeclaration,
         ParameterDeclaration,
