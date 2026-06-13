@@ -1,4 +1,127 @@
 {
+  "DL:AccessorListBoundary": {
+    "Definition": ""
+  },
+  "DL:AttributeListBoundary": {
+    "Definition": ""
+  },
+  "DL:CastTypeBoundary": {
+    "Definition": ""
+  },
+  "DL:CatchArgumentBoundary": {
+    "Definition": ""
+  },
+  "DL:CollectionExpressionBoundary": {
+    "Definition": ""
+  },
+  "DL:DeconstructionBoundary": {
+    "Definition": ""
+  },
+  "DL:InterpolationBoundary": {
+    "Definition": ""
+  },
+  "DL:ParenthesizedExpressionBoundary": {
+    "Definition": ""
+  },
+  "DL:TupleExpressionBoundary": {
+    "Definition": ""
+  },
+  "DL:TupleTypeBoundary": {
+    "Definition": ""
+  },
+
+
+  "DL:AddAccessorBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:GetAccessorBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:InitAccessorBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:RemoveAccessorBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:SetAccessorBlockBoundary": {
+    "Definition": ""
+  },
+
+
+  "DL:ArgumentListBoundary": {
+    "Definition": ""
+  },
+  "DL:AttributeArgumentListBoundary": {
+    "Definition": ""
+  },
+  "DL:IndexArgumentListBoundary": {
+    "Definition": ""
+  },
+  "DL:ParameterListBoundary": {
+    "Definition": ""
+  },
+  "DL:TypeArgumentListBoundary": {
+    "Definition": ""
+  },
+  "DL:TypeParameterListBoundary": {
+    "Definition": ""
+  },
+
+
+  "DL:CatchBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:ElseBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:IfBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:LambdaExpressionBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:TryBlockBoundary": {
+    "Definition": ""
+  },
+
+
+  "DL:CatchFilterClauseConditionBoundary": {
+    "Definition": ""
+  },
+  "DL:DoWhileConditionBoundary": {
+    "Definition": ""
+  },
+  "DL:IfConditionBoundary": {
+    "Definition": ""
+  },
+  "DL:SwitchStatementConditionBoundary": {
+    "Definition": ""
+  },
+  "DL:WhileLoopConditionBoundary": {
+    "Definition": ""
+  },
+
+
+  "DL:CheckedStatementBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:FixedStatementBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:LockStatementBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:UncheckedStatementBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:UnsafeStatementBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:UsingStatementBlockBoundary": {
+    "Definition": ""
+  },
+
+
   "DL:ClassBoundary": {
     "Definition": "The {position} of the {c:color-blue keyword}class{/c} declaration."
   },
@@ -11,9 +134,6 @@
   "DL:InterfaceBoundary": {
     "Definition": "The {position} of the {c:color-blue keyword}interface{/c} declaration."
   },
-  "DL:ListPatternBoundary": {
-    "Definition": "The {position} of the {c:bold}list pattern{/c} clause."
-  },
   "DL:LocalFunctionBoundary": {
     "Definition": "The {position} of the {c:bold}local function{/c} declaration."
   },
@@ -22,12 +142,6 @@
   },
   "DL:NamespaceBoundary": {
     "Definition": "The {position} of the {c:color-blue keyword}namespace{/c} declaration."
-  },
-  "DL:PositionalPatternBoundary": {
-    "Definition": "The {position} of the {c:bold}positional pattern{/c} clause."
-  },
-  "DL:PropertyPatternBoundary": {
-    "Definition": "The {position} of the {c:bold}property pattern{/c} clause."
   },
   "DL:RecordBoundary": {
     "Definition": "The {position} of the {c:color-blue keyword}record{/c} declaration."
@@ -38,6 +152,95 @@
   "DL:StructBoundary": {
     "Definition": "The {position} of the {c:color-blue keyword}struct{/c} declaration."
   },
+
+
+  "DL:DefaultExpressionBoundary": {
+    "Definition": ""
+  },
+  "DL:SizeOfExpressionBoundary": {
+    "Definition": ""
+  },
+  "DL:TypeOfExpressionBoundary": {
+    "Definition": ""
+  },
+
+
+  "DL:AnonymousObjectInitializerBoundary": {
+    "Definition": ""
+  },
+  "DL:ArrayInitializerBoundary": {
+    "Definition": ""
+  },
+  "DL:CollectionElementInitializerBoundary": {
+    "Definition": ""
+  },
+  "DL:CollectionInitializerBoundary": {
+    "Definition": ""
+  },
+  "DL:ObjectInitializerBoundary": {
+    "Definition": ""
+  },
+  "DL:WithInitializerExpressionBoundary": {
+    "Definition": ""
+  },
+
+
+  "DL:DoWhileLoopBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:ForEachLoopBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:ForLoopBlockBoundary": {
+    "Definition": ""
+  },
+  "DL:WhileLoopBlockBoundary": {
+    "Definition": ""
+  },
+
+
+  "DL:ForEachControlBoundary": {
+    "Definition": ""
+  },
+  "DL:ForLoopControlBoundary": {
+    "Definition": ""
+  },
+
+
+  "DL:ListPatternBoundary": {
+    "Definition": "The {position} of the {c:bold}list pattern{/c} clause."
+  },
+  "DL:ParenthesizedPatternBoundary": {
+    "Definition": "The {position} of the {c:bold}parenthesized pattern{/c} clause."
+  },
+  "DL:PositionalPatternBoundary": {
+    "Definition": "The {position} of the {c:bold}positional pattern{/c} clause."
+  },
+  "DL:PropertyPatternBoundary": {
+    "Definition": "The {position} of the {c:bold}property pattern{/c} clause."
+  },
+
+
+  "DL:FixedStatementControlBoundary": {
+    "Definition": ""
+  },
+  "DL:LockStatementControlBoundary": {
+    "Definition": ""
+  },
+  "DL:UsingStatementControlBoundary": {
+    "Definition": ""
+  },
+
+
+  "DL:SwitchExpressionBlockBoundary": {
+    "Definition": "The {position} of the {c:color-purple keyword}switch{/c} expression block."
+  },
+  "DL:SwitchStatementBlockBoundary": {
+    "Definition": "The {position} of the {c:color-purple keyword}switch{/c} statement block."
+  },
+
+
+
   "DL:[]": {
     "Definition": "{c:code}[]{/c} - the syntax for a {c:bold}standard{/c} one dimensional array."
   },

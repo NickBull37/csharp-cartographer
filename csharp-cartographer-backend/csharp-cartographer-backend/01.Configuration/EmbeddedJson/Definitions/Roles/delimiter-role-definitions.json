@@ -40,7 +40,7 @@
 
 
   "AccessorBlockBoundary": {
-    "Definition": "Marks the boundaries of an {c:color-blue keyword}event{/c} {c:color-blue keyword}add{/c} accessor method."
+    "Definition": "Marks the boundaries of a property's accessor method."
   },
 
 
@@ -82,7 +82,7 @@
 
 
   "ConditionBoundary": {
-    "Definition": "Marks the boundaries of a value or expression to be evaluated."
+    "Definition": "Marks the boundaries of a boolean value or expression that evaluates to a boolean."
   },
 
 
