@@ -131,17 +131,6 @@
     "Description": "",
     "RelativePath": "csharp-cartographer-backend\\05.Services\\SyntaxHighlighting\\SyntaxHighlighter.cs"
   },
-  "ArtifactRepository.cs": {
-    "Name": "ArtifactRepository.cs",
-    "Type": "DataAccess Class",
-    "Insights": [
-      "A data access class is responsible for interacting with the database or other data storage systems to perform create, read, update, & delete (CRUD) operations.",
-      "This keeps data access logic separate from business logic and UI layers, promoting maintainability and testability.",
-      "This class is often referred to as a repository when used with the Repository Pattern."
-    ],
-    "Description": "",
-    "RelativePath": "csharp-cartographer-backend\\04.DataAccess\\Artifacts\\ArtifactRepository.cs"
-  },
   "StringHelpers.cs": {
     "Name": "StringHelpers.cs",
     "Type": "Extension/Helper Class",
@@ -153,8 +142,8 @@
     "Description": "",
     "RelativePath": "csharp-cartographer-backend\\02.Utilities\\Helpers\\StringHelpers.cs"
   },
-  "ChatGptProvider.cs": {
-    "Name": "ChatGptProvider.cs",
+  "ChatGptClient.cs": {
+    "Name": "ChatGptClient.cs",
     "Type": "External Client",
     "Insights": [
       "An external client is a class that encapsulates communication with an external system or service, such as a web API, messaging system, or third-party service.",
@@ -163,15 +152,6 @@
     ],
     "Description": "",
     "RelativePath": "csharp-cartographer-backend\\07.Clients\\ChatGpt\\ChatGptClient.cs"
-  },
-  "SyntaxHighlighterTests.cs": {
-    "Name": "SyntaxHighlighterTests.cs",
-    "Type": "UnitTest Class",
-    "Insights": [
-      "A unit test class..."
-    ],
-    "Description": "",
-    "RelativePath": "csharp-cartographer-backend.tests\\05.Services\\SyntaxHighlighting\\SyntaxHighlighterTests.cs"
   },
   "OperatorDemo.cs": {
     "Name": "OperatorDemo.cs",

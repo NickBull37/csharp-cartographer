@@ -21,13 +21,13 @@
     "Definition": "The discard symbol {c:color-blue keyword bold}_{/c} indicates that a produced value is {c:bold}intentionally ignored{/c} in an assignment or {c:color-blue keyword}out{/c} argument."
   },
   "InitializerModifier": {
-    "Definition": "An initializer modifier..."
+    "Definition": "A keyword that modifies how a variable is bound during initialization, specifying that the assignment aliases the storage location of the following expression rather than copying its value."
   },
   "Iterator": {
     "Definition": "An iterator keyword is used to implement enumerator logic, producing sequence elements one at a time without building the entire collection up front."
   },
   "LocalModifier": {
-    "Definition": "A local modifier..."
+    "Definition": "A keyword that changes the storage characteristics or behavior of a local variable or local function declaration."
   },
   "MemberDeclarator": {
     "Definition": "A member declarator keyword introduces a specific kind of member within a type, such as an event or an operator overload."

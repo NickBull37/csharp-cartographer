@@ -225,10 +225,10 @@
     "Definition": "The {c:color-blue keyword}orderby{/c} keyword sorts query results by one or more keys in ascending or descending order."
   },
   "KW:out:ArgumentModifier": {
-    "Definition": "The {c:color-blue keyword}out{/c} argument modifier..."
+    "Definition": "The {c:color-blue keyword}out{/c} argument modifier passes the argument by reference as an output. The called method is required to assign a value to it before returning."
   },
   "KW:out:ParameterModifier": {
-    "Definition": "The {c:color-blue keyword}out{/c} parameter modifier..."
+    "Definition": "The {c:color-blue keyword}out{/c} parameter modifier declares that this parameter is an output — the method must assign a value to it before returning, and the caller receives that value after the call."
   },
   "KW:override": {
     "Definition": "The {c:color-blue keyword}override{/c} keyword provides a new implementation for a virtual or abstract member inherited from a base class."
@@ -255,13 +255,13 @@
     "Definition": "The {c:color-blue keyword}record{/c} keyword introduces a record declaration, which is a reference type with built-in value-based equality and support for non-destructive mutation."
   },
   "KW:ref:InitializerModifier": {
-    "Definition": "The {c:color-blue keyword}ref{/c} keyword..."
+    "Definition": "The {c:color-blue keyword}ref{/c} keyword in a ref initializer binds the variable to the storage location of the following expression, making it an alias rather than a copy of the value."
   },
   "KW:ref:LocalModifier": {
-    "Definition": "The {c:color-blue keyword}ref{/c} keyword..."
+    "Definition": "The {c:color-blue keyword}ref{/c} keyword before a local variable type declares a {c:bold}ref local{/c} — a variable that holds an alias to another storage location rather than storing its own copy of the value."
   },
   "KW:ref:ParameterModifier": {
-    "Definition": "The {c:color-blue keyword}ref{/c} keyword..."
+    "Definition": "The {c:color-blue keyword}ref{/c} parameter modifier declares that this parameter is passed by reference, allowing the method to both read and write the caller's original variable."
   },
   "KW:remove": {
     "Definition": "The {c:color-blue keyword}remove{/c} keyword defines how a handler is detached from an event. It runs when code unsubscribes from the event."
@@ -276,7 +276,7 @@
     "Definition": "The {c:color-blue keyword}sbyte{/c} keyword declares an 8-bit signed integer type that stores whole numbers from -128 to 127."
   },
   "KW:scoped": {
-    "Definition": "The {c:color-blue keyword}scoped{/c} keyword..."
+    "Definition": "The {c:color-blue keyword}scoped{/c} keyword restricts the ref-safe scope of a variable or parameter, preventing it from being returned or stored in a location that could outlive the current method invocation."
   },
   "KW:sealed": {
     "Definition": "The {c:color-blue keyword}sealed{/c} keyword prevents a class from being used as a base class, or prevents a virtual member from being overridden in further derived classes."
@@ -294,7 +294,7 @@
     "Definition": "The {c:color-blue keyword}stackalloc{/c} keyword allocates a block of memory on the stack, which is automatically freed when the current scope ends."
   },
   "KW:static:LocalModifier": {
-    "Definition": "{c:color-blue keyword}static{/c} marks a local..."
+    "Definition": "{c:color-blue keyword}static{/c} marks a local function as static, preventing it from capturing any variables or instance members from the enclosing scope."
   },
   "KW:static:MemberModifier": {
     "Definition": "{c:color-blue keyword}static{/c} marks a member as belonging to the type itself rather than to any instance. It can be accessed directly on the type without creating an object."

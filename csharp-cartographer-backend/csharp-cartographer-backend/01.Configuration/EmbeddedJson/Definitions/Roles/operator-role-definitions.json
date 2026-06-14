@@ -51,7 +51,7 @@
     "Definition": "The null-forgiving operator ({c:keyword}!{/c}) tells the compiler that a value should be treated as non-null. It does not change runtime behavior."
   },
   "OperatorDeclaration": {
-    "Definition": ""
+    "Definition": "The operator symbol in an operator overload declaration, identifying which built-in operator this method provides a custom implementation for."
   },
   "PatternMatchArrow": {
     "Definition": "The pattern match arrow ({c:keyword}=>{/c}) connects the pattern of a {c:color-purple keyword}switch{/c} expression arm to the value returned when that pattern matches."

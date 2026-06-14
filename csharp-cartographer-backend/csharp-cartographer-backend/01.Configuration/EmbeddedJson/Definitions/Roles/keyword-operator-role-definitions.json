@@ -12,6 +12,6 @@
     "Definition": "A unary keyword operator that produces a {c:color-gray keyword}System.Type{/c} object representing a specified compile-time type."
   },
   "TypeTesting": {
-    "Definition": ""
+    "Definition": "A keyword operator that evaluates the type relationship between a value and a target type at runtime, either checking compatibility or attempting a safe conversion."
   }
 }

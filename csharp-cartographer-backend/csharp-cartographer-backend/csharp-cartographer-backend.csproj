@@ -52,7 +52,7 @@
     <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\dto-insights.json" />
     <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\helper-insights.json" />
     <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\model-insights.json" />
-    <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\provider-insights.json" />
+    <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\client-insights.json" />
     <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\service-insights.json" />
     <EmbeddedResource Include="01.Configuration\EmbeddedJson\DemoInsights\workflow-insights.json" />
   </ItemGroup>

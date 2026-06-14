@@ -54,7 +54,7 @@
     "Definition": "The name of the {c:color-light-blue bold}lambda parameter{/c} declared before the lambda operator ({c:code}=>{/c}) in the current lambda expression."
   },
   "ID:LocalConstantDeclaration": {
-    "Definition": "The ..."
+    "Definition": "The name of a {c:bold}local constant{/c} declared inside a method or block. A local constant holds a compile-time fixed value and cannot be reassigned. It is only accessible within the scope where it is declared."
   },
   "ID:LocalFunctionDeclaration": {
     "Definition": "The name of a {c:color-yellow bold}local function{/c}. A local function is declared inside another member or local scope and is only accessible within that containing scope."

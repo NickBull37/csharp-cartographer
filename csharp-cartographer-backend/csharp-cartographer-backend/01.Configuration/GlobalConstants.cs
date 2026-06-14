@@ -36,6 +36,7 @@
             "FileAccess",
             "FileMode",
             "FileShare",
+            "GroupRole",
             "HttpStatusCode",
             "MidpointRounding",
             "PrimaryKind",

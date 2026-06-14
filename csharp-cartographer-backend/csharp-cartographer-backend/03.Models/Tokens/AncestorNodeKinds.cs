@@ -51,6 +51,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             ? Ancestors[^1]
             : null;
 
+        /// -------------------- Below code only used for testing --------------------
+
         public bool Equals(AncestorNodeKinds other) =>
             Ancestors.SequenceEqual(other.Ancestors);
 
