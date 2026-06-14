@@ -6,19 +6,19 @@
     "Definition": "A {c:bold}class{/c} declaration defines a blueprint for creating objects that contain data and behavior. It groups related variables and methods into a single reusable unit.{RefExt}"
   },
   "ID:ConstantDeclaration": {
-    "Definition": "A {c:bold}constant{/c} is a readonly field who's value will never change. They are useful when literal values are reused in multiple places."
+    "Definition": "A {c:bold}constant{/c} is a read-only value whose assigned value will never change. Constants are useful when the same literal value is reused in multiple places."
   },
   "ID:ConstantReference": {
     "Definition": "The name of a {c:color-white bold}constant{/c} field declared within the containing type."
   },
   "ID:ConstructorDeclaration": {
-    "Definition": "A {c:bold}constructor{/c} is a special method that runs when a new instance of an object is created. Defining input parameters is {c:bold}optional{/c} but can be helpful in setting up the object's initial state.{RefExt}"
+    "Definition": "A {c:bold}constructor{/c} is a special method that runs when a new instance of an object is created.{RefExt}"
   },
   "ID:ConstructorInvocation": {
     "Definition": "The name of a type {c:bold}constructor{/c} being invoked in an object creation expression.{JumpExt}"
   },
   "ID:DelegateDeclaration": {
-    "Definition": "A {c:bold}delegate{/c} declaration defines a type that represents a reference to a method. Delegates allow methods to be passed around and called later."
+    "Definition": "A {c:bold}delegate{/c} declaration defines a type that holds a reference to a method with a matching signature. Delegates are commonly used to store and invoke methods indirectly."
   },
   "ID:EnumDeclaration": {
     "Definition": "An {c:bold}enum{/c} declaration defines a set of named constants. It is commonly used to represent a fixed list of related values."
@@ -26,14 +26,14 @@
   "ID:EnumMemberDeclaration": {
     "Definition": "An {c:bold}enum member{/c} declaration defines a single named value inside an enum. Each member represents one possible option from the enum."
   },
-  "ID:EventDeclaration": {
-    "Definition": "An {c:bold}event{/c} declaration defines a notification that other code can respond to when something happens. Events are commonly used for signaling changes or actions."
+  "ID:EventPropertyDeclaration": {
+    "Definition": "An {c:bold}event property{/c} declaration declares an event with explicit {c:color-blue keyword}add{/c} and {c:color-blue keyword}remove{/c} accessors that define custom subscription logic."
   },
   "ID:EventFieldDeclaration": {
-    "Definition": "An {c:bold}event field{/c} declaration declares an event that uses a delegate type behind the scenes. It allows objects to subscribe and react when the event is raised."
+    "Definition": "An {c:bold}event field{/c} declaration declares an event that uses a delegate type to manage subscriptions."
   },
   "ID:FieldDeclaration": {
-    "Definition": "A {c:bold}field{/c} declaration defines a variable that belongs to a class or struct. Fields store data that represents the state of an object. It is only accessible from within the type."
+    "Definition": "A {c:bold}field{/c} declaration defines a variable that belongs to a class or struct. Fields store data that represents the state of an object. By default, fields are only accessible from within the type they are declared in."
   },
   "ID:FieldReference": {
     "Definition": "The name of a {c:color-white bold}field{/c} declared within the containing type."
@@ -45,22 +45,25 @@
     "Definition": "The name of a {c:bold}generic method{/c} being invoked in an invocation expression.{HovExt}"
   },
   "ID:InterfaceDeclaration": {
-    "Definition": "The identifier of an {c:color-blue keyword}interface{/c} declaration. An implementation must be provided by any type that implements this interface. This allows different classes to share the same behavior without sharing implementation."
+    "Definition": "An {c:color-blue keyword}interface{/c} declaration defines a contract that specifies which members a conforming type must implement. Unlike a class, it contains only signatures with no implementation.{RefExt}"
   },
   "ID:LambdaParameter": {
-    "Definition": "The name of a {c:color-light-blue bold}lambda parameter{/c} that can be used inside the lambda expression it's declared in.<break/>Its value is supplied each time the lambda expression runs, typically from the current item in a collection or from an argument passed into the expression."
+    "Definition": "The name of a {c:color-light-blue bold}lambda parameter{/c} that can be referenced inside the lambda expression it is declared in."
   },
   "ID:LambdaParameterReference": {
     "Definition": "The name of the {c:color-light-blue bold}lambda parameter{/c} declared before the lambda operator ({c:code}=>{/c}) in the current lambda expression."
   },
   "ID:LocalFunctionDeclaration": {
-    "Definition": "The name of a {c:color-yellow bold}local function{/c}. A local function is declared inside another member or local scope and acts like a helper function that is only available within that containing scope."
+    "Definition": "The name of a {c:color-yellow bold}local function{/c}. A local function is declared inside another member or local scope and is only accessible within that containing scope."
   },
   "ID:LocalVariableDeclaration": {
     "Definition": "A {c:bold}local variable{/c} declaration defines a variable inside a method or block of code. Local variables are only accessible within the scope where they are declared."
   },
   "ID:LocalVariableReference": {
-    "Definition": "The name of a {c:color-light-blue bold}local varaible{/c} declared above within the containing scope."
+    "Definition": "The name of a {c:color-light-blue bold}local variable{/c} declared above within the containing scope."
+  },
+  "ID:OutVariableReference": {
+    "Definition": "The name of a variable declared inline as an {c:color-blue keyword}out{/c} argument."
   },
   "ID:MethodDeclaration": {
     "Definition": "A {c:bold}method{/c} declaration defines a block of code that performs an action or returns a value. Methods are called to run the code they contain.{RefExt}"
@@ -75,7 +78,7 @@
     "Definition": "The name of a {c:color-light-blue bold}parameter{/c} defined in the containing method or constructor {c:tt color-light-blue}signature{/c}."
   },
   "ID:ParameterLabel": {
-    "Definition": "The name of a {c:color-light-blue bold}parameter{/c} defined in the invoked method or constructor {c:tt color-light-blue}signature{/c}.<break/>Labels can improve readability when the name of the argument passed doesn't resemble the name of the corresponding parameter."
+    "Definition": "The name of a {c:color-light-blue bold}parameter{/c} defined in the invoked method or constructor {c:tt color-light-blue}signature{/c}."
   },
   "ID:PropertyDeclaration": {
     "Definition": "A {c:bold}property{/c} declaration defines a member that provides controlled access to data on an object. Properties often include logic for getting or setting values."
@@ -92,13 +95,10 @@
   "ID:StructDeclaration": {
     "Definition": "A {c:bold}struct{/c} declaration defines a value type that groups related data together. Structs are often used for small, lightweight data objects."
   },
-  "------------------------------------------------------------------------------------------------------------------": {
-    "Definition": ""
-  },
   "ID:GenericType": {
     "Definition": "A type that must be supplied a {c:bold}generic type argument{/c}. The generic type argument passed in will replace the {c:bold}generic type parameter{/c} in the type definition."
   },
   "ID:UsingResourceDeclaration": {
-    "Definition": "A resource that will be marked for disposal when execution leaves the scope in which the resource was declared."
+    "Definition": "The name of a resource that will be automatically disposed at the end of the enclosing scope."
   }
 }

@@ -23,6 +23,12 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         const string White = "color-white";
         const string Yellow = "color-yellow";
 
+        public static readonly List<SemanticRole> StandoutRoles =
+        [
+            SemanticRole.MethodReturnType,
+        ];
+
+
         private readonly CartographerConfig _config;
 
         public SyntaxHighlighter(IOptions<CartographerConfig> config)
@@ -34,6 +40,13 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
         {
             foreach (var token in navTokens)
             {
+                // highlight specific roles for testing
+                if (StandoutRoles.Contains(token.SemanticRole))
+                {
+                    token.HighlightColor = Pink;
+                    continue;
+                }
+
                 // no role defined - color red
                 if (token.SemanticRole == SemanticRole.Unknown)
                 {

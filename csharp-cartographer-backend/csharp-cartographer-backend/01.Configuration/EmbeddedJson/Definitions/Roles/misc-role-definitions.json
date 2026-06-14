@@ -1,45 +1,45 @@
 {
   "AnonymousObjectElement": {
-    "Definition": "An element supplied to an anonymous object creation expression."
+    "Definition": "A value or expression that becomes a named member of an anonymous object."
   },
   "Argument": {
-    "Definition": "A value passed to a method or constructor when its invoked. Arguments are passed into the corresponding parameters in the method or constructor definition so they can be used in that context."
+    "Definition": "A value passed to a method, constructor, or function when it is invoked."
   },
   "AssignmentValue": {
     "Definition": "The value assigned to a variable, field, or property by an assignment or initializer expression."
   },
   "AttributeArgument": {
-    "Definition": "Attribute arguments provide values to an attribute. They configure how the attribute behaves or supplies additional information."
+    "Definition": "A value or named parameter passed to an attribute to configure its behavior."
   },
   "CastTarget": {
-    "Definition": "A cast target is the value being converted to a new type."
+    "Definition": "The value being converted in a cast expression."
   },
   "CollectionElement": {
     "Definition": "A value or expression supplied as an element within a collection expression or initializer."
   },
   "CollectionElementKey": {
-    "Definition": "This value identifies an entry inside a key-value collection, such as a {c:color-green code}Dictionary{/c}. This key can be used later to find the value associated with it."
+    "Definition": "A value that uniquely identifies an entry in a key-value collection, such as a {c:color-green code}Dictionary{/c}."
   },
   "CollectionElementValue": {
-    "Definition": "This value is the data stored inside a key-value collection entry. In a {c:color-green code}Dictionary{/c}, this is the value returned when the matching key is looked up."
+    "Definition": "The data stored alongside a key in a key-value collection entry, such as the value half of a {c:color-green code}Dictionary{/c} pair."
   },
   "CollectionLength": {
     "Definition": "A value that specifies the number of elements in a newly created collection or span."
   },
   "IndexValue": {
-    "Definition": "An expression that specifies a position or offset used in an index or range when accessing a sequence."
+    "Definition": "A value that specifies a position or offset used in an index or range when accessing a sequence."
   },
   "InterpolatedValue": {
-    "Definition": "An interpolated value is an expression embedded inside an interpolated string. Its result is inserted into the string at runtime."
+    "Definition": "A value embedded inside an interpolated string that is evaluated and converted to text at runtime."
   },
   "NullCoalescingAssignmentValue": {
-    "Definition": "The value assigned to the target variable in a null-coalescing assignment (??=) when the target is null."
+    "Definition": "The value assigned to the target variable in a null-coalescing assignment ({c:keyword}??={/c}) when the target is {c:color-blue keyword}null{/c}."
   },
   "QueryReturnValue": {
-    "Definition": "A value returned by a query expression."
+    "Definition": "The value or expression in a {c:color-blue keyword}select{/c} clause that determines what each element in the query result will be."
   },
   "ReturnValue": {
-    "Definition": "The result produced by a method or function that is sent back to the caller when execution finishes."
+    "Definition": "A value returned from a method or function as its result."
   },
   "SwitchArmValue": {
     "Definition": "The expression produced by a switch expression arm when its pattern matches."
@@ -50,43 +50,43 @@
 
 
   "AddressOfOperand": {
-    "Definition": "The variable or location whose address is obtained by the address-of operator (&)."
+    "Definition": "The variable or location whose address is obtained by the address-of operator ({c:keyword}&{/c})."
   },
   "ArithmeticOperand": {
-    "Definition": "A numeric value participating in an arithmetic expression, combined with another operand using an arithmetic operator."
+    "Definition": "A numeric value participating in an arithmetic expression."
   },
   "BitwiseOperand": {
-    "Definition": ""
+    "Definition": "A numeric value participating in a bitwise operation."
   },
   "ComparisonOperand": {
-    "Definition": "A value in a comparison expression, evaluated against another operand using a relational or equality operator."
+    "Definition": "A value being compared in a relational or equality expression."
   },
   "ConcatenationOperand": {
-    "Definition": "A value combined with another operand using the string concatenation operator to produce a single composed string."
+    "Definition": "A string or value participating in a string concatenation expression."
   },
   "DefaultOperand": {
     "Definition": "The type supplied to the {c:color-blue keyword}default{/c} operator."
   },
   "DereferenceOperand": {
-    "Definition": "The pointer expression whose referenced value is accessed by the dereference operator (*)."
+    "Definition": "The pointer expression whose referenced value is accessed by the dereference operator ({c:keyword}*{/c})."
   },
   "LogicalOperand": {
-    "Definition": "A boolean value participating in a logical expression, combined with another operand using a logical operator."
+    "Definition": "A boolean value participating in a logical expression."
   },
   "NameOfOperand": {
-    "Definition": "The type supplied to the {c:color-blue keyword}nameof{/c} operator."
+    "Definition": "The symbol — such as a variable, member, or type — whose name is retrieved as a string by the {c:color-blue keyword}nameof{/c} operator."
   },
   "NullCoalescingFallback": {
-    "Definition": "The value returned by a null-coalescing expression when the target value is null."
+    "Definition": "The value returned by a null-coalescing expression when the left-hand value is {c:color-blue keyword}null{/c}."
   },
   "NullCoalescingTarget": {
-    "Definition": "The value evaluated for null in a null-coalescing expression. If it is not null, it becomes the result of the expression."
+    "Definition": "The value evaluated for {c:color-blue keyword}null{/c} in a null-coalescing expression."
   },
   "NullForgivingOperand": {
-    "Definition": "The expression whose null-state is overridden by the null-forgiving operator (!), forcing the compiler to treat it as non-null."
+    "Definition": "The expression whose null-state is overridden by the null-forgiving operator ({c:keyword}!{/c}), forcing the compiler to treat it as non-null."
   },
   "ShiftOperand": {
-    "Definition": ""
+    "Definition": "A numeric value participating in a bit shift expression."
   },
   "SizeOfOperand": {
     "Definition": "The type supplied to the {c:color-blue keyword}sizeof{/c} operator to determine its compile-time memory size in bytes."
@@ -95,7 +95,7 @@
     "Definition": "The value returned when the value or condition preceding the {c:keyword}?{/c} evaluates to {c:color-blue keyword}true{/c}."
   },
   "TernaryFalseValue": {
-    "Definition": "The value returned by a ternary expression when the condition evaluates to false."
+    "Definition": "The value returned when the ternary condition preceding the {c:keyword}?{/c} evaluates to {c:color-blue keyword}false{/c}."
   },
   "TypeOfOperand": {
     "Definition": "The type supplied to the {c:color-blue keyword}typeof{/c} operator to obtain its runtime {c:color-gray keyword}System.Type{/c} representation."
@@ -103,22 +103,22 @@
 
 
   "ConstantPattern": {
-    "Definition": "A constant pattern specifies a constant value being checked in a pattern matching expression."
+    "Definition": "A constant value tested against the input in a pattern matching expression."
   },
   "PatternBindingVariable": {
     "Definition": "A variable introduced by a pattern that is assigned the matched value or a component of it when the pattern succeeds."
   },
   "PatternMatchTarget": {
-    "Definition": "The expression whose runtime value is tested against a pattern in an is expression or switch pattern match."
+    "Definition": "The expression whose runtime value is tested against a pattern in an {c:color-blue keyword}is{/c} expression or switch pattern match."
   },
   "PropertyPattern": {
     "Definition": "A property name token within a property pattern that specifies which member of the matched value is evaluated against a nested pattern."
   },
   "RelationalPattern": {
-    "Definition": "A constant or expression token in a relational pattern that is compared to the matched value using a relational operator (>, <, >=, <=)."
+    "Definition": "A constant or expression token in a relational pattern that is compared to the matched value using a relational operator ({c:keyword}>{/c}, {c:keyword}<{/c}, {c:keyword}>={/c}, {c:keyword}<={/c})."
   },
   "TypePattern": {
-    "Definition": "A type pattern specifies the type being checked in a pattern matching expression. It determines whether a value matches a given type."
+    "Definition": "The type being tested against the input in a pattern matching expression."
   },
   "VarPattern": {
     "Definition": "The {c:color-blue keyword}var{/c} keyword in a pattern that matches any value and introduces a binding variable for that value or a component of it."
@@ -126,62 +126,68 @@
 
 
   "LiteralQualifier": {
-    "Definition": ""
+    "Definition": "A literal value used as the object on which a member is accessed, such as calling a method or property directly on a numeric or string literal."
   },
   "TypeQualifier": {
-    "Definition": "A type qualifier identifies a specific type within a namespace or enclosing type. It helps precisely locate the type being referenced."
+    "Definition": "A type qualifier identifies a specific type within a namespace or enclosing type, providing disambiguation when multiple types share the same name."
   },
 
 
   "ArrayBaseType": {
-    "Definition": "The data type supported by the array. The base type and array-type indicators [] make up the full data type."
+    "Definition": "The element type of an array declaration, indicating what kind of values the array holds."
   },
   "CastType": {
-    "Definition": "A cast type specifies the type that a value is being converted to. It is used when explicitly changing how a value is treated in code."
+    "Definition": "The target type in a cast expression, specifying what type the value is being converted to."
+  },
+  "ConversionTargetType": {
+    "Definition": "The type that a conversion operator converts to, declared as the operator's return type in an {c:color-blue keyword}implicit{/c} or {c:color-blue keyword}explicit{/c} operator declaration."
   },
   "DeconstructionVariableType": {
     "Definition": "The data type a variable will have after it has been deconstructed."
   },
   "DelegateReturnType": {
-    "Definition": "A delegate return type defines the type of value returned by methods that match the delegate. It specifies what result the delegate’s methods must produce."
+    "Definition": "The return type of a delegate declaration, specifying what type of value methods matching this delegate must return."
   },
   "FieldType": {
-    "Definition": "A field data type defines what kind of data a field can store. It determines the values that can be assigned to the field."
+    "Definition": "The declared type of a field, specifying what kind of data the field can store."
   },
   "Loop Iterator Type": {
     "Definition": "The data type of the iterator variable declared in a {c:color-purple keyword}for{/c} or {c:color-purple keyword}foreach{/c} loop."
   },
   "GenericTypeArgument": {
-    "Definition": "A generic type argument is a specific type supplied to a generic class or method. It fills in the placeholder defined by a generic parameter."
+    "Definition": "A specific type supplied as an argument to a generic type or method, replacing the corresponding type parameter."
   },
   "LocalFunctionReturnType": {
-    "Definition": "Defines the type of value returned by a {c:bold}local function{/c}."
+    "Definition": "The return type of a local function declaration, specifying what kind of value it produces."
   },
   "LocalVariableType": {
-    "Definition": "A local variable data type defines what kind of value a local variable can hold. It determines how the variable can be used within its scope."
+    "Definition": "The declared type of a local variable, specifying what kind of value it can hold."
   },
   "MethodReturnType": {
-    "Definition": "This part of the method signature defines what data will be returned when the method is finished executing."
+    "Definition": "The return type declared in a method signature, specifying what kind of value the method produces."
+  },
+  "OperatorReturnType": {
+    "Definition": "The return type of an operator overload declaration, specifying what type the operator produces."
   },
   "ParameterType": {
-    "Definition": "A parameter data type defines what kind of value can be passed into a method or constructor. It ensures the argument matches the expected type."
+    "Definition": "The declared type of a parameter, specifying what kind of value can be passed for that parameter."
   },
   "PointerBaseType": {
     "Definition": "The underlying type in a pointer type declaration, indicating the type of value the pointer can reference."
   },
   "PropertyType": {
-    "Definition": "A property data type defines what kind of value a property can get or set. It controls the type of data exposed by the property."
+    "Definition": "The declared type of a property, specifying what kind of value it can get or set."
   },
   "TupleElement": {
-    "Definition": "A single element inside a {c:bold}tuple{/c} expression. Each element holds one position in the tuple and can represent a value, a type, or a named entry depending on how the tuple is being used."
+    "Definition": "A value, type, or named entry at a single position within a tuple expression or type."
   },
   "TupleElementType": {
-    "Definition": "A tuple element type defines the type of a value stored in a tuple. It determines what kind of data that element can hold."
+    "Definition": "The declared type of a single element position within a tuple type."
   },
   "TypeConstraint": {
-    "Definition": "A type constraint restricts what types can be used with a generic type or method. It helps ensure that only valid types are allowed."
+    "Definition": "A type that appears in a generic {c:color-blue keyword}where{/c} clause, restricting which types are valid as arguments for the type parameter."
   },
   "TypeParameterConstraint": {
-    "Definition": "This identifier references the declared generic type parameter inside a constraint clause that sets rules for the arguments that are allowed to be passed in for the generic type parameter."
+    "Definition": "The generic type parameter name in a {c:color-blue keyword}where{/c} clause, identifying which type parameter the constraint applies to."
   }
 }

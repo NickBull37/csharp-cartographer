@@ -670,6 +670,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             }
         }
 
+        public bool IsConversionTargetType()
+        {
+            return Ancestors.HasAncestorAt(1, SyntaxKind.ConversionOperatorDeclaration);
+        }
+
         public bool IsDelegateReturnType()
         {
             if (IsTupleElementName() || IsTupleElementType())
@@ -859,6 +864,11 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (IsTupleElementName() || IsTupleElementType())
                 return false;
 
+            var validPrev = PrevToken?.Kind != SyntaxKind.EqualsGreaterThanToken;
+            var validNext = NextToken?.Kind != SyntaxKind.SemicolonToken;
+            if (!validPrev || !validNext)
+                return false;
+
             var parent = Ancestors.GetParent();
             var grandParent = Ancestors.GetGrandParent();
 
@@ -870,6 +880,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             return Ancestors.HasAncestorAt(1, SyntaxKind.MethodDeclaration)
                 || Ancestors.HasAncestorAt(2, SyntaxKind.MethodDeclaration);
+        }
+
+        public bool IsOperatorReturnType()
+        {
+            return Ancestors.HasAncestorAt(1, SyntaxKind.OperatorDeclaration)
+                && NextToken?.Kind == SyntaxKind.OperatorKeyword;
         }
 
         public bool IsParameterType()

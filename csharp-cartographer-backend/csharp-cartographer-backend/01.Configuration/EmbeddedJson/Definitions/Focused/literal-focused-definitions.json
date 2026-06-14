@@ -1,26 +1,26 @@
 {
   "LT:CharacterLiteral": {
-    "Definition": "A {c:bold}character{/c} literal represents a single character enclosed in single quotes {c:color-orange keyword}' '{/c}. It is commonly used to work with individual characters."
+    "Definition": "A {c:bold}character{/c} literal represents a single Unicode character enclosed in single quotes, such as {c:code}'A'{/c} or {c:code}'\\n'{/c}. It is of the {c:color-blue keyword}char{/c} type."
   },
   "LT:QuotedString": {
-    "Definition": "{c:bold}Quoted{/c} strings represent a sequence of characters enclosed in double quotes {c:color-orange keyword}\" \"{/c} on a single line."
+    "Definition": "A {c:bold}quoted{/c} string literal represents a sequence of characters enclosed in double quotes. It must fit on a single line.<break/>Escape sequences such as {c:code}\\n{/c} (newline) and {c:code}\\t{/c} (tab) can be used to include special characters."
   },
   "LT:VerbatimString": {
-    "Definition": "{c:bold}Verbatim{/c} strings represent text exactly as written, without processing escape sequences. It allows multi-line text and uses the {c:color-orange keyword}@{/c} prefix before the opening quote."
+    "Definition": "A {c:bold}verbatim{/c} string literal uses the {c:color-orange keyword}@{/c} prefix and treats every character as literal — backslashes are not processed as escape sequences. Verbatim strings can span multiple lines.<break/>To include a double-quote inside a verbatim string, write it as {c:code}\"\"{/c}."
   },
   "LT:InterpolatedString": {
-    "Definition": "{c:bold}Interpolated{/c} strings allow expressions to be embedded directly within text using placeholders enclosed in braces {c:keyword}{ }{/c}. They use the {c:color-orange keyword}${/c} prefix before the opening quote and automatically convert embedded values to strings."
+    "Definition": "An {c:bold}interpolated{/c} string literal uses the {c:color-orange keyword}${/c} prefix and allows expressions to be embedded directly in the text by enclosing them in braces. It must fit on a single line.<break/>Escape sequences like {c:code}\\n{/c} and {c:code}\\t{/c} are supported, and to include a literal brace write {c:code}{{{/c} or {c:code}}}{/c}."
   },
   "LT:InterpolatedVerbatimString": {
-    "Definition": "{c:bold}Interpolated{/c} {c:bold}verbatim{/c} strings support interpolation and multi-line text. They use either the {c:color-orange keyword}$@{/c} or {c:color-orange keyword}@${/c} prefix before the opening quote and automatically convert embedded values to strings."
+    "Definition": "An {c:bold}interpolated verbatim{/c} string literal combines interpolation and verbatim behavior. It uses either the {c:color-orange keyword}$@{/c} or {c:color-orange keyword}@${/c} prefix, can span multiple lines, and does not process escape sequences.<break/>To include a double-quote write {c:code}\"\"{/c}, and to include a literal brace write {c:code}{{{/c} or {c:code}}}{/c}."
   },
   "LT:DecimalLiteral": {
-    "Definition": "The {c:color-light-green keyword}m{/c} suffix on a numeric literal specifies the {c:color-blue keyword}decimal{/c} type."
+    "Definition": "A {c:bold}decimal{/c} literal is a numeric value written with the {c:color-light-green keyword}m{/c} suffix, specifying the {c:color-blue keyword}decimal{/c} type. Decimal is a 128-bit high-precision type commonly used for financial and monetary calculations."
   },
   "LT:FloatingPointLiteral": {
-    "Definition": "The {c:color-light-green keyword}f{/c} suffix on a numeric literal specifies the {c:color-blue keyword}float{/c} type."
+    "Definition": "A {c:bold}floating-point{/c} literal is a numeric value written with the {c:color-light-green keyword}f{/c} suffix, specifying the {c:color-blue keyword}float{/c} type. Float is a 32-bit single-precision type with less precision than {c:color-blue keyword}double{/c}."
   },
   "LT:NumericLiteral": {
-    "Definition": "{c:bold}Numeric literals{/c} represent integers written directly in the code."
+    "Definition": "A {c:bold}numeric{/c} literal is an integer value written directly in code.<break/>Integer literals can be written in decimal, hexadecimal ({c:code}0x{/c} prefix), or binary ({c:code}0b{/c} prefix) notation."
   }
 }

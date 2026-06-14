@@ -1,33 +1,33 @@
 {
   "AccessorListBoundary": {
-    "Definition": "Marks the boundaries of a property or indexer’s accessor methods, such as {c:color-blue keyword}get{/c} and {c:color-blue keyword}set{/c}."
+    "Definition": "Marks the boundaries of the accessor list for a property or indexer."
   },
   "AttributeListBoundary": {
-    "Definition": "Marks the boundaries of the attribute list applied to a code element."
+    "Definition": "Marks the boundaries of an attribute list applied to the following code element."
   },
   "CastTypeBoundary": {
-    "Definition": "Marks the boundaries of the type used when converting a value to another type."
+    "Definition": "Marks the boundaries of the type name used in an explicit cast expression."
   },
   "CatchArgumentBoundary": {
-    "Definition": "Marks the boundaries of the exception data provided when an exception is caught."
+    "Definition": "Marks the boundaries of the exception type and variable declared in a {c:color-purple keyword}catch{/c} clause."
   },
   "CollectionExpressionBoundary": {
-    "Definition": "Marks the boundaries of a collection expression."
+    "Definition": "Marks the boundaries of a collection expression, a shorthand syntax for creating a collection."
   },
   "DeconstructionBoundary": {
-    "Definition": "Marks the boundaries of a deconstruction variable list."
+    "Definition": "Marks the boundaries of the variables that receive values when a tuple or object is deconstructed."
   },
   "InterpolationBoundary": {
-    "Definition": "Marks the boundaries of a value or expression embedded inside an interpolated string."
+    "Definition": "Marks the boundaries of an expression embedded inside an interpolated string.<break/>The expression is evaluated at runtime and its result is converted to text and inserted at this position in the string."
   },
   "ParenthesizedExpressionBoundary": {
-    "Definition": "Marks the boundaries of a parenthesized expression."
+    "Definition": "Marks the boundaries of a parenthesized expression, used to control the order of evaluation."
   },
   "TupleExpressionBoundary": {
-    "Definition": "Marks the boundaries of the elements that are grouped together to create a tuple."
+    "Definition": "Marks the boundaries of the values grouped together to form a tuple."
   },
   "TupleTypeBoundary": {
-    "Definition": "Marks the boundaries of the elements that make up a tuple."
+    "Definition": "Marks the boundaries of the element types that define the shape of a tuple type."
   },
 
 
@@ -35,90 +35,90 @@
     "Definition": "A fragment of the array type syntax."
   },
   "ImplicitArrayTypeFragment": {
-    "Definition": ""
+    "Definition": "A fragment of the implicit array type syntax."
   },
 
 
   "AccessorBlockBoundary": {
-    "Definition": "Marks the boundaries of a property's accessor method."
+    "Definition": "Marks the boundaries of an accessor method body."
   },
 
 
   "ArgumentListBoundary": {
-    "Definition": "Marks the boundaries of the argument list passed into a method or constructor call."
+    "Definition": "Marks the boundaries of the arguments passed to a method or constructor call."
   },
   "AttributeArgumentListBoundary": {
-    "Definition": "Marks the boundaries of the argument list passed to an attribute."
+    "Definition": "Marks the boundaries of the arguments passed to an attribute."
   },
   "IndexArgumentListBoundary": {
-    "Definition": "Marks the boundaries of the value(s) or expression(s) that evaluate to an index used to access an element of the preceeding collection."
+    "Definition": "Marks the boundaries of the index or key used to access an element from a collection."
   },
   "ParameterListBoundary": {
-    "Definition": "Marks the boundaries of the parameter list defined for a method or constructor."
+    "Definition": "Marks the boundaries of the parameters defined in a method or constructor signature."
   },
   "TypeArgumentListBoundary": {
-    "Definition": "Marks the boundaries of the type argument list supplied to a generic type or method."
+    "Definition": "Marks the boundaries of the type arguments supplied to a generic type or method."
   },
   "TypeParameterListBoundary": {
-    "Definition": "Marks the boundaries of the type parameter list declared by a type or method."
+    "Definition": "Marks the boundaries of the type parameters declared by a generic type or method.<break/>"
   },
 
 
   "CatchBlockBoundary": {
-    "Definition": "Marks the boundaries of code that executes after an exception is caught."
+    "Definition": "Marks the boundaries of the code that runs when a matching exception is caught."
   },
   "ElseBlockBoundary": {
-    "Definition": "Marks the boundaries of the code that runs when an {c:color-purple keyword}if{/c} statement condition is false."
+    "Definition": "Marks the boundaries of the code that runs when the {c:color-purple keyword}if{/c} condition is false."
   },
   "IfBlockBoundary": {
-    "Definition": "Marks the boundaries of the code that runs when an {c:color-purple keyword}if{/c} statement condition is true."
+    "Definition": "Marks the boundaries of the code that runs when the {c:color-purple keyword}if{/c} condition is true."
   },
   "LambdaExpressionBlockBoundary": {
-    "Definition": "Marks the boundaries of a lambda expression block."
+    "Definition": "Marks the boundaries of a multi-statement lambda expression body.<break/>Unlike an expression-bodied lambda, a block body can contain multiple statements, local variables, and an explicit {c:color-purple keyword}return{/c} statement."
   },
   "TryBlockBoundary": {
-    "Definition": "Marks the boundaries of the code that may throw an exception."
+    "Definition": "Marks the boundaries of the code that is monitored for exceptions.<break/>If an exception is thrown inside this block, execution stops immediately and jumps to the matching {c:color-purple keyword}catch{/c} block."
   },
 
 
   "ConditionBoundary": {
-    "Definition": "Marks the boundaries of a boolean value or expression that evaluates to a boolean."
+    "Definition": "Marks the boundaries of the condition that controls whether the following code is executed."
   },
 
 
   "ContextBlockBoundary": {
-    "Definition": "Marks the boundaries of a code block that the compiler/runtime will treat differently because of the context."
+    "Definition": "Marks the boundaries of a block that runs under a special execution context."
   },
 
 
   "DeclarationBoundary": {
-    "Definition": "Marks the boundaries of a type, member, or namespace declaration."
+    "Definition": "Marks the boundaries of a type, member, or namespace declaration body."
   },
 
 
   "DefaultExpressionBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-blue keyword}default{/c} expression."
+    "Definition": "Marks the boundaries of the type argument in a {c:color-blue keyword}default{/c} expression."
   },
   "SizeOfExpressionBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-blue keyword}sizeof{/c} expression."
+    "Definition": "Marks the boundaries of the type argument in a {c:color-blue keyword}sizeof{/c} expression."
   },
   "TypeOfExpressionBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-blue keyword}typeof{/c} expression."
+    "Definition": "Marks the boundaries of the type argument in a {c:color-blue keyword}typeof{/c} expression."
   },
 
 
   "InitializerBoundary": {
-    "Definition": "Marks the boundaries of an {c:bold}initializer expression{/c}.<break/>Initializer expressions can be identified by curly braces {c:code}{ }{/c} used during object creation."
+    "Definition": "Marks the boundaries of an initializer expression, which sets initial values during object or collection creation.<break/>This allows properties to be assigned and elements to be added at the same time an instance is created, without separate assignment statements."
   },
 
 
   "LoopBlockBoundary": {
-    "Definition": "Marks the boundaries of the code that will be executed for each iteration of the loop."
+    "Definition": "Marks the boundaries of the code that executes on each iteration of the loop."
   },
 
 
   "LoopControlBoundary": {
-    "Definition": "Marks the boundaries of the logic that determines how many times a loop will execute."
+    "Definition": "Marks the boundaries of the logic that controls how many times the loop executes."
   },
 
 
@@ -128,11 +128,11 @@
 
 
   "StatementControlBoundary": {
-    "Definition": ""
+    "Definition": "Marks the boundaries of the expression that controls how a statement functions."
   },
 
 
   "SwitchBlockBoundary": {
-    "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} statement or expression."
+    "Definition": "Marks the boundaries of a {c:color-purple keyword}switch{/c} statement or expression body."
   }
 }

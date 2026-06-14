@@ -1,124 +1,124 @@
 {
   "DL:AccessorListBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the accessor list for this property or indexer."
   },
   "DL:AttributeListBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the attribute list applied to the following code element."
   },
   "DL:CastTypeBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the type name in this explicit cast."
   },
   "DL:CatchArgumentBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the exception type and variable in this {c:color-purple keyword}catch{/c} clause."
   },
   "DL:CollectionExpressionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this collection expression."
   },
   "DL:DeconstructionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the variable list in this deconstruction."
   },
   "DL:InterpolationBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the embedded expression in this interpolated string."
   },
   "DL:ParenthesizedExpressionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this parenthesized expression."
   },
   "DL:TupleExpressionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this tuple expression."
   },
   "DL:TupleTypeBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this tuple type."
   },
 
 
   "DL:AddAccessorBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the {c:color-blue keyword}add{/c} accessor body."
   },
   "DL:GetAccessorBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the {c:color-blue keyword}get{/c} accessor body."
   },
   "DL:InitAccessorBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the {c:color-blue keyword}init{/c} accessor body."
   },
   "DL:RemoveAccessorBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the {c:color-blue keyword}remove{/c} accessor body."
   },
   "DL:SetAccessorBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the {c:color-blue keyword}set{/c} accessor body."
   },
 
 
   "DL:ArgumentListBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the argument list for this method or constructor call."
   },
   "DL:AttributeArgumentListBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the argument list for this attribute."
   },
   "DL:IndexArgumentListBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the index used to access an element from this collection."
   },
   "DL:ParameterListBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the parameter list for this method or constructor."
   },
   "DL:TypeArgumentListBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the type argument list for this generic type or method."
   },
   "DL:TypeParameterListBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the type parameter list for this generic declaration."
   },
 
 
   "DL:CatchBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-purple keyword}catch{/c} block."
   },
   "DL:ElseBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-purple keyword}else{/c} block."
   },
   "DL:IfBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-purple keyword}if{/c} block."
   },
   "DL:LambdaExpressionBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this lambda expression body."
   },
   "DL:TryBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-purple keyword}try{/c} block."
   },
 
 
   "DL:CatchFilterClauseConditionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the filter condition in this {c:color-purple keyword}catch{/c} clause."
   },
   "DL:DoWhileConditionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the condition in this {c:color-purple keyword}do while{/c} loop."
   },
   "DL:IfConditionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the condition in this {c:color-purple keyword}if{/c} statement."
   },
   "DL:SwitchStatementConditionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the expression being evaluated in this {c:color-purple keyword}switch{/c} statement."
   },
   "DL:WhileLoopConditionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the condition in this {c:color-purple keyword}while{/c} loop."
   },
 
 
   "DL:CheckedStatementBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-blue keyword}checked{/c} block."
   },
   "DL:FixedStatementBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-blue keyword}fixed{/c} statement block."
   },
   "DL:LockStatementBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-blue keyword}lock{/c} statement block."
   },
   "DL:UncheckedStatementBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-blue keyword}unchecked{/c} block."
   },
   "DL:UnsafeStatementBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-blue keyword}unsafe{/c} block."
   },
   "DL:UsingStatementBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-blue keyword}using{/c} statement block."
   },
 
 
@@ -155,55 +155,55 @@
 
 
   "DL:DefaultExpressionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the type argument in this {c:color-blue keyword}default{/c} expression."
   },
   "DL:SizeOfExpressionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the type argument in this {c:color-blue keyword}sizeof{/c} expression."
   },
   "DL:TypeOfExpressionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the type argument in this {c:color-blue keyword}typeof{/c} expression."
   },
 
 
   "DL:AnonymousObjectInitializerBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this anonymous object initializer."
   },
   "DL:ArrayInitializerBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this array initializer."
   },
   "DL:CollectionElementInitializerBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this collection element initializer."
   },
   "DL:CollectionInitializerBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this collection initializer."
   },
   "DL:ObjectInitializerBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this object initializer."
   },
   "DL:WithInitializerExpressionBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-blue keyword}with{/c} expression initializer."
   },
 
 
   "DL:DoWhileLoopBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-purple keyword}do while{/c} loop body."
   },
   "DL:ForEachLoopBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-purple keyword}foreach{/c} loop body."
   },
   "DL:ForLoopBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-purple keyword}for{/c} loop body."
   },
   "DL:WhileLoopBlockBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of this {c:color-purple keyword}while{/c} loop body."
   },
 
 
   "DL:ForEachControlBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the control clause in this {c:color-purple keyword}foreach{/c} loop."
   },
   "DL:ForLoopControlBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the control clause in this {c:color-purple keyword}for{/c} loop."
   },
 
 
@@ -222,13 +222,13 @@
 
 
   "DL:FixedStatementControlBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the pointer declaration in this {c:color-blue keyword}fixed{/c} statement."
   },
   "DL:LockStatementControlBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the lock target in this {c:color-blue keyword}lock{/c} statement."
   },
   "DL:UsingStatementControlBoundary": {
-    "Definition": ""
+    "Definition": "The {position} of the resource declaration in this {c:color-blue keyword}using{/c} statement."
   },
 
 

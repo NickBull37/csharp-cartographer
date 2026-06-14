@@ -1,63 +1,66 @@
-﻿{
+{
   "Arithmetic": {
-    "Definition": "Arithmetic operators perform basic math operations such as addition, subtraction, multiplication, and division."
+    "Definition": "An arithmetic operator performs a mathematical computation on one or more numeric values, such as addition, subtraction, multiplication, or division."
   },
   "Assignment": {
-    "Definition": "Assignment operators store a value in a variable. They set or update the variable’s value."
+    "Definition": "An assignment operator stores a value into a variable or target expression."
   },
   "Bitwise": {
-    "Definition": "Bitwise operators perform operations directly on the individual bits of a numeric value. They combine or invert bits using the operators {c:color-teal keyword}&{/c}, {c:color-teal keyword}|{/c}, {c:color-teal keyword}^{/c}, and {c:color-teal keyword}~{/c}."
+    "Definition": "A bitwise operator performs an operation directly on the individual bits of a numeric value, treating it as a sequence of binary digits."
   },
   "BooleanLogical": {
-    "Definition": "Boolean logical operators combine or invert true and false values. They are commonly used in conditional expressions."
+    "Definition": "A boolean logical operator combines or inverts boolean values to produce a new boolean result."
   },
   "Comparison": {
-    "Definition": "Comparison operators compare two values and produce a true or false result. They are used in conditions and decision-making."
+    "Definition": "A comparison operator tests the ordering relationship between two values and produces a boolean result."
   },
   "Equality": {
-    "Definition": ""
+    "Definition": "An equality operator tests whether two values are considered equal or not equal, producing a boolean result."
   },
   "ExpressionBodyArrow": {
-    "Definition": "Introduces the expression body of a member, indicating that the member's implementation or returned value is provided by the expression that follows."
+    "Definition": "The expression body arrow ({c:keyword}=>{/c}) introduces the expression body of a member, indicating that the member's implementation is provided by the expression that follows."
   },
   "IndexFromEnd": {
-    "Definition": "The {c:bold}index{/c} operator {c:keyword}^{/c} specifies a position counted from the end of a sequence."
+    "Definition": "The index-from-end operator ({c:keyword}^{/c}) specifies a position counted from the end of a sequence, where {c:code}^1{/c} refers to the last element."
   },
   "Indirection": {
     "Definition": "An operator that accesses or produces a value indirectly through a memory address, such as obtaining an address or dereferencing a pointer."
   },
   "Lambda": {
-    "Definition": "The lambda operator defines an inline function using a concise syntax. It is often used to pass behavior as data."
+    "Definition": "The lambda operator ({c:keyword}=>{/c}) separates the parameter list of a lambda expression from its body."
   },
   "MemberAccess": {
-    "Definition": "An operator used to access a type member."
+    "Definition": "The member access operator ({c:keyword}.{/c}) navigates to a specific member of a type, namespace, or instance."
   },
   "NamespaceAlias": {
-    "Definition": ""
+    "Definition": "The namespace alias operator ({c:keyword}::{/c}) accesses a type or namespace within an aliased namespace, such as {c:code}global::{/c} to reference types in the global namespace."
   },
   "NullCoalescing": {
-    "Definition": "The null-coalescing operator provides a fallback value when an expression is null. It helps avoid null reference errors."
+    "Definition": "The null-coalescing operator ({c:keyword}??{/c}) returns the left-hand value if it is not {c:color-blue keyword}null{/c}, or the right-hand value if it is."
   },
   "NullCoalescingAssignment": {
-    "Definition": "The null-coalescing assignment operator assigns a value only if the target is null. It combines a null check and assignment into one operation."
+    "Definition": "The null-coalescing assignment operator ({c:keyword}??={/c}) assigns the right-hand value to the target only if the target is currently {c:color-blue keyword}null{/c}."
   },
   "NullConditionalDot": {
-    "Definition": "The member access part of the null-conditional operator."
+    "Definition": "The member access component of the null-conditional operator ({c:keyword}?.{/c}). It accesses the specified member only when the preceding value is not {c:color-blue keyword}null{/c}."
   },
   "NullConditionalQuestion": {
-    "Definition": "The nullable guard part of the null-conditional operator."
+    "Definition": "The null-guard component of the null-conditional operator ({c:keyword}?.{/c}). It short-circuits the expression and returns {c:color-blue keyword}null{/c} if the preceding value is {c:color-blue keyword}null{/c}."
   },
   "NullForgiving": {
-    "Definition": "The null-forgiving operator tells the compiler that a value should be treated as non-null. It does not change runtime behavior."
+    "Definition": "The null-forgiving operator ({c:keyword}!{/c}) tells the compiler that a value should be treated as non-null. It does not change runtime behavior."
+  },
+  "OperatorDeclaration": {
+    "Definition": ""
   },
   "PatternMatchArrow": {
-    "Definition": "Connects the pattern of a {c:color-purple keyword}switch{/c} expression arm to the value returned when that pattern matches."
+    "Definition": "The pattern match arrow ({c:keyword}=>{/c}) connects the pattern of a {c:color-purple keyword}switch{/c} expression arm to the value returned when that pattern matches."
   },
   "RangeSlice": {
-    "Definition": "The {c:keyword}..{/c} operator targets a range of elements in a collection to match or capture."
+    "Definition": "The range operator ({c:keyword}..{/c}) defines a range of indices for extracting a contiguous portion of a sequence. Either or both endpoints can be omitted to indicate the start or end of the sequence."
   },
   "Shift": {
-    "Definition": "Shift operators move the bits of a numeric value left or right by a specified number of positions. They use the operators {c:color-teal keyword}<<{/c}, {c:color-teal keyword}>>{/c}, and {c:color-teal keyword}>>>{/c}."
+    "Definition": "A shift operator moves the bits of a numeric value left or right by a specified number of positions."
   },
   "TernaryColon": {
     "Definition": "Prefixes the value or expression that is returned when the ternary condition evaluates to {c:bold}false{/c}."

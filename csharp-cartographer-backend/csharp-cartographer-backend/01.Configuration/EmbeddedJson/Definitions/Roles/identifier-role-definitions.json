@@ -9,31 +9,31 @@
     "Definition": "A base type specifies a type that another type inherits from or implements. It defines a parent relationship in the type hierarchy."
   },
   "CatchExceptionType": {
-    "Definition": "An exception type represents the kind of error that can be thrown or caught. It identifies what went wrong during program execution."
+    "Definition": "The type of exception this {c:color-purple keyword}catch{/c} block is designed to handle. It identifies what kind of error occurred during program execution."
   },
   "ConditionValue": {
-    "Definition": "A boolean value that will determine if the following code should be executed or skipped."
+    "Definition": "A value or expression that evaluates to {c:bold}true{/c} or {c:bold}false{/c}.<break/>Any expression that returns a {c:color-blue keyword}bool{/c} can be used here, including comparisons, logical operations, and method calls."
   },
   "EventFieldType": {
     "Definition": "An event field type defines the delegate type used by an event. It determines the shape of the methods that can handle the event."
   },
   "EventPropertyType": {
-    "Definition": ""
+    "Definition": "The delegate type for an event that has explicit {c:color-blue keyword}add{/c} and {c:color-blue keyword}remove{/c} accessors. It determines the signature of methods that can subscribe to the event."
   },
   "ForEachLoopCollection": {
-    "Definition": "The collection being iterated over in a {c:color-purple keyword}foreach{/c} loop. The loop retrieves the next element from this collection each iteration."
+    "Definition": "The collection being iterated over in a {c:color-purple keyword}foreach{/c} loop."
   },
   "GenericTypeParameter": {
-    "Definition": "This identifier is a placeholder that will be replaced by a generic type argument. This allows a generic class or method to have one implementation that works for multiple data types."
+    "Definition": "This identifier is a placeholder that will be replaced by a concrete type when the generic type or method is used.<break/>By convention, type parameters are often named {c:code}T{/c} or prefixed with {c:code}T{/c}, such as {c:code}TKey{/c} or {c:code}TValue{/c}."
   },
   "LockTarget": {
     "Definition": "The variable that a {c:color-blue keyword}lock{/c} statement uses to control access to the protected code block. Only one execution thread can hold the lock on this target at a time."
   },
   "ParameterLabel": {
-    "Definition": "A parameter label names an argument when calling a method. It improves readability by making it clear which parameter a value is assigned to."
+    "Definition": "A parameter label names an argument when calling a method. It makes it clear which parameter a value is being assigned to."
   },
   "TargetMember": {
-    "Definition": "The member name token that identifies the property, field, method, or event being accessed on an instance or type."
+    "Definition": "The member name that identifies the property, field, method, or event being accessed on an instance or type."
   },
   "TernaryCondition": {
     "Definition": "The boolean value that determines whether the {c:bold}true{/c} or {c:bold}false{/c} expression is returned."
@@ -42,7 +42,7 @@
     "Definition": "A tuple element name gives a readable name to a value inside a tuple. It makes tuple values easier to understand and access."
   },
   "Type": {
-    "Definition": "The name of a type imported by the using directive."
+    "Definition": "The name of a type referenced in a {c:color-blue keyword}using{/c} directive, either being imported into the current scope or assigned an alias."
   },
   "WithExpressionSource": {
     "Definition": "The existing value that a {c:color-blue keyword}with{/c} expression copies before applying the specified changes. It provides the starting state for the new value."
@@ -58,7 +58,7 @@
 
 
   "Invocation": {
-    "Definition": "An identifier that when invoked, transfers the execution to the identifier's definition. Execution is transfered back when the invocation expression is completed."
+    "Definition": "The name of a method, constructor, or function being called."
   },
 
 
@@ -68,7 +68,7 @@
 
 
   "MemberDeclaration": {
-    "Definition": "The identifier for a type member (method, property, field, event, constructor, operator). Where this identifier can be referenced from is determined by the its {c:bold}access modifier{/c}."
+    "Definition": "The identifier for a type member (method, property, field, event, constructor, or operator). Its visibility is determined by its {c:bold}access modifier{/c}."
   },
 
 
@@ -81,16 +81,16 @@
     "Definition": "An alias qualifier refers to an alias used to access a type or namespace. It helps distinguish which aliased name is being used."
   },
   "CollectionInstanceQualifer": {
-    "Definition": "The identifier of a collection being used to access an element inside the collection."
+    "Definition": "The identifier of a collection being used to access one of its elements."
   },
   "ImplicitInstanceQualifier": {
-    "Definition": "The identifier of an object instance being used to access an element of that instance."
+    "Definition": "The identifier of an object instance used to qualify access to one of its members, where the instance is implied by context."
   },
   "InstanceQualifier": {
-    "Definition": "The identifier of an object instance being used to access an element of that instance."
+    "Definition": "The identifier of an object instance used to access one of its members."
   },
   "NamespaceQualifier": {
-    "Definition": "A segment of a fully qualified {c:color-blue keyword}namespace{/c}."
+    "Definition": "A segment of a fully qualified {c:color-blue keyword}namespace{/c} path used to locate a type."
   },
 
 
@@ -100,30 +100,30 @@
 
 
   "GroupContinuationRangeVariable": {
-    "Definition": "A group continuation range variable represents a variable introduced after a group operation in a query. It allows the grouped results to be queried further."
+    "Definition": "A variable introduced after a {c:color-blue keyword}group...into{/c} clause in a query. It represents the grouped results and allows them to be queried further."
   },
   "GroupElement": {
-    "Definition": "The value or that a {c:color-blue keyword}group{/c} clause places into each resulting group. Each item in the final group comes from this element expression."
+    "Definition": "The value or expression that a {c:color-blue keyword}group{/c} clause places into each resulting group. Each item in the final group comes from this element expression."
   },
   "JoinIntoRangeVariable": {
-    "Definition": "A join-into range variable represents the result of a join operation in a query. It stores the grouped matches from the join."
+    "Definition": "A variable introduced by the {c:color-blue keyword}into{/c} keyword in a join clause. It holds the grouped matches from the join."
   },
   "JoinRangeVariable": {
-    "Definition": "A join range variable represents a variable used during a join operation in a query. It holds values being compared between data sources."
+    "Definition": "A variable used during a join operation in a query. It holds values being compared between data sources."
   },
   "JoinSource": {
-    "Definition": "A join source represents the data source being joined in a query. It provides the values used for matching during the join."
+    "Definition": "The data source being joined in a query. It provides the values used for matching during the join."
   },
   "LetVariable": {
-    "Definition": "A let variable stores the result of an expression inside a query. It helps simplify complex expressions and reuse computed values."
+    "Definition": "A variable that stores the result of an expression inside a query. It helps simplify complex expressions and allows computed values to be reused."
   },
   "QuerySource": {
-    "Definition": "A query source represents the data being queried in a LINQ expression. It is the starting point for the query."
+    "Definition": "The data source being queried in a LINQ expression. It is the starting point for the query."
   },
   "QueryVariableReference": {
-    "Definition": "A query variable reference refers to a variable used within a query expression. It accesses values introduced earlier in the query."
+    "Definition": "A reference to a variable that was introduced earlier in the same query expression."
   },
   "RangeVariable": {
-    "Definition": "A range variable represents a variable that ranges over elements in a data source. It is used to refer to each element in a query."
+    "Definition": "A variable that represents a single element from a data source as the query iterates over it."
   }
 }

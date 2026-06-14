@@ -1,155 +1,155 @@
 {
   "OP:+": {
-    "Definition": "The plus operator {c:keyword}\"+\"{/c} adds two numeric values together or concatenates strings."
+    "Definition": "The {c:keyword}+{/c} operator adds two numeric values together or concatenates two string values."
   },
   "OP:-": {
-    "Definition": "The minus operator {c:keyword}\"-\"{/c} subtracts one numeric value from another or negates a number."
+    "Definition": "The {c:keyword}-{/c} operator subtracts the right-hand value from the left-hand value."
   },
   "OP:+:UnaryPlus": {
-    "Definition": "The unary plus operator {c:keyword}\"+\"{/c} returns the value of its operand."
+    "Definition": "The unary {c:keyword}+{/c} operator returns its operand's value unchanged."
   },
   "OP:-:UnaryMinus": {
-    "Definition": "The unary minus operator {c:keyword}\"-\"{/c} computes the numeric negation of its operand."
+    "Definition": "The unary {c:keyword}-{/c} operator computes the numeric negation of its operand."
   },
   "OP:*:Multiplication": {
-    "Definition": "The multiplication operator {c:keyword}(*){/c} multiplies two numeric values."
+    "Definition": "The {c:keyword}*{/c} operator multiplies two numeric values."
   },
   "OP:*:Dereference": {
-    "Definition": "The dereference operator ({c:keyword}*{/c}) accesses the value stored at the memory address contained in a pointer. It retrieves the underlying data that the pointer references."
+    "Definition": "The dereference operator ({c:keyword}*{/c}) accesses the value stored at the memory address contained in a pointer."
   },
   "OP:/": {
-    "Definition": "The division operator {c:keyword}\"/\"{/c} divides one numeric value by another."
+    "Definition": "The {c:keyword}/{/c} operator divides the left-hand value by the right-hand value."
   },
   "OP:%": {
-    "Definition": "The modulus operator {c:keyword}\"%\"{/c} returns the remainder after division."
+    "Definition": "The {c:keyword}%{/c} modulus operator returns the remainder after dividing the left-hand value by the right-hand value."
   },
   "OP:++": {
-    "Definition": "The increment operator {c:keyword}\"++\"{/c} increases a numeric value by one."
+    "Definition": "The {c:keyword}++{/c} increment operator increases a numeric value by one."
   },
   "OP:--": {
-    "Definition": "The decrement operator {c:keyword}\"--\"{/c} decreases a numeric value by one."
+    "Definition": "The {c:keyword}--{/c} decrement operator decreases a numeric value by one."
   },
   "OP:=": {
-    "Definition": "The assignment operator {c:keyword}\"=\"{/c} assigns the value on the right to the variable on the left."
+    "Definition": "The {c:keyword}={/c} assignment operator assigns the right-hand value to the left-hand target."
   },
   "OP:+=": {
-    "Definition": "The addition assignment operator {c:keyword}\"+=\"{/c} adds a value to a variable and stores the result back in that variable."
+    "Definition": "The {c:keyword}+={/c} operator adds the right-hand value to the target and stores the result back in the target."
   },
   "OP:-=": {
-    "Definition": "The subtraction assignment operator {c:keyword}\"-=\"{/c} subtracts a value from a variable and stores the result back in that variable."
+    "Definition": "The {c:keyword}-={/c} operator subtracts the right-hand value from the target and stores the result back in the target."
   },
   "OP:*=": {
-    "Definition": "The multiplication assignment operator {c:keyword}\"*=\"{/c} multiplies a variable by a value and stores the result back in that variable."
+    "Definition": "The {c:keyword}*={/c} operator multiplies the target by the right-hand value and stores the result back in the target."
   },
   "OP:/=": {
-    "Definition": "The division assignment operator {c:keyword}\"/=\"{/c} divides a variable by a value and stores the result back in that variable."
+    "Definition": "The {c:keyword}/={/c} operator divides the target by the right-hand value and stores the result back in the target."
   },
   "OP:%=": {
-    "Definition": "The modulus assignment operator {c:keyword}\"%=\"{/c} applies the remainder operation and stores the result back in the variable."
+    "Definition": "The {c:keyword}%={/c} operator divides the target by the right-hand value and stores the remainder back in the target."
   },
   "OP:&=": {
-    "Definition": "The bitwise AND assignment operator {c:keyword}\"&=\"{/c} applies a bitwise AND and stores the result back in the variable."
+    "Definition": "The {c:keyword}&={/c} operator applies a bitwise AND and stores the result back in the target."
   },
   "OP:|=": {
-    "Definition": "The bitwise OR assignment operator {c:keyword}\"|=\"{/c} applies a bitwise OR and stores the result back in the variable."
+    "Definition": "The {c:keyword}|={/c} operator applies a bitwise OR and stores the result back in the target."
   },
   "OP:^=": {
-    "Definition": "The bitwise XOR assignment operator {c:keyword}\"^=\"{/c} applies a bitwise exclusive OR and stores the result back in the variable."
+    "Definition": "The {c:keyword}^={/c} operator applies a bitwise exclusive OR and stores the result back in the target."
   },
   "OP:<<=": {
-    "Definition": "The left shift assignment operator {c:keyword}\"<<=\"{/c} shifts bits to the left and stores the result back in the variable."
+    "Definition": "The {c:keyword}<<={/c} operator shifts the target's bits to the left and stores the result back in the target."
   },
   "OP:>>=": {
-    "Definition": "The right shift assignment operator {c:keyword}\">>=\"{/c} shifts bits to the right and stores the result back in the variable."
+    "Definition": "The {c:keyword}>>={/c} operator shifts the target's bits to the right and stores the result back in the target."
   },
   "OP:>>>=": {
-    "Definition": "The unsigned right shift assignment operator {c:keyword}\">>>=\"{/c} shifts bits to the right without preserving the sign bit."
+    "Definition": "The {c:keyword}>>>={/c} operator shifts the target's bits to the right without preserving the sign bit and stores the result back in the target."
   },
   "OP:&:BitwiseAnd": {
-    "Definition": "The bitwise AND operator {c:keyword}\"&\"{/c} compares the bits of two values and keeps only the bits that are set in both."
+    "Definition": "The bitwise AND operator ({c:keyword}&{/c}) compares the bits of two values and produces a 1 in each position where both bits are 1."
   },
   "OP:&:AddressOf": {
-    "Definition": "The address-of operator {c:keyword}\"&\"{/c} obtains the memory address of a variable and produces a pointer to it. The resulting pointer can be stored or used for low-level memory access."
+    "Definition": "The address-of operator ({c:keyword}&{/c}) obtains the memory address of a variable and produces a pointer to it."
   },
   "OP:|": {
-    "Definition": "The bitwise OR operator {c:keyword}\"|\"{/c} compares the bits of two values and keeps the bits that are set in either value."
+    "Definition": "The bitwise OR operator ({c:keyword}|{/c}) compares the bits of two values and produces a 1 in each position where either bit is 1."
   },
   "OP:^:BitwiseXor": {
-    "Definition": "The bitwise XOR operator {c:keyword}\"^\"{/c} compares the bits of two values and keeps the bits that are different."
+    "Definition": "The bitwise XOR operator ({c:keyword}^{/c}) compares the bits of two values and produces a 1 in each position where the bits differ."
   },
   "OP:^:Index": {
-    "Definition": "The index operator \"{c:keyword}^{/c}\" specifies a position counted from the end of a sequence."
+    "Definition": "The index-from-end operator ({c:keyword}^{/c}) specifies a position counted from the end of a sequence, where {c:code}^1{/c} refers to the last element."
   },
   "OP:~": {
-    "Definition": "The bitwise complement operator {c:keyword}\"~\"{/c} flips all the bits of a value. Zeros become ones and ones become zeros."
+    "Definition": "The bitwise complement operator ({c:keyword}~{/c}) flips all the bits of a value. Zeros become ones and ones become zeros."
   },
   "OP:<<": {
-    "Definition": "The left shift operator {c:keyword}\"<<\"{/c} moves the bits of a value to the left by a specified amount."
+    "Definition": "The {c:keyword}<<{/c} left shift operator moves the bits of a value to the left by the specified number of positions."
   },
   "OP:>>": {
-    "Definition": "The right shift operator {c:keyword}\">>\"{/c} moves the bits of a value to the right while preserving the sign bit."
+    "Definition": "The {c:keyword}>>{/c} right shift operator moves the bits of a value to the right by the specified number of positions, preserving the sign bit."
   },
   "OP:>>>": {
-    "Definition": "The unsigned right shift operator {c:keyword}\">>>\"{/c} moves the bits of a value to the right without preserving the sign bit."
+    "Definition": "The {c:keyword}>>>{/c} unsigned right shift operator moves the bits of a value to the right by the specified number of positions without preserving the sign bit."
   },
   "OP:!:NullForgiving": {
-    "Definition": "The null-forgiving operator {c:keyword}\"!\"{/c} suppresses nullability warnings when attempting to access a value the compiler believes could be null."
+    "Definition": "The null-forgiving operator ({c:keyword}!{/c}) suppresses nullability warnings, asserting to the compiler that this value is not null."
   },
   "OP:!:LogicalNot": {
-    "Definition": "The logical NOT operator {c:keyword}\"!\"{/c} reverses a Boolean value. True becomes false, and false becomes true."
+    "Definition": "The logical NOT operator ({c:keyword}!{/c}) reverses a boolean value. {c:bold}true{/c} becomes {c:bold}false{/c}, and {c:bold}false{/c} becomes {c:bold}true{/c}."
   },
   "OP:&&": {
-    "Definition": "The conditional-logical AND operator {c:keyword}\"&&\"{/c} returns true only if both conditions are true. It stops evaluating as soon as one condition is false."
+    "Definition": "The {c:keyword}&&{/c} conditional-logical AND operator returns {c:bold}true{/c} only if both conditions are true. It stops evaluating as soon as one condition is false."
   },
   "OP:||": {
-    "Definition": "The conditional-logical OR operator {c:keyword}\"||\"{/c} returns true if at least one condition is true. It stops evaluating as soon as a true condition is found."
+    "Definition": "The {c:keyword}||{/c} conditional-logical OR operator returns {c:bold}true{/c} if at least one condition is true. It stops evaluating as soon as a true condition is found."
   },
   "OP:<": {
-    "Definition": "The less-than operator {c:keyword}\"<\"{/c} checks whether the value on the left is smaller than the value on the right."
+    "Definition": "The {c:keyword}<{/c} less-than operator checks whether the left-hand value is smaller than the right-hand value."
   },
   "OP:>": {
-    "Definition": "The greater-than operator {c:keyword}\">\"{/c} checks whether the value on the left is larger than the value on the right."
+    "Definition": "The {c:keyword}>{/c} greater-than operator checks whether the left-hand value is larger than the right-hand value."
   },
   "OP:<=": {
-    "Definition": "The less-than-or-equal operator {c:keyword}\"<=\"{/c} checks whether the left value is smaller than or equal to the right value."
+    "Definition": "The {c:keyword}<={/c} less-than-or-equal operator checks whether the left-hand value is smaller than or equal to the right-hand value."
   },
   "OP:>=": {
-    "Definition": "The greater-than-or-equal operator {c:keyword}\">=\"{/c} checks whether the left value is larger than or equal to the right value."
+    "Definition": "The {c:keyword}>={/c} greater-than-or-equal operator checks whether the left-hand value is larger than or equal to the right-hand value."
   },
   "OP:==": {
-    "Definition": "The equality operator {c:keyword}\"==\"{/c} checks whether two values are equal. It returns true if they match."
+    "Definition": "The {c:keyword}=={/c} equality operator checks whether two values are equal."
   },
   "OP:!=": {
-    "Definition": "The inequality operator {c:keyword}\"!=\"{/c} checks whether two values are not equal. It returns true when they differ."
+    "Definition": "The {c:keyword}!={/c} inequality operator checks whether two values are not equal."
   },
   "OP:..:Range": {
-    "Definition": "The range operator {c:keyword}..{/c} represents a range of values between two indices. It is commonly used with arrays and spans."
+    "Definition": "The {c:keyword}..{/c} range operator creates a range from a start index (inclusive) to an end index (exclusive). Either endpoint can be omitted to indicate the start or end of the sequence."
   },
   "OP:..:Slice": {
-    "Definition": "The slice operator {c:keyword}..{/c} is used to match or capture a slice of elements in a list pattern. It represents a range of collection elements before, after, and between patterns."
+    "Definition": "The {c:keyword}..{/c} slice operator matches or captures zero or more elements at this position in a list pattern."
   },
   "OP:=>:Lambda": {
-    "Definition": "The lambda operator {c:keyword}\"=>\"{/c} separates parameters from the body of a lambda expression. It defines an inline function."
+    "Definition": "The {c:keyword}=>{/c} lambda operator separates the parameter list of a lambda expression from its body."
   },
   "OP:.": {
-    "Definition": "The member access operator {c:keyword}\".\"{/c} is used to access members such as methods, properties, or fields of the preceeding type."
+    "Definition": "The {c:keyword}.{/c} member access operator navigates to a member of the preceding type or instance, such as a property, method, or field."
   },
   "OP:?.": {
-    "Definition": "The null-conditional operator {c:keyword}x?.y{/c} skips member access and returns null immediately if the preceding operand is null."
+    "Definition": "The {c:keyword}?.{/c} null-conditional operator accesses the specified member only when the preceding value is not {c:color-blue keyword}null{/c}, returning {c:color-blue keyword}null{/c} otherwise."
   },
   "OP:::": {
-    "Definition": "The namespace alias operator {c:keyword}\"::\"{/c} is used to access a member of an aliased namespace and can only be used between two identifiers. The left-hand identifier can be one of a namespace alias, an extern alias, or the {c:color-blue keyword}global{/c} alias."
+    "Definition": "The {c:keyword}::{/c} namespace alias operator accesses a type or namespace within an aliased namespace. The left-hand side must be a namespace alias, an extern alias, or the {c:color-blue keyword}global{/c} keyword."
   },
   "OP:??": {
-    "Definition": "The null-coalescing operator {c:keyword}\"x ?? y\"{/c} returns a fallback value when the left value is null."
+    "Definition": "The {c:keyword}??{/c} null-coalescing operator returns the left-hand value if it is not {c:color-blue keyword}null{/c}, otherwise returns the right-hand value."
   },
   "OP:??=": {
-    "Definition": "The null-coalescing assignment operator {c:keyword}\"??=\"{/c} assigns a value only if the variable is currently null."
+    "Definition": "The {c:keyword}??={/c} null-coalescing assignment operator assigns the right-hand value to the target only if the target is currently {c:color-blue keyword}null{/c}."
   },
   "OP:->": {
-    "Definition": "The pointer member access operator {c:keyword}\"->\"{/c} accesses a member through a pointer. It is used in unsafe code."
+    "Definition": "The {c:keyword}->{/c} pointer member access operator accesses a member of the struct that a pointer points to."
   },
   "OP:c?t:f": {
-    "Definition": "The ternary operator {c:keyword}c ? t : f{/c} evaluates a Boolean expression and returns the result of one of the two expressions, depending on whether the Boolean expression evaluates to true or false."
+    "Definition": "The conditional ({c:keyword}?{/c} {c:keyword}:{/c}) operator evaluates a boolean condition and returns one of two values — the first if the condition is {c:bold}true{/c}, the second if it is {c:bold}false{/c}."
   }
 }

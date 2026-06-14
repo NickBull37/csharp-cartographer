@@ -81,5 +81,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
         public static implicit operator AncestorNodeKinds(SyntaxToken roslynToken) =>
             new(roslynToken);
+
+        public static explicit operator bool(AncestorNodeKinds value) =>
+            value.Ancestors.Any();
     }
 }

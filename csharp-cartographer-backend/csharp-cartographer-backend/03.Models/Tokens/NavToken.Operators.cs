@@ -243,6 +243,12 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Ancestors.HasAncestorAt(0, SyntaxKind.SuppressNullableWarningExpression);
         }
 
+        public bool IsOperatorDeclaration()
+        {
+            return Classifications.Corrected == Operator
+                && Ancestors.HasAncestorAt(0, SyntaxKind.OperatorDeclaration);
+        }
+
         public bool IsPatternMatchArrow()
         {
             /// =>

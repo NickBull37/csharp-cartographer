@@ -178,11 +178,10 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         NullCoalescing,
         NullCoalescingAssignment,
         NullForgiving,
-        OperatorSymbol, // ?
+        OperatorDeclaration,
         PatternMatchArrow,
         RangeSlice,
         Shift,
-        //Ternary,
 
         // multi-token
         [Label("Null Conditional (2/2)")]
@@ -342,8 +341,6 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         [Label("Member Declaration")]
         MethodDeclaration,
         [Label("Member Declaration")]
-        OperatorDeclaration, // => remove?
-        [Label("Member Declaration")]
         PropertyDeclaration,
 
         // Parameter Declarations
@@ -449,6 +446,7 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         // Types
         ArrayBaseType,
         CastType,
+        ConversionTargetType,
         DeconstructionVariableType,
         DelegateReturnType,
         FieldType,
@@ -460,6 +458,7 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         LocalFunctionReturnType,
         LocalVariableType,
         MethodReturnType,
+        OperatorReturnType,
         ParameterType,
         PointerBaseType,
         PropertyType,

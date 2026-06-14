@@ -576,6 +576,10 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsTernaryOperatorQuestion())
                 return SemanticRole.TernaryQuestion;
 
+            // Declarations
+            if (token.IsOperatorDeclaration())
+                return SemanticRole.OperatorDeclaration;
+
             return SemanticRole.Unknown;
         }
 
@@ -1078,8 +1082,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsForEachLoopIteratorType())
                 return SemanticRole.ForEachLoopIteratorType;
 
-            if (token.IsMethodReturnType())
-                return SemanticRole.MethodReturnType;
+            //if (token.IsMethodReturnType())
+            //    return SemanticRole.MethodReturnType;
 
             // Generic types
             if (token.IsGenericTypeArgument())
@@ -1160,6 +1164,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsLocalFunctionReturnType())
                 return SemanticRole.LocalFunctionReturnType;
 
+            if (token.IsMethodReturnType())
+                return SemanticRole.MethodReturnType;
+
+            if (token.IsOperatorReturnType())
+                return SemanticRole.OperatorReturnType;
+
             if (token.IsQueryReturnValue())
                 return SemanticRole.QueryReturnValue;
 
@@ -1187,6 +1197,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             // Type constraints
             if (token.IsTypeConstraint())
                 return SemanticRole.TypeConstraint;
+
+            if (token.IsConversionTargetType())
+                return SemanticRole.ConversionTargetType;
 
             return SemanticRole.Unknown;
         }
