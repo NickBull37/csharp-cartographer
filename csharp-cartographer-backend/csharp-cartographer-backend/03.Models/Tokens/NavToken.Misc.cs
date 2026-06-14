@@ -56,7 +56,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             bool IsStandardAssignmentValue()
             {
-                return Ancestors.GetGrandParent()
+                bool validKind = Kind is not SyntaxKind.RefKeyword;
+                bool validGrandParent = Ancestors.GetGrandParent()
                     is SyntaxKind.EqualsValueClause
                     or SyntaxKind.SimpleAssignmentExpression
                     or SyntaxKind.AddAssignmentExpression
@@ -71,6 +72,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                     or SyntaxKind.RightShiftAssignmentExpression
                     or SyntaxKind.UnsignedRightShiftAssignmentExpression
                     or SyntaxKind.AnonymousObjectMemberDeclarator;
+
+                return validKind && validGrandParent;
             }
 
             bool IsNullForgivenValue()
@@ -799,25 +802,33 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (Ancestors.HasAncestorAt(0, SyntaxKind.TupleElement))
                 return false;
 
-            // skip arrays since array types are made of multiple tokens
-            if (NextToken?.Text == "[")
+            if (IsArrayBaseType())
                 return false;
 
             if (IsPointerBaseType())
+                return false;
+
+            if (IsLocalModifierKeyword())
                 return false;
 
             return IsLocalVariableType()
                 || IsUsingStatementVariableType()
                 || IsOutArgumentVariableType();
 
-            /// string test = "Test String.";
+            /// [standard]      string test = "Test String.";
+            /// [with modifier] const int Max = 10;
+            /// [with modifier] ref int item = ref Ages[0];
+            /// [with modifier] ref readonly int item3 = ref Ages[0];
+            /// [with modifier] scoped Span<int> buffer = stackalloc int[10];
             bool IsLocalVariableType()
             {
-                bool validAncestor =
+                bool invalidDeclaratorAncestor = Ancestors.HasAncestorAt(0, SyntaxKind.VariableDeclarator);
+
+                bool validLocDeclAncestor =
                     Ancestors.HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement) ||
                     Ancestors.HasAncestorAt(3, SyntaxKind.LocalDeclarationStatement);
 
-                return validAncestor;
+                return validLocDeclAncestor && !invalidDeclaratorAncestor;
             }
 
             /// using (var reader = new StreamReader(path))

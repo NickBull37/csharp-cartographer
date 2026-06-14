@@ -245,7 +245,9 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         Constraint,
         DiscardPattern,
         DiscardValue,
+        InitializerModifier,
         Iterator,
+        LocalModifier,
         MemberDeclarator,
         MemberModifier,
         ObjectConstruction,
@@ -297,7 +299,7 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         //EventSubscription,
         //EventUnsubscription,
 
-        // Invocations // TODO: group as Invocation
+        // Invocations
         [Label("Invocation")]
         ConstructorInvocation,
         [Label("Invocation")]
@@ -313,11 +315,15 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         [Label("Local Declaration")]
         FixedPointerDeclaration,
         [Label("Local Declaration")]
+        LocalConstantDeclaration,
+        [Label("Local Declaration")]
+        LocalFunctionDeclaration,
+        [Label("Local Declaration")]
         LocalVariableDeclaration,
         [Label("Local Declaration")]
         LoopIteratorDeclaration,
         [Label("Local Declaration")]
-        OutVariableDeclaration, // add focused def
+        OutVariableDeclaration,
         [Label("Local Declaration")]
         UsingResourceDeclaration,
 
@@ -336,8 +342,6 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         FieldDeclaration,
         [Label("Member Declaration")]
         GenericMethodDeclaration,
-        [Label("Member Declaration")]
-        LocalFunctionDeclaration,
         [Label("Member Declaration")]
         MethodDeclaration,
         [Label("Member Declaration")]

@@ -251,7 +251,10 @@
   "KW:record": {
     "Definition": "The {c:color-blue keyword}record{/c} keyword introduces a record declaration, which is a reference type with built-in value-based equality and support for non-destructive mutation."
   },
-  "KW:ref": {
+  "KW:ref:InitializerModifier": {
+    "Definition": "The {c:color-blue keyword}ref{/c} keyword..."
+  },
+  "KW:ref:LocalModifier": {
     "Definition": "The {c:color-blue keyword}ref{/c} keyword passes a variable by reference, allowing the called code to read and modify the original variable directly."
   },
   "KW:remove": {
@@ -265,6 +268,9 @@
   },
   "KW:sbyte": {
     "Definition": "The {c:color-blue keyword}sbyte{/c} keyword declares an 8-bit signed integer type that stores whole numbers from -128 to 127."
+  },
+  "KW:scoped": {
+    "Definition": "The {c:color-blue keyword}scoped{/c} keyword..."
   },
   "KW:sealed": {
     "Definition": "The {c:color-blue keyword}sealed{/c} keyword prevents a class from being used as a base class, or prevents a virtual member from being overridden in further derived classes."
@@ -280,6 +286,9 @@
   },
   "KW:stackalloc": {
     "Definition": "The {c:color-blue keyword}stackalloc{/c} keyword allocates a block of memory on the stack, which is automatically freed when the current scope ends."
+  },
+  "KW:static:LocalModifier": {
+    "Definition": "{c:color-blue keyword}static{/c} marks a local..."
   },
   "KW:static:MemberModifier": {
     "Definition": "{c:color-blue keyword}static{/c} marks a member as belonging to the type itself rather than to any instance. It can be accessed directly on the type without creating an object."

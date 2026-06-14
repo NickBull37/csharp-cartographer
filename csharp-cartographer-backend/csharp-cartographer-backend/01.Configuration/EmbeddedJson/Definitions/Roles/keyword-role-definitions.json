@@ -20,8 +20,14 @@
   "DiscardValue": {
     "Definition": "The discard symbol {c:color-blue keyword bold}_{/c} indicates that a produced value is {c:bold}intentionally ignored{/c} in an assignment or {c:color-blue keyword}out{/c} argument."
   },
+  "InitializerModifier": {
+    "Definition": "An initializer modifier..."
+  },
   "Iterator": {
     "Definition": "An iterator keyword is used to implement enumerator logic, producing sequence elements one at a time without building the entire collection up front."
+  },
+  "LocalModifier": {
+    "Definition": "A local modifier..."
   },
   "MemberDeclarator": {
     "Definition": "A member declarator keyword introduces a specific kind of member within a type, such as an event or an operator overload."

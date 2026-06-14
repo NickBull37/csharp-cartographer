@@ -53,6 +53,9 @@
   "ID:LambdaParameterReference": {
     "Definition": "The name of the {c:color-light-blue bold}lambda parameter{/c} declared before the lambda operator ({c:code}=>{/c}) in the current lambda expression."
   },
+  "ID:LocalConstantDeclaration": {
+    "Definition": "The ..."
+  },
   "ID:LocalFunctionDeclaration": {
     "Definition": "The name of a {c:color-yellow bold}local function{/c}. A local function is declared inside another member or local scope and is only accessible within that containing scope."
   },

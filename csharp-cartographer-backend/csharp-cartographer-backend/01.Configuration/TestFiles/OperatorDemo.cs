@@ -632,8 +632,14 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
     {
         public record Person(string Name, int Age);
 
+        public int[] Ages { get; set; }
+
         public void DoSomething()
         {
+            async Task LoadAsync() { }
+
+            unsafe void ReadPointer(int* value) { }
+
             static string Classify(object value) =>
                 value switch
                 {
@@ -645,6 +651,16 @@ namespace csharp_cartographer_backend._01.Configuration.TestFiles
                 };
 
             object input = new Person("Alice", 30);
+
+            const int Max = 10;
+
+            const Person Min = default!;
+
+            ref int item = ref Ages[0];
+
+            ref readonly int item3 = ref Ages[0];
+
+            scoped Span<int> buffer = stackalloc int[10];
 
             const string Operator = "operator";
 

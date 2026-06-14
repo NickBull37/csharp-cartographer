@@ -216,6 +216,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return validKind && validParent;
         }
 
+        public bool IsInitializerModifierKeyword()
+        {
+            /// ref
+
+            return Kind is SyntaxKind.RefKeyword
+                && Ancestors.GetParent() is SyntaxKind.RefExpression;
+        }
+
         public bool IsIteratorKeyword()
         {
             /// yield
@@ -240,6 +248,28 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SyntaxKind.GotoStatement
                 or SyntaxKind.ReturnStatement
                 or SyntaxKind.YieldReturnStatement;
+
+            return validKind && validParent;
+        }
+
+        public bool IsLocalModifierKeyword()
+        {
+            /// async / const / readonly / ref / scoped / static / unsafe
+
+            var validKind = Kind
+                is SyntaxKind.AsyncKeyword
+                or SyntaxKind.ConstKeyword
+                or SyntaxKind.ReadOnlyKeyword
+                or SyntaxKind.RefKeyword
+                or SyntaxKind.ScopedKeyword
+                or SyntaxKind.StaticKeyword
+                or SyntaxKind.UnsafeKeyword;
+
+            var validParent = Ancestors.GetParent()
+                is SyntaxKind.LocalDeclarationStatement
+                or SyntaxKind.LocalFunctionStatement
+                or SyntaxKind.RefType
+                or SyntaxKind.ScopedType;
 
             return validKind && validParent;
         }

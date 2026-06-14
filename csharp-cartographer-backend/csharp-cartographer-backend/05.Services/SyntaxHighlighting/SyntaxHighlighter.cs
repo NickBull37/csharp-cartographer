@@ -25,7 +25,6 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         public static readonly List<SemanticRole> StandoutRoles =
         [
-            SemanticRole.MethodReturnType,
         ];
 
 
@@ -264,6 +263,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.EventFieldType:
                 case SemanticRole.FieldType:
                 case SemanticRole.GenericTypeArgument:
+                case SemanticRole.LocalFunctionReturnType:
                 case SemanticRole.LocalVariableType:
                 case SemanticRole.ForLoopIteratorType:
                 case SemanticRole.ForEachLoopIteratorType:

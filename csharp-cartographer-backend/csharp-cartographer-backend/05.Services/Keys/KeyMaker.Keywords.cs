@@ -4,19 +4,26 @@ namespace csharp_cartographer_backend._05.Services.Keys
 {
     public static partial class KeyMaker
     {
-        /*
-         *  Default Key: KW:{token.Text}
-         *  Special Key: KW:{token.Text}:{token.SemanticRole}
-         * 
-         *  There are a handful of special case keywords that can fall
-         *  under multiple roles depending on context. For these cases,
-         *  append the semantic role to the default key to find the 
-         *  context-specific definition.
-         */
-
-        /// Keyword Key: 
+        /// Key format
         /// [kindabrv]:[extension]:[modifier]
-        /// KW:{token.Text}:{token.SemanticRole?}
+        /// 
+        /// Standard key: 
+        /// KW:{token.Text}
+        /// 
+        /// Extended key
+        /// KW:{token.Text}:{token.SemanticRole}
+        /// 
+
+        private static readonly IEnumerable<string> ExtensionRequiredTokens =
+        [
+            "case",
+            "in",
+            "new",
+            "ref",
+            "static",
+            "using",
+            "where",
+        ];
 
         private static string GetKeywordKey(NavToken token)
         {
@@ -26,15 +33,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
             if (token.IsDefaultLiteral())
                 return Key(KW, token.Text, "Literal");
 
-            bool requiresRoleExt = token.Text
-                is "case"
-                or "in"
-                or "new"
-                or "static"
-                or "using"
-                or "where";
-
-            return requiresRoleExt
+            return ExtensionRequiredTokens.Contains(token.Text)
                 ? Key(KW, token.Text, token.SemanticRole.ToString())
                 : Key(KW, token.Text);
         }

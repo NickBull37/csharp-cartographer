@@ -36,6 +36,8 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 is SemanticRole.CatchExceptionVariable
                 or SemanticRole.DeconstructionVariable
                 or SemanticRole.FixedPointerDeclaration
+                or SemanticRole.LocalConstantDeclaration
+                or SemanticRole.LocalFunctionDeclaration
                 or SemanticRole.LocalVariableDeclaration
                 or SemanticRole.LoopIteratorDeclaration
                 or SemanticRole.OutVariableDeclaration
@@ -52,7 +54,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SemanticRole.EventPropertyDeclaration
                 or SemanticRole.FieldDeclaration
                 or SemanticRole.GenericMethodDeclaration
-                or SemanticRole.LocalFunctionDeclaration
                 or SemanticRole.MethodDeclaration
                 or SemanticRole.OperatorDeclaration
                 or SemanticRole.PropertyDeclaration;
@@ -374,6 +375,19 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Ancestors.HasAncestorAt(2, SyntaxKind.FixedStatement);
         }
 
+        public bool IsLocalConstantDeclaration()
+        {
+            return Classifications.Corrected == ConstantName
+                && Ancestors.HasAncestorAt(0, SyntaxKind.VariableDeclarator)
+                && Ancestors.HasAncestorAt(1, SyntaxKind.VariableDeclaration)
+                && Ancestors.HasAncestorAt(2, SyntaxKind.LocalDeclarationStatement);
+        }
+
+        public bool IsLocalFunctionDeclaration()
+        {
+            return Ancestors.HasAncestorAt(0, SyntaxKind.LocalFunctionStatement);
+        }
+
         public bool IsLocalVariableDeclaration()
         {
             // covered by UsingResourceDeclaration role
@@ -478,11 +492,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.MethodDeclaration)
                 && NextToken?.Kind == SyntaxKind.LessThanToken;
-        }
-
-        public bool IsLocalFunctionDeclaration()
-        {
-            return Ancestors.HasAncestorAt(0, SyntaxKind.LocalFunctionStatement);
         }
 
         public bool IsMethodDeclaration()

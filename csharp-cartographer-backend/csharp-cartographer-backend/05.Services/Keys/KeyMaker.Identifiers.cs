@@ -26,6 +26,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
             SemanticRole.ConstantDeclaration,
             SemanticRole.FieldDeclaration,
             SemanticRole.LambdaParameter,
+            SemanticRole.LocalConstantDeclaration,
             SemanticRole.LocalVariableDeclaration,
             SemanticRole.LoopIteratorDeclaration,
             SemanticRole.Parameter,

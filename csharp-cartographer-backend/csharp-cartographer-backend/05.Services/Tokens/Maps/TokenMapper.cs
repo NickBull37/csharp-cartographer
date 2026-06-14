@@ -606,9 +606,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
                 if (token.IsFieldType())
                     return SemanticRole.FieldType;
 
-                if (token.IsLocalVariableType())
-                    return SemanticRole.LocalVariableType;
-
                 if (token.IsDelegateReturnType())
                     return SemanticRole.DelegateReturnType;
 
@@ -641,6 +638,12 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
                 if (token.IsArgumentModifierKeyword())
                     return SemanticRole.ArgumentModifier;
+
+                if (token.IsInitializerModifierKeyword())
+                    return SemanticRole.InitializerModifier;
+
+                if (token.IsLocalModifierKeyword())
+                    return SemanticRole.LocalModifier;
 
                 if (token.IsParameterModifierKeyword())
                     return SemanticRole.ParameterModifier;
@@ -832,6 +835,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsLambdaParameterDeclaration())
                 return SemanticRole.LambdaParameter;
 
+            if (token.IsLocalConstantDeclaration())
+                return SemanticRole.LocalConstantDeclaration;
+
             if (token.IsLocalFunctionDeclaration())
                 return SemanticRole.LocalFunctionDeclaration;
 
@@ -877,9 +883,6 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
 
             if (token.IsFieldType())
                 return SemanticRole.FieldType;
-
-            if (token.IsLocalVariableType())
-                return SemanticRole.LocalVariableType;
 
             if (token.IsDeconstructionVariableType())
                 return SemanticRole.DeconstructionVariableType;
@@ -1082,8 +1085,8 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsForEachLoopIteratorType())
                 return SemanticRole.ForEachLoopIteratorType;
 
-            //if (token.IsMethodReturnType())
-            //    return SemanticRole.MethodReturnType;
+            if (token.IsLocalVariableType())
+                return SemanticRole.LocalVariableType;
 
             // Generic types
             if (token.IsGenericTypeArgument())
