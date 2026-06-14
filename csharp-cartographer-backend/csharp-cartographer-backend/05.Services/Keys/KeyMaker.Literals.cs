@@ -4,18 +4,11 @@ namespace csharp_cartographer_backend._05.Services.Keys
 {
     public static partial class KeyMaker
     {
-        /*
-         *  Default Key: LT:[literal type]
-         * 
-         *  Literal definitions depend on the type of literal,
-         *  not the SemanricRole the literal has. Add extension
-         *  based on the type of literal. Boolean literal definitions
-         *  are covered by Keywords.
-         */
-
-        /// Literal Key: 
-        /// [kindabrv]:[extension]:[modifier]
-        /// LT:{string ext}
+        /// Key format
+        /// [kindabrv]:[extension1]:[extension2]
+        /// 
+        /// Standard key: 
+        /// LT:{hardcoded extension}
 
         private static string? GetLiteralKey(NavToken token)
         {
@@ -28,11 +21,11 @@ namespace csharp_cartographer_backend._05.Services.Keys
             if (token.IsVerbatimString())
                 return Key(LT, "VerbatimString");
 
-            if (token.IsInterpolatedString())
-                return Key(LT, "InterpolatedString");
-
             if (token.IsInterpolatedVerbatimString())
                 return Key(LT, "InterpolatedVerbatimString");
+
+            if (token.IsInterpolatedString())
+                return Key(LT, "InterpolatedString");
 
             if (token.IsDecimalValue())
                 return Key(LT, "DecimalLiteral");

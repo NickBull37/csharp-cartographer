@@ -31,6 +31,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
             SemanticRole.LoopIteratorDeclaration,
             SemanticRole.Parameter,
             SemanticRole.ParameterLabel, // not a declaration but still invalid
+            SemanticRole.PatternBindingVariable,
         ];
 
         private static string? GetIdentifierKey(NavToken token)

@@ -5,20 +5,26 @@ namespace csharp_cartographer_backend._05.Services.Keys
     public static partial class KeyMaker
     {
         /// Key format
-        /// [kindabrv]:[extension]:[modifier]
+        /// [kindabrv]:[extension1]:[extension2]
         /// 
         /// Standard key: 
         /// KW:{token.Text}
         /// 
         /// Extended key
         /// KW:{token.Text}:{token.SemanticRole}
-        /// 
 
-        private static readonly IEnumerable<string> ExtensionRequiredTokens =
+        private static readonly IEnumerable<string> CustomExtensionRequired =
+        [
+            "default",
+            "var",
+        ];
+
+        private static readonly IEnumerable<string> RoleExtensionRequired =
         [
             "case",
             "in",
             "new",
+            "out",
             "ref",
             "static",
             "using",
@@ -33,7 +39,7 @@ namespace csharp_cartographer_backend._05.Services.Keys
             if (token.IsDefaultLiteral())
                 return Key(KW, token.Text, "Literal");
 
-            return ExtensionRequiredTokens.Contains(token.Text)
+            return RoleExtensionRequired.Contains(token.Text)
                 ? Key(KW, token.Text, token.SemanticRole.ToString())
                 : Key(KW, token.Text);
         }

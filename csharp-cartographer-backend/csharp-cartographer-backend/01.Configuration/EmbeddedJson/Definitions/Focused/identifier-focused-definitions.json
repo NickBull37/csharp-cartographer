@@ -63,7 +63,7 @@
     "Definition": "A {c:bold}local variable{/c} declaration defines a variable inside a method or block of code. Local variables are only accessible within the scope where they are declared."
   },
   "ID:LocalVariableReference": {
-    "Definition": "The name of a {c:color-light-blue bold}local variable{/c} declared above within the containing scope."
+    "Definition": "The name of a {c:color-light-blue bold}local variable{/c} created within the containing scope."
   },
   "ID:OutVariableReference": {
     "Definition": "The name of a variable declared inline as an {c:color-blue keyword}out{/c} argument."
@@ -82,6 +82,9 @@
   },
   "ID:ParameterLabel": {
     "Definition": "The name of a {c:color-light-blue bold}parameter{/c} defined in the invoked method or constructor {c:tt color-light-blue}signature{/c}."
+  },
+  "ID:PatternBindingVariable": {
+    "Definition": "The name of a {c:color-light-blue bold}local variable{/c} created when preceding pattern matches."
   },
   "ID:PropertyDeclaration": {
     "Definition": "A {c:bold}property{/c} declaration defines a member that provides controlled access to data on an object. Properties often include logic for getting or setting values."

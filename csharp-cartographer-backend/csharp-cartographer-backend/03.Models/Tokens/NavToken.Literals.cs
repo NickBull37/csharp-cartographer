@@ -110,5 +110,38 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 && Ancestors.HasAncestorAt(0, SyntaxKind.NumericLiteralExpression);
         }
         #endregion
+
+        #region ------------------- Focused Label Checks --------------------
+        public bool TryGetLiteralFocusedLabel(out string label)
+        {
+            label = null;
+
+            if (IsCharacterLiteral())
+                label = "Character Literal";
+
+            if (IsQuotedString())
+                label = "Quoted String";
+
+            if (IsVerbatimString())
+                label = "Verbatim String";
+
+            if (IsInterpolatedString())
+                label = "Interpolated String";
+
+            if (IsInterpolatedVerbatimString())
+                label = "Interpolated Verbatim String";
+
+            if (IsDecimalValue())
+                label = "Decimal Literal";
+
+            if (IsFloatingPointValue())
+                label = "Floating Point Literal";
+
+            if (IsNumericLiteral())
+                label = "Numeric Literal";
+
+            return label is not null;
+        }
+        #endregion
     }
 }

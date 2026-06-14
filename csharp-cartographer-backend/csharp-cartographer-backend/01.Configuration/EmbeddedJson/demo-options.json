@@ -76,17 +76,6 @@
     "Description": "",
     "RelativePath": "csharp-cartographer-backend\\03.Models\\Tokens\\AncestorNodeKinds.cs"
   },
-  "SemanticMap.cs": {
-    "Name": "SemanticMap.cs",
-    "Type": "Model Definition",
-    "Insights": [
-      "",
-      "",
-      ""
-    ],
-    "Description": "",
-    "RelativePath": "csharp-cartographer-backend\\03.Models\\Tokens\\TokenMaps\\SemanticMap.cs"
-  },
   "TokenMapper.cs": {
     "Name": "TokenMapper.cs",
     "Type": "Service Class",

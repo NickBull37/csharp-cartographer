@@ -224,8 +224,11 @@
   "KW:orderby": {
     "Definition": "The {c:color-blue keyword}orderby{/c} keyword sorts query results by one or more keys in ascending or descending order."
   },
-  "KW:out": {
-    "Definition": "The {c:color-blue keyword}out{/c} modifier designates a variable as an output — the method must assign a value to it before returning, and at the call site it does not need to be initialized before being passed."
+  "KW:out:ArgumentModifier": {
+    "Definition": "The {c:color-blue keyword}out{/c} argument modifier..."
+  },
+  "KW:out:ParameterModifier": {
+    "Definition": "The {c:color-blue keyword}out{/c} parameter modifier..."
   },
   "KW:override": {
     "Definition": "The {c:color-blue keyword}override{/c} keyword provides a new implementation for a virtual or abstract member inherited from a base class."
@@ -255,7 +258,10 @@
     "Definition": "The {c:color-blue keyword}ref{/c} keyword..."
   },
   "KW:ref:LocalModifier": {
-    "Definition": "The {c:color-blue keyword}ref{/c} keyword passes a variable by reference, allowing the called code to read and modify the original variable directly."
+    "Definition": "The {c:color-blue keyword}ref{/c} keyword..."
+  },
+  "KW:ref:ParameterModifier": {
+    "Definition": "The {c:color-blue keyword}ref{/c} keyword..."
   },
   "KW:remove": {
     "Definition": "The {c:color-blue keyword}remove{/c} keyword defines how a handler is detached from an event. It runs when code unsubscribes from the event."

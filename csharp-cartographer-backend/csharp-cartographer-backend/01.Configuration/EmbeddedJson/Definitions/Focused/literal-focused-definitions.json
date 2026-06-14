@@ -1,6 +1,6 @@
 {
   "LT:CharacterLiteral": {
-    "Definition": "A {c:bold}character{/c} literal represents a single Unicode character enclosed in single quotes, such as {c:code}'A'{/c} or {c:code}'\\n'{/c}. It is of the {c:color-blue keyword}char{/c} type."
+    "Definition": "A {c:bold}character{/c} literal represents a single Unicode character enclosed in single quotes, such as {c:code}'A'{/c} or {c:code}'\\n'{/c}."
   },
   "LT:QuotedString": {
     "Definition": "A {c:bold}quoted{/c} string literal represents a sequence of characters enclosed in double quotes. It must fit on a single line.<break/>Escape sequences such as {c:code}\\n{/c} (newline) and {c:code}\\t{/c} (tab) can be used to include special characters."

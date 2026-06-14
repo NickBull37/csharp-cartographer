@@ -50,6 +50,9 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.TryGetReferenceFocusedLabel(out var refLabel))
                 return refLabel;
 
+            if (token.TryGetLiteralFocusedLabel(out var litLabel))
+                return litLabel;
+
             return token.PrimaryKind.ToString();
         }
 

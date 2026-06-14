@@ -41,6 +41,7 @@ namespace csharp_cartographer_backend._03.Models.Tokens
                 or SemanticRole.LocalVariableDeclaration
                 or SemanticRole.LoopIteratorDeclaration
                 or SemanticRole.OutVariableDeclaration
+                or SemanticRole.PatternBindingVariable
                 or SemanticRole.UsingResourceDeclaration;
         }
 
