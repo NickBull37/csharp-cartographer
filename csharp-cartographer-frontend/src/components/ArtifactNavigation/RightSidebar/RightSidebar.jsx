@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Stack, Typography, Divider } from '@mui/material';
 import { Drawer, IconButton } from '@mui/material';
@@ -77,12 +77,22 @@ const RightSidebar = ({
 }) => {
 
     // State Variables
+    const [sidebarEnabled, setSidebarEnabled] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     // Event Handlers
     const handleDrawerToggle = () => {
-        setSidebarOpen(!sidebarOpen);
+        if (sidebarEnabled) {
+            setSidebarOpen(!sidebarOpen);
+        }
     };
+
+    // Use Effects
+    useEffect(() => {
+        if (activeToken != undefined) {
+            setSidebarEnabled(true);
+        }
+    }, [activeToken]);
 
     const VerticalText = ({ text }) => (
         <Stack alignItems="center" spacing={0}>

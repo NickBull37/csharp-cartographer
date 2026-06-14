@@ -74,18 +74,21 @@ const LeftSidebar = ({
     leftSidebarOpen,
     setLeftSidebarOpen,
     selectedTokens,
-    setSelectedTokens
+    setSelectedTokens,
+    isDisabled
 }) => {
 
     // Event Handlers
     const handleDrawerToggle = () => {
-        if (!leftSidebarOpen) {
-            setLeftSidebarOpen(!leftSidebarOpen);
-            setSelectedTokens(artifactInsight.notes[0].highlights);
-        }
-        else {
-            setLeftSidebarOpen(!leftSidebarOpen);
-            setSelectedTokens([]);
+        if (!isDisabled && artifactInsight != null) {
+            if (!leftSidebarOpen) {
+                setLeftSidebarOpen(!leftSidebarOpen);
+                setSelectedTokens(artifactInsight.notes[0].highlights);
+            }
+            else {
+                setLeftSidebarOpen(!leftSidebarOpen);
+                setSelectedTokens([]);
+            }
         }
     };
 
@@ -156,6 +159,7 @@ const LeftSidebar = ({
                             selectedTokens={selectedTokens}
                             setSelectedTokens={setSelectedTokens}
                         /> */}
+
                         <InsightsSidebarContent
                             navTokens={navTokens}
                             artifactInsight={artifactInsight}

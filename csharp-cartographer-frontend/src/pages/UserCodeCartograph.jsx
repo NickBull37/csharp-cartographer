@@ -71,6 +71,7 @@ const UserCodeCartograph = ({artifact}) => {
                 setLeftSidebarOpen={setLeftSidebarOpen}
                 selectedTokens={selectedTokens}
                 setSelectedTokens={setSelectedTokens}
+                isDisabled={true}
             />
 
             <CodeWindow

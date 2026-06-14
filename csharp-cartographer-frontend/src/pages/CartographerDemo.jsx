@@ -104,6 +104,7 @@ const CartographerDemo = () => {
                 setLeftSidebarOpen={setLeftSidebarOpen}
                 selectedTokens={selectedTokens}
                 setSelectedTokens={setSelectedTokens}
+                isDisabled={false}
             />
 
             <CodeWindow
