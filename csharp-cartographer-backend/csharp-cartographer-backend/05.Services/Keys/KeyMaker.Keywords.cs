@@ -5,13 +5,14 @@ namespace csharp_cartographer_backend._05.Services.Keys
     public static partial class KeyMaker
     {
         /// Key format
-        /// [kindabrv]:[extension1]:[extension2]
+        /// [kindabrv]:[extension1]?:[extension2]
         /// 
         /// Standard key: 
         /// KW:{token.Text}
         /// 
-        /// Extended key
+        /// Extended keys:
         /// KW:{token.Text}:{token.SemanticRole}
+        /// KW:{token.Text}:{hardcoded extension}
 
         private static readonly IEnumerable<string> CustomExtensionRequired =
         [
