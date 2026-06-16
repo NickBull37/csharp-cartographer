@@ -335,7 +335,7 @@ const TokenSidebarContent = ({
 
                     <Stack>
 
-                        <Divider sx={{ bgcolor: '#808080' }} />
+                        {/* <Divider sx={{ bgcolor: '#808080' }} />
                         <Typography
                             className='code'
                             sx={{
@@ -371,7 +371,7 @@ const TokenSidebarContent = ({
                             }}
                         >
                             corrected: [{classifications?.corrected}]
-                        </Typography>
+                        </Typography> */}
 
                         <Divider sx={{ bgcolor: '#808080' }} />
 
