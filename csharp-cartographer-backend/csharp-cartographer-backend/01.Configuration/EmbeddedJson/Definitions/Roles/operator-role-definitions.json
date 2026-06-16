@@ -42,10 +42,10 @@
     "Definition": "The null-coalescing assignment operator ({c:keyword}??={/c}) assigns the right-hand value to the target only if the target is currently {c:color-blue keyword}null{/c}."
   },
   "NullConditionalDot": {
-    "Definition": "The member access component of the null-conditional operator ({c:keyword}?.{/c}). It accesses the specified member only when the preceding value is not {c:color-blue keyword}null{/c}."
+    "Definition": "The member access component of the null-conditional operator. It accesses the specified member only when the preceding value is not {c:color-blue keyword}null{/c}."
   },
   "NullConditionalQuestion": {
-    "Definition": "The null-guard component of the null-conditional operator ({c:keyword}?.{/c}). It short-circuits the expression and returns {c:color-blue keyword}null{/c} if the preceding value is {c:color-blue keyword}null{/c}."
+    "Definition": "The null-guard component of the null-conditional operator that short-circuits the expression if the preceding value is {c:color-blue keyword}null{/c}."
   },
   "NullForgiving": {
     "Definition": "The null-forgiving operator ({c:keyword}!{/c}) tells the compiler that a value should be treated as non-null. It does not change runtime behavior."

@@ -112,6 +112,15 @@ body {
     font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace!important;
 }
 
+.code-ex {
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace!important;
+    background-color: #4d4d4d;
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+    /* font-size: 15px; */
+    margin: 0 0.1em;
+}
+
 .text {
     font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif!important;
 }

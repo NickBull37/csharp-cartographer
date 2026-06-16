@@ -288,7 +288,7 @@ namespace csharp_cartographer_backend._01.Configuration.Enums
         TargetMember,
         TernaryCondition,
         TupleElementName,
-        Type,
+        ImportedType,
         WithExpressionSource,
 
         // Alias Declarations

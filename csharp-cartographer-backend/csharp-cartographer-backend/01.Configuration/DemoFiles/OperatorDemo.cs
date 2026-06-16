@@ -2,9 +2,287 @@
 {
     using System;
     using System.Collections.Generic;
+    using static global::csharp_cartographer_backend._01.Configuration.DemoFiles.csharp_cartographer_backend._01.Configuration.DemoFiles.OperatorDemo;
 
     namespace csharp_cartographer_backend._01.Configuration.DemoFiles
     {
+        public class ArithmeticOperators
+        {
+            // ----------------------------------------------------------------------
+            // Unary: ++, --, +, -
+            // Binary: +, -, *, /, %
+            // ----------------------------------------------------------------------
+
+            public void DemoAll(int a, int b)
+            {
+                int sum = a + b;
+                int diff = a - b;
+                int prod = a * b;
+                int quot = a / b;
+                int mod = a % b;
+
+                int uPlus = +a;
+                int uMinus = -a;
+
+                // prefix
+                ++a;
+                --b;
+
+                // postfix
+                a++;
+                b--;
+            }
+        }
+
+        public class AssignmentOperators
+        {
+            // ----------------------------------------------------------------------
+            // Assignment: =, +=, -=, *=, /=, %=, &=, |=, ^=, <<=, >>=, >>>=, ??=
+            // ----------------------------------------------------------------------
+
+            public void DemoAll(int value, string? nullableString)
+            {
+                value = 1;
+                value += 2;
+                value -= 1;
+                value *= 3;
+                value /= 2;
+                value %= 2;
+                value &= 0b_1111;
+                value |= 0b_0001;
+                value ^= 0b_0010;
+                value <<= 1;
+                value >>= 1;
+                value >>>= 1;
+                nullableString ??= "assign-if-null";
+            }
+        }
+
+        public class BitwiseOperators
+        {
+            // ----------------------------------------------------------------------
+            // Bitwise: &, |, ^, ~
+            // ----------------------------------------------------------------------
+
+            public void DemoAll(int a, int b)
+            {
+                int andBits = a & b;            // & bitwise AND
+                int orBits = a | b;             // | bitwise OR
+                int xorBits = a ^ b;            // ^ bitwise XOR
+                int bitComp = ~a;               // ~ bitwise complement
+            }
+        }
+
+        public class BooleanLogicalOperators
+        {
+            // ----------------------------------------------------------------------
+            // unary logical: !
+            // binary logical: &, |, ^
+            // binary conditional: &&, ||
+            // ----------------------------------------------------------------------
+
+            public void DemoAll(bool trueVal = true, bool falseVal = false)
+            {
+                bool logicalAnd = trueVal & falseVal;             // & (logical AND)
+                bool logicalOr = trueVal | falseVal;              // | (logical OR)
+                bool logicalExOr = trueVal ^ falseVal;            // ^ (logical XOR)
+                bool logicalNot = !trueVal;                       // ! (logical NOT)
+
+                int x = 3;
+                int y = 5;
+                bool conditionalAnd = (x > 0) && (y > 0);         // && (conditional AND)
+                bool conditionalOr = (x > 0) || (y < 0);          // || (conditional OR)
+            }
+        }
+
+        public class ComparisonOperators
+        {
+            // ----------------------------------------------------------------------
+            // Comparison: <, >, <=, >=
+            // ----------------------------------------------------------------------
+
+            public void DemoAll(int a, int b)
+            {
+                bool gt = a > b;
+                bool lt = a < b;
+                bool gte = a >= b;
+                bool lte = a <= b;
+            }
+        }
+
+        public class EqualityOperators
+        {
+            // ----------------------------------------------------------------------
+            // Equality: ==, !=
+            // ----------------------------------------------------------------------
+
+            public void DemoAll(int a, int b)
+            {
+                bool eq = a == b;
+                bool neq = a != b;
+            }
+        }
+
+        public class NullRelatedOperators
+        {
+            // ----------------------------------------------------------------------
+            // Null: ??, ?. , ?[] , !, x?.y
+            // ----------------------------------------------------------------------
+
+            public void DemoAll(int a, int b)
+            {
+                string? nullString = null;
+                string name = nullString ?? "default-name";       // ??  (null-coalescing)
+
+                int? length = nullString?.Length;             // ?.  (null-conditional access)
+
+                int[]? maybeNumbers = null;
+                int? first = maybeNumbers?[0];                    // ?[] (null-conditional indexer)
+
+                string definitelyNotNull = nullString!;       // !   (null-forgiving)
+
+                var ternary = nullString is null
+                    ? "default"             // true value
+                    : nullString;           // false value
+            }
+        }
+
+        public class ShiftOperators
+        {
+            // ----------------------------------------------------------------------
+            // Shift: <<, >>, >>>
+            // ----------------------------------------------------------------------
+
+            public void DemoAll(int a, int b)
+            {
+                int leftShift = a << 1;             // left shift
+                int rightShift = a >> 1;            // right shift
+                int logicalRightShift = a >>> 1;    // unsigned right shift
+            }
+        }
+
+        public class MemberAccessOperators
+        {
+            // ----------------------------------------------------------------------
+            // Member Access: ., ?., [], ?[]
+            // ----------------------------------------------------------------------
+
+            public void DemoAll(int a, int b)
+            {
+                string text = "text";
+
+                int textLength = text.Length;                   // .
+                string? nullableText = null;
+                int? nullableLength = nullableText?.Length;     // ?.
+                int[] numbers = { 10, 20, 30 };
+                int firstNumber = numbers[0];                   // []
+                int[]? nullableNumbers = null;
+                int? nullableFirst = nullableNumbers?[0];       // ?[]
+                int textTest = text!.Length;
+            }
+        }
+
+        public class LambdaOperators
+        {
+            // ----------------------------------------------------------------------
+            // Lambda: =>
+            // ----------------------------------------------------------------------
+
+            public void DemoAll(int a, int b)
+            {
+                Func<int, int> square = x => x * x;
+            }
+        }
+
+        public class IndexRangeOperators
+        {
+            // ----------------------------------------------------------------------
+            // Index & range: ^, ..
+            // ----------------------------------------------------------------------
+
+            public void DemoAll(int a, int b)
+            {
+                int index = 1;
+                int offset = 1;
+                int start = 1;
+                int end = 2;
+
+                int[] numbersArray = { 10, 20, 30, 40, 50 };
+
+                int indexDemo = numbersArray[^1];                    // ^  (Index)
+                int[] rangeDemo = numbersArray[1..^1];               // .. (Range)
+
+                // ----- Index from end (^) -----
+
+                int lastElement = numbersArray[^1];                 // literal offset from end
+                int lastElementVar = numbersArray[^offset];         // variable offset from end
+                int lastElementExpr = numbersArray[^(offset + 1)];  // expression offset from end
+
+                // ----- Direct index -----
+
+                int firstIndex = numbersArray[0];                   // literal index
+                int byVar = numbersArray[index];                    // variable index
+                int byExpr = numbersArray[index + 2];               // expression index
+
+                // ----- Range (..) -----
+
+                int[] middle = numbersArray[1..^1];                        // literal start and end-from-end
+                int[] middleVar = numbersArray[start..^end];               // variable start and end-from-end
+                int[] middleExpr = numbersArray[(start + 1)..^(end - 1)];  // expression bounds
+
+                // ----- Open-ended ranges -----
+
+                int[] fromStart = numbersArray[..^1];               // start omitted
+                int[] toEnd = numbersArray[1..];                    // end omitted
+                int[] fullCopy = numbersArray[..];                  // entire range
+
+                // ----- Using Index struct -----
+
+                Index idx = ^2;
+                int fromIndexStruct = numbersArray[idx];            // Index value
+
+                Index idxExpr = ^(offset + 1);
+                int fromIndexExpr = numbersArray[idxExpr];
+
+                // ----- Using Range struct -----
+
+                Range r = 1..^1;
+                int[] fromRangeStruct = numbersArray[r];
+
+                Range rVar = start..^end;
+                int[] fromRangeVar = numbersArray[rVar];
+
+                // ----- Mixed forms -----
+
+                int mixed1 = numbersArray[^start];                  // variable in ^
+                int[] mixed2 = numbersArray[index..^end];           // direct + from-end
+                int[] mixed3 = numbersArray[(index + 1)..];         // expression start
+                int[] mixed4 = numbersArray[..^(offset + 2)];       // expression end-from-end
+            }
+        }
+
+        public class IndirectionOperators
+        {
+            // ----------------------------------------------------------------------
+            // Indirection: *p, &x, ->
+            // ----------------------------------------------------------------------
+
+            public void DemoAll(int a, int b)
+            {
+                unsafe
+                {
+                    int val = 10;
+                    int* pValue = &val;             // & (address-of)
+                    Console.WriteLine(*pValue);     // * (pointer indirection)
+
+                    MyStruct stVal = new() { Number = 10 };
+                    MyStruct* stPtr = &stVal;       // & (address-of)
+                    Console.WriteLine(*pValue);     // * (pointer indirection)
+                    stPtr->Number = 5;              // -> (pointer member access)
+                }
+            }
+        }
+
         public class OperatorDemo
         {
             public void Demo(int a, int b)

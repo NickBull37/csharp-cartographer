@@ -24,7 +24,10 @@
     "Definition": "The collection being iterated over in a {c:color-purple keyword}foreach{/c} loop."
   },
   "GenericTypeParameter": {
-    "Definition": "This identifier is a placeholder that will be replaced by a concrete type when the generic type or method is used.<break/>By convention, type parameters are often named {c:code}T{/c} or prefixed with {c:code}T{/c}, such as {c:code}TKey{/c} or {c:code}TValue{/c}."
+    "Definition": "This identifier is a placeholder that will be replaced by a concrete type when the generic type or method is used.<break/>By convention, type parameters are often named {c:color-light-green code}T{/c} or prefixed with {c:color-light-green code}T{/c}, such as {c:color-light-green code}TKey{/c} or {c:color-light-green code}TValue{/c}."
+  },
+  "ImportedType": {
+    "Definition": "The name of a type referenced in a {c:color-blue keyword}using{/c} directive, either being imported into the current scope or assigned an alias."
   },
   "LockTarget": {
     "Definition": "The variable that a {c:color-blue keyword}lock{/c} statement uses to control access to the protected code block. Only one execution thread can hold the lock on this target at a time."
@@ -40,9 +43,6 @@
   },
   "TupleElementName": {
     "Definition": "A tuple element name gives a readable name to a value inside a tuple. It makes tuple values easier to understand and access."
-  },
-  "Type": {
-    "Definition": "The name of a type referenced in a {c:color-blue keyword}using{/c} directive, either being imported into the current scope or assigned an alias."
   },
   "WithExpressionSource": {
     "Definition": "The existing value that a {c:color-blue keyword}with{/c} expression copies before applying the specified changes. It provides the starting state for the new value."

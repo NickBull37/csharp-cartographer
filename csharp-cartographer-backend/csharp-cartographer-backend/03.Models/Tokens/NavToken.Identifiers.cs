@@ -148,6 +148,16 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             return validNext && validParent && validGrandParent;
         }
 
+        public bool IsImportedTypeIdentifier()
+        {
+            bool validSymbol = SemanticData?.IsTypeSymbol == true;
+            bool validAncestor = Ancestors.GetLastAncestor() == SyntaxKind.UsingDirective;
+
+            return IsIdentifier()
+                && validSymbol
+                && validAncestor;
+        }
+
         public bool IsLockTarget()
         {
             bool validNeighbors =
@@ -224,16 +234,6 @@ namespace csharp_cartographer_backend._03.Models.Tokens
         public bool IsTupleElementName()
         {
             return Ancestors.HasAncestorAt(0, SyntaxKind.TupleElement);
-        }
-
-        public bool IsTypeIdentifier()
-        {
-            bool validSymbol = SemanticData?.IsTypeSymbol == true;
-            bool validAncestor = Ancestors.GetLastAncestor() == SyntaxKind.UsingDirective;
-
-            return IsIdentifier()
-                && validSymbol
-                && validAncestor;
         }
 
         public bool IsWithExpressionSource()
@@ -589,6 +589,15 @@ namespace csharp_cartographer_backend._03.Models.Tokens
             if (IsAliasQualifier())
                 return false;
 
+            if (IsTypeAliasDeclarationIdentifier())
+                return false;
+
+            if (IsNamespaceAliasDeclarationIdentifier())
+                return false;
+
+            if (IsImportedTypeIdentifier())
+                return false;
+
             /// global using System.Text;
             /// using IO = System.IO;
             /// bool test = System.IO.File.Exists("demo.txt");
@@ -641,7 +650,9 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
             bool IsUsingDirectiveNamespaceQualifier()
             {
-                return IsIdentifiableNamespace() || IsUnIdentifiableNamespace();
+                return IsIdentifiableNamespace()
+                    || IsUnIdentifiableNamespace()
+                    || IsUsingDirectiveInsideNamespace();
 
                 /// using IO = System.IO;
                 bool IsIdentifiableNamespace()
@@ -665,6 +676,14 @@ namespace csharp_cartographer_backend._03.Models.Tokens
 
                     return IsIdentifier()
                         && validSymbol
+                        && validAncestor;
+                }
+
+                bool IsUsingDirectiveInsideNamespace()
+                {
+                    bool validAncestor = Ancestors.HasAncestor(SyntaxKind.UsingDirective);
+
+                    return IsIdentifier()
                         && validAncestor;
                 }
             }

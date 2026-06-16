@@ -25,8 +25,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
 
         public static readonly List<SemanticRole> StandoutRoles =
         [
+            //SemanticRole.NamespaceQualifier
         ];
-
 
         private readonly CartographerConfig _config;
 
@@ -94,6 +94,7 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
             [
                 SemanticRole.ArrayBaseType,
                 SemanticRole.ConstructorInvocation,
+                SemanticRole.FieldType,
                 SemanticRole.GenericTypeArgument,
                 SemanticRole.LocalVariableType,
                 SemanticRole.MethodReturnType,
@@ -227,8 +228,8 @@ namespace csharp_cartographer_backend._05.Services.SyntaxHighlighting
                 case SemanticRole.Attribute:
                 case SemanticRole.ClassDeclaration:
                 case SemanticRole.CatchExceptionType:
+                case SemanticRole.ImportedType:
                 case SemanticRole.RecordDeclaration:
-                case SemanticRole.Type:
                 case SemanticRole.TypeAliasDeclaration:
                     token.HighlightColor = Green;
                     break;

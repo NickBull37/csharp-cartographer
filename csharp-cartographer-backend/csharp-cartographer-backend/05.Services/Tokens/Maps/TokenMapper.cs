@@ -944,14 +944,14 @@ namespace csharp_cartographer_backend._05.Services.Tokens.Maps
             if (token.IsGenericTypeParameter())
                 return SemanticRole.GenericTypeParameter;
 
+            if (token.IsImportedTypeIdentifier())
+                return SemanticRole.ImportedType;
+
             if (token.IsTupleElementName())
                 return SemanticRole.TupleElementName;
 
             if (token.IsTupleElementType())
                 return SemanticRole.TupleElementType;
-
-            if (token.IsTypeIdentifier())
-                return SemanticRole.Type;
 
             if (token.IsTypeParameterConstraint())
                 return SemanticRole.TypeParameterConstraint;
